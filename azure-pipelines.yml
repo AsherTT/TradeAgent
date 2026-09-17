@@ -1,0 +1,18 @@
+trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: "3.12"
+  - script: python -m pip install --upgrade pip && python -m pip install -e ".[dev]"
+    displayName: Install dependencies
+  - script: python -m ruff check .
+    displayName: Ruff
+  - script: python -m mypy backend/app
+    displayName: Mypy
+  - script: python -m pytest
+    displayName: Tests

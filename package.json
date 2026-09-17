@@ -1,0 +1,9 @@
+{
+  "name": "agentic-equity-workbench",
+  "private": true,
+  "engines": {
+    "node": "24.21.0",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@11.19.0"
+}

@@ -1,0 +1,91 @@
+"""Versioned domain and runtime contracts."""
+
+from backend.app.contracts.evaluation import (
+    DataQualityStatus,
+    EvaluationMaturity,
+    ProviderQualityReport,
+    QualityAssessment,
+    QualityGateDecision,
+    ReplayIntegrityLevel,
+    ResearchCompletion,
+    SecurityStatus,
+    StatisticalStatus,
+    SystemConfidence,
+)
+from backend.app.contracts.evidence import Evidence, EvidenceBundle, TrustLevel
+from backend.app.contracts.instrument import (
+    CorporateAction,
+    CorporateActionType,
+    Instrument,
+    InstrumentStatus,
+    PriceAdjustmentMode,
+    SymbolHistory,
+)
+from backend.app.contracts.market import MarketBar, MarketSnapshot, TechnicalSnapshot
+from backend.app.contracts.model import (
+    Capability,
+    ExecutorMetadata,
+    ModelRequest,
+    ModelResponse,
+    ProviderName,
+    ReasoningLevel,
+    RuntimeProfile,
+    TaskKind,
+)
+from backend.app.contracts.research import (
+    BudgetUsage,
+    ResearchBudget,
+    ResearchPlan,
+    ResearchState,
+    ResearchStatus,
+)
+from backend.app.contracts.thesis import (
+    Direction,
+    ForecastRecord,
+    OutcomeRecord,
+    Thesis,
+    ThesisStatus,
+)
+
+__all__ = [
+    "BudgetUsage",
+    "Capability",
+    "CorporateAction",
+    "CorporateActionType",
+    "DataQualityStatus",
+    "Direction",
+    "EvaluationMaturity",
+    "Evidence",
+    "EvidenceBundle",
+    "ExecutorMetadata",
+    "ForecastRecord",
+    "Instrument",
+    "InstrumentStatus",
+    "MarketBar",
+    "MarketSnapshot",
+    "ModelRequest",
+    "ModelResponse",
+    "OutcomeRecord",
+    "PriceAdjustmentMode",
+    "ProviderName",
+    "ProviderQualityReport",
+    "QualityAssessment",
+    "QualityGateDecision",
+    "ReasoningLevel",
+    "ReplayIntegrityLevel",
+    "ResearchBudget",
+    "ResearchCompletion",
+    "ResearchPlan",
+    "ResearchState",
+    "ResearchStatus",
+    "RuntimeProfile",
+    "SecurityStatus",
+    "StatisticalStatus",
+    "SymbolHistory",
+    "SystemConfidence",
+    "TaskKind",
+    "TechnicalSnapshot",
+    "Thesis",
+    "ThesisStatus",
+    "TrustLevel",
+]
