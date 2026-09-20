@@ -20,6 +20,7 @@ def test_symbol_history_rejects_inverted_window() -> None:
             exchange="NASDAQ",
             valid_from=now,
             valid_to=now - timedelta(days=1),
+            available_at=now,
         )
 
 

@@ -1,12 +1,16 @@
 # Agentic Equity Research Workbench
 
-Production-minded research and quantitative decision-support workbench. The current implementation is intentionally limited to the first architecture milestone:
+Production-minded research and quantitative decision-support workbench. The current implementation contains the completed Phase 0-4 foundation and the first Phase 5 vertical slice:
 
 - Phase 0: repository, tooling, configuration, Docker and CI skeletons
 - Phase 1: versioned Pydantic contracts
 - Phase 2: pluggable multi-model runtime proof of concept
+- Phase 3 foundation: SQLAlchemy/Alembic persistence, SecurityMaster storage, research-run API, and Celery/Redis queue boundaries
+- Phase 4: point-in-time corporate actions, provider-neutral market data, deterministic price normalization, provider qualification, and technical indicators
+- Phase 5 slice: bounded LangGraph planning and evidence workflow, durable state transitions,
+  execution leases, retry/redelivery protection, budget enforcement, and terminal Celery execution
 
-Research agents, market-data ingestion, RAG, persistence, backtesting, the web application, and Azure deployment are deliberately deferred to later architecture gates.
+Phase 4 is covered by golden-case tests and a Docker-backed PostgreSQL migration qualification. The Phase 5 slice is qualified offline with deterministic model and market-data adapters. An Alpha Vantage adapter now has offline contract qualification for raw daily bars and conservative corporate-action mapping, but remains disconnected from the production worker and has not made a live provider request. Broader research/RAG nodes, a backtesting engine, web application, and Azure deployment remain deferred to later architecture gates. See `docs/ALPHA_VANTAGE_QUALIFICATION.md`.
 
 ## Requirements
 
@@ -32,13 +36,19 @@ On Windows with nvm, select the pinned Node runtime with `nvm use 24.21.0`.
 `CODEX_MODEL` is a model selector, not a secret. The Codex subscription executor
 reuses the local `codex login` session and does not require an API key in `.env`.
 
-## Run the API skeleton
+## Run the API and worker foundation
 
 ```powershell
 uvicorn backend.app.main:app --reload
 ```
 
 The health endpoint is available at `GET /health`.
+
+`POST /research` persists and queues a run. The worker now executes the bounded graph and
+`GET /research/{research_run_id}` returns its durable state. Without a configured qualified
+market-data adapter, a successfully planned live run intentionally ends as
+`insufficient_evidence`; ordinary tests use deterministic offline adapters and never spend model
+or provider quota.
 
 ## Runtime design
 

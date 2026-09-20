@@ -1,0 +1,11 @@
+{
+  "provider": "alpha_vantage",
+  "provider_version": "alpha-vantage-actions-observed-v1",
+  "evaluated_at": "2026-09-20T00:00:00Z",
+  "golden_case_count": 6,
+  "passed_case_count": 6,
+  "failed_cases": [],
+  "coverage": 1.0,
+  "quality_status": "unverified",
+  "notes": "Date-only corporate actions use response observation time and are not strict-backtest eligible."
+}

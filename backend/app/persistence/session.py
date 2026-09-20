@@ -21,8 +21,14 @@ class Database:
         self.sessions = async_sessionmaker(self.engine, expire_on_commit=False)
 
     async def session(self) -> AsyncIterator[AsyncSession]:
-        async with self.sessions() as session, session.begin():
-            yield session
+        async with self.sessions() as session:
+            try:
+                yield session
+            except Exception:
+                await session.rollback()
+                raise
+            else:
+                await session.commit()
 
     async def dispose(self) -> None:
         await self.engine.dispose()

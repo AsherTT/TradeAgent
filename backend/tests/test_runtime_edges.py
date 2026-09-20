@@ -68,6 +68,7 @@ def test_valid_temporal_window_and_low_ohlc_validation(now: datetime) -> None:
         symbol="KLAC",
         exchange="NASDAQ",
         valid_from=now,
+        available_at=now,
         valid_to=now + timedelta(days=1),
     )
     assert history.valid_to is not None

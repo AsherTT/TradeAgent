@@ -41,14 +41,14 @@ class MarketBar(ContractModel):
 
 class MarketSnapshot(ContractModel):
     instrument_id: UUID
-    as_of: datetime
+    analysis_timestamp: datetime
     latest_bar: MarketBar
     currency: str = Field(min_length=3, max_length=3)
 
 
 class TechnicalSnapshot(ContractModel):
     instrument_id: UUID
-    as_of: datetime
+    analysis_timestamp: datetime
     price_adjustment_mode: PriceAdjustmentMode
     feature_version: str
     indicators: dict[str, float | int | str | None] = Field(default_factory=dict)

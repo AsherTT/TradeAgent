@@ -1,1 +1,17 @@
-"""LangGraph orchestration package; graph construction begins in Phase 5."""
+"""LangGraph research orchestration."""
+
+from backend.app.graph.workflow import (
+    EvidenceCollection,
+    MarketResearchEvidence,
+    ResearchEvidence,
+    ResearchWorkflow,
+    failed_research_state,
+)
+
+__all__ = [
+    "EvidenceCollection",
+    "MarketResearchEvidence",
+    "ResearchEvidence",
+    "ResearchWorkflow",
+    "failed_research_state",
+]

@@ -1,0 +1,11 @@
+{
+  "provider": "alpha_vantage",
+  "provider_version": "alpha-vantage-daily-raw-v1",
+  "evaluated_at": "2026-09-20T00:00:00Z",
+  "golden_case_count": 15,
+  "passed_case_count": 15,
+  "failed_cases": [],
+  "coverage": 1.0,
+  "quality_status": "acceptable",
+  "notes": "Offline contract qualification only; no live request or entitlement was tested."
+}

@@ -15,9 +15,12 @@ dependencies = [
   "fastapi>=0.116,<1",
   "httpx>=0.28,<1",
   "langgraph>=0.6,<2",
+  "numpy>=2.3,<3",
+  "pandas>=2.3,<4",
   "pydantic>=2.11,<3",
   "pydantic-settings>=2.10,<3",
   "sqlalchemy[asyncio]>=2.0.43,<3",
+  "scipy>=1.16,<2",
   "structlog>=25.4,<26",
   "uvicorn[standard]>=0.35,<1",
 ]
@@ -28,12 +31,14 @@ dev = [
   "aiosqlite>=0.21,<1",
   "hypothesis>=6.138,<7",
   "mypy>=1.17,<2",
+  "pandas-stubs>=2.3,<4",
   "pre-commit>=4.3,<5",
   "pytest>=8.4,<10",
   "pytest-asyncio>=1.1,<2",
   "pytest-cov>=6.2,<8",
   "respx>=0.22,<1",
   "ruff>=0.12,<1",
+  "scipy-stubs>=1.16,<2",
 ]
 
 [tool.hatch.build.targets.wheel]

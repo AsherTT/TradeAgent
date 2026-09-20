@@ -6,7 +6,7 @@ from datetime import date, datetime
 from enum import StrEnum
 from uuid import UUID, uuid4
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
 from backend.app.contracts.base import ContractModel, TemporalWindow
 
@@ -51,6 +51,7 @@ class SymbolHistory(TemporalWindow):
     instrument_id: UUID
     symbol: str = Field(min_length=1, max_length=32)
     exchange: str = Field(min_length=1, max_length=32)
+    available_at: datetime
 
 
 class CorporateAction(ContractModel):
@@ -65,3 +66,17 @@ class CorporateAction(ContractModel):
     cash_amount: float | None = Field(default=None, ge=0)
     currency: str | None = Field(default=None, min_length=3, max_length=3)
     source: str = Field(min_length=1)
+    provider_quality_version: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_action_values(self) -> CorporateAction:
+        if self.action_type in {
+            CorporateActionType.SPLIT,
+            CorporateActionType.REVERSE_SPLIT,
+        } and self.ratio is None:
+            raise ValueError("ratio is required for split and reverse_split actions")
+        if self.action_type is CorporateActionType.CASH_DIVIDEND and (
+            self.cash_amount is None or self.currency is None
+        ):
+            raise ValueError("cash_amount and currency are required for cash_dividend actions")
+        return self

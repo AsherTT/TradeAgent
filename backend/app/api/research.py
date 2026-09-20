@@ -60,8 +60,21 @@ async def submit_research(
         horizon=submission.horizon,
         research_budget=submission.budget,
     )
-    await ResearchRunRepository(session).create(state)
-    task_id = enqueue(str(state.research_id))
+    repository = ResearchRunRepository(session)
+    await repository.create(state)
+    await session.commit()
+    try:
+        task_id = enqueue(str(state.research_id))
+    except Exception as exc:
+        reason = f"queue dispatch failed: {type(exc).__name__}"
+        await repository.set_status(
+            state.research_id, ResearchStatus.FAILED, failure_reason=reason
+        )
+        await session.commit()
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="research queue is unavailable",
+        ) from exc
     return ResearchAccepted(
         research_run_id=state.research_id,
         status=state.status,

@@ -7,7 +7,7 @@ from backend.app.main import app
 def test_health_endpoint() -> None:
     response = TestClient(app).get("/health")
     assert response.status_code == 200
-    assert response.json() == {"status": "ok", "milestone": "phase-0-3"}
+    assert response.json() == {"status": "ok", "milestone": "phase-5-slice"}
 
 
 def test_settings_defaults_without_env_file() -> None:

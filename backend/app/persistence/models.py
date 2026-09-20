@@ -6,7 +6,18 @@ from datetime import date, datetime
 from typing import Any
 from uuid import UUID, uuid4
 
-from sqlalchemy import JSON, Date, DateTime, Float, ForeignKey, Index, String, Text, Uuid
+from sqlalchemy import (
+    JSON,
+    CheckConstraint,
+    Date,
+    DateTime,
+    Float,
+    ForeignKey,
+    Index,
+    String,
+    Text,
+    Uuid,
+)
 from sqlalchemy.orm import Mapped, mapped_column
 
 from backend.app.contracts.base import utc_now
@@ -42,9 +53,18 @@ class SymbolHistoryRow(Base):
     exchange: Mapped[str] = mapped_column(String(32))
     valid_from: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     valid_to: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    available_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     __table_args__ = (
         Index("ix_symbol_history_lookup", "symbol", "exchange", "valid_from", "valid_to"),
+        Index(
+            "ix_symbol_history_pit_lookup",
+            "symbol",
+            "exchange",
+            "valid_from",
+            "valid_to",
+            "available_at",
+        ),
     )
 
 
@@ -64,6 +84,26 @@ class CorporateActionRow(Base):
     cash_amount: Mapped[float | None] = mapped_column(Float)
     currency: Mapped[str | None] = mapped_column(String(3))
     source: Mapped[str] = mapped_column(String(256))
+    provider_quality_version: Mapped[str | None] = mapped_column(String(128))
+
+    __table_args__ = (
+        Index(
+            "ix_corporate_action_pit_lookup",
+            "instrument_id",
+            "effective_at",
+            "available_at",
+        ),
+        CheckConstraint(
+            "action_type NOT IN ('split', 'reverse_split') OR "
+            "(ratio IS NOT NULL AND ratio > 0)",
+            name="split_ratio_required",
+        ),
+        CheckConstraint(
+            "action_type != 'cash_dividend' OR "
+            "(cash_amount IS NOT NULL AND cash_amount >= 0 AND currency IS NOT NULL)",
+            name="cash_dividend_required",
+        ),
+    )
 
 
 class ResearchRunRow(Base):
@@ -79,6 +119,8 @@ class ResearchRunRow(Base):
     status: Mapped[str] = mapped_column(String(32), index=True)
     state_json: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
     failure_reason: Mapped[str | None] = mapped_column(Text)
+    execution_id: Mapped[str | None] = mapped_column(String(64), index=True)
+    lease_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), index=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, index=True
     )
