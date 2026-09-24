@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta
 from enum import StrEnum
-from typing import Any
+from typing import Annotated, Any
 from uuid import UUID, uuid4
 
 from pydantic import Field, model_validator
@@ -44,6 +44,13 @@ class ResearchStep(ContractModel):
     objective: str = Field(min_length=1)
     capability: str = Field(min_length=1)
     required: bool = True
+
+
+class ResearchIntent(ContractModel):
+    research_goal: str = Field(min_length=1, max_length=500)
+    focus_areas: tuple[Annotated[str, Field(min_length=1, max_length=100)], ...] = Field(
+        min_length=1, max_length=5
+    )
 
 
 class ResearchPlan(ContractModel):
@@ -106,6 +113,7 @@ class ResearchState(ContractModel):
     timestamp_mode: ResearchTimestampMode = ResearchTimestampMode.FIXED_CUTOFF
     analysis_timestamp: datetime | None
     horizon: str
+    research_intent: ResearchIntent | None = None
     research_plan: ResearchPlan | None = None
     research_budget: ResearchBudget = Field(default_factory=ResearchBudget)
     budget_usage: BudgetUsage = Field(default_factory=BudgetUsage)

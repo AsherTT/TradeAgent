@@ -14,7 +14,7 @@ from backend.app.contracts.evaluation import (
 )
 from backend.app.contracts.instrument import PriceAdjustmentMode
 from backend.app.contracts.market import MarketBar
-from backend.app.contracts.model import ProviderName
+from backend.app.contracts.model import ProviderName, TaskKind
 from backend.app.contracts.research import (
     BudgetUsage,
     ResearchBudget,
@@ -66,6 +66,17 @@ def _plan_payload() -> dict[str, Any]:
         "stop_conditions": ("required evidence collected",),
         "evidence_requirements": ("point-in-time market data",),
     }
+
+
+def _intent_payload() -> dict[str, Any]:
+    return {
+        "research_goal": "Assess the short-term setup",
+        "focus_areas": ("price trend", "catalysts"),
+    }
+
+
+def _model_payload(request: Any) -> dict[str, Any]:
+    return _intent_payload() if request.task_kind is TaskKind.INTENT else _plan_payload()
 
 
 def _state(instrument_id: UUID, *, budget: ResearchBudget | None = None) -> ResearchState:
@@ -143,7 +154,7 @@ def test_offline_graph_persists_each_transition_and_completes() -> None:
     async def scenario() -> None:
         instrument_id = uuid4()
         saved: list[ResearchState] = []
-        executor = MockExecutor(lambda _: _plan_payload())
+        executor = MockExecutor(_model_payload)
 
         async def save(state: ResearchState) -> None:
             saved.append(state)
@@ -159,13 +170,17 @@ def test_offline_graph_persists_each_transition_and_completes() -> None:
         assert result.status is ResearchStatus.COMPLETE
         assert result.research_completion is ResearchCompletion.COMPLETE
         assert result.research_plan is not None
+        assert result.research_intent is not None
+        assert result.research_intent.focus_areas == ("price trend", "catalysts")
         assert result.market_snapshot is not None
         assert result.technical_snapshot is not None
         assert len(result.evidence) == 1
         assert result.budget_usage.iterations == 1
-        assert result.budget_usage.llm_calls == 1
+        assert result.budget_usage.llm_calls == 2
         assert result.budget_usage.tool_calls == 1
         assert [item.status for item in saved] == [
+            ResearchStatus.RUNNING,
+            ResearchStatus.RUNNING,
             ResearchStatus.RUNNING,
             ResearchStatus.RUNNING,
             ResearchStatus.RUNNING,
@@ -175,6 +190,8 @@ def test_offline_graph_persists_each_transition_and_completes() -> None:
         ]
         assert result.runtime_metadata["transitions"] == (
             "start",
+            "intent_started",
+            "intent",
             "plan_started",
             "plan",
             "evidence_started",
@@ -187,7 +204,7 @@ def test_offline_graph_persists_each_transition_and_completes() -> None:
 
 def test_graph_without_qualified_evidence_finishes_insufficient() -> None:
     async def scenario() -> None:
-        executor = MockExecutor(lambda _: _plan_payload())
+        executor = MockExecutor(_model_payload)
 
         saved: list[ResearchState] = []
 
@@ -215,7 +232,7 @@ def test_graph_without_qualified_evidence_finishes_insufficient() -> None:
 def test_queue_delayed_observation_after_analysis_cutoff_finishes_insufficient() -> None:
     async def scenario() -> None:
         instrument_id = uuid4()
-        executor = MockExecutor(lambda _: _plan_payload())
+        executor = MockExecutor(_model_payload)
 
         async def save(_: ResearchState) -> None:
             return None
@@ -286,6 +303,8 @@ def test_current_research_freezes_cutoff_after_queue_delayed_acquisition() -> No
         planning_context: dict[str, Any] = {}
 
         def plan(request: Any) -> dict[str, Any]:
+            if request.task_kind is TaskKind.INTENT:
+                return _intent_payload()
             planning_context.update(request.context)
             return _plan_payload()
 
@@ -325,7 +344,7 @@ def test_current_research_freezes_cutoff_after_queue_delayed_acquisition() -> No
                 raise AssertionError("persisted current evidence must not be reacquired")
 
         resumed = await ResearchWorkflow(
-            model_gateway=ModelGateway([MockExecutor(lambda _: _plan_payload())]),
+            model_gateway=ModelGateway([MockExecutor(_model_payload)]),
             evidence_provider=MustNotRepeatEvidence(),
             provider_order=(ProviderName.MOCK,),
             save=save,
@@ -346,7 +365,7 @@ def test_fixed_cutoff_cannot_be_replaced_by_an_evidence_adapter() -> None:
             return None
 
         workflow = ResearchWorkflow(
-            model_gateway=ModelGateway([MockExecutor(lambda _: _plan_payload())]),
+            model_gateway=ModelGateway([MockExecutor(_model_payload)]),
             evidence_provider=InvalidEvidenceProvider(),
             provider_order=(ProviderName.MOCK,),
             save=save,
@@ -381,7 +400,7 @@ def test_workflow_rejects_evidence_available_after_the_frozen_cutoff() -> None:
             return None
 
         workflow = ResearchWorkflow(
-            model_gateway=ModelGateway([MockExecutor(lambda _: _plan_payload())]),
+            model_gateway=ModelGateway([MockExecutor(_model_payload)]),
             evidence_provider=InvalidEvidenceProvider(),
             provider_order=(ProviderName.MOCK,),
             save=save,
@@ -498,7 +517,7 @@ def test_current_research_cannot_complete_with_evidence_but_no_cutoff() -> None:
             parametric_lookahead_risk=True,
         )
         workflow = ResearchWorkflow(
-            model_gateway=ModelGateway([MockExecutor(lambda _: _plan_payload())]),
+            model_gateway=ModelGateway([MockExecutor(_model_payload)]),
             evidence_provider=InvalidEvidenceProvider(),
             provider_order=(ProviderName.MOCK,),
             save=save,
@@ -543,7 +562,7 @@ def test_interrupted_current_acquisition_is_not_repeated() -> None:
             status=ResearchStatus.RUNNING,
         )
         result = await ResearchWorkflow(
-            model_gateway=ModelGateway([MockExecutor(lambda _: _plan_payload())]),
+            model_gateway=ModelGateway([MockExecutor(_model_payload)]),
             evidence_provider=MarketResearchEvidence(CurrentLoader(), currency="USD"),
             provider_order=(ProviderName.MOCK,),
             save=save,
@@ -602,7 +621,7 @@ def test_market_evidence_persists_the_ordered_provider_attempt_record() -> None:
 
 def test_graph_stops_before_model_when_llm_budget_is_zero() -> None:
     async def scenario() -> None:
-        executor = MockExecutor(lambda _: _plan_payload())
+        executor = MockExecutor(_model_payload)
 
         async def save(_: ResearchState) -> None:
             return None
@@ -619,10 +638,69 @@ def test_graph_stops_before_model_when_llm_budget_is_zero() -> None:
     asyncio.run(scenario())
 
 
+def test_intent_checkpoint_consumes_one_model_call_and_stops_before_planning() -> None:
+    async def scenario() -> None:
+        executor = MockExecutor(_model_payload)
+        saved: list[ResearchState] = []
+
+        async def save(state: ResearchState) -> None:
+            saved.append(state)
+
+        result = await ResearchWorkflow(
+            model_gateway=ModelGateway([executor]),
+            provider_order=(ProviderName.MOCK,),
+            save=save,
+        ).run(_state(uuid4(), budget=ResearchBudget(max_llm_calls=1)))
+        assert result.research_completion is ResearchCompletion.BUDGET_EXHAUSTED
+        assert result.research_intent is not None
+        assert result.research_plan is None
+        assert result.budget_usage.llm_calls == 1
+        assert executor.call_count == 1
+        assert [item.runtime_metadata["transitions"][-1] for item in saved] == [
+            "start",
+            "intent_started",
+            "intent",
+            "budget_exhausted",
+        ]
+
+    asyncio.run(scenario())
+
+
+def test_interrupted_intent_attempt_is_not_repeated() -> None:
+    async def scenario() -> None:
+        executor = MockExecutor(_model_payload)
+        interrupted = _state(uuid4()).model_copy(
+            update={
+                "status": ResearchStatus.RUNNING,
+                "runtime_metadata": {
+                    "external_attempts": {
+                        "intent": {"status": "started", "request_id": str(uuid4())}
+                    }
+                },
+            }
+        )
+
+        async def save(_: ResearchState) -> None:
+            return None
+
+        result = await ResearchWorkflow(
+            model_gateway=ModelGateway([executor]),
+            provider_order=(ProviderName.MOCK,),
+            save=save,
+        ).run(interrupted)
+        assert result.status is ResearchStatus.FAILED
+        assert result.runtime_metadata["external_attempts"]["intent"]["status"] == (
+            "unknown_outcome"
+        )
+        assert executor.call_count == 0
+
+    asyncio.run(scenario())
+
+
 def test_terminal_run_is_idempotent() -> None:
     async def scenario() -> None:
         terminal = _state(uuid4()).model_copy(update={"status": ResearchStatus.FAILED})
-        executor = MockExecutor(lambda _: _plan_payload())
+        executor = MockExecutor(_model_payload)
         saves = 0
 
         async def save(_: ResearchState) -> None:
@@ -643,7 +721,7 @@ def test_terminal_run_is_idempotent() -> None:
 
 def test_graph_honors_iteration_and_tool_limits_and_resumes_planned_run() -> None:
     async def scenario() -> None:
-        executor = MockExecutor(lambda _: _plan_payload())
+        executor = MockExecutor(_model_payload)
 
         async def save(_: ResearchState) -> None:
             return None
@@ -679,9 +757,46 @@ def test_graph_honors_iteration_and_tool_limits_and_resumes_planned_run() -> Non
     asyncio.run(scenario())
 
 
+def test_legacy_planned_run_resumes_without_new_intent_call() -> None:
+    async def scenario() -> None:
+        instrument_id = uuid4()
+        executor = MockExecutor(_model_payload)
+        saved: list[ResearchState] = []
+
+        async def save(state: ResearchState) -> None:
+            saved.append(state)
+
+        legacy = _state(
+            instrument_id, budget=ResearchBudget(max_llm_calls=1)
+        ).model_copy(
+            update={
+                "status": ResearchStatus.RUNNING,
+                "research_plan": ResearchPlan.model_validate(_plan_payload()),
+                "budget_usage": BudgetUsage(iterations=1, llm_calls=1),
+            }
+        )
+        result = await ResearchWorkflow(
+            model_gateway=ModelGateway([executor]),
+            evidence_provider=_market_evidence(instrument_id),
+            provider_order=(ProviderName.MOCK,),
+            save=save,
+        ).run(legacy)
+        assert result.status is ResearchStatus.COMPLETE
+        assert result.research_intent is None
+        assert executor.call_count == 0
+        assert result.budget_usage.llm_calls == 1
+        assert [item.runtime_metadata["transitions"][-1] for item in saved] == [
+            "evidence_started",
+            "collect_evidence",
+            "finish",
+        ]
+
+    asyncio.run(scenario())
+
+
 def test_unavailable_market_evidence_is_insufficient_not_failed() -> None:
     async def scenario() -> None:
-        executor = MockExecutor(lambda _: _plan_payload())
+        executor = MockExecutor(_model_payload)
 
         async def save(_: ResearchState) -> None:
             return None
@@ -735,7 +850,7 @@ def test_current_provider_failure_persists_attempt_in_terminal_gap() -> None:
             horizon="3-5 days",
         )
         result = await ResearchWorkflow(
-            model_gateway=ModelGateway([MockExecutor(lambda _: _plan_payload())]),
+            model_gateway=ModelGateway([MockExecutor(_model_payload)]),
             evidence_provider=MarketResearchEvidence(
                 UnavailableCurrentLoader(), currency="USD", clock=lambda: NOW
             ),
@@ -786,7 +901,7 @@ def test_current_integrity_failure_persists_attempt_in_failed_state() -> None:
             horizon="3-5 days",
         )
         workflow = ResearchWorkflow(
-            model_gateway=ModelGateway([MockExecutor(lambda _: _plan_payload())]),
+            model_gateway=ModelGateway([MockExecutor(_model_payload)]),
             evidence_provider=MarketResearchEvidence(
                 InvalidCurrentLoader(), currency="USD", clock=lambda: NOW
             ),
@@ -809,7 +924,7 @@ def test_current_integrity_failure_persists_attempt_in_failed_state() -> None:
 
 def test_interrupted_external_attempt_is_not_repeated() -> None:
     async def scenario() -> None:
-        executor = MockExecutor(lambda _: _plan_payload())
+        executor = MockExecutor(_model_payload)
         interrupted = _state(uuid4()).model_copy(
             update={
                 "status": ResearchStatus.RUNNING,
@@ -844,7 +959,7 @@ def test_interrupted_external_attempt_is_not_repeated() -> None:
 def test_interrupted_evidence_attempt_is_not_repeated() -> None:
     async def scenario() -> None:
         instrument_id = uuid4()
-        executor = MockExecutor(lambda _: _plan_payload())
+        executor = MockExecutor(_model_payload)
         interrupted = _state(instrument_id).model_copy(
             update={
                 "status": ResearchStatus.RUNNING,
@@ -918,7 +1033,7 @@ def test_market_evidence_gap_excludes_credential_bearing_provider_identifier() -
             update={"research_plan": ResearchPlan.model_validate(_plan_payload())}
         )
         result = await ResearchWorkflow(
-            model_gateway=ModelGateway([MockExecutor(lambda _: _plan_payload())]),
+            model_gateway=ModelGateway([MockExecutor(_model_payload)]),
             evidence_provider=MarketResearchEvidence(LeakingLoader(), currency="USD"),
             provider_order=(ProviderName.MOCK,),
             save=save,

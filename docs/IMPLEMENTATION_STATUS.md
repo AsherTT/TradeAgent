@@ -80,7 +80,7 @@ Last audited: 2026-09-22
 - Ordinary tests pass; the live-model test is skipped unless explicitly enabled
 - Live Gate A passed on 2026-09-17: Codex, Qwen, and DeepSeek returned the same
   validated `ResearchPlan`, with reasoning configuration, tracing, and usage metering active
-- Latest ordinary suite: 163 passed, 1 live-model test deselected, with 94.46% combined
+- Latest ordinary suite: 166 passed, 1 live-model test deselected, with 94.20% combined
   statement/branch coverage.
 - Ruff passes
 - strict mypy passes
@@ -163,6 +163,10 @@ Last audited: 2026-09-22
   persisted. Successful evidence also rejects unsafe market source identifiers and sanitizes
   provider-attempt fields before persistence. Automatic retry remains disallowed after an
   external call might have begun.
+- Intent is now a persisted, bounded model step before Planner. Offline tests cover its checkpoint,
+  budget consumption, resumed unknown-outcome safety, legacy plan-only recovery, and use of its
+  output in planning. This
+  slice has not made or qualified a live model call or a new Docker queue-path run.
 
 ## Current phase assessment
 
@@ -178,7 +182,7 @@ Last audited: 2026-09-22
   separately authorized rather than a prerequisite for the provider/cache interface.
 - Phase 5 is partially complete. Planner, Market, Quant, market Evidence, BudgetGuard enforcement,
   durable execution, cancellation, external-attempt observability, and safe terminal outcomes are
-  implemented. Intent and News graph nodes, an explicit Gap Judge, bounded Replan
+  implemented. Intent is implemented offline; News, an explicit Gap Judge, bounded Replan
   behavior, and Synthesis remain; Gate C has not passed.
 - ADR-0017 and `docs/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,

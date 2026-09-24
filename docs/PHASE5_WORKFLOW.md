@@ -6,10 +6,13 @@ It is deliberately provider-neutral and does not claim investment advice or live
 ## Graph
 
 1. `start` changes a pending run to running and consumes one iteration.
-2. `plan` checks the relevant budget and calls a model only through `ModelGateway`.
-3. `collect_evidence` optionally loads point-in-time bars through `MarketDataLoader`, then calls
+2. `intent` checks the model budget and saves a bounded `ResearchIntent` through `ModelGateway`.
+   The submitted instrument, question, horizon, and cutoff remain authoritative. A pre-Intent
+   persisted plan is treated as a legacy checkpoint and resumes without another model call.
+3. `plan` checks the remaining budget and uses the persisted intent through `ModelGateway`.
+4. `collect_evidence` optionally loads point-in-time bars through `MarketDataLoader`, then calls
    the deterministic indicator implementation.
-4. `finish` records a complete or insufficient-evidence quality assessment.
+5. `finish` records a complete or insufficient-evidence quality assessment.
 
 Each externally visible transition is saved by `ResearchRunRepository`. The API commits the run
 before publishing its task and persists queue-dispatch failures. A database execution lease admits
@@ -37,6 +40,8 @@ retried. Error messages and provider URLs are excluded from persisted failure re
 controlled provider attempt summaries may be retained for integrity failures. Expected evidence
 gaps also use controlled error types instead of raw provider messages. Successful market evidence
 rejects unsafe source identifiers and writes bounded, sanitized provider-attempt records.
+The same pre-call and unknown-outcome rule applies to Intent, Planner, and evidence acquisition.
+Intent and Planner share the model-call checkpoint and budget accounting path.
 
 ## Outcomes
 
@@ -106,7 +111,8 @@ cancellation, not provider-side interruption of an in-flight call.
 2. Durable cancellation is qualified offline and through the Docker queue path. External-attempt
    observability now distinguishes completed, known-failure, and unknown-outcome steps with
    bounded secret-free metadata; pending-run reconciliation is implemented.
-3. Extend the graph through Intent, News, evidence aggregation, Gap Judge, bounded Replan, and
+3. Intent is implemented with offline fixture coverage. Extend the graph through News, evidence
+   aggregation, Gap Judge, bounded Replan, and
    Synthesis, then qualify the full Gate C limits.
 
 ADR-0019 closes the provider/cache architecture decision: current acquisition remains

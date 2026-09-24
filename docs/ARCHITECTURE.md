@@ -6,7 +6,7 @@ This repository has completed Phases 0-4 and implements the first Phase 5 vertic
 
 Phase 5 is in progress rather than complete. Planner, market evidence, deterministic quant,
 BudgetGuard enforcement, durable transitions, cancellation, external-attempt observability, and
-safe terminal outcomes exist. Intent and News
+safe terminal outcomes exist. Intent is now a bounded persisted model step. News
 nodes, a real Gap Judge, bounded replanning, and Synthesis remain before Gate C can pass.
 
 ADR-0018 separates immutable fixed-cutoff research from current research whose decision cutoff is

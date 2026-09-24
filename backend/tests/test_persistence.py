@@ -32,7 +32,7 @@ from backend.app.contracts.instrument import (
     Instrument,
     SymbolHistory,
 )
-from backend.app.contracts.model import ProviderName
+from backend.app.contracts.model import ProviderName, TaskKind
 from backend.app.contracts.research import (
     ResearchPlan,
     ResearchState,
@@ -163,6 +163,15 @@ def _state(instrument_id: Any, now: datetime) -> ResearchState:
             evidence_requirements=("market data",),
         ),
     )
+
+
+def _intent_or_plan(request: Any, plan_payload: dict[str, Any]) -> dict[str, Any]:
+    if request.task_kind is TaskKind.INTENT:
+        return {
+            "research_goal": "Assess the short-term setup",
+            "focus_areas": ("price trend", "catalysts"),
+        }
+    return plan_payload
 
 
 def test_security_master_and_research_run_repositories(tmp_path: Path) -> None:
@@ -513,7 +522,7 @@ def test_submitted_run_executes_to_durable_terminal_state(
             )
 
         monkeypatch.setattr(celery_module, "get_database", lambda: database)
-        executor = MockExecutor(lambda _request: research_plan_payload)
+        executor = MockExecutor(lambda request: _intent_or_plan(request, research_plan_payload))
         executor.provider = ProviderName.CODEX_SUBSCRIPTION
         monkeypatch.setattr(
             celery_module, "build_model_gateway", lambda _: ModelGateway([executor])
@@ -523,6 +532,8 @@ def test_submitted_run_executes_to_durable_terminal_state(
         assert result.research_plan is not None
         assert result.runtime_metadata["transitions"] == (
             "start",
+            "intent_started",
+            "intent",
             "plan_started",
             "plan",
             "finish",
@@ -765,7 +776,7 @@ def test_worker_persists_failure_and_rejects_unknown_run(
         assert result.quality_assessment.decision.value == "blocked"
         assert result.runtime_metadata["transitions"] == (
             "start",
-            "plan_started",
+            "intent_started",
             "failed",
         )
 
@@ -1037,7 +1048,7 @@ def test_cancel_during_external_call_rejects_late_worker_result(
         await asyncio.wait_for(entered.wait(), timeout=5)
         async with database.sessions() as session:
             cancelled = await cancel_research(state.research_id, session)
-        assert cancelled.runtime_metadata["external_attempts"]["plan"]["status"] == "started"
+        assert cancelled.runtime_metadata["external_attempts"]["intent"]["status"] == "started"
         release.set()
         assert await asyncio.wait_for(worker, timeout=5) == cancelled
         assert calls == 1
@@ -1158,7 +1169,7 @@ def test_http_to_registered_celery_task_to_get_terminal_state(
         async for session in database.session():
             yield session
 
-    executor = MockExecutor(lambda _request: research_plan_payload)
+    executor = MockExecutor(lambda request: _intent_or_plan(request, research_plan_payload))
     executor.provider = ProviderName.CODEX_SUBSCRIPTION
     monkeypatch.setattr(celery_module, "get_database", lambda: database)
     monkeypatch.setattr(celery_module, "build_model_gateway", lambda _: ModelGateway([executor]))
@@ -1203,6 +1214,8 @@ def test_http_to_registered_celery_task_to_get_terminal_state(
         assert terminal.json()["status"] == ResearchStatus.INSUFFICIENT_EVIDENCE.value
         assert terminal.json()["runtime_metadata"]["transitions"] == [
             "start",
+            "intent_started",
+            "intent",
             "plan_started",
             "plan",
             "finish",

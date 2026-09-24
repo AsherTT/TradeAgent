@@ -9,7 +9,7 @@ from enum import StrEnum
 from hashlib import sha256
 from string import ascii_letters, digits
 from time import perf_counter
-from typing import Any, Protocol, TypedDict, cast
+from typing import Any, Literal, Protocol, TypedDict, cast
 
 from langgraph.graph import END, START, StateGraph
 
@@ -26,6 +26,7 @@ from backend.app.contracts.instrument import PriceAdjustmentMode
 from backend.app.contracts.market import MarketSnapshot, TechnicalSnapshot
 from backend.app.contracts.model import ModelRequest, ProviderName, TaskKind
 from backend.app.contracts.research import (
+    ResearchIntent,
     ResearchPlan,
     ResearchState,
     ResearchStatus,
@@ -79,6 +80,8 @@ def _safe_provider_token(value: str) -> str:
 
 class ResearchNode(StrEnum):
     START = "start"
+    INTENT = "intent"
+    INTENT_STARTED = "intent_started"
     PLAN = "plan"
     PLAN_STARTED = "plan_started"
     COLLECT_EVIDENCE = "collect_evidence"
@@ -295,11 +298,13 @@ class ResearchWorkflow:
         self._initial_wall_time = 0.0
         graph = StateGraph(_GraphState)
         graph.add_node(ResearchNode.START, cast(Any, self._start))
+        graph.add_node(ResearchNode.INTENT, cast(Any, self._intent))
         graph.add_node(ResearchNode.PLAN, cast(Any, self._plan))
         graph.add_node(ResearchNode.COLLECT_EVIDENCE, cast(Any, self._collect_evidence))
         graph.add_node(ResearchNode.FINISH, cast(Any, self._finish))
         graph.add_edge(START, ResearchNode.START)
-        graph.add_edge(ResearchNode.START, ResearchNode.PLAN)
+        graph.add_edge(ResearchNode.START, ResearchNode.INTENT)
+        graph.add_edge(ResearchNode.INTENT, ResearchNode.PLAN)
         graph.add_edge(ResearchNode.PLAN, ResearchNode.COLLECT_EVIDENCE)
         graph.add_edge(ResearchNode.COLLECT_EVIDENCE, ResearchNode.FINISH)
         graph.add_edge(ResearchNode.FINISH, END)
@@ -313,6 +318,20 @@ class ResearchWorkflow:
             ResearchStatus.CANCELLED,
         }:
             return state
+        for node in (
+            ResearchNode.INTENT,
+            ResearchNode.PLAN,
+            ResearchNode.COLLECT_EVIDENCE,
+        ):
+            if _attempt_started(state, node):
+                failed = failed_research_state(
+                    state,
+                    UnknownExternalOutcomeError(
+                        f"{node.value}-call outcome is unknown after worker interruption"
+                    ),
+                )
+                await self._save(failed)
+                return failed
         self._run_started = perf_counter()
         self._initial_wall_time = state.budget_usage.wall_time_seconds
         result = cast(_GraphState, await self._graph.ainvoke({"research": state}))
@@ -343,35 +362,46 @@ class ResearchWorkflow:
             await self._save(state)
         return {"research": state}
 
+    async def _intent(self, graph_state: _GraphState) -> _GraphState:
+        state = graph_state["research"]
+        state = self._with_elapsed_time(state)
+        if (
+            state.status is not ResearchStatus.RUNNING
+            or state.research_intent is not None
+            or state.research_plan is not None
+        ):
+            return {"research": state}
+        request = ModelRequest[ResearchIntent](
+            task=(
+                "Summarize the user's bounded research goal and at most five focus areas. "
+                "Do not change the instrument, question, horizon, or cutoff. "
+                "Do not provide investment advice."
+            ),
+            task_kind=TaskKind.INTENT,
+            context={
+                "instrument_id": str(state.instrument_id),
+                "ticker": state.ticker,
+                "query": state.query,
+                "horizon": state.horizon,
+                "analysis_timestamp": (
+                    state.analysis_timestamp.isoformat()
+                    if state.analysis_timestamp is not None
+                    else "pending_evidence_acquisition"
+                ),
+            },
+            output_schema=ResearchIntent,
+        )
+        return {
+            "research": await self._run_model_node(
+                state, ResearchNode.INTENT, request, "research_intent", "intent"
+            )
+        }
+
     async def _plan(self, graph_state: _GraphState) -> _GraphState:
         state = graph_state["research"]
         state = self._with_elapsed_time(state)
         if state.status is not ResearchStatus.RUNNING or state.research_plan is not None:
             return {"research": state}
-        if _attempt_started(state, ResearchNode.PLAN):
-            state = failed_research_state(
-                state,
-                UnknownExternalOutcomeError(
-                    "model-call outcome is unknown after worker interruption"
-                ),
-            )
-            await self._save(state)
-            return {"research": state}
-        exhausted_fields = _relevant_budget_decision(
-            state,
-            {
-                BudgetDimension.LLM_CALLS,
-                BudgetDimension.CONTEXT_TOKENS,
-                BudgetDimension.ESTIMATED_COST_USD,
-                BudgetDimension.WALL_TIME_SECONDS,
-            },
-        )
-        if exhausted_fields:
-            exhausted = ", ".join(exhausted_fields)
-            state = _budget_exhausted(state, f"budget exhausted before planning: {exhausted}")
-            await self._save(state)
-            return {"research": state}
-
         request = ModelRequest[ResearchPlan](
             task="Create a bounded equity-research plan. Do not provide investment advice.",
             task_kind=TaskKind.RESEARCH_PLANNING,
@@ -379,6 +409,12 @@ class ResearchWorkflow:
                 "instrument_id": str(state.instrument_id),
                 "query": state.query,
                 "horizon": state.horizon,
+                "research_goal": state.research_intent.research_goal
+                if state.research_intent is not None
+                else "",
+                "focus_areas": state.research_intent.focus_areas
+                if state.research_intent is not None
+                else (),
                 "timestamp_mode": state.timestamp_mode.value,
                 "requested_at": state.requested_at.isoformat(),
                 "analysis_timestamp": (
@@ -389,15 +425,44 @@ class ResearchWorkflow:
             },
             output_schema=ResearchPlan,
         )
-        state = _mark_attempt_started(
-            state, ResearchNode.PLAN, request_id=str(request.request_id)
+        return {
+            "research": await self._run_model_node(
+                state, ResearchNode.PLAN, request, "research_plan", "planning"
+            )
+        }
+
+    async def _run_model_node(
+        self,
+        state: ResearchState,
+        node: ResearchNode,
+        request: ModelRequest[Any],
+        output_field: Literal["research_intent", "research_plan"],
+        budget_label: str,
+    ) -> ResearchState:
+        exhausted_fields = _relevant_budget_decision(
+            state,
+            {
+                BudgetDimension.LLM_CALLS,
+                BudgetDimension.CONTEXT_TOKENS,
+                BudgetDimension.ESTIMATED_COST_USD,
+                BudgetDimension.WALL_TIME_SECONDS,
+            },
         )
+        if exhausted_fields:
+            exhausted = _budget_exhausted(
+                state,
+                f"budget exhausted before {budget_label}: {', '.join(exhausted_fields)}",
+            )
+            await self._save(exhausted)
+            return exhausted
+
+        state = _mark_attempt_started(state, node, request_id=str(request.request_id))
         await self._save(state)
         response = await self._gateway.execute(
-            cast(ModelRequest[Any], request), provider_order=self._provider_order
+            request, provider_order=self._provider_order
         )
+        output = request.output_schema.model_validate(response.output)
         state = self._with_elapsed_time(state)
-        plan = ResearchPlan.model_validate(response.output)
         metadata = response.metadata
         usage = state.budget_usage.model_copy(
             update={
@@ -409,16 +474,15 @@ class ResearchWorkflow:
                 + (metadata.estimated_cost_usd or 0),
             }
         )
-        history = (*state.model_history, metadata.model_dump(mode="json"))
-        state = _transition(
-            _mark_attempt_completed(state, ResearchNode.PLAN),
-            node=ResearchNode.PLAN,
-            research_plan=plan,
+        updated = _transition(
+            _mark_attempt_completed(state, node),
+            node=node,
+            **{output_field: output},
             budget_usage=usage,
-            model_history=history,
+            model_history=(*state.model_history, metadata.model_dump(mode="json")),
         )
-        await self._save(state)
-        return {"research": state}
+        await self._save(updated)
+        return updated
 
     async def _collect_evidence(self, graph_state: _GraphState) -> _GraphState:
         state = graph_state["research"]
@@ -577,11 +641,11 @@ def _mark_attempt_started(
             "runtime_metadata": {**state.runtime_metadata, "external_attempts": attempts}
         }
     )
-    transition = (
-        ResearchNode.PLAN_STARTED
-        if node is ResearchNode.PLAN
-        else ResearchNode.EVIDENCE_STARTED
-    )
+    transition = {
+        ResearchNode.INTENT: ResearchNode.INTENT_STARTED,
+        ResearchNode.PLAN: ResearchNode.PLAN_STARTED,
+        ResearchNode.COLLECT_EVIDENCE: ResearchNode.EVIDENCE_STARTED,
+    }[node]
     return _transition(marked, node=transition)
 
 
@@ -613,7 +677,11 @@ def failed_research_state(state: ResearchState, exc: Exception) -> ResearchState
         if isinstance(exc, UnknownExternalOutcomeError)
         else "known_failure"
     )
-    for node in (ResearchNode.PLAN, ResearchNode.COLLECT_EVIDENCE):
+    for node in (
+        ResearchNode.INTENT,
+        ResearchNode.PLAN,
+        ResearchNode.COLLECT_EVIDENCE,
+    ):
         attempt = attempts.get(node.value)
         if isinstance(attempt, dict) and attempt.get("status") == "started":
             attempts[node.value] = {
