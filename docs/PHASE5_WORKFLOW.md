@@ -19,8 +19,17 @@ It is deliberately provider-neutral and does not claim investment advice or live
    remaining document limit; over-returning fails the run. Each acquisition has a durable pre-call
    marker and consumes one tool call plus the number of inspected documents. An exhausted news
    budget skips this optional step and preserves a complete qualified market result.
-6. `finish` records a complete or insufficient-evidence quality assessment. News evidence alone
-   cannot satisfy the current market and technical evidence requirement.
+6. `gap_judge` checks the plan's required capabilities against point-in-time eligible evidence.
+   Market and technical evidence remain the baseline requirement; a required News step needs an
+   accepted, scanned News document. Unknown required capabilities fail closed. Its typed result
+   records missing capabilities and coverage before the terminal decision. The plan's text
+   `evidence_requirements` are also checked against the supported values `market data`,
+   `point-in-time market data`, `technical indicators`, and `news documents`; unrecognized
+   requirements remain unsatisfied and are identified by their plan position. Market/technical
+   snapshots must match the instrument and
+   frozen cutoff, and the latest market bar must be eligible at that cutoff.
+7. `finish` records a complete or insufficient-evidence quality assessment from that result.
+   News evidence alone cannot satisfy the market and technical evidence requirement.
 
 Each externally visible transition is saved by `ResearchRunRepository`. The API commits the run
 before publishing its task and persists queue-dispatch failures. A database execution lease admits
@@ -60,7 +69,7 @@ qualified live news adapter remain pending.
 
 ## Outcomes
 
-- `complete`: a validated plan and qualified evidence are both present.
+- `complete`: a validated plan and all required capabilities have qualified evidence.
 - `insufficient_evidence`: planning may have succeeded, but qualified evidence is unavailable.
 - `failed`: execution raised an error; its type and a controlled reason are saved with a blocked
   quality assessment. Raw exception messages are excluded.
@@ -126,9 +135,9 @@ cancellation, not provider-side interruption of an in-flight call.
 2. Durable cancellation is qualified offline and through the Docker queue path. External-attempt
    observability now distinguishes completed, known-failure, and unknown-outcome steps with
    bounded secret-free metadata; pending-run reconciliation is implemented.
-3. Intent and the provider-neutral News ingestion node are implemented with offline fixture
-   coverage. Extend the graph through model-based event extraction, evidence aggregation, Gap
-   Judge, bounded Replan, and
+3. Intent, provider-neutral News ingestion, and a deterministic Gap Judge are implemented with
+   offline fixture coverage. Extend the graph through model-based event extraction, bounded
+   Replan, and
    Synthesis, then qualify the full Gate C limits.
 
 ADR-0019 closes the provider/cache architecture decision: current acquisition remains

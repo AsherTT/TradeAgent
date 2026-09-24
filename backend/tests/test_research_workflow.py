@@ -28,6 +28,7 @@ from backend.app.graph import (
     ResearchWorkflow,
     failed_research_state,
 )
+from backend.app.graph.evidence_gap import judge_evidence_gaps
 from backend.app.graph.workflow import EvidenceCollection
 from backend.app.market_data.errors import (
     MarketDataIntegrityError,
@@ -213,6 +214,7 @@ def test_offline_graph_persists_each_transition_and_completes() -> None:
             ResearchStatus.RUNNING,
             ResearchStatus.RUNNING,
             ResearchStatus.RUNNING,
+            ResearchStatus.RUNNING,
             ResearchStatus.COMPLETE,
         ]
         assert result.runtime_metadata["transitions"] == (
@@ -223,6 +225,7 @@ def test_offline_graph_persists_each_transition_and_completes() -> None:
             "plan",
             "evidence_started",
             "collect_evidence",
+            "gap_judge",
             "finish",
         )
 
@@ -303,8 +306,8 @@ def test_news_node_checkpoints_budget_and_resume_without_reacquisition() -> None
         assert result.budget_usage.tool_calls == 2
         assert result.budget_usage.news_documents == 1
         assert fixture.calls == 1
-        assert [item.runtime_metadata["transitions"][-1] for item in saved][-3:] == [
-            "news_started", "news", "finish"
+        assert [item.runtime_metadata["transitions"][-1] for item in saved][-4:] == [
+            "news_started", "news", "gap_judge", "finish"
         ]
         resumed = result.model_copy(update={"status": ResearchStatus.RUNNING})
         await workflow.run(resumed)
@@ -403,6 +406,113 @@ def test_market_snapshots_without_evidence_do_not_complete_research() -> None:
         assert result.status is ResearchStatus.INSUFFICIENT_EVIDENCE
 
     asyncio.run(scenario())
+
+
+def test_required_news_gap_blocks_completion_until_qualified_document_arrives() -> None:
+    async def scenario() -> None:
+        instrument_id = uuid4()
+        plan = _plan_payload()
+        plan["steps"] = (
+            *plan["steps"],
+            {
+                "step_id": "news",
+                "objective": "Check catalysts",
+                "capability": "news",
+            },
+        )
+
+        def payload(request: Any) -> dict[str, Any]:
+            return _intent_payload() if request.task_kind is TaskKind.INTENT else plan
+
+        async def save(state: ResearchState) -> None:
+            pass
+
+        kwargs = {
+            "model_gateway": ModelGateway([MockExecutor(payload)]),
+            "provider_order": (ProviderName.MOCK,),
+            "evidence_provider": _market_evidence(instrument_id),
+            "save": save,
+        }
+        missing = await ResearchWorkflow(**kwargs).run(_state(instrument_id))
+        assert missing.status is ResearchStatus.INSUFFICIENT_EVIDENCE
+        assert missing.evidence_gap_result is not None
+        assert missing.evidence_gap_result.missing_capabilities == ("news",)
+        assert missing.evidence_gap_result.coverage == 0.5
+        fixture = _NewsFixture((_news_document(instrument_id, "Catalyst confirmed."),))
+        complete = await ResearchWorkflow(
+            **kwargs, news_provider=NewsResearchEvidence(fixture)
+        ).run(_state(instrument_id))
+        assert complete.status is ResearchStatus.COMPLETE
+        assert complete.evidence_gap_result is not None
+        assert complete.evidence_gap_result.coverage == 1.0
+
+    asyncio.run(scenario())
+
+
+def test_gap_judge_excludes_future_or_wrong_instrument_evidence() -> None:
+    async def scenario() -> None:
+        instrument_id = uuid4()
+        state = _state(instrument_id).model_copy(update={
+            "research_plan": ResearchPlan.model_validate(_plan_payload()),
+        })
+        collected = await _market_evidence(instrument_id).collect(state)
+        assert collected.market_snapshot is not None
+        assert collected.technical_snapshot is not None
+        state = state.model_copy(update={
+            "market_snapshot": collected.market_snapshot,
+            "technical_snapshot": collected.technical_snapshot,
+            "evidence": collected.evidence,
+        })
+        assert judge_evidence_gaps(state).sufficient
+        future = collected.evidence[0].model_copy(update={
+            "available_at": NOW + timedelta(seconds=1)
+        })
+        assert not judge_evidence_gaps(state.model_copy(update={"evidence": (future,)})).sufficient
+        wrong = collected.evidence[0].model_copy(update={"instrument_id": uuid4()})
+        assert not judge_evidence_gaps(state.model_copy(update={"evidence": (wrong,)})).sufficient
+        wrong_market = collected.market_snapshot.model_copy(update={"instrument_id": uuid4()})
+        assert not judge_evidence_gaps(state.model_copy(update={
+            "market_snapshot": wrong_market
+        })).sufficient
+        late_technical = collected.technical_snapshot.model_copy(update={
+            "analysis_timestamp": NOW + timedelta(seconds=1)
+        })
+        assert not judge_evidence_gaps(state.model_copy(update={
+            "technical_snapshot": late_technical
+        })).sufficient
+
+    asyncio.run(scenario())
+
+
+def test_gap_judge_fails_closed_for_unsupported_required_capability() -> None:
+    plan = _plan_payload()
+    plan["steps"] = (
+        *plan["steps"],
+        {"step_id": "unknown", "objective": "Unknown source", "capability": "unsupported"},
+    )
+    state = _state(uuid4()).model_copy(update={
+        "research_plan": ResearchPlan.model_validate(plan)
+    })
+    result = judge_evidence_gaps(state)
+    assert result.required_capabilities == ("market", "unsupported_capability[unknown]")
+    assert result.missing_capabilities == result.required_capabilities
+    assert not result.sufficient
+
+
+def test_gap_judge_honors_evidence_requirements_without_matching_step() -> None:
+    plan = _plan_payload()
+    plan["evidence_requirements"] = (
+        "point-in-time market data", "news documents", "annual filing", "earnings transcript"
+    )
+    state = _state(uuid4()).model_copy(update={
+        "research_plan": ResearchPlan.model_validate(plan)
+    })
+    result = judge_evidence_gaps(state)
+    assert result.required_capabilities == (
+        "market", "news", "unsupported_requirement[3]", "unsupported_requirement[4]"
+    )
+    assert result.missing_capabilities == result.required_capabilities
+    assert not result.sufficient
 
 
 def test_graph_without_qualified_evidence_finishes_insufficient() -> None:
@@ -991,6 +1101,7 @@ def test_legacy_planned_run_resumes_without_new_intent_call() -> None:
         assert [item.runtime_metadata["transitions"][-1] for item in saved] == [
             "evidence_started",
             "collect_evidence",
+            "gap_judge",
             "finish",
         ]
 

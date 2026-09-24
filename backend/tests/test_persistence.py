@@ -536,6 +536,7 @@ def test_submitted_run_executes_to_durable_terminal_state(
             "intent",
             "plan_started",
             "plan",
+            "gap_judge",
             "finish",
         )
 
@@ -1218,6 +1219,7 @@ def test_http_to_registered_celery_task_to_get_terminal_state(
             "intent",
             "plan_started",
             "plan",
+            "gap_judge",
             "finish",
         ]
     finally:

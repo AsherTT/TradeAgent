@@ -80,7 +80,7 @@ Last audited: 2026-09-24
 - Ordinary tests pass; the live-model test is skipped unless explicitly enabled
 - Live Gate A passed on 2026-09-17: Codex, Qwen, and DeepSeek returned the same
   validated `ResearchPlan`, with reasoning configuration, tracing, and usage metering active
-- Latest ordinary suite: 172 passed, 1 live-model test deselected, with 94.24% combined
+- Latest ordinary suite: 176 passed, 1 live-model test deselected, with 94.24% combined
   statement/branch coverage.
 - Ruff passes
 - strict mypy passes
@@ -175,6 +175,11 @@ Last audited: 2026-09-24
   insufficient-evidence behavior. A zero news-document budget skips the optional node without
   blocking complete market/technical evidence. No live news request or new Docker queue-path
   trial was made.
+- A deterministic Gap Judge now persists a typed coverage result before completion. Required plan
+  capabilities are checked against eligible, typed evidence; unsupported capabilities, missing
+  required News, unrecognized text requirements, future-available evidence, and mismatched
+  instrument or cutoff snapshots fail closed. Market and technical evidence remain the baseline
+  requirement. This slice was qualified offline only.
 
 ## Current phase assessment
 
@@ -189,9 +194,9 @@ Last audited: 2026-09-24
 - The market-data architecture decision is closed offline. Live qualification remains optional and
   separately authorized rather than a prerequisite for the provider/cache interface.
 - Phase 5 is partially complete. Intent, Planner, Market, Quant, market Evidence, default-off News
-  ingestion, BudgetGuard enforcement, durable execution, cancellation, external-attempt
-  observability, and safe terminal outcomes are implemented. News event extraction, a qualified
-  live news adapter, an explicit Gap Judge, bounded Replan behavior, and Synthesis remain; Gate C
+  ingestion, deterministic Gap Judge, BudgetGuard enforcement, durable execution, cancellation,
+  external-attempt observability, and safe terminal outcomes are implemented. News event
+  extraction, a qualified live news adapter, bounded Replan behavior, and Synthesis remain; Gate C
   has not passed.
 - ADR-0017 and `docs/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,

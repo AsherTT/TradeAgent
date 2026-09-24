@@ -33,6 +33,10 @@ from backend.app.contracts.research import (
     ResearchTimestampMode,
 )
 from backend.app.graph.budget_guard import BudgetGuard
+from backend.app.graph.evidence_gap import (
+    SUPPORTED_EVIDENCE_REQUIREMENTS,
+    judge_evidence_gaps,
+)
 from backend.app.market_data.errors import (
     MarketDataIntegrityError,
     MarketDataOperationalError,
@@ -89,6 +93,7 @@ class ResearchNode(StrEnum):
     EVIDENCE_STARTED = "evidence_started"
     NEWS = "news"
     NEWS_STARTED = "news_started"
+    GAP_JUDGE = "gap_judge"
     FINISH = "finish"
     BUDGET_EXHAUSTED = "budget_exhausted"
     FAILED = "failed"
@@ -307,13 +312,15 @@ class ResearchWorkflow:
         graph.add_node(ResearchNode.PLAN, cast(Any, self._plan))
         graph.add_node(ResearchNode.COLLECT_EVIDENCE, cast(Any, self._collect_evidence))
         graph.add_node(ResearchNode.NEWS, cast(Any, self._news))
+        graph.add_node(ResearchNode.GAP_JUDGE, cast(Any, self._gap_judge))
         graph.add_node(ResearchNode.FINISH, cast(Any, self._finish))
         graph.add_edge(START, ResearchNode.START)
         graph.add_edge(ResearchNode.START, ResearchNode.INTENT)
         graph.add_edge(ResearchNode.INTENT, ResearchNode.PLAN)
         graph.add_edge(ResearchNode.PLAN, ResearchNode.COLLECT_EVIDENCE)
         graph.add_edge(ResearchNode.COLLECT_EVIDENCE, ResearchNode.NEWS)
-        graph.add_edge(ResearchNode.NEWS, ResearchNode.FINISH)
+        graph.add_edge(ResearchNode.NEWS, ResearchNode.GAP_JUDGE)
+        graph.add_edge(ResearchNode.GAP_JUDGE, ResearchNode.FINISH)
         graph.add_edge(ResearchNode.FINISH, END)
         self._graph = graph.compile()
 
@@ -411,7 +418,12 @@ class ResearchWorkflow:
         if state.status is not ResearchStatus.RUNNING or state.research_plan is not None:
             return {"research": state}
         request = ModelRequest[ResearchPlan](
-            task="Create a bounded equity-research plan. Do not provide investment advice.",
+            task=(
+                "Create a bounded equity-research plan. Do not provide investment advice. "
+                "Use only these evidence_requirements values: "
+                + ", ".join(repr(value) for value in SUPPORTED_EVIDENCE_REQUIREMENTS)
+                + ". Unsupported requirements safely stop as insufficient evidence."
+            ),
             task_kind=TaskKind.RESEARCH_PLANNING,
             context={
                 "instrument_id": str(state.instrument_id),
@@ -626,17 +638,33 @@ class ResearchWorkflow:
         await self._save(state)
         return {"research": state}
 
+    async def _gap_judge(self, graph_state: _GraphState) -> _GraphState:
+        state = graph_state["research"]
+        state = self._with_elapsed_time(state)
+        if state.status is not ResearchStatus.RUNNING:
+            return {"research": state}
+        result = judge_evidence_gaps(state)
+        state = _transition(
+            state,
+            node=ResearchNode.GAP_JUDGE,
+            evidence_gap_result=result,
+            evidence_gaps=(*state.evidence_gaps, *(
+                f"required capability unavailable: {capability}"
+                for capability in result.missing_capabilities
+            )),
+        )
+        await self._save(state)
+        return {"research": state}
+
     async def _finish(self, graph_state: _GraphState) -> _GraphState:
         state = graph_state["research"]
         state = self._with_elapsed_time(state)
         if state.status is not ResearchStatus.RUNNING:
             return {"research": state}
-        has_required_output = (
-            state.research_plan is not None
-            and state.market_snapshot is not None
-            and state.technical_snapshot is not None
-            and any(item.evidence_type == "market_technical_snapshot" for item in state.evidence)
-        )
+        gap_result = state.evidence_gap_result
+        if gap_result is None:
+            raise ValueError("evidence gap result missing before finish")
+        has_required_output = gap_result.sufficient
         completion = (
             ResearchCompletion.COMPLETE
             if has_required_output
@@ -672,9 +700,9 @@ class ResearchWorkflow:
             completion=completion,
             decision=decision,
             confidence_score=0.5 if has_required_output else 0.0,
-            confidence_factors={"evidence_available": 1.0 if state.evidence else 0.0},
+            confidence_factors={"evidence_coverage": gap_result.coverage},
             limitations=limitations,
-            evidence_coverage=1.0 if state.evidence else 0.0,
+            evidence_coverage=gap_result.coverage,
             reasons=reasons,
             evidence_gaps=gaps,
         )

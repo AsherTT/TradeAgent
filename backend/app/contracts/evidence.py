@@ -47,3 +47,12 @@ class EvidenceBundle(ContractModel):
     evidence: tuple[Evidence, ...] = ()
     coverage: float = Field(ge=0, le=1)
     gaps: tuple[str, ...] = ()
+
+
+class EvidenceGapResult(ContractModel):
+    """Deterministic coverage of the capabilities required by a research plan."""
+
+    required_capabilities: tuple[str, ...]
+    missing_capabilities: tuple[str, ...]
+    coverage: float = Field(ge=0, le=1)
+    sufficient: bool
