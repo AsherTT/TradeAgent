@@ -1,14 +1,14 @@
 # Gate C Qualification
 
-Offline qualification recorded: 2026-09-25 (Asia/Shanghai).
+Qualified: 2026-09-25 (Asia/Shanghai).
 
 ## Scope and result
 
-The Phase 5 research graph has an offline qualification for complete, insufficient-evidence,
-budget-exhausted, interrupted, and cancelled outcomes. This is **not yet the final Gate C pass**:
-the complete path has not been rerun through a rebuilt Docker API, broker, worker, and PostgreSQL
-stack. The offline complete path uses a qualified market fixture and mock model; no external
-model, market-data, or news request is made.
+Gate C passes for the Phase 5 research loop: complete, insufficient-evidence,
+budget-exhausted, interrupted, and cancelled outcomes are covered offline, and the complete path
+has passed through a rebuilt Docker API, Redis broker, Celery worker, and PostgreSQL. The
+container qualification uses a mock model and fixed-cutoff market fixture. It does not qualify
+live model, market-data, or news providers.
 
 ## Offline evidence
 
@@ -24,9 +24,24 @@ model, market-data, or news request is made.
 The ordinary suite reports 188 passed and one opt-in live-model test skipped, with 94.35%
 combined statement/branch coverage. Ruff and strict mypy pass.
 
-## Remaining final qualification
+## Docker evidence
 
-Rebuild the affected API and worker images and exercise a complete mock-provider run through the
-real broker and PostgreSQL stack. Verify the stored Synthesis citations, worker redelivery, and
-terminal API response. Keep external providers disabled. Record the container evidence here before
-marking Gate C passed or advancing the real Research API frontend integration and Phase 6.
+API, worker, and Beat images were rebuilt from the Phase 5 code. PostgreSQL migration completed,
+and the API and Redis were healthy. A qualification-only Celery worker mounted
+`backend/tests/gate_c_container_worker.py`; it substituted the model and market-data boundaries
+before accepting tasks. The normal API process accepted the submission and dispatched the
+registered `research.run` task through Redis. The independent
+`backend/tests/gate_c_container_qualify.py` script checked the HTTP terminal response against
+PostgreSQL and redelivered the task.
+
+- Research run: `148af5f8-8d69-4fdd-9e1d-c8c16a1519f3`.
+- Result: `complete`; transitions included Intent, Plan, market Evidence, Gap Judge, Synthesis,
+  and Finish.
+- Synthesis cited evidence `6515d6a6-253a-463e-a8a0-013330f47313`; the same citation was
+  stored in PostgreSQL.
+- Redelivery returned the unchanged complete state and transition history.
+- No external model, market-data, or news call occurred. The mock executor uses the
+  `codex_subscription` provider identifier only to exercise the normal routing policy.
+
+This qualifies Gate C loop safety and durable research completion with controlled fixtures.
+Recorded live provider qualification and News event extraction remain separate Phase 5 work.

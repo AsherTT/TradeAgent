@@ -192,11 +192,14 @@ Last audited: 2026-09-24
   rejection, delimiter escaping, context bounds, required News beyond the first eight evidence
   items, model-budget exhaustion, and interrupted-call redelivery.
   This is a research summary contract, not a Phase 6 persisted thesis lifecycle.
-- Gate C offline qualification now exercises each Replan loop budget with persistently missing
-  News, and the complete mock-provider submission-to-Celery-task-to-SQLite-to-query path retains
-  Synthesis citations. `docs/GATE_C_QUALIFICATION.md` records the outcome matrix and remaining
-  rebuilt Docker broker/PostgreSQL qualification. The ordinary suite has 188 passing tests and
-  one opt-in live-model test skipped, with 94.35% combined statement/branch coverage.
+- Gate C passes within its recorded fixture scope. Offline qualification exercises each Replan
+  loop budget with persistently missing News, and the complete mock-provider
+  submission-to-Celery-task-to-SQLite-to-query path retains Synthesis citations. The rebuilt
+  Docker API/Redis/Celery/PostgreSQL path also completed run
+  `148af5f8-8d69-4fdd-9e1d-c8c16a1519f3` with persisted citations and idempotent task
+  redelivery. `docs/GATE_C_QUALIFICATION.md` records the outcome matrix and provider limits.
+  The ordinary suite has 188 passing tests and one opt-in live-model test skipped, with 94.35%
+  combined statement/branch coverage.
 
 ## Current phase assessment
 
@@ -213,12 +216,13 @@ Last audited: 2026-09-24
 - Phase 5 is partially complete. Intent, Planner, Market, Quant, market Evidence, default-off News
   ingestion, deterministic Gap Judge, BudgetGuard enforcement, durable execution, cancellation,
   external-attempt observability, and safe terminal outcomes are implemented. News event
-  extraction, a qualified live news adapter, broader Replan routing, and full Gate C qualification
-  remain. Synthesis and the offline Gate C matrix are qualified; final Gate C has not passed.
+  extraction, a qualified live news adapter, and broader Replan routing remain. Synthesis and
+  Gate C research-loop safety are qualified with fixtures; recorded live external-provider
+  qualification remains separate and is not a Gate C claim.
 - ADR-0017 and `docs/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,
-  real Research API integration waits for Gate C, and the formal frontend milestone remains
-  Phase 10.
+  Gate C now permits real Research API integration under that strategy, while the formal frontend
+  milestone remains Phase 10.
 
 ## Intentionally pending
 

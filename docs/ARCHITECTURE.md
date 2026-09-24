@@ -11,7 +11,9 @@ ingestion node now enforces document budgets, point-in-time admission, and untru
 event extraction and a qualified live news adapter remain pending. A deterministic Gap Judge now
 checks required plan capabilities against eligible evidence and records coverage. A bounded
 model-assisted Replan can retry missing required News without removing original requirements;
-evidence-cited Synthesis now runs only after sufficient coverage. Gate C qualification remains.
+evidence-cited Synthesis now runs only after sufficient coverage. Gate C passes with offline
+loop-safety tests and a mock-provider Docker API/Redis/Celery/PostgreSQL complete path; live
+provider qualification remains separate.
 
 ADR-0018 separates immutable fixed-cutoff research from current research whose decision cutoff is
 persisted only after evidence acquisition. The transport, state, migration, model context, and
@@ -21,7 +23,7 @@ against offline fixtures, remains default-off, and fails closed when yfinance is
 
 ADR-0017 permits an isolated frontend clone lab during Phase 5 for early visual and interaction
 learning. It does not move the formal product UI out of Phase 10: only reviewed design artifacts
-and components may enter `apps/web`, research API integration waits for Gate C, and later screens
+and components may enter `apps/web`. Gate C now permits research API integration; later screens
 wait for their Phase 6-9 contracts.
 
 ADR-0019 keeps current acquisition yfinance-only until another current-capable adapter is
