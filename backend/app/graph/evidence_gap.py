@@ -34,18 +34,9 @@ def judge_evidence_gaps(state: ResearchState) -> EvidenceGapResult:
             for index, text in enumerate(state.research_plan.evidence_requirements, start=1)
         )
     capabilities = tuple(dict.fromkeys(required))
-    eligible = tuple(item for item in state.evidence if _eligible(item, state))
-    market = any(
-        item.evidence_type == "market_technical_snapshot"
-        and item.trust_level is TrustLevel.TRUSTED_PROVIDER
-        for item in eligible
-    )
-    news = any(
-        item.evidence_type == "news_document"
-        and item.trust_level is TrustLevel.PUBLIC_SOURCE
-        and item.sanitization_status == "html_cleaned_and_scanned"
-        for item in eligible
-    )
+    eligible = qualified_evidence(state)
+    market = any(item.evidence_type == "market_technical_snapshot" for item in eligible)
+    news = any(item.evidence_type == "news_document" for item in eligible)
     cutoff = state.analysis_timestamp
     market_snapshot = state.market_snapshot
     technical_snapshot = state.technical_snapshot
@@ -87,4 +78,19 @@ def _eligible(item: Evidence, state: ResearchState) -> bool:
         and item.observed_at <= cutoff
         and item.available_at <= cutoff
         and (item.published_at is None or item.published_at <= cutoff)
+    )
+
+
+def qualified_evidence(state: ResearchState) -> tuple[Evidence, ...]:
+    """One shared admission rule for gap judgement and synthesis context."""
+    return tuple(
+        item for item in state.evidence
+        if _eligible(item, state)
+        and (
+            (item.evidence_type == "market_technical_snapshot"
+             and item.trust_level is TrustLevel.TRUSTED_PROVIDER)
+            or (item.evidence_type == "news_document"
+                and item.trust_level is TrustLevel.PUBLIC_SOURCE
+                and item.sanitization_status == "html_cleaned_and_scanned")
+        )
     )

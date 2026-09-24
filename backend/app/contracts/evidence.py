@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import StrEnum
-from typing import Any
+from typing import Annotated, Any
 from uuid import UUID, uuid4
 
 from pydantic import Field
@@ -56,3 +56,16 @@ class EvidenceGapResult(ContractModel):
     missing_capabilities: tuple[str, ...]
     coverage: float = Field(ge=0, le=1)
     sufficient: bool
+
+
+class ResearchSynthesis(ContractModel):
+    """Evidence-cited research summary, separate from the Phase 6 thesis lifecycle."""
+
+    summary: str = Field(min_length=1, max_length=2000)
+    bull_case: str = Field(min_length=1, max_length=1000)
+    bear_case: str = Field(min_length=1, max_length=1000)
+    limitations: tuple[Annotated[str, Field(min_length=1, max_length=500)], ...] = Field(
+        max_length=5
+    )
+    evidence_ids: tuple[UUID, ...] = Field(min_length=1, max_length=8)
+    confidence: float = Field(ge=0, le=1)

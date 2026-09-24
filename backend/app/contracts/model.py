@@ -78,6 +78,7 @@ class TaskKind(StrEnum):
     CLASSIFICATION = "classification"
     NEWS_EXTRACTION = "news_extraction"
     RESEARCH_PLANNING = "research_planning"
+    SYNTHESIS = "synthesis"
 
 
 OutputT = TypeVar("OutputT", bound=BaseModel)

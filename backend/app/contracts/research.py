@@ -20,7 +20,7 @@ from backend.app.contracts.evaluation import (
     SecurityStatus,
     SystemConfidence,
 )
-from backend.app.contracts.evidence import Evidence, EvidenceGapResult
+from backend.app.contracts.evidence import Evidence, EvidenceGapResult, ResearchSynthesis
 from backend.app.contracts.market import MarketSnapshot, TechnicalSnapshot
 from backend.app.contracts.thesis import Thesis
 
@@ -125,6 +125,7 @@ class ResearchState(ContractModel):
     macro_context: dict[str, Any] | None = None
     evidence: tuple[Evidence, ...] = ()
     evidence_gap_result: EvidenceGapResult | None = None
+    research_synthesis: ResearchSynthesis | None = None
     previous_thesis: Thesis | None = None
     current_thesis: Thesis | None = None
     bull_case: dict[str, Any] | None = None

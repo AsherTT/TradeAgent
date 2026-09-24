@@ -37,7 +37,14 @@ It is deliberately provider-neutral and does not claim investment advice or live
    completed News attempt metadata is retained in bounded history. No market retry or alternative
    news-provider selection is implemented in this slice. If the replan call consumes the remaining
    time or tool budget, News retry terminates as budget exhausted without another provider call.
-8. `finish` records a complete or insufficient-evidence quality assessment from that result.
+8. `synthesis` runs only after the Gap Judge reports sufficient evidence. It selects at most eight
+   eligible market/news evidence items, first covering every required capability and then filling
+   the remaining slots. It truncates each content excerpt to 1000 characters, wraps
+   untrusted content with explicit markers and trust metadata, and asks `ModelGateway` for a
+   bounded `ResearchSynthesis`. Citations must refer to distinct evidence IDs in that selected
+   context and cover every required evidence type. Missing evidence or exhausted model budget
+   stops safely before a synthesis call.
+9. `finish` records a complete or insufficient-evidence quality assessment from that result.
    News evidence alone cannot satisfy the market and technical evidence requirement.
 
 Each externally visible transition is saved by `ResearchRunRepository`. The API commits the run
@@ -67,8 +74,8 @@ controlled provider attempt summaries may be retained for integrity failures. Ex
 gaps also use controlled error types instead of raw provider messages. Successful market evidence
 rejects unsafe source identifiers and writes bounded, sanitized provider-attempt records.
 The same pre-call and unknown-outcome rule applies to Intent, Planner, market evidence, News
-acquisition, and Replan. Intent, Planner, and Replan share the model-call checkpoint and budget
-accounting path.
+acquisition, Replan, and Synthesis. Intent, Planner, Replan, and Synthesis share the model-call
+checkpoint and budget accounting path.
 
 News has no production loader configured and makes no external request by default. Its ingestion
 and resume behavior are qualified with offline fixtures. Accepted article text remains untrusted
@@ -78,7 +85,7 @@ qualified live news adapter remain pending.
 
 ## Outcomes
 
-- `complete`: a validated plan and all required capabilities have qualified evidence.
+- `complete`: a validated plan, all required capabilities, and an evidence-cited synthesis exist.
 - `insufficient_evidence`: planning may have succeeded, but qualified evidence is unavailable.
 - `failed`: execution raised an error; its type and a controlled reason are saved with a blocked
   quality assessment. Raw exception messages are excluded.
@@ -144,10 +151,10 @@ cancellation, not provider-side interruption of an in-flight call.
 2. Durable cancellation is qualified offline and through the Docker queue path. External-attempt
    observability now distinguishes completed, known-failure, and unknown-outcome steps with
    bounded secret-free metadata; pending-run reconciliation is implemented.
-3. Intent, provider-neutral News ingestion, a deterministic Gap Judge, and bounded News Replan
-   are implemented with offline fixture coverage. Extend the graph through model-based event
-   extraction and
-   Synthesis, then qualify the full Gate C limits.
+3. Intent, provider-neutral News ingestion, a deterministic Gap Judge, bounded News Replan, and
+   evidence-cited Synthesis are implemented with offline fixture coverage. Complete Gate C
+   qualification across loop limits and durable outcomes before advancing to Phase 6. Model-based
+   news-event extraction and a live news adapter remain separately pending.
 
 ADR-0019 closes the provider/cache architecture decision: current acquisition remains
 yfinance-only until a second adapter is independently qualified, and the fixed-cutoff qualified

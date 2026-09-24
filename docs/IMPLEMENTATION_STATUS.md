@@ -80,7 +80,7 @@ Last audited: 2026-09-24
 - Ordinary tests pass; the live-model test is skipped unless explicitly enabled
 - Live Gate A passed on 2026-09-17: Codex, Qwen, and DeepSeek returned the same
   validated `ResearchPlan`, with reasoning configuration, tracing, and usage metering active
-- Latest ordinary suite: 180 passed, 1 live-model test deselected, with 94.03% combined
+- Latest ordinary suite: 183 passed, 1 live-model test deselected, with 94.03% combined
   statement/branch coverage.
 - Ruff passes
 - strict mypy passes
@@ -186,6 +186,12 @@ Last audited: 2026-09-24
   requirement deletion, time-budget expiry between replan and retry, and unknown-outcome safety after
   interruption. Repeated completed News attempts retain bounded audit history. This slice makes
   no live model or news-provider calls and does not retry market acquisition.
+- Evidence-cited Synthesis now follows a sufficient Gap Judge result. The model receives at most
+  eight bounded evidence excerpts with trust metadata and explicit untrusted-content markers;
+  selection and citations must cover each required evidence type. Offline tests cover citation
+  rejection, delimiter escaping, context bounds, required News beyond the first eight evidence
+  items, model-budget exhaustion, and interrupted-call redelivery.
+  This is a research summary contract, not a Phase 6 persisted thesis lifecycle.
 
 ## Current phase assessment
 
@@ -202,8 +208,8 @@ Last audited: 2026-09-24
 - Phase 5 is partially complete. Intent, Planner, Market, Quant, market Evidence, default-off News
   ingestion, deterministic Gap Judge, BudgetGuard enforcement, durable execution, cancellation,
   external-attempt observability, and safe terminal outcomes are implemented. News event
-  extraction, a qualified live news adapter, broader Replan routing, and Synthesis remain; Gate C
-  has not passed.
+  extraction, a qualified live news adapter, broader Replan routing, and full Gate C qualification
+  remain. Synthesis is implemented offline; Gate C has not passed.
 - ADR-0017 and `docs/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,
   real Research API integration waits for Gate C, and the formal frontend milestone remains
