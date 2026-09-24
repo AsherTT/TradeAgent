@@ -9,7 +9,7 @@ from uuid import UUID, uuid4
 
 from pydantic import Field, model_validator
 
-from backend.app.contracts.base import ContractModel
+from backend.app.contracts.base import ContractModel, utc_now
 from backend.app.contracts.evaluation import (
     DataQualityStatus,
     EvaluationMaturity,
@@ -31,6 +31,11 @@ class ResearchStatus(StrEnum):
     COMPLETE = "complete"
     INSUFFICIENT_EVIDENCE = "insufficient_evidence"
     FAILED = "failed"
+
+
+class ResearchTimestampMode(StrEnum):
+    FIXED_CUTOFF = "fixed_cutoff"
+    CURRENT_RESEARCH = "current_research"
 
 
 class ResearchStep(ContractModel):
@@ -96,7 +101,9 @@ class ResearchState(ContractModel):
     instrument_id: UUID
     ticker: str
     query: str
-    analysis_timestamp: datetime
+    requested_at: datetime = Field(default_factory=utc_now)
+    timestamp_mode: ResearchTimestampMode = ResearchTimestampMode.FIXED_CUTOFF
+    analysis_timestamp: datetime | None
     horizon: str
     research_plan: ResearchPlan | None = None
     research_budget: ResearchBudget = Field(default_factory=ResearchBudget)
@@ -130,11 +137,20 @@ class ResearchState(ContractModel):
 
     @model_validator(mode="after")
     def historical_replay_discloses_parametric_risk(self) -> ResearchState:
+        if (
+            self.timestamp_mode is ResearchTimestampMode.FIXED_CUTOFF
+            and self.analysis_timestamp is None
+        ):
+            raise ValueError("fixed-cutoff research requires analysis_timestamp")
+        if self.status is ResearchStatus.COMPLETE and self.analysis_timestamp is None:
+            raise ValueError("complete research requires a frozen analysis_timestamp")
+        if self.analysis_timestamp is None:
+            return self
         historical_modes = {
             ReplayIntegrityLevel.RESEARCH_REPLAY,
             ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY,
         }
-        historical_cutoff = datetime.now(self.analysis_timestamp.tzinfo) - timedelta(minutes=5)
+        historical_cutoff = self.requested_at - timedelta(minutes=5)
         if (
             self.replay_integrity_level in historical_modes
             and self.analysis_timestamp < historical_cutoff

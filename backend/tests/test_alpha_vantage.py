@@ -1,4 +1,5 @@
 import json
+import logging
 from datetime import UTC, datetime
 from pathlib import Path
 from uuid import UUID, uuid4
@@ -12,8 +13,8 @@ from backend.app.market_data.alpha_vantage import (
     AlphaVantageCorporateActionProvider,
     AlphaVantageMarketDataProvider,
     AlphaVantageProviderError,
-    ProviderInstrument,
 )
+from backend.app.market_data.instrument import ProviderInstrument
 from backend.app.market_data.providers import InMemoryCorporateActionProvider
 from backend.app.market_data.service import MarketDataRequest, MarketDataService
 
@@ -339,18 +340,23 @@ async def test_alpha_vantage_malformed_daily_responses_fail_closed(
 
 
 @pytest.mark.asyncio
-async def test_alpha_vantage_http_failure_and_missing_key_fail_closed() -> None:
+async def test_alpha_vantage_http_failure_and_missing_key_fail_closed(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
     async def handler(request: httpx.Request) -> httpx.Response:
         return httpx.Response(503, text="unavailable")
 
     async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
-        with pytest.raises(AlphaVantageProviderError, match="request failed"):
+        caplog.set_level(logging.INFO, logger="httpx")
+        with pytest.raises(AlphaVantageProviderError, match="request failed") as exc_info:
             await _market_provider(client).get_bars(
                 INSTRUMENT_ID,
                 start=datetime(2024, 1, 1, tzinfo=UTC),
                 end=datetime(2024, 1, 10, 21, tzinfo=UTC),
                 analysis_timestamp=datetime(2024, 1, 10, 21, tzinfo=UTC),
             )
+        assert "offline-test-key" not in str(exc_info.value)
+        assert "offline-test-key" not in caplog.text
         with pytest.raises(AlphaVantageProviderError, match="not configured"):
             await _market_provider(client, api_key=None).get_bars(
                 INSTRUMENT_ID,

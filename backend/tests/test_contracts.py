@@ -4,10 +4,16 @@ from uuid import uuid4
 import pytest
 from pydantic import ValidationError
 
+from backend.app.api.research import ResearchSubmission
 from backend.app.contracts.evaluation import DataQualityStatus, ReplayIntegrityLevel
 from backend.app.contracts.instrument import PriceAdjustmentMode, SymbolHistory
 from backend.app.contracts.market import MarketBar
-from backend.app.contracts.research import BudgetUsage, ResearchBudget, ResearchState
+from backend.app.contracts.research import (
+    BudgetUsage,
+    ResearchBudget,
+    ResearchState,
+    ResearchTimestampMode,
+)
 from backend.app.graph.budget_guard import BudgetGuard
 
 
@@ -76,3 +82,42 @@ def test_historical_replay_accepts_explicit_risk() -> None:
         parametric_lookahead_risk=True,
     )
     assert state.parametric_lookahead_risk is True
+
+
+def test_fixed_cutoff_does_not_become_historical_as_wall_clock_advances() -> None:
+    accepted_at = datetime(2020, 1, 1, tzinfo=UTC)
+
+    state = ResearchState(
+        instrument_id=uuid4(),
+        ticker="KLAC",
+        query="current-at-submission analysis",
+        requested_at=accepted_at,
+        timestamp_mode=ResearchTimestampMode.FIXED_CUTOFF,
+        analysis_timestamp=accepted_at,
+        horizon="3-5 days",
+        replay_integrity_level=ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY,
+    )
+
+    assert ResearchState.model_validate_json(state.model_dump_json()) == state
+
+
+def test_current_research_transport_rejects_a_caller_supplied_cutoff() -> None:
+    with pytest.raises(ValidationError, match="cannot supply analysis_timestamp"):
+        ResearchSubmission(
+            instrument_id=uuid4(),
+            ticker="KLAC",
+            query="current analysis",
+            horizon="3-5 days",
+            timestamp_mode=ResearchTimestampMode.CURRENT_RESEARCH,
+            analysis_timestamp=datetime.now(UTC),
+        )
+
+
+def test_research_transport_requires_explicit_timestamp_mode() -> None:
+    with pytest.raises(ValidationError, match="timestamp_mode"):
+        ResearchSubmission(
+            instrument_id=uuid4(),
+            ticker="KLAC",
+            query="current analysis",
+            horizon="3-5 days",
+        )

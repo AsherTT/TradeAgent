@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
-from datetime import timedelta
+from datetime import datetime, timedelta
 from enum import StrEnum
 from hashlib import sha256
 from time import perf_counter
@@ -24,11 +24,26 @@ from backend.app.contracts.evidence import Evidence, TrustLevel
 from backend.app.contracts.instrument import PriceAdjustmentMode
 from backend.app.contracts.market import MarketSnapshot, TechnicalSnapshot
 from backend.app.contracts.model import ModelRequest, ProviderName, TaskKind
-from backend.app.contracts.research import ResearchPlan, ResearchState, ResearchStatus
+from backend.app.contracts.research import (
+    ResearchPlan,
+    ResearchState,
+    ResearchStatus,
+    ResearchTimestampMode,
+)
 from backend.app.graph.budget_guard import BudgetGuard
+from backend.app.market_data.errors import (
+    MarketDataIntegrityError,
+    MarketDataOperationalError,
+)
 from backend.app.market_data.normalization import PriceNormalizationError
 from backend.app.market_data.quality import ProviderQualityError
-from backend.app.market_data.service import MarketDataRequest, MarketDataService
+from backend.app.market_data.service import (
+    CurrentMarketDataLoader,
+    CurrentMarketDataRequest,
+    MarketDataAttemptSource,
+    MarketDataLoader,
+    MarketDataRequest,
+)
 from backend.app.quant.indicators import IndicatorError, calculate_technical_snapshot
 
 StateSaver = Callable[[ResearchState], Awaitable[None]]
@@ -36,10 +51,24 @@ StateSaver = Callable[[ResearchState], Awaitable[None]]
 
 @dataclass(frozen=True, slots=True)
 class EvidenceCollection:
+    analysis_timestamp: datetime | None = None
     market_snapshot: MarketSnapshot | None = None
     technical_snapshot: TechnicalSnapshot | None = None
     evidence: tuple[Evidence, ...] = ()
     gaps: tuple[str, ...] = ()
+
+
+def _provider_attempt_summary(service: object) -> str:
+    attempts = (
+        service.last_attempts
+        if isinstance(service, MarketDataAttemptSource)
+        else ()
+    )
+    return ", ".join(
+        f"{attempt.provider}:{attempt.outcome}"
+        + (f"({attempt.reason})" if attempt.reason else "")
+        for attempt in attempts
+    )
 
 
 class ResearchNode(StrEnum):
@@ -75,43 +104,112 @@ class MarketResearchEvidence:
 
     def __init__(
         self,
-        service: MarketDataService,
+        service: MarketDataLoader | CurrentMarketDataLoader,
         *,
         currency: str,
         lookback_days: int = 60,
+        clock: Callable[[], datetime] = utc_now,
     ) -> None:
         self._service = service
         self._currency = currency
         self._lookback_days = lookback_days
+        self._clock = clock
 
     async def collect(
         self, state: ResearchState
     ) -> EvidenceCollection:
+        analysis_timestamp: datetime | None = None
         try:
-            bars = await self._service.load_bars(
-                MarketDataRequest(
-                    instrument_id=state.instrument_id,
-                    start=state.analysis_timestamp - timedelta(days=self._lookback_days),
-                    end=state.analysis_timestamp,
-                    analysis_timestamp=state.analysis_timestamp,
-                    adjustment_mode=PriceAdjustmentMode.POINT_IN_TIME_ADJUSTED,
+            if (
+                state.timestamp_mode is ResearchTimestampMode.CURRENT_RESEARCH
+                and state.analysis_timestamp is None
+            ):
+                if not isinstance(self._service, CurrentMarketDataLoader):
+                    return EvidenceCollection(
+                        gaps=("current-research market acquisition is unavailable",)
+                    )
+                current = await self._service.load_current_bars(
+                    CurrentMarketDataRequest(
+                        instrument_id=state.instrument_id,
+                        requested_at=state.requested_at,
+                        lookback_days=self._lookback_days,
+                    )
                 )
+                bars = current.bars
+                analysis_timestamp = self._clock()
+                if analysis_timestamp < state.requested_at:
+                    raise ValueError(
+                        "current-research analysis_timestamp is earlier than requested_at"
+                    )
+                if any(
+                    bar.timestamp > analysis_timestamp
+                    or bar.observed_at > analysis_timestamp
+                    or bar.available_at > analysis_timestamp
+                    for bar in bars
+                ):
+                    raise ValueError(
+                        "current market data must be eligible at the frozen cutoff"
+                    )
+            else:
+                state_timestamp = state.analysis_timestamp
+                if state_timestamp is None:  # pragma: no cover - contract invariant
+                    raise ValueError("fixed-cutoff evidence requires analysis_timestamp")
+                analysis_timestamp = state_timestamp
+                if not isinstance(self._service, MarketDataLoader):
+                    return EvidenceCollection(
+                        gaps=("fixed-cutoff market loading is unavailable",)
+                    )
+                bars = await self._service.load_bars(
+                    MarketDataRequest(
+                        instrument_id=state.instrument_id,
+                        start=analysis_timestamp - timedelta(days=self._lookback_days),
+                        end=analysis_timestamp,
+                        analysis_timestamp=analysis_timestamp,
+                        adjustment_mode=PriceAdjustmentMode.POINT_IN_TIME_ADJUSTED,
+                    )
+                )
+            attempts = (
+                self._service.last_attempts
+                if isinstance(self._service, MarketDataAttemptSource)
+                else ()
             )
             technical = calculate_technical_snapshot(
-                bars, analysis_timestamp=state.analysis_timestamp
+                bars, analysis_timestamp=analysis_timestamp
             )
-        except (IndicatorError, PriceNormalizationError, ProviderQualityError) as exc:
-            return EvidenceCollection(gaps=(str(exc),))
+        except MarketDataIntegrityError as exc:
+            attempt_summary = _provider_attempt_summary(self._service)
+            if attempt_summary:
+                raise MarketDataIntegrityError(
+                    f"{exc}; provider_attempts={attempt_summary}"
+                ) from exc
+            raise
+        except (
+            IndicatorError,
+            MarketDataOperationalError,
+            PriceNormalizationError,
+            ProviderQualityError,
+        ) as exc:
+            attempt_summary = _provider_attempt_summary(self._service)
+            return EvidenceCollection(
+                analysis_timestamp=analysis_timestamp,
+                gaps=(
+                    (str(exc), f"provider_attempts={attempt_summary}")
+                    if attempt_summary
+                    else (str(exc),)
+                ),
+            )
         latest = max(bars, key=lambda bar: bar.timestamp)
         market = MarketSnapshot(
             instrument_id=state.instrument_id,
-            analysis_timestamp=state.analysis_timestamp,
+            analysis_timestamp=analysis_timestamp,
             latest_bar=latest,
             currency=self._currency,
         )
+        attempt_summary = _provider_attempt_summary(self._service)
         content = (
             f"Point-in-time market snapshot for instrument {state.instrument_id}: "
-            f"close={latest.close}; indicators={technical.indicators}"
+            f"close={latest.close}; indicators={technical.indicators}; "
+            f"provider_attempts={attempt_summary or latest.source}"
         )
         evidence = Evidence(
             instrument_id=state.instrument_id,
@@ -124,6 +222,10 @@ class MarketResearchEvidence:
             structured_data={
                 "market_snapshot": market.model_dump(mode="json"),
                 "technical_snapshot": technical.model_dump(mode="json"),
+                "provider_attempts": [
+                    attempt.model_dump(mode="json")
+                    for attempt in attempts
+                ],
             },
             confidence=1.0,
             freshness=1.0,
@@ -134,6 +236,7 @@ class MarketResearchEvidence:
             injection_risk=0.0,
         )
         return EvidenceCollection(
+            analysis_timestamp=analysis_timestamp,
             market_snapshot=market,
             technical_snapshot=technical,
             evidence=(evidence,),
@@ -244,7 +347,13 @@ class ResearchWorkflow:
                 "instrument_id": str(state.instrument_id),
                 "query": state.query,
                 "horizon": state.horizon,
-                "analysis_timestamp": state.analysis_timestamp.isoformat(),
+                "timestamp_mode": state.timestamp_mode.value,
+                "requested_at": state.requested_at.isoformat(),
+                "analysis_timestamp": (
+                    state.analysis_timestamp.isoformat()
+                    if state.analysis_timestamp is not None
+                    else "pending_evidence_acquisition"
+                ),
             },
             output_schema=ResearchPlan,
         )
@@ -310,9 +419,31 @@ class ResearchWorkflow:
         await self._save(state)
         collection = await self._evidence_provider.collect(state)
         state = self._with_elapsed_time(state)
+        analysis_timestamp = state.analysis_timestamp
+        if analysis_timestamp is not None:
+            if (
+                collection.analysis_timestamp is not None
+                and collection.analysis_timestamp != analysis_timestamp
+            ):
+                raise ValueError("fixed analysis_timestamp is immutable")
+        elif collection.analysis_timestamp is not None:
+            if collection.analysis_timestamp < state.requested_at:
+                raise ValueError(
+                    "current-research analysis_timestamp is earlier than requested_at"
+                )
+            analysis_timestamp = collection.analysis_timestamp
+        elif collection.evidence:
+            raise ValueError("current-research evidence requires a frozen analysis_timestamp")
+        if analysis_timestamp is not None and any(
+            item.observed_at > analysis_timestamp
+            or item.available_at > analysis_timestamp
+            for item in collection.evidence
+        ):
+            raise ValueError("evidence exceeds analysis_timestamp")
         state = _transition(
             _mark_attempt_completed(state, ResearchNode.COLLECT_EVIDENCE),
             node=ResearchNode.COLLECT_EVIDENCE,
+            analysis_timestamp=analysis_timestamp,
             market_snapshot=collection.market_snapshot,
             technical_snapshot=collection.technical_snapshot,
             evidence=collection.evidence,
@@ -444,7 +575,7 @@ def failed_research_state(state: ResearchState, exc: Exception) -> ResearchState
         limitations=(reason,),
         evidence_coverage=0,
         reasons=(reason,),
-        evidence_gaps=state.evidence_gaps,
+        evidence_gaps=(*state.evidence_gaps, reason),
     )
 
 

@@ -8,11 +8,16 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.contracts.base import ContractModel, utc_now
-from backend.app.contracts.research import ResearchBudget, ResearchState, ResearchStatus
+from backend.app.contracts.research import (
+    ResearchBudget,
+    ResearchState,
+    ResearchStatus,
+    ResearchTimestampMode,
+)
 from backend.app.jobs.celery_app import enqueue_research_run
 from backend.app.persistence.repositories import ResearchRunRepository
 from backend.app.persistence.session import get_session
@@ -29,8 +34,18 @@ class ResearchSubmission(BaseModel):
     ticker: str = Field(min_length=1, max_length=32)
     query: str = Field(min_length=1)
     horizon: str = Field(min_length=1, max_length=64)
-    analysis_timestamp: datetime = Field(default_factory=utc_now)
+    timestamp_mode: ResearchTimestampMode
+    analysis_timestamp: datetime | None = None
     budget: ResearchBudget = Field(default_factory=ResearchBudget)
+
+    @model_validator(mode="after")
+    def validate_timestamp_intent(self) -> ResearchSubmission:
+        if (
+            self.timestamp_mode is ResearchTimestampMode.CURRENT_RESEARCH
+            and self.analysis_timestamp is not None
+        ):
+            raise ValueError("current research cannot supply analysis_timestamp")
+        return self
 
 
 class ResearchAccepted(ContractModel):
@@ -52,11 +67,17 @@ async def submit_research(
     session: Annotated[AsyncSession, Depends(get_session)],
     enqueue: Annotated[ResearchEnqueuer, Depends(get_research_enqueuer)],
 ) -> ResearchAccepted:
+    requested_at = utc_now()
+    analysis_timestamp = submission.analysis_timestamp
+    if submission.timestamp_mode is ResearchTimestampMode.FIXED_CUTOFF:
+        analysis_timestamp = analysis_timestamp or requested_at
     state = ResearchState(
         instrument_id=submission.instrument_id,
         ticker=submission.ticker,
         query=submission.query,
-        analysis_timestamp=submission.analysis_timestamp,
+        requested_at=requested_at,
+        timestamp_mode=submission.timestamp_mode,
+        analysis_timestamp=analysis_timestamp,
         horizon=submission.horizon,
         research_budget=submission.budget,
     )

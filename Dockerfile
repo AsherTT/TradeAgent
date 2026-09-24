@@ -11,6 +11,8 @@ COPY alembic.ini ./
 COPY alembic ./alembic
 RUN python -m pip install --no-cache-dir .
 
+COPY docs/provider_quality ./docs/provider_quality
+
 RUN groupadd --gid 10001 app \
     && useradd --uid 10001 --gid app --create-home app
 

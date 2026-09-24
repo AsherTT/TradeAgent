@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
+import logging
+import re
 from collections.abc import Callable, Mapping
-from dataclasses import dataclass
 from datetime import UTC, date, datetime, time, timedelta
-from typing import Any, Protocol, cast
+from typing import Any, cast
 from uuid import NAMESPACE_URL, UUID, uuid5
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -18,29 +19,46 @@ from backend.app.contracts.instrument import (
     PriceAdjustmentMode,
 )
 from backend.app.contracts.market import MarketBar
+from backend.app.market_data.errors import (
+    MarketDataOperationalError,
+    OperationalFailureReason,
+)
+from backend.app.market_data.instrument import (
+    InstrumentMetadataResolver,
+    ProviderInstrument,
+)
 
 ALPHA_VANTAGE_SOURCE = "alpha_vantage"
 ALPHA_VANTAGE_URL = "https://www.alphavantage.co/query"
 
 
-@dataclass(frozen=True)
-class ProviderInstrument:
-    symbol: str
-    currency: str
-    valid_from: datetime
-    valid_to: datetime | None = None
+class _ApiKeyRedactionFilter(logging.Filter):
+    _pattern = re.compile(r"([?&]apikey=)[^&\s]+", flags=re.IGNORECASE)
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        message = record.getMessage()
+        record.msg = self._pattern.sub(r"\1[REDACTED]", message)
+        record.args = ()
+        return True
 
 
-class InstrumentMetadataResolver(Protocol):
-    """Resolve permanent identity to provider metadata at a point in time."""
-
-    async def resolve_instrument(
-        self, instrument_id: UUID, *, at: datetime
-    ) -> ProviderInstrument: ...
+_httpx_logger = logging.getLogger("httpx")
+if not any(isinstance(item, _ApiKeyRedactionFilter) for item in _httpx_logger.filters):
+    _httpx_logger.addFilter(_ApiKeyRedactionFilter())
 
 
 class AlphaVantageProviderError(RuntimeError):
     """Raised when Alpha Vantage cannot provide a valid, unambiguous response."""
+
+
+class AlphaVantageOperationalError(
+    AlphaVantageProviderError, MarketDataOperationalError
+):
+    """Raised when Alpha Vantage is operationally unavailable for this request."""
+
+    def __init__(self, message: str, *, reason: OperationalFailureReason) -> None:
+        RuntimeError.__init__(self, message)
+        self.reason = reason
 
 
 class AlphaVantageMarketDataProvider:
@@ -78,7 +96,10 @@ class AlphaVantageMarketDataProvider:
         analysis_timestamp: datetime,
     ) -> tuple[MarketBar, ...]:
         if not self._api_key:
-            raise AlphaVantageProviderError("Alpha Vantage API key is not configured")
+            raise AlphaVantageOperationalError(
+                "Alpha Vantage API key is not configured",
+                reason=OperationalFailureReason.MISSING_CREDENTIAL,
+            )
         resolved = await self._instrument_resolver.resolve_instrument(
             instrument_id, at=analysis_timestamp
         )
@@ -235,7 +256,10 @@ class AlphaVantageCorporateActionProvider:
         analysis_timestamp: datetime,
     ) -> tuple[CorporateAction, ...]:
         if not self._api_key:
-            raise AlphaVantageProviderError("Alpha Vantage API key is not configured")
+            raise AlphaVantageOperationalError(
+                "Alpha Vantage API key is not configured",
+                reason=OperationalFailureReason.MISSING_CREDENTIAL,
+            )
         resolved = await self._instrument_resolver.resolve_instrument(
             instrument_id, at=analysis_timestamp
         )
@@ -386,17 +410,52 @@ async def _request_json(
         response = await request_client.get(base_url, params=params)
         response.raise_for_status()
         payload = response.json()
-    except (httpx.HTTPError, ValueError) as exc:
+    except httpx.HTTPStatusError as exc:
+        status = exc.response.status_code
+        if status == 429:
+            reason = OperationalFailureReason.RATE_LIMITED
+        elif status >= 500:
+            reason = OperationalFailureReason.UPSTREAM_UNAVAILABLE
+        elif status in {402, 403}:
+            reason = OperationalFailureReason.FREE_ENTITLEMENT_UNAVAILABLE
+        else:
+            raise AlphaVantageProviderError(
+                f"Alpha Vantage request failed with HTTP {status}"
+            ) from None
+        raise AlphaVantageOperationalError(
+            f"Alpha Vantage request failed with HTTP {status}", reason=reason
+        ) from None
+    except httpx.RequestError:
+        raise AlphaVantageOperationalError(
+            "Alpha Vantage request failed due to a network error",
+            reason=OperationalFailureReason.NETWORK,
+        ) from None
+    except ValueError as exc:
         raise AlphaVantageProviderError(f"Alpha Vantage request failed: {exc}") from exc
     finally:
         if owns_client:
             await request_client.aclose()
     if not isinstance(payload, Mapping):
         raise AlphaVantageProviderError("Alpha Vantage response must be a JSON object")
-    for key in ("Error Message", "Note", "Information"):
-        message = payload.get(key)
-        if message:
-            raise AlphaVantageProviderError(f"Alpha Vantage returned {key}: {message}")
+    error_message = payload.get("Error Message")
+    if error_message:
+        raise AlphaVantageProviderError("Alpha Vantage returned Error Message response")
+    note = payload.get("Note")
+    if note:
+        reason = (
+            OperationalFailureReason.QUOTA_EXHAUSTED
+            if "frequency" in str(note).lower() or "limit" in str(note).lower()
+            else OperationalFailureReason.RATE_LIMITED
+        )
+        raise AlphaVantageOperationalError(
+            "Alpha Vantage returned Note response", reason=reason
+        )
+    information = payload.get("Information")
+    if information:
+        raise AlphaVantageOperationalError(
+            "Alpha Vantage returned Information response",
+            reason=OperationalFailureReason.FREE_ENTITLEMENT_UNAVAILABLE,
+        )
     return cast(Mapping[str, Any], payload)
 
 

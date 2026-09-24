@@ -95,6 +95,52 @@ class SecurityMasterRepository:
             )
         return self._to_instrument(rows[0]) if rows else None
 
+    async def resolve_instrument_epoch(
+        self,
+        instrument_id: UUID,
+        *,
+        at: datetime,
+        analysis_timestamp: datetime,
+    ) -> tuple[Instrument, SymbolHistory] | None:
+        statement = (
+            select(InstrumentRow, SymbolHistoryRow)
+            .join(
+                SymbolHistoryRow,
+                SymbolHistoryRow.instrument_id == InstrumentRow.instrument_id,
+            )
+            .where(
+                InstrumentRow.instrument_id == instrument_id,
+                SymbolHistoryRow.valid_from <= at,
+                or_(SymbolHistoryRow.valid_to.is_(None), SymbolHistoryRow.valid_to > at),
+                SymbolHistoryRow.available_at.is_not(None),
+                SymbolHistoryRow.available_at <= analysis_timestamp,
+            )
+            .limit(2)
+        )
+        rows = (await self._session.execute(statement)).all()
+        if len(rows) > 1:
+            raise SecurityMasterIntegrityError(
+                f"overlapping symbol history for instrument {instrument_id} at {at.isoformat()}"
+            )
+        if not rows:
+            return None
+        instrument_row, symbol_row = rows[0]
+        return (
+            self._to_instrument(instrument_row),
+            SymbolHistory(
+                instrument_id=symbol_row.instrument_id,
+                symbol=symbol_row.symbol,
+                exchange=symbol_row.exchange,
+                valid_from=_as_utc(symbol_row.valid_from),
+                valid_to=(
+                    _as_utc(symbol_row.valid_to)
+                    if symbol_row.valid_to is not None
+                    else None
+                ),
+                available_at=_as_utc(symbol_row.available_at),
+            ),
+        )
+
     async def add_corporate_action(self, action: CorporateAction) -> CorporateAction:
         self._session.add(
             CorporateActionRow(
@@ -193,6 +239,33 @@ _TERMINAL_RESEARCH_STATUSES = {
 }
 
 
+def _require_immutable_analysis_timestamp(
+    persisted: datetime | None, proposed: datetime | None
+) -> None:
+    if persisted is None:
+        return
+    persisted_utc = (
+        persisted.replace(tzinfo=UTC)
+        if persisted.tzinfo is None
+        else persisted.astimezone(UTC)
+    )
+    proposed_utc = (
+        proposed.replace(tzinfo=UTC)
+        if proposed is not None and proposed.tzinfo is None
+        else proposed.astimezone(UTC)
+        if proposed is not None
+        else None
+    )
+    if proposed_utc != persisted_utc:
+        raise ValueError("analysis_timestamp is immutable once frozen")
+
+
+def _research_state_from_row(row: ResearchRunRow) -> ResearchState:
+    payload = dict(row.state_json)
+    payload.setdefault("requested_at", _as_utc(row.created_at).isoformat())
+    return ResearchState.model_validate_json(json.dumps(payload))
+
+
 class ResearchRunRepository:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
@@ -215,7 +288,32 @@ class ResearchRunRepository:
 
     async def get(self, research_run_id: UUID) -> ResearchState | None:
         row = await self._session.get(ResearchRunRow, research_run_id)
-        return ResearchState.model_validate_json(json.dumps(row.state_json)) if row else None
+        return _research_state_from_row(row) if row else None
+
+    async def list_reconcilable_pending_ids(
+        self,
+        *,
+        older_than: datetime,
+        limit: int,
+    ) -> tuple[UUID, ...]:
+        """Return a stable bounded batch of old pending runs without claiming them."""
+
+        if limit < 1:
+            raise ValueError("limit must be positive")
+        statement = (
+            select(ResearchRunRow.research_run_id)
+            .where(
+                ResearchRunRow.status == ResearchStatus.PENDING.value,
+                ResearchRunRow.execution_id.is_(None),
+                ResearchRunRow.created_at <= older_than,
+            )
+            .order_by(
+                ResearchRunRow.created_at.asc(),
+                ResearchRunRow.research_run_id.asc(),
+            )
+            .limit(limit)
+        )
+        return tuple(await self._session.scalars(statement))
 
     async def claim_execution(
         self,
@@ -251,7 +349,7 @@ class ResearchRunRepository:
                 raise ResearchRunNotReadyError(
                     f"research run {research_run_id} is not committed yet"
                 )
-            state = ResearchState.model_validate_json(json.dumps(row.state_json))
+            state = _research_state_from_row(row)
             if state.status in _TERMINAL_RESEARCH_STATUSES:
                 return state
             raise ResearchRunBusyError(f"research run {research_run_id} has an active worker")
@@ -267,11 +365,18 @@ class ResearchRunRepository:
         execution_id: str | None = None,
         failure_reason: str | None = None,
     ) -> ResearchState:
+        existing = await self._session.get(ResearchRunRow, state.research_id)
+        if existing is None:
+            raise LookupError(f"research run {state.research_id} does not exist")
+        _require_immutable_analysis_timestamp(
+            existing.analysis_timestamp, state.analysis_timestamp
+        )
         if execution_id is not None:
             now = datetime.now(UTC)
             values: dict[str, object] = {
                 "status": state.status.value,
                 "state_json": state.model_dump(mode="json"),
+                "analysis_timestamp": state.analysis_timestamp,
                 "updated_at": now,
             }
             if failure_reason is not None:
@@ -285,6 +390,11 @@ class ResearchRunRepository:
                     ResearchRunRow.research_run_id == state.research_id,
                     ResearchRunRow.execution_id == execution_id,
                     ResearchRunRow.lease_expires_at > now,
+                    or_(
+                        ResearchRunRow.analysis_timestamp.is_(None),
+                        ResearchRunRow.analysis_timestamp
+                        == state.analysis_timestamp,
+                    ),
                 )
                 .values(**values)
                 .returning(ResearchRunRow.research_run_id)
@@ -292,6 +402,22 @@ class ResearchRunRepository:
             )
             saved_id = await self._session.scalar(statement)
             if saved_id is None:
+                await self._session.refresh(
+                    existing,
+                    attribute_names=(
+                        "analysis_timestamp",
+                        "execution_id",
+                        "lease_expires_at",
+                    ),
+                )
+                if (
+                    existing.execution_id == execution_id
+                    and existing.lease_expires_at is not None
+                    and _as_utc(existing.lease_expires_at) > now
+                ):
+                    _require_immutable_analysis_timestamp(
+                        existing.analysis_timestamp, state.analysis_timestamp
+                    )
                 raise ResearchRunBusyError(
                     f"research run {state.research_id} is owned by another worker "
                     "or its execution lease expired"
@@ -300,17 +426,16 @@ class ResearchRunRepository:
             await self._session.flush()
             return state
 
-        row = await self._session.get(ResearchRunRow, state.research_id)
-        if row is None:
-            raise LookupError(f"research run {state.research_id} does not exist")
+        row = existing
         row.status = state.status.value
         row.state_json = state.model_dump(mode="json")
+        row.analysis_timestamp = state.analysis_timestamp
         if failure_reason is not None:
             row.failure_reason = failure_reason
         if state.status in _TERMINAL_RESEARCH_STATUSES:
             row.execution_id = None
             row.lease_expires_at = None
-        row.updated_at = datetime.now(state.analysis_timestamp.tzinfo)
+        row.updated_at = datetime.now(UTC)
         await self._save_details(state)
         await self._session.flush()
         return state
@@ -326,11 +451,13 @@ class ResearchRunRepository:
         if state is None:
             raise LookupError(f"research run {research_run_id} does not exist")
         row = await self._session.get_one(ResearchRunRow, research_run_id)
-        updated = state.model_copy(update={"status": status})
+        updated = ResearchState.model_validate(
+            {**state.model_dump(), "status": status}
+        )
         row.status = status.value
         row.state_json = updated.model_dump(mode="json")
         row.failure_reason = failure_reason
-        row.updated_at = datetime.now(state.analysis_timestamp.tzinfo)
+        row.updated_at = datetime.now(UTC)
         await self._session.flush()
         return updated
 

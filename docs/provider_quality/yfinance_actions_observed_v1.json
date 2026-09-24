@@ -1,0 +1,11 @@
+{
+  "provider": "yfinance",
+  "provider_version": "yfinance-actions-observed-v1",
+  "evaluated_at": "2026-09-21T00:00:00Z",
+  "golden_case_count": 5,
+  "passed_case_count": 5,
+  "failed_cases": [],
+  "coverage": 1.0,
+  "quality_status": "unverified",
+  "notes": "Action dates are qualified only as observed; historical publication timestamps are not proven. Personal research use only."
+}

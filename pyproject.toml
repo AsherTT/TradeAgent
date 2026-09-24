@@ -23,6 +23,7 @@ dependencies = [
   "scipy>=1.16,<2",
   "structlog>=25.4,<26",
   "uvicorn[standard]>=0.35,<1",
+  "yfinance>=1.7,<2",
 ]
 
 [project.optional-dependencies]
@@ -72,6 +73,14 @@ ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
 module = ["celery", "celery.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["yfinance", "yfinance.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["curl_cffi", "curl_cffi.*"]
 ignore_missing_imports = true
 
 [tool.coverage.run]

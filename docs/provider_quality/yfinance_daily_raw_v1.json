@@ -1,0 +1,11 @@
+{
+  "provider": "yfinance",
+  "provider_version": "yfinance-daily-raw-v1",
+  "evaluated_at": "2026-09-21T00:00:00Z",
+  "golden_case_count": 9,
+  "passed_case_count": 9,
+  "failed_cases": [],
+  "coverage": 1.0,
+  "quality_status": "degraded",
+  "notes": "Offline contract qualification for personal research only; not strict-backtest eligible and not a grant to redistribute Yahoo market data."
+}

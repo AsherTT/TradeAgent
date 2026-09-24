@@ -45,6 +45,22 @@ services:
       redis:
         condition: service_healthy
 
+  beat:
+    build: .
+    command: celery -A backend.app.jobs.celery_app:celery_app beat --loglevel=INFO --schedule=/tmp/celerybeat-schedule
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_URL: postgresql+asyncpg://tradeagent:tradeagent-local-only@postgres:5432/tradeagent
+      REDIS_BROKER_URL: redis://redis:6379/0
+      REDIS_RESULT_URL: redis://redis:6379/1
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+
   postgres:
     image: pgvector/pgvector:pg18
     environment:

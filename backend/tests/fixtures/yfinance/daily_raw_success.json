@@ -1,0 +1,5 @@
+[
+  {"Date": "2024-01-08T00:00:00-05:00", "Open": 159.69, "High": 161.22, "Low": 157.89, "Close": 160.55, "Volume": 3321700, "Dividends": 0.0, "Stock Splits": 0.0},
+  {"Date": "2024-01-09T00:00:00-05:00", "Open": 160.00, "High": 161.47, "Low": 159.51, "Close": 160.08, "Volume": 2617200, "Dividends": 1.66, "Stock Splits": 0.0},
+  {"Date": "2024-01-10T00:00:00-05:00", "Open": 160.28, "High": 164.06, "Low": 160.28, "Close": 163.55, "Volume": 2967900, "Dividends": 0.0, "Stock Splits": 0.0}
+]

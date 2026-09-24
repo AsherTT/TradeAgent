@@ -114,7 +114,9 @@ class ResearchRunRow(Base):
         ForeignKey("instrument.instrument_id", ondelete="RESTRICT"), index=True
     )
     query: Mapped[str] = mapped_column(Text)
-    analysis_timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
+    analysis_timestamp: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), index=True, nullable=True
+    )
     horizon: Mapped[str] = mapped_column(String(64))
     status: Mapped[str] = mapped_column(String(32), index=True)
     state_json: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)

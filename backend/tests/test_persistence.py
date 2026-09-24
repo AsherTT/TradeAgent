@@ -1,5 +1,6 @@
 import asyncio
 import importlib
+import importlib.util
 import threading
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -10,7 +11,8 @@ from uuid import uuid4
 import pytest
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
-from sqlalchemy import select
+from pydantic import ValidationError
+from sqlalchemy import JSON, Column, DateTime, MetaData, Table, Uuid, create_engine, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.ai.executors.mock import MockExecutor
@@ -34,12 +36,14 @@ from backend.app.contracts.research import (
     ResearchState,
     ResearchStatus,
     ResearchStep,
+    ResearchTimestampMode,
 )
 from backend.app.jobs.celery_app import (
     celery_app,
     create_celery,
     enqueue_research_run,
     execute_research_run,
+    reconcile_pending_research_runs,
     run_research,
 )
 from backend.app.main import app
@@ -55,6 +59,74 @@ from backend.app.persistence.repositories import (
 from backend.app.persistence.session import Database, get_database, get_session
 
 celery_module = importlib.import_module("backend.app.jobs.celery_app")
+
+
+def test_current_cutoff_migration_downgrade_restores_legacy_state(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    migration_path = (
+        Path(__file__).parents[2]
+        / "alembic"
+        / "versions"
+        / "0006_current_research_cutoff.py"
+    )
+    spec = importlib.util.spec_from_file_location("current_cutoff_migration", migration_path)
+    assert spec is not None and spec.loader is not None
+    migration = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(migration)
+
+    engine = create_engine(f"sqlite:///{tmp_path / 'downgrade.db'}")
+    table = Table(
+        "research_run",
+        MetaData(),
+        Column("research_run_id", Uuid(), primary_key=True),
+        Column("created_at", DateTime(timezone=True)),
+        Column("analysis_timestamp", DateTime(timezone=True)),
+        Column("state_json", JSON()),
+    )
+    table.create(engine)
+    pending_id, frozen_id = uuid4(), uuid4()
+    created = datetime(2026, 9, 22, tzinfo=UTC)
+    frozen = created + timedelta(hours=1)
+    with engine.begin() as connection:
+        connection.execute(
+            table.insert(),
+            [
+                {
+                    "research_run_id": pending_id,
+                    "created_at": created,
+                    "analysis_timestamp": None,
+                    "state_json": {
+                        "timestamp_mode": "current_research",
+                        "requested_at": created.isoformat(),
+                        "analysis_timestamp": None,
+                    },
+                },
+                {
+                    "research_run_id": frozen_id,
+                    "created_at": created,
+                    "analysis_timestamp": frozen,
+                    "state_json": {
+                        "timestamp_mode": "current_research",
+                        "requested_at": created.isoformat(),
+                        "analysis_timestamp": frozen.isoformat(),
+                    },
+                },
+            ],
+        )
+        monkeypatch.setattr(migration.op, "get_bind", lambda: connection)
+        monkeypatch.setattr(migration.op, "alter_column", lambda *args, **kwargs: None)
+        migration.downgrade()
+        rows = {
+            row.research_run_id: row
+            for row in connection.execute(select(table)).all()
+        }
+
+    for research_id, expected_cutoff in ((pending_id, created), (frozen_id, frozen)):
+        row = rows[research_id]
+        assert row.analysis_timestamp == expected_cutoff.replace(tzinfo=None)
+        assert row.state_json == {"analysis_timestamp": expected_cutoff.isoformat()}
+    engine.dispose()
 
 
 def _instrument() -> Instrument:
@@ -115,6 +187,15 @@ def test_security_master_and_research_run_repositories(tmp_path: Path) -> None:
             assert await security.add_symbol_history(history) == history
             assert await security.resolve_symbol("KLAC", "NASDAQ", now) == instrument
             assert await security.resolve_symbol("OLD", "NASDAQ", now) is None
+            assert await security.resolve_instrument_epoch(
+                instrument.instrument_id,
+                at=now,
+                analysis_timestamp=now,
+            ) == (instrument, history)
+            assert (
+                await security.resolve_instrument_epoch(uuid4(), at=now, analysis_timestamp=now)
+                is None
+            )
 
             future_history = SymbolHistory(
                 instrument_id=instrument.instrument_id,
@@ -125,9 +206,7 @@ def test_security_master_and_research_run_repositories(tmp_path: Path) -> None:
             )
             await security.add_symbol_history(future_history)
             assert (
-                await security.resolve_symbol(
-                    "FUTURE", "NASDAQ", now, analysis_timestamp=now
-                )
+                await security.resolve_symbol("FUTURE", "NASDAQ", now, analysis_timestamp=now)
                 is None
             )
 
@@ -141,6 +220,12 @@ def test_security_master_and_research_run_repositories(tmp_path: Path) -> None:
             await security.add_symbol_history(overlapping)
             with pytest.raises(SecurityMasterIntegrityError, match="overlapping"):
                 await security.resolve_symbol("KLAC", "NASDAQ", now)
+            with pytest.raises(SecurityMasterIntegrityError, match="overlapping"):
+                await security.resolve_instrument_epoch(
+                    instrument.instrument_id,
+                    at=now,
+                    analysis_timestamp=now,
+                )
 
             action = CorporateAction(
                 instrument_id=instrument.instrument_id,
@@ -194,6 +279,55 @@ def test_security_master_and_research_run_repositories(tmp_path: Path) -> None:
     asyncio.run(scenario())
 
 
+def test_repository_lists_only_old_unclaimed_pending_runs_in_bounded_order(
+    tmp_path: Path,
+) -> None:
+    async def scenario() -> None:
+        database = Database(f"sqlite+aiosqlite:///{tmp_path / 'reconcile-query.db'}")
+        async with database.engine.begin() as connection:
+            await connection.run_sync(Base.metadata.create_all)
+
+        instrument = _instrument()
+        now = datetime.now(UTC)
+        states = [_state(instrument.instrument_id, now) for _ in range(6)]
+        async with database.sessions() as session, session.begin():
+            await SecurityMasterRepository(session).add_instrument(instrument)
+            repository = ResearchRunRepository(session)
+            for state in states:
+                await repository.create(state)
+
+            oldest, tied_left, tied_right, recent, claimed, failed = [
+                await session.get_one(ResearchRunRow, state.research_id)
+                for state in states
+            ]
+            oldest.created_at = now - timedelta(minutes=10)
+            tied_left.created_at = now - timedelta(minutes=5)
+            tied_right.created_at = now - timedelta(minutes=5)
+            recent.created_at = now - timedelta(seconds=5)
+            claimed.created_at = now - timedelta(minutes=20)
+            claimed.execution_id = "active-worker"
+            failed.created_at = now - timedelta(minutes=30)
+            failed.status = ResearchStatus.FAILED.value
+
+        async with database.sessions() as session:
+            repository = ResearchRunRepository(session)
+            ids = await repository.list_reconcilable_pending_ids(
+                older_than=now - timedelta(minutes=1),
+                limit=2,
+            )
+            tied_ids = tuple(sorted((states[1].research_id, states[2].research_id)))
+            assert ids == (states[0].research_id, tied_ids[0])
+
+            ids = await repository.list_reconcilable_pending_ids(
+                older_than=now - timedelta(minutes=1),
+                limit=10,
+            )
+            assert ids == (states[0].research_id, *tied_ids)
+        await database.dispose()
+
+    asyncio.run(scenario())
+
+
 def test_session_dependency_uses_configured_database(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -223,7 +357,17 @@ def test_celery_configuration_task_and_enqueue(monkeypatch: pytest.MonkeyPatch) 
     assert app.conf.broker_url.endswith("/2")
     assert app.conf.result_backend.endswith("/3")
     assert app.conf.task_serializer == "json"
+    assert app.conf.beat_schedule["reconcile-pending-research-runs"] == {
+        "task": "research.reconcile_pending",
+        "schedule": 60,
+    }
     research_run_id = uuid4()
+    disposed = 0
+
+    class WorkerDatabase:
+        async def dispose(self) -> None:
+            nonlocal disposed
+            disposed += 1
 
     async def fake_execute(run_id: Any, *, execution_id: str) -> ResearchState:
         assert run_id == research_run_id
@@ -233,10 +377,12 @@ def test_celery_configuration_task_and_enqueue(monkeypatch: pytest.MonkeyPatch) 
         )
 
     monkeypatch.setattr(celery_module, "execute_research_run", fake_execute)
+    monkeypatch.setattr(celery_module, "get_database", lambda: WorkerDatabase())
     assert run_research(str(research_run_id)) == {
         "research_run_id": str(research_run_id),
         "state": "complete",
     }
+    assert disposed == 1
 
     monkeypatch.setattr(
         celery_app,
@@ -245,6 +391,92 @@ def test_celery_configuration_task_and_enqueue(monkeypatch: pytest.MonkeyPatch) 
     )
     assert enqueue_research_run("run-id") == "task-id"
     assert get_research_enqueuer() is enqueue_research_run
+
+
+def test_reconciliation_settings_are_bounded() -> None:
+    with pytest.raises(ValidationError):
+        Settings(_env_file=None, research_reconcile_interval_seconds=0)
+    with pytest.raises(ValidationError):
+        Settings(_env_file=None, research_reconcile_batch_size=1001)
+
+
+def test_reconciler_republishes_without_mutation_and_retries_broker_failures(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    async def arrange() -> tuple[Database, tuple[ResearchState, ...]]:
+        database = Database(f"sqlite+aiosqlite:///{tmp_path / 'reconciler.db'}")
+        async with database.engine.begin() as connection:
+            await connection.run_sync(Base.metadata.create_all)
+        instrument = _instrument()
+        now = datetime.now(UTC)
+        states = (_state(instrument.instrument_id, now), _state(instrument.instrument_id, now))
+        async with database.sessions() as session, session.begin():
+            await SecurityMasterRepository(session).add_instrument(instrument)
+            repository = ResearchRunRepository(session)
+            for state in states:
+                await repository.create(state)
+                row = await session.get_one(ResearchRunRow, state.research_id)
+                row.created_at = now - timedelta(minutes=5)
+        return database, states
+
+    database, states = asyncio.run(arrange())
+    disposed = 0
+
+    class TrackingDatabase:
+        def sessions(self) -> Any:
+            return database.sessions()
+
+        async def dispose(self) -> None:
+            nonlocal disposed
+            disposed += 1
+            await database.dispose()
+
+    settings = Settings(
+        _env_file=None,
+        research_reconcile_grace_seconds=60,
+        research_reconcile_batch_size=10,
+    )
+    monkeypatch.setattr(celery_module, "get_database", lambda: TrackingDatabase())
+    monkeypatch.setattr(celery_module, "get_settings", lambda: settings)
+
+    first_attempts: list[str] = []
+
+    def flaky_enqueue(run_id: str) -> str:
+        first_attempts.append(run_id)
+        if len(first_attempts) == 1:
+            raise ConnectionError("broker unavailable")
+        return f"task-{run_id}"
+
+    monkeypatch.setattr(celery_module, "enqueue_research_run", flaky_enqueue)
+    assert reconcile_pending_research_runs() == {
+        "eligible": 2,
+        "published": 1,
+        "failed": 1,
+    }
+    assert set(first_attempts) == {str(state.research_id) for state in states}
+
+    second_attempts: list[str] = []
+    monkeypatch.setattr(
+        celery_module,
+        "enqueue_research_run",
+        lambda run_id: second_attempts.append(run_id) or f"retry-{run_id}",
+    )
+    assert reconcile_pending_research_runs() == {
+        "eligible": 2,
+        "published": 2,
+        "failed": 0,
+    }
+    assert set(second_attempts) == {str(state.research_id) for state in states}
+    assert disposed == 2
+
+    async def assert_unchanged() -> None:
+        async with database.sessions() as session:
+            repository = ResearchRunRepository(session)
+            for state in states:
+                assert await repository.get(state.research_id) == state
+        await database.dispose()
+
+    asyncio.run(assert_unchanged())
 
 
 def test_celery_retries_busy_run(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -272,6 +504,7 @@ def test_submitted_run_executes_to_durable_terminal_state(
                     ticker="KLAC",
                     query="Assess the setup",
                     horizon="3-5 days",
+                    timestamp_mode=ResearchTimestampMode.FIXED_CUTOFF,
                 ),
                 session,
                 lambda _: "offline-task",
@@ -297,6 +530,202 @@ def test_submitted_run_executes_to_durable_terminal_state(
             persisted = await ResearchRunRepository(session).get(accepted.research_run_id)
             assert persisted is not None
             assert persisted.model_dump(mode="json") == result.model_dump(mode="json")
+        await database.dispose()
+
+    asyncio.run(scenario())
+
+
+def test_current_research_submission_persists_a_pending_cutoff(tmp_path: Path) -> None:
+    async def scenario() -> None:
+        database = Database(f"sqlite+aiosqlite:///{tmp_path / 'current-research.db'}")
+        async with database.engine.begin() as connection:
+            await connection.run_sync(Base.metadata.create_all)
+        instrument = _instrument()
+        async with database.sessions() as session, session.begin():
+            await SecurityMasterRepository(session).add_instrument(instrument)
+            accepted = await submit_research(
+                ResearchSubmission(
+                    instrument_id=instrument.instrument_id,
+                    ticker="KLAC",
+                    query="Assess the current setup",
+                    horizon="3-5 days",
+                    timestamp_mode=ResearchTimestampMode.CURRENT_RESEARCH,
+                ),
+                session,
+                lambda _: "offline-current-task",
+            )
+
+        async with database.sessions() as session:
+            persisted = await ResearchRunRepository(session).get(accepted.research_run_id)
+            assert persisted is not None
+            assert persisted.timestamp_mode is ResearchTimestampMode.CURRENT_RESEARCH
+            assert persisted.analysis_timestamp is None
+        await database.dispose()
+
+    asyncio.run(scenario())
+
+
+def test_current_research_save_persists_the_frozen_cutoff(tmp_path: Path) -> None:
+    async def scenario() -> None:
+        database = Database(f"sqlite+aiosqlite:///{tmp_path / 'frozen-cutoff.db'}")
+        async with database.engine.begin() as connection:
+            await connection.run_sync(Base.metadata.create_all)
+        instrument = _instrument()
+        pending = ResearchState(
+            instrument_id=instrument.instrument_id,
+            ticker="KLAC",
+            query="Assess the current setup",
+            horizon="3-5 days",
+            timestamp_mode=ResearchTimestampMode.CURRENT_RESEARCH,
+            analysis_timestamp=None,
+        )
+        frozen_cutoff = datetime.now(UTC)
+        async with database.sessions() as session, session.begin():
+            await SecurityMasterRepository(session).add_instrument(instrument)
+            repository = ResearchRunRepository(session)
+            await repository.create(pending)
+            await repository.save(pending.model_copy(update={"analysis_timestamp": frozen_cutoff}))
+
+        async with database.sessions() as session:
+            persisted = await ResearchRunRepository(session).get(pending.research_id)
+            assert persisted is not None
+            assert persisted.analysis_timestamp == frozen_cutoff
+        await database.dispose()
+
+    asyncio.run(scenario())
+
+
+def test_set_status_rejects_complete_current_research_without_a_cutoff(
+    tmp_path: Path,
+) -> None:
+    async def scenario() -> None:
+        database = Database(f"sqlite+aiosqlite:///{tmp_path / 'invalid-complete.db'}")
+        async with database.engine.begin() as connection:
+            await connection.run_sync(Base.metadata.create_all)
+        instrument = _instrument()
+        pending = ResearchState(
+            instrument_id=instrument.instrument_id,
+            ticker="KLAC",
+            query="Assess the current setup",
+            horizon="3-5 days",
+            timestamp_mode=ResearchTimestampMode.CURRENT_RESEARCH,
+            analysis_timestamp=None,
+        )
+        async with database.sessions() as session, session.begin():
+            await SecurityMasterRepository(session).add_instrument(instrument)
+            repository = ResearchRunRepository(session)
+            await repository.create(pending)
+            with pytest.raises(ValidationError, match="complete research requires"):
+                await repository.set_status(
+                    pending.research_id, ResearchStatus.COMPLETE
+                )
+
+            assert await repository.get(pending.research_id) == pending
+        await database.dispose()
+
+    asyncio.run(scenario())
+
+
+def test_repository_backfills_requested_at_for_legacy_state_json(tmp_path: Path) -> None:
+    async def scenario() -> None:
+        database = Database(f"sqlite+aiosqlite:///{tmp_path / 'legacy-state.db'}")
+        async with database.engine.begin() as connection:
+            await connection.run_sync(Base.metadata.create_all)
+        instrument = _instrument()
+        accepted_at = datetime(2020, 1, 1, tzinfo=UTC)
+        state = ResearchState(
+            instrument_id=instrument.instrument_id,
+            ticker="KLAC",
+            query="Current when submitted",
+            requested_at=accepted_at,
+            analysis_timestamp=accepted_at,
+            horizon="3-5 days",
+        )
+        async with database.sessions() as session, session.begin():
+            await SecurityMasterRepository(session).add_instrument(instrument)
+            repository = ResearchRunRepository(session)
+            await repository.create(state)
+            row = await session.get_one(ResearchRunRow, state.research_id)
+            legacy_json = dict(row.state_json)
+            legacy_json.pop("requested_at")
+            row.state_json = legacy_json
+            row.created_at = accepted_at
+            await session.flush()
+
+            loaded = await repository.get(state.research_id)
+            assert loaded is not None
+            assert loaded.requested_at == accepted_at
+        await database.dispose()
+
+    asyncio.run(scenario())
+
+
+def test_repository_rejects_replacing_a_frozen_cutoff(tmp_path: Path) -> None:
+    async def scenario() -> None:
+        database = Database(f"sqlite+aiosqlite:///{tmp_path / 'immutable-cutoff.db'}")
+        async with database.engine.begin() as connection:
+            await connection.run_sync(Base.metadata.create_all)
+        instrument = _instrument()
+        first_cutoff = datetime.now(UTC)
+        state = _state(instrument.instrument_id, first_cutoff)
+        async with database.sessions() as session, session.begin():
+            await SecurityMasterRepository(session).add_instrument(instrument)
+            repository = ResearchRunRepository(session)
+            await repository.create(state)
+            with pytest.raises(ValueError, match="analysis_timestamp is immutable"):
+                await repository.save(
+                    state.model_copy(
+                        update={"analysis_timestamp": first_cutoff + timedelta(seconds=1)}
+                    )
+                )
+        await database.dispose()
+
+    asyncio.run(scenario())
+
+
+def test_leased_repository_rejects_replacing_a_cutoff_frozen_in_same_session(
+    tmp_path: Path,
+) -> None:
+    async def scenario() -> None:
+        database = Database(f"sqlite+aiosqlite:///{tmp_path / 'leased-cutoff.db'}")
+        async with database.engine.begin() as connection:
+            await connection.run_sync(Base.metadata.create_all)
+        instrument = _instrument()
+        pending = ResearchState(
+            instrument_id=instrument.instrument_id,
+            ticker="KLAC",
+            query="Assess the current setup",
+            horizon="3-5 days",
+            timestamp_mode=ResearchTimestampMode.CURRENT_RESEARCH,
+            analysis_timestamp=None,
+        )
+        async with database.sessions() as session, session.begin():
+            await SecurityMasterRepository(session).add_instrument(instrument)
+            await ResearchRunRepository(session).create(pending)
+
+        first_cutoff = datetime.now(UTC)
+        async with database.sessions() as session:
+            repository = ResearchRunRepository(session)
+            await repository.claim_execution(
+                pending.research_id,
+                execution_id="worker-one",
+                lease_seconds=60,
+            )
+            await session.commit()
+            frozen = pending.model_copy(update={"analysis_timestamp": first_cutoff})
+            await repository.save(frozen, execution_id="worker-one")
+            await session.commit()
+
+            with pytest.raises(ValueError, match="analysis_timestamp is immutable"):
+                await repository.save(
+                    frozen.model_copy(
+                        update={
+                            "analysis_timestamp": first_cutoff + timedelta(seconds=1)
+                        }
+                    ),
+                    execution_id="worker-one",
+                )
+
         await database.dispose()
 
     asyncio.run(scenario())
@@ -379,9 +808,7 @@ def test_execution_lease_rejects_concurrent_worker(tmp_path: Path) -> None:
                     state.research_id, execution_id="worker-one", lease_seconds=60
                 )
             with pytest.raises(ResearchRunNotReadyError, match="not committed"):
-                await second.claim_execution(
-                    uuid4(), execution_id="worker-two", lease_seconds=60
-                )
+                await second.claim_execution(uuid4(), execution_id="worker-two", lease_seconds=60)
 
         async with database.sessions() as second_session:
             second = ResearchRunRepository(second_session)
@@ -484,9 +911,10 @@ def test_database_session_rolls_back_on_error(tmp_path: Path) -> None:
         with pytest.raises(RuntimeError, match="abort"):
             await session_manager.athrow(RuntimeError("abort"))
         async with database.sessions() as session:
-            assert await SecurityMasterRepository(session).get_instrument(
-                instrument.instrument_id
-            ) is None
+            assert (
+                await SecurityMasterRepository(session).get_instrument(instrument.instrument_id)
+                is None
+            )
         await database.dispose()
 
     asyncio.run(scenario())
@@ -507,6 +935,7 @@ def test_research_api_service_boundary(tmp_path: Path) -> None:
                     ticker="KLAC",
                     query="Assess the setup",
                     horizon="3-5 days",
+                    timestamp_mode=ResearchTimestampMode.FIXED_CUTOFF,
                 ),
                 session,
                 lambda _: "task-id",
@@ -550,6 +979,7 @@ def test_research_http_submission(tmp_path: Path) -> None:
                 "ticker": "KLAC",
                 "query": "Assess the setup",
                 "horizon": "3-5 days",
+                "timestamp_mode": "fixed_cutoff",
             },
         )
         assert response.status_code == 202
@@ -582,6 +1012,7 @@ def test_queue_dispatch_failure_is_durable(tmp_path: Path) -> None:
                         ticker="KLAC",
                         query="Assess the setup",
                         horizon="3-5 days",
+                        timestamp_mode=ResearchTimestampMode.FIXED_CUTOFF,
                     ),
                     session,
                     fail_enqueue,
@@ -618,9 +1049,7 @@ def test_http_to_registered_celery_task_to_get_terminal_state(
     executor = MockExecutor(lambda _request: research_plan_payload)
     executor.provider = ProviderName.CODEX_SUBSCRIPTION
     monkeypatch.setattr(celery_module, "get_database", lambda: database)
-    monkeypatch.setattr(
-        celery_module, "build_model_gateway", lambda _: ModelGateway([executor])
-    )
+    monkeypatch.setattr(celery_module, "build_model_gateway", lambda _: ModelGateway([executor]))
 
     def eager_enqueue(research_run_id: str) -> str:
         result: dict[str, Any] = {}
@@ -628,9 +1057,7 @@ def test_http_to_registered_celery_task_to_get_terminal_state(
 
         def invoke() -> None:
             try:
-                result["task"] = run_research.apply(
-                    args=[research_run_id], throw=True
-                )
+                result["task"] = run_research.apply(args=[research_run_id], throw=True)
             except BaseException as exc:  # pragma: no cover - assertion transport
                 error.append(exc)
 
@@ -654,6 +1081,7 @@ def test_http_to_registered_celery_task_to_get_terminal_state(
                 "ticker": "KLAC",
                 "query": "Assess the setup",
                 "horizon": "3-5 days",
+                "timestamp_mode": "fixed_cutoff",
             },
         )
         assert response.status_code == 202
