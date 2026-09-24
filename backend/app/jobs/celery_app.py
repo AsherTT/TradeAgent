@@ -169,7 +169,9 @@ async def execute_research_run(
             await repository.save(
                 failed,
                 execution_id=owner,
-                failure_reason=f"{type(exc).__name__}: {exc}",
+                failure_reason=failed.quality_assessment.reasons[0]
+                if failed.quality_assessment is not None
+                else type(exc).__name__,
             )
             await session.commit()
             return failed

@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import StrEnum
 from hashlib import sha256
+from string import ascii_letters, digits
 from time import perf_counter
 from typing import Any, Protocol, TypedDict, cast
 
@@ -65,10 +66,15 @@ def _provider_attempt_summary(service: object) -> str:
         else ()
     )
     return ", ".join(
-        f"{attempt.provider}:{attempt.outcome}"
-        + (f"({attempt.reason})" if attempt.reason else "")
-        for attempt in attempts
-    )
+        f"{_safe_provider_token(attempt.provider)}:{attempt.outcome}"
+        + (f"({_safe_provider_token(attempt.reason)})" if attempt.reason else "")
+        for attempt in attempts[:8]
+    )[:256]
+
+
+def _safe_provider_token(value: str) -> str:
+    allowed = ascii_letters + digits + "_.-"
+    return value if 0 < len(value) <= 64 and all(char in allowed for char in value) else "redacted"
 
 
 class ResearchNode(StrEnum):
@@ -80,6 +86,18 @@ class ResearchNode(StrEnum):
     FINISH = "finish"
     BUDGET_EXHAUSTED = "budget_exhausted"
     FAILED = "failed"
+
+
+class UnknownExternalOutcomeError(RuntimeError):
+    """A durable pre-call marker exists but no completion checkpoint was saved."""
+
+
+class MarketEvidenceIntegrityFailure(MarketDataIntegrityError):
+    """Integrity failure carrying only a controlled provider-attempt summary."""
+
+    def __init__(self, provider_summary: str) -> None:
+        super().__init__("market data integrity failure")
+        self.provider_summary = provider_summary
 
 
 class BudgetDimension(StrEnum):
@@ -173,15 +191,15 @@ class MarketResearchEvidence:
                 if isinstance(self._service, MarketDataAttemptSource)
                 else ()
             )
+            if any(_safe_provider_token(bar.source) != bar.source for bar in bars):
+                raise MarketDataIntegrityError("unsafe market-data source identifier")
             technical = calculate_technical_snapshot(
                 bars, analysis_timestamp=analysis_timestamp
             )
         except MarketDataIntegrityError as exc:
             attempt_summary = _provider_attempt_summary(self._service)
             if attempt_summary:
-                raise MarketDataIntegrityError(
-                    f"{exc}; provider_attempts={attempt_summary}"
-                ) from exc
+                raise MarketEvidenceIntegrityFailure(attempt_summary) from exc
             raise
         except (
             IndicatorError,
@@ -193,9 +211,12 @@ class MarketResearchEvidence:
             return EvidenceCollection(
                 analysis_timestamp=analysis_timestamp,
                 gaps=(
-                    (str(exc), f"provider_attempts={attempt_summary}")
+                    (
+                        _safe_evidence_gap(exc),
+                        f"provider_attempts={attempt_summary}",
+                    )
                     if attempt_summary
-                    else (str(exc),)
+                    else (_safe_evidence_gap(exc),)
                 ),
             )
         latest = max(bars, key=lambda bar: bar.timestamp)
@@ -223,8 +244,16 @@ class MarketResearchEvidence:
                 "market_snapshot": market.model_dump(mode="json"),
                 "technical_snapshot": technical.model_dump(mode="json"),
                 "provider_attempts": [
-                    attempt.model_dump(mode="json")
-                    for attempt in attempts
+                    {
+                        "provider": _safe_provider_token(attempt.provider),
+                        "outcome": attempt.outcome.value,
+                        "reason": (
+                            _safe_provider_token(attempt.reason)
+                            if attempt.reason
+                            else None
+                        ),
+                    }
+                    for attempt in attempts[:8]
                 ],
             },
             confidence=1.0,
@@ -322,7 +351,9 @@ class ResearchWorkflow:
         if _attempt_started(state, ResearchNode.PLAN):
             state = failed_research_state(
                 state,
-                RuntimeError("model-call outcome is unknown after worker interruption"),
+                UnknownExternalOutcomeError(
+                    "model-call outcome is unknown after worker interruption"
+                ),
             )
             await self._save(state)
             return {"research": state}
@@ -401,7 +432,9 @@ class ResearchWorkflow:
         if _attempt_started(state, ResearchNode.COLLECT_EVIDENCE):
             state = failed_research_state(
                 state,
-                RuntimeError("evidence-call outcome is unknown after worker interruption"),
+                UnknownExternalOutcomeError(
+                    "evidence-call outcome is unknown after worker interruption"
+                ),
             )
             await self._save(state)
             return {"research": state}
@@ -532,7 +565,13 @@ def _mark_attempt_started(
     request_id: str | None = None,
 ) -> ResearchState:
     attempts = dict(state.runtime_metadata.get("external_attempts", {}))
-    attempts[node.value] = {"status": "started", "request_id": request_id}
+    attempts[node.value] = {
+        "status": "started",
+        "request_id": request_id,
+        "started_at": utc_now().isoformat(),
+        "outcome_known": False,
+        "retry_eligible": False,
+    }
     marked = state.model_copy(
         update={
             "runtime_metadata": {**state.runtime_metadata, "external_attempts": attempts}
@@ -550,6 +589,9 @@ def _mark_attempt_completed(state: ResearchState, node: ResearchNode) -> Researc
     attempts = dict(state.runtime_metadata.get("external_attempts", {}))
     attempt = dict(attempts.get(node.value, {}))
     attempt["status"] = "completed"
+    attempt["finished_at"] = utc_now().isoformat()
+    attempt["outcome_known"] = True
+    attempt["retry_eligible"] = False
     attempts[node.value] = attempt
     return state.model_copy(
         update={
@@ -565,7 +607,35 @@ def _attempt_started(state: ResearchState, node: ResearchNode) -> bool:
 
 
 def failed_research_state(state: ResearchState, exc: Exception) -> ResearchState:
-    reason = f"{type(exc).__name__}: {exc}"
+    attempts = dict(state.runtime_metadata.get("external_attempts", {}))
+    outcome = (
+        "unknown_outcome"
+        if isinstance(exc, UnknownExternalOutcomeError)
+        else "known_failure"
+    )
+    for node in (ResearchNode.PLAN, ResearchNode.COLLECT_EVIDENCE):
+        attempt = attempts.get(node.value)
+        if isinstance(attempt, dict) and attempt.get("status") == "started":
+            attempts[node.value] = {
+                **attempt,
+                "status": outcome,
+                "finished_at": utc_now().isoformat(),
+                "outcome_known": outcome == "known_failure",
+                "retry_eligible": False,
+                "failure_type": type(exc).__name__[:64],
+            }
+    state = state.model_copy(
+        update={
+            "runtime_metadata": {**state.runtime_metadata, "external_attempts": attempts}
+        }
+    )
+    reason = (
+        "external-call outcome is unknown after worker interruption"
+        if outcome == "unknown_outcome"
+        else f"{type(exc).__name__[:64]}: research execution failed"
+    )
+    if isinstance(exc, MarketEvidenceIntegrityFailure):
+        reason += f"; provider_attempts={exc.provider_summary}"
     return _terminal_research_state(
         state,
         node=ResearchNode.FAILED,
@@ -578,6 +648,10 @@ def failed_research_state(state: ResearchState, exc: Exception) -> ResearchState
         reasons=(reason,),
         evidence_gaps=(*state.evidence_gaps, reason),
     )
+
+
+def _safe_evidence_gap(exc: Exception) -> str:
+    return f"{type(exc).__name__[:64]}: qualified market evidence unavailable"
 
 
 def _budget_exhausted(state: ResearchState, reason: str) -> ResearchState:

@@ -29,12 +29,21 @@ worker disappears after that boundary, a later delivery records an inspectable u
 failure instead of repeating a possibly completed and billable external call. An expired worker
 cannot overwrite a newer owner because every save verifies the execution lease.
 
+The attempt record is bounded to the graph's external nodes and stores a request ID where
+available, start/finish timestamps, outcome status, error type, and conservative retry
+eligibility. A live worker records `known_failure` when an external step raises; a delivery that
+finds only the committed pre-call marker records `unknown_outcome`. Neither is automatically
+retried. Error messages and provider URLs are excluded from persisted failure reasons, while
+controlled provider attempt summaries may be retained for integrity failures. Expected evidence
+gaps also use controlled error types instead of raw provider messages. Successful market evidence
+rejects unsafe source identifiers and writes bounded, sanitized provider-attempt records.
+
 ## Outcomes
 
 - `complete`: a validated plan and qualified evidence are both present.
 - `insufficient_evidence`: planning may have succeeded, but qualified evidence is unavailable.
-- `failed`: execution raised an error; the type and message are saved with a blocked quality
-  assessment.
+- `failed`: execution raised an error; its type and a controlled reason are saved with a blocked
+  quality assessment. Raw exception messages are excluded.
 - Budget exhaustion uses `insufficient_evidence` as the run status and
   `budget_exhausted` as the more precise research-completion reason.
 
@@ -94,8 +103,9 @@ cancellation, not provider-side interruption of an in-flight call.
 ## Remaining Phase 5 path
 
 1. Request separate authorization before a narrow recorded live market-data trial.
-2. Durable cancellation is implemented and qualified offline. Strengthen external-attempt
-   observability next; pending-run reconciliation is implemented.
+2. Durable cancellation is qualified offline and through the Docker queue path. External-attempt
+   observability now distinguishes completed, known-failure, and unknown-outcome steps with
+   bounded secret-free metadata; pending-run reconciliation is implemented.
 3. Extend the graph through Intent, News, evidence aggregation, Gap Judge, bounded Replan, and
    Synthesis, then qualify the full Gate C limits.
 

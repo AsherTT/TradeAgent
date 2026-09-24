@@ -38,6 +38,7 @@ from backend.app.market_data.providers import (
     InMemoryCorporateActionProvider,
     InMemoryMarketDataProvider,
 )
+from backend.app.market_data.quality import ProviderQualityError
 from backend.app.market_data.service import (
     CurrentMarketDataRequest,
     CurrentMarketDataResult,
@@ -202,6 +203,11 @@ def test_graph_without_qualified_evidence_finishes_insufficient() -> None:
         assert result.research_completion is ResearchCompletion.INSUFFICIENT_EVIDENCE
         assert result.quality_assessment is not None
         assert result.quality_assessment.evidence_coverage == 0
+        attempt = result.runtime_metadata["external_attempts"]["plan"]
+        assert attempt["status"] == "completed"
+        assert attempt["outcome_known"] is True
+        assert attempt["retry_eligible"] is False
+        assert attempt["started_at"] and attempt["finished_at"]
 
     asyncio.run(scenario())
 
@@ -689,7 +695,7 @@ def test_unavailable_market_evidence_is_insufficient_not_failed() -> None:
         ).run(_state(instrument_id))
         assert result.status is ResearchStatus.INSUFFICIENT_EVIDENCE
         assert result.research_completion is ResearchCompletion.INSUFFICIENT_EVIDENCE
-        assert any("visible market bar" in gap for gap in result.evidence_gaps)
+        assert any("IndicatorError" in gap for gap in result.evidence_gaps)
 
     asyncio.run(scenario())
 
@@ -827,6 +833,10 @@ def test_interrupted_external_attempt_is_not_repeated() -> None:
         assert executor.call_count == 0
         assert result.quality_assessment is not None
         assert "outcome is unknown" in result.quality_assessment.reasons[0]
+        attempt = result.runtime_metadata["external_attempts"]["plan"]
+        assert attempt["status"] == "unknown_outcome"
+        assert attempt["outcome_known"] is False
+        assert attempt["retry_eligible"] is False
 
     asyncio.run(scenario())
 
@@ -859,5 +869,118 @@ def test_interrupted_evidence_attempt_is_not_repeated() -> None:
         assert result.status is ResearchStatus.FAILED
         assert result.market_snapshot is None
         assert executor.call_count == 0
+        assert (
+            result.runtime_metadata["external_attempts"]["collect_evidence"]["status"]
+            == "unknown_outcome"
+        )
+
+    asyncio.run(scenario())
+
+
+def test_known_external_failure_records_only_bounded_safe_metadata() -> None:
+    started = _state(uuid4()).model_copy(
+        update={
+            "status": ResearchStatus.RUNNING,
+            "runtime_metadata": {
+                "external_attempts": {
+                    "plan": {"status": "started", "request_id": str(uuid4())}
+                }
+            },
+        }
+    )
+    secret = "https://provider.invalid/path?api_key=do-not-store"
+    failed = failed_research_state(started, RuntimeError(secret))
+    attempt = failed.runtime_metadata["external_attempts"]["plan"]
+    assert attempt["status"] == "known_failure"
+    assert attempt["outcome_known"] is True
+    assert attempt["retry_eligible"] is False
+    assert attempt["failure_type"] == "RuntimeError"
+    assert secret not in failed.model_dump_json()
+    forged = failed_research_state(
+        started, MarketDataIntegrityError(f"provider_attempts={secret}")
+    )
+    assert secret not in forged.model_dump_json()
+
+
+def test_market_evidence_gap_excludes_credential_bearing_provider_identifier() -> None:
+    async def scenario() -> None:
+        secret = "https://user:password@provider.invalid/history?api_key=do-not-store"
+
+        class LeakingLoader:
+            async def load_bars(self, request: MarketDataRequest) -> tuple[MarketBar, ...]:
+                raise ProviderQualityError(f"provider {secret} is not qualified")
+
+        async def save(_: ResearchState) -> None:
+            return None
+
+        instrument_id = uuid4()
+        state = _state(instrument_id).model_copy(
+            update={"research_plan": ResearchPlan.model_validate(_plan_payload())}
+        )
+        result = await ResearchWorkflow(
+            model_gateway=ModelGateway([MockExecutor(lambda _: _plan_payload())]),
+            evidence_provider=MarketResearchEvidence(LeakingLoader(), currency="USD"),
+            provider_order=(ProviderName.MOCK,),
+            save=save,
+        ).run(state)
+        assert result.status is ResearchStatus.INSUFFICIENT_EVIDENCE
+        assert "ProviderQualityError" in result.evidence_gaps[0]
+        assert secret not in result.model_dump_json()
+
+    asyncio.run(scenario())
+
+
+def test_successful_evidence_redacts_provider_attempt_identifiers() -> None:
+    async def scenario() -> None:
+        secret = "https://user:password@provider.invalid/history?api_key=do-not-store"
+        instrument_id = uuid4()
+        underlying = _market_service(instrument_id)
+
+        class LeakingAttempts:
+            @property
+            def last_attempts(self) -> tuple[ProviderAttempt, ...]:
+                return (
+                    ProviderAttempt(
+                        provider=secret,
+                        outcome=ProviderAttemptOutcome.INTEGRITY_FAILURE,
+                        reason=secret,
+                    ),
+                )
+
+            async def load_bars(self, request: MarketDataRequest) -> tuple[MarketBar, ...]:
+                return await underlying.load_bars(request)
+
+        collection = await MarketResearchEvidence(
+            LeakingAttempts(), currency="USD"
+        ).collect(_state(instrument_id))
+        assert collection.evidence
+        assert secret not in collection.evidence[0].model_dump_json()
+        assert collection.evidence[0].structured_data["provider_attempts"] == [
+            {
+                "provider": "redacted",
+                "outcome": "integrity_failure",
+                "reason": "redacted",
+            }
+        ]
+
+    asyncio.run(scenario())
+
+
+def test_credential_bearing_market_source_is_rejected_before_persistence() -> None:
+    async def scenario() -> None:
+        secret = "https://provider.invalid/history?api_key=do-not-store"
+        instrument_id = uuid4()
+        underlying = _market_service(instrument_id)
+
+        class LeakingSource:
+            async def load_bars(self, request: MarketDataRequest) -> tuple[MarketBar, ...]:
+                bars = await underlying.load_bars(request)
+                return tuple(bar.model_copy(update={"source": secret}) for bar in bars)
+
+        with pytest.raises(MarketDataIntegrityError) as caught:
+            await MarketResearchEvidence(
+                LeakingSource(), currency="USD"
+            ).collect(_state(instrument_id))
+        assert secret not in str(caught.value)
 
     asyncio.run(scenario())

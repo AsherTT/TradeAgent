@@ -80,7 +80,7 @@ Last audited: 2026-09-22
 - Ordinary tests pass; the live-model test is skipped unless explicitly enabled
 - Live Gate A passed on 2026-09-17: Codex, Qwen, and DeepSeek returned the same
   validated `ResearchPlan`, with reasoning configuration, tracing, and usage metering active
-- Latest ordinary suite: 159 passed, 1 live-model test deselected, with 94.33% combined
+- Latest ordinary suite: 163 passed, 1 live-model test deselected, with 94.46% combined
   statement/branch coverage.
 - Ruff passes
 - strict mypy passes
@@ -157,6 +157,12 @@ Last audited: 2026-09-22
   `149c1851-b97f-4ed5-9809-ec50fb3a503b` while the worker was stopped, cancelled it via API,
   then started the rebuilt worker. The queued task returned `cancelled`; PostgreSQL retained the
   terminal status with a cleared lease and zero model/tool calls. No provider call was made.
+- External-attempt records now carry bounded timing, outcome, error-type, and retry-eligibility
+  metadata. Offline checks distinguish known failures from unknown outcomes after interruption
+  and verify that failure text and evidence gaps containing a credential-bearing URL are not
+  persisted. Successful evidence also rejects unsafe market source identifiers and sanitizes
+  provider-attempt fields before persistence. Automatic retry remains disallowed after an
+  external call might have begun.
 
 ## Current phase assessment
 
@@ -171,8 +177,8 @@ Last audited: 2026-09-22
 - The market-data architecture decision is closed offline. Live qualification remains optional and
   separately authorized rather than a prerequisite for the provider/cache interface.
 - Phase 5 is partially complete. Planner, Market, Quant, market Evidence, BudgetGuard enforcement,
-  durable execution, cancellation, and safe terminal outcomes are implemented. Stronger external-
-  attempt observability, Intent and News graph nodes, an explicit Gap Judge, bounded Replan
+  durable execution, cancellation, external-attempt observability, and safe terminal outcomes are
+  implemented. Intent and News graph nodes, an explicit Gap Judge, bounded Replan
   behavior, and Synthesis remain; Gate C has not passed.
 - ADR-0017 and `docs/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,

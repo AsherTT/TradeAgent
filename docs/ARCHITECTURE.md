@@ -2,10 +2,11 @@
 
 The source-of-truth architecture is **Agentic Equity Research Workbench v1.1.1 — Quant Integrity + Operational Reliability Hardened** dated 2026-09-16.
 
-This repository has completed Phases 0-4 and implements the first Phase 5 vertical slice. PostgreSQL/pgvector migrations, the API-to-Redis-to-Celery path, point-in-time corporate-action visibility, deterministic price normalization, provider quality gates, and deterministic indicators have passed their local and Docker-backed qualifications. The Phase 5 LangGraph slice adds bounded planning, qualified-evidence collection, durable node transitions, terminal outcomes, and failure persistence without changing the frozen provider boundaries.
+This repository has completed Phases 0-4 and implements the first Phase 5 vertical slice. PostgreSQL/pgvector migrations, the API-to-Redis-to-Celery path, point-in-time corporate-action visibility, deterministic price normalization, provider quality gates, and deterministic indicators have passed their local and Docker-backed qualifications. The Phase 5 LangGraph slice adds bounded planning, qualified-evidence collection, durable node transitions, terminal outcomes, failure persistence, durable cancellation, and bounded external-attempt records without changing the frozen provider boundaries.
 
 Phase 5 is in progress rather than complete. Planner, market evidence, deterministic quant,
-BudgetGuard enforcement, durable transitions, and safe terminal outcomes exist. Intent and News
+BudgetGuard enforcement, durable transitions, cancellation, external-attempt observability, and
+safe terminal outcomes exist. Intent and News
 nodes, a real Gap Judge, bounded replanning, and Synthesis remain before Gate C can pass.
 
 ADR-0018 separates immutable fixed-cutoff research from current research whose decision cutoff is
