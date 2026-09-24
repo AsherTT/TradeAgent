@@ -281,6 +281,7 @@ class ResearchWorkflow:
             ResearchStatus.COMPLETE,
             ResearchStatus.INSUFFICIENT_EVIDENCE,
             ResearchStatus.FAILED,
+            ResearchStatus.CANCELLED,
         }:
             return state
         self._run_started = perf_counter()

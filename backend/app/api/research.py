@@ -112,3 +112,15 @@ async def get_research(
     if state is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="research run not found")
     return state
+
+
+@router.post("/{research_run_id}/cancel", response_model=ResearchState)
+async def cancel_research(
+    research_run_id: UUID,
+    session: Annotated[AsyncSession, Depends(get_session)],
+) -> ResearchState:
+    cancelled = await ResearchRunRepository(session).cancel(research_run_id)
+    if cancelled is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="research run not found")
+    await session.commit()
+    return cancelled

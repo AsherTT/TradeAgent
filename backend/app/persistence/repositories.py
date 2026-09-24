@@ -9,6 +9,12 @@ from uuid import UUID
 from sqlalchemy import or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.app.contracts.evaluation import (
+    QualityAssessment,
+    QualityGateDecision,
+    ResearchCompletion,
+    SystemConfidence,
+)
 from backend.app.contracts.instrument import (
     CorporateAction,
     CorporateActionType,
@@ -236,6 +242,7 @@ _TERMINAL_RESEARCH_STATUSES = {
     ResearchStatus.COMPLETE,
     ResearchStatus.INSUFFICIENT_EVIDENCE,
     ResearchStatus.FAILED,
+    ResearchStatus.CANCELLED,
 }
 
 
@@ -289,6 +296,54 @@ class ResearchRunRepository:
     async def get(self, research_run_id: UUID) -> ResearchState | None:
         row = await self._session.get(ResearchRunRow, research_run_id)
         return _research_state_from_row(row) if row else None
+
+    async def cancel(self, research_run_id: UUID) -> ResearchState | None:
+        """Atomically make a pending or running run terminal and revoke its lease."""
+
+        row = await self._session.scalar(
+            select(ResearchRunRow)
+            .where(ResearchRunRow.research_run_id == research_run_id)
+            .with_for_update()
+        )
+        if row is None:
+            return None
+        state = _research_state_from_row(row)
+        if state.status in _TERMINAL_RESEARCH_STATUSES:
+            return state
+        reason = "Research run cancelled by request."
+        confidence = SystemConfidence(score=0, limitations=(reason,))
+        assessment = QualityAssessment(
+            data_quality=state.data_quality_status,
+            evaluation_maturity=state.evaluation_maturity,
+            replay_integrity=state.replay_integrity_level,
+            security_status=state.security_status,
+            evidence_coverage=0,
+            research_completion=ResearchCompletion.CANCELLED,
+            system_confidence=confidence,
+            decision=QualityGateDecision.BLOCKED,
+            reasons=(reason,),
+        )
+        cancelled = state.model_copy(
+            update={
+                "status": ResearchStatus.CANCELLED,
+                "research_completion": ResearchCompletion.CANCELLED,
+                "quality_gate_decision": QualityGateDecision.BLOCKED,
+                "system_confidence": confidence,
+                "quality_assessment": assessment,
+                "runtime_metadata": {
+                    **state.runtime_metadata,
+                    "transitions": [*state.runtime_metadata.get("transitions", ()), "cancelled"],
+                    "cancelled_at": datetime.now(UTC).isoformat(),
+                },
+            }
+        )
+        row.status = cancelled.status.value
+        row.state_json = cancelled.model_dump(mode="json")
+        row.execution_id = None
+        row.lease_expires_at = None
+        row.updated_at = datetime.now(UTC)
+        await self._session.flush()
+        return cancelled
 
     async def list_reconcilable_pending_ids(
         self,
@@ -389,6 +444,9 @@ class ResearchRunRepository:
                 .where(
                     ResearchRunRow.research_run_id == state.research_id,
                     ResearchRunRow.execution_id == execution_id,
+                    ResearchRunRow.status.in_(
+                        (ResearchStatus.PENDING.value, ResearchStatus.RUNNING.value)
+                    ),
                     ResearchRunRow.lease_expires_at > now,
                     or_(
                         ResearchRunRow.analysis_timestamp.is_(None),
@@ -427,6 +485,10 @@ class ResearchRunRepository:
             return state
 
         row = existing
+        if ResearchStatus(row.status) in _TERMINAL_RESEARCH_STATUSES:
+            raise ResearchRunBusyError(
+                f"research run {state.research_id} is already terminal"
+            )
         row.status = state.status.value
         row.state_json = state.model_dump(mode="json")
         row.analysis_timestamp = state.analysis_timestamp
@@ -447,10 +509,16 @@ class ResearchRunRepository:
         *,
         failure_reason: str | None = None,
     ) -> ResearchState:
-        state = await self.get(research_run_id)
-        if state is None:
+        row = await self._session.scalar(
+            select(ResearchRunRow)
+            .where(ResearchRunRow.research_run_id == research_run_id)
+            .with_for_update()
+        )
+        if row is None:
             raise LookupError(f"research run {research_run_id} does not exist")
-        row = await self._session.get_one(ResearchRunRow, research_run_id)
+        state = _research_state_from_row(row)
+        if state.status in _TERMINAL_RESEARCH_STATUSES:
+            return state
         updated = ResearchState.model_validate(
             {**state.model_dump(), "status": status}
         )

@@ -43,6 +43,7 @@ class ResearchCompletion(StrEnum):
     BUDGET_EXHAUSTED = "budget_exhausted"
     INSUFFICIENT_EVIDENCE = "insufficient_evidence"
     FAILED = "failed"
+    CANCELLED = "cancelled"
 
 
 class QualityGateDecision(StrEnum):

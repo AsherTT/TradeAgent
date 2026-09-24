@@ -19,11 +19,13 @@ from backend.app.ai.executors.mock import MockExecutor
 from backend.app.ai.gateway import ModelGateway
 from backend.app.api.research import (
     ResearchSubmission,
+    cancel_research,
     get_research,
     get_research_enqueuer,
     submit_research,
 )
 from backend.app.config import Settings
+from backend.app.contracts.evaluation import ResearchCompletion
 from backend.app.contracts.instrument import (
     CorporateAction,
     CorporateActionType,
@@ -953,6 +955,107 @@ def test_research_api_service_boundary(tmp_path: Path) -> None:
     asyncio.run(scenario())
 
 
+def test_cancelled_pending_run_is_durable_idempotent_and_never_executed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    async def scenario() -> None:
+        database = Database(f"sqlite+aiosqlite:///{tmp_path / 'cancel-pending.db'}")
+        async with database.engine.begin() as connection:
+            await connection.run_sync(Base.metadata.create_all)
+        instrument = _instrument()
+        state = _state(instrument.instrument_id, datetime.now(UTC))
+        async with database.sessions() as session, session.begin():
+            await SecurityMasterRepository(session).add_instrument(instrument)
+            await ResearchRunRepository(session).create(state)
+
+        async with database.sessions() as session:
+            cancelled = await cancel_research(state.research_id, session)
+            assert cancelled.status is ResearchStatus.CANCELLED
+            assert cancelled.research_completion is ResearchCompletion.CANCELLED
+            assert cancelled.quality_assessment is not None
+            assert cancelled.quality_assessment.reasons == (
+                "Research run cancelled by request.",
+            )
+            assert await cancel_research(state.research_id, session) == cancelled
+            with pytest.raises(HTTPException) as missing:
+                await cancel_research(uuid4(), session)
+            assert missing.value.status_code == 404
+
+        monkeypatch.setattr(celery_module, "get_database", lambda: database)
+        assert await execute_research_run(state.research_id) == cancelled
+        async with database.sessions() as session:
+            repository = ResearchRunRepository(session)
+            assert await repository.get(state.research_id) == cancelled
+            assert state.research_id not in await repository.list_reconcilable_pending_ids(
+                older_than=datetime.now(UTC), limit=10
+            )
+        await database.dispose()
+
+    asyncio.run(scenario())
+
+
+@pytest.mark.parametrize("external_fails", [False, True])
+def test_cancel_during_external_call_rejects_late_worker_result(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    research_plan_payload: dict[str, Any],
+    external_fails: bool,
+) -> None:
+    async def scenario() -> None:
+        database = Database(f"sqlite+aiosqlite:///{tmp_path / 'cancel-running.db'}")
+        async with database.engine.begin() as connection:
+            await connection.run_sync(Base.metadata.create_all)
+        instrument = _instrument()
+        state = _state(instrument.instrument_id, datetime.now(UTC)).model_copy(
+            update={"research_plan": None}
+        )
+        async with database.sessions() as session, session.begin():
+            await SecurityMasterRepository(session).add_instrument(instrument)
+            await ResearchRunRepository(session).create(state)
+
+        entered = asyncio.Event()
+        release = asyncio.Event()
+        calls = 0
+
+        class BlockingExecutor(MockExecutor):
+            async def execute(self, request: Any) -> Any:
+                nonlocal calls
+                calls += 1
+                entered.set()
+                await release.wait()
+                if external_fails:
+                    raise RuntimeError("fixture model failure")
+                return await super().execute(request)
+
+        executor = BlockingExecutor(lambda _: research_plan_payload)
+        executor.provider = ProviderName.CODEX_SUBSCRIPTION
+        monkeypatch.setattr(celery_module, "get_database", lambda: database)
+        monkeypatch.setattr(
+            celery_module, "build_model_gateway", lambda _: ModelGateway([executor])
+        )
+        worker = asyncio.create_task(execute_research_run(state.research_id))
+        await asyncio.wait_for(entered.wait(), timeout=5)
+        async with database.sessions() as session:
+            cancelled = await cancel_research(state.research_id, session)
+        assert cancelled.runtime_metadata["external_attempts"]["plan"]["status"] == "started"
+        release.set()
+        assert await asyncio.wait_for(worker, timeout=5) == cancelled
+        assert calls == 1
+        async with database.sessions() as session:
+            repository = ResearchRunRepository(session)
+            assert await repository.get(state.research_id) == cancelled
+            with pytest.raises(ResearchRunBusyError):
+                await repository.save(
+                    state.model_copy(update={"status": ResearchStatus.COMPLETE}),
+                    execution_id="stale-worker",
+                )
+        assert await execute_research_run(state.research_id) == cancelled
+        assert calls == 1
+        await database.dispose()
+
+    asyncio.run(scenario())
+
+
 def test_research_http_submission(tmp_path: Path) -> None:
     database = Database(f"sqlite+aiosqlite:///{tmp_path / 'http.db'}")
     instrument = _instrument()
@@ -986,6 +1089,15 @@ def test_research_http_submission(tmp_path: Path) -> None:
         payload = response.json()
         assert payload["task_id"] == "http-task"
         assert client.get(f"/research/{payload['research_run_id']}").status_code == 200
+        cancellation = client.post(f"/research/{payload['research_run_id']}/cancel")
+        assert cancellation.status_code == 200
+        assert cancellation.json()["status"] == "cancelled"
+        assert client.post(f"/research/{payload['research_run_id']}/cancel").json() == (
+            cancellation.json()
+        )
+        assert client.get(f"/research/{payload['research_run_id']}").json() == (
+            cancellation.json()
+        )
         assert client.get(f"/research/{uuid4()}").status_code == 404
     finally:
         app.dependency_overrides.clear()

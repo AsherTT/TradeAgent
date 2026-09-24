@@ -80,7 +80,8 @@ Last audited: 2026-09-22
 - Ordinary tests pass; the live-model test is skipped unless explicitly enabled
 - Live Gate A passed on 2026-09-17: Codex, Qwen, and DeepSeek returned the same
   validated `ResearchPlan`, with reasoning configuration, tracing, and usage metering active
-- Latest ordinary suite: 156 passed, 1 skipped, with 94.43% combined statement/branch coverage
+- Latest ordinary suite: 159 passed, 1 live-model test deselected, with 94.33% combined
+  statement/branch coverage.
 - Ruff passes
 - strict mypy passes
 - Docker Compose qualification passes with PostgreSQL 18/pgvector, Redis, Alembic, API, and Celery
@@ -148,6 +149,14 @@ Last audited: 2026-09-22
 - This Docker trial qualifies timestamp transport, nullable persistence, queue execution, and
   terminal redelivery only. Current acquisition and atomic cutoff-plus-evidence persistence remain
   offline fixture-qualified at the workflow/adapter boundary rather than through the container path.
+- Durable cancellation now has a research API endpoint and a PostgreSQL terminal transition that
+  revokes the worker lease. Offline tests cover pending and running cancellation, idempotent
+  requests, redelivery, and rejection of a late model-call result. An external call already in
+  flight may still complete, but its result cannot replace the cancelled state.
+- An isolated Docker Compose queue-path trial submitted run
+  `149c1851-b97f-4ed5-9809-ec50fb3a503b` while the worker was stopped, cancelled it via API,
+  then started the rebuilt worker. The queued task returned `cancelled`; PostgreSQL retained the
+  terminal status with a cleared lease and zero model/tool calls. No provider call was made.
 
 ## Current phase assessment
 
@@ -162,8 +171,9 @@ Last audited: 2026-09-22
 - The market-data architecture decision is closed offline. Live qualification remains optional and
   separately authorized rather than a prerequisite for the provider/cache interface.
 - Phase 5 is partially complete. Planner, Market, Quant, market Evidence, BudgetGuard enforcement,
-  durable execution, and safe terminal outcomes are implemented. Intent and News graph nodes, an
-  explicit Gap Judge, bounded Replan behavior, and Synthesis remain; Gate C has not passed.
+  durable execution, cancellation, and safe terminal outcomes are implemented. Stronger external-
+  attempt observability, Intent and News graph nodes, an explicit Gap Judge, bounded Replan
+  behavior, and Synthesis remain; Gate C has not passed.
 - ADR-0017 and `docs/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,
   real Research API integration waits for Gate C, and the formal frontend milestone remains
@@ -174,6 +184,6 @@ Last audited: 2026-09-22
 - Live Gate A remains excluded from the ordinary test suite so routine development does not
   consume provider API funds or subscription quota.
 - Live external market-data authorization and credentials, recorded live qualification, optional
-  broader current-provider coverage after independent qualification, research/RAG graph nodes, cancellation,
+  broader current-provider coverage after independent qualification, research/RAG graph nodes,
   backtesting, integrated frontend implementation, and Azure deployment remain deferred to their
   documented gates.

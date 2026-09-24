@@ -31,6 +31,7 @@ class ResearchStatus(StrEnum):
     COMPLETE = "complete"
     INSUFFICIENT_EVIDENCE = "insufficient_evidence"
     FAILED = "failed"
+    CANCELLED = "cancelled"
 
 
 class ResearchTimestampMode(StrEnum):

@@ -68,11 +68,34 @@ then invokes the named reconciliation task. The reconciler republishes one ID, t
 `budget_exhausted`, and the logs and persisted state show zero model calls, tool calls, evidence,
 or provider-request markers. Terminal redelivery remains an idempotent no-op.
 
+## Durable cancellation
+
+`POST /research/{research_run_id}/cancel` marks a pending or running run `cancelled` in
+PostgreSQL, records a blocked quality assessment and cancellation timestamp, and revokes the
+worker lease in the same transaction. Repeated requests return the existing terminal state;
+already completed, insufficient-evidence, or failed runs keep their original outcome. Unknown
+IDs return 404. A queued delivery or pending-run reconciliation cannot restart a cancelled run.
+
+The worker commits checkpoints before external calls. A cancellation committed before the
+pre-call checkpoint prevents the call. Once that checkpoint has committed, cancellation cannot
+guarantee that an in-flight external call stops or that no call begins during the race to revoke
+the lease. Its late result cannot be persisted, and a redelivery never repeats that attempt.
+The worker returns the cancelled state after detecting the revoked lease. Cancellation is not
+Celery task revocation or a provider-side cancellation request.
+
+Offline tests cover pending cancellation, repeated requests, terminal redelivery, and cancellation
+while a model call is blocked, including a call that fails after cancellation. In an isolated
+Docker Compose project, the API accepted run `149c1851-b97f-4ed5-9809-ec50fb3a503b` while
+the worker was stopped. The API cancelled it, then the restarted worker received the queued task
+and returned `cancelled`. PostgreSQL retained the cancelled status with no execution lease;
+model and tool call counts remained zero. This qualifies the queue path for pre-execution
+cancellation, not provider-side interruption of an in-flight call.
+
 ## Remaining Phase 5 path
 
 1. Request separate authorization before a narrow recorded live market-data trial.
-2. Add durable cancellation and stronger external-attempt observability. Pending-run
-   reconciliation is implemented.
+2. Durable cancellation is implemented and qualified offline. Strengthen external-attempt
+   observability next; pending-run reconciliation is implemented.
 3. Extend the graph through Intent, News, evidence aggregation, Gap Judge, bounded Replan, and
    Synthesis, then qualify the full Gate C limits.
 

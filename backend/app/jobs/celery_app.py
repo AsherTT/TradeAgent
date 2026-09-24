@@ -112,6 +112,7 @@ async def execute_research_run(
             ResearchStatus.COMPLETE,
             ResearchStatus.INSUFFICIENT_EVIDENCE,
             ResearchStatus.FAILED,
+            ResearchStatus.CANCELLED,
         }:
             return state
         owner = execution_id or str(uuid4())
@@ -153,8 +154,17 @@ async def execute_research_run(
                 evidence_provider=evidence_provider,
             )
             return await workflow.run(state)
+        except ResearchRunBusyError:
+            await session.rollback()
+            latest = await repository.get(research_run_id)
+            if latest is not None and latest.status is ResearchStatus.CANCELLED:
+                return latest
+            raise
         except Exception as exc:
+            await session.rollback()
             latest = await repository.get(research_run_id) or state
+            if latest.status is ResearchStatus.CANCELLED:
+                return latest
             failed = failed_research_state(latest, exc)
             await repository.save(
                 failed,
