@@ -36,10 +36,15 @@ class NewsDocument(ContractModel):
     content: str = Field(min_length=1, max_length=20_000)
 
 
+class NewsSearchRequest(ContractModel):
+    instrument_id: UUID
+    analysis_timestamp: datetime
+    query: str = Field(min_length=1, max_length=500)
+    limit: int = Field(ge=1)
+
+
 class NewsLoader(Protocol):
-    async def load_news(
-        self, instrument_id: UUID, *, analysis_timestamp: datetime, limit: int
-    ) -> tuple[NewsDocument, ...]: ...
+    async def load_news(self, request: NewsSearchRequest) -> tuple[NewsDocument, ...]: ...
 
 
 @dataclass(frozen=True, slots=True)
@@ -98,24 +103,20 @@ class NewsResearchEvidence:
     def __init__(self, loader: NewsLoader) -> None:
         self._loader = loader
 
-    async def collect(
-        self, instrument_id: UUID, *, analysis_timestamp: datetime, limit: int
-    ) -> NewsCollection:
-        documents = await self._loader.load_news(
-            instrument_id, analysis_timestamp=analysis_timestamp, limit=limit
-        )
-        if len(documents) > limit:
+    async def collect(self, request: NewsSearchRequest) -> NewsCollection:
+        documents = await self._loader.load_news(request)
+        if len(documents) > request.limit:
             raise ValueError("news provider exceeded document limit")
         evidence: list[Evidence] = []
         gaps: list[str] = []
         for document in documents:
-            if document.instrument_id != instrument_id:
+            if document.instrument_id != request.instrument_id:
                 gaps.append("news document instrument mismatch")
                 continue
             if (
-                document.published_at > analysis_timestamp
-                or document.observed_at > analysis_timestamp
-                or document.available_at > analysis_timestamp
+                document.published_at > request.analysis_timestamp
+                or document.observed_at > request.analysis_timestamp
+                or document.available_at > request.analysis_timestamp
             ):
                 gaps.append("news document exceeds analysis timestamp")
                 continue
@@ -126,7 +127,7 @@ class NewsResearchEvidence:
                 continue
             evidence.append(
                 Evidence(
-                    instrument_id=instrument_id,
+                    instrument_id=request.instrument_id,
                     evidence_type="news_document",
                     source_name=document.source_name,
                     source_uri=uri,

@@ -28,7 +28,16 @@ It is deliberately provider-neutral and does not claim investment advice or live
    requirements remain unsatisfied and are identified by their plan position. Market/technical
    snapshots must match the instrument and
    frozen cutoff, and the latest market bar must be eligible at that cutoff.
-7. `finish` records a complete or insufficient-evidence quality assessment from that result.
+7. `replan` can retry a missing required News capability when market evidence is already
+   sufficient, a News loader exists, and iteration, replan, model, tool, document, and time budgets
+   allow it. A revised plan must retain the question, instrument, horizon, required capabilities,
+   and all prior evidence requirements. The model call has a durable pre-call marker; a completed
+   replan must also change the bounded News search objective passed to the loader. It may then
+   loop to News, while an interrupted call is never repeated automatically. Previous
+   completed News attempt metadata is retained in bounded history. No market retry or alternative
+   news-provider selection is implemented in this slice. If the replan call consumes the remaining
+   time or tool budget, News retry terminates as budget exhausted without another provider call.
+8. `finish` records a complete or insufficient-evidence quality assessment from that result.
    News evidence alone cannot satisfy the market and technical evidence requirement.
 
 Each externally visible transition is saved by `ResearchRunRepository`. The API commits the run
@@ -57,9 +66,9 @@ retried. Error messages and provider URLs are excluded from persisted failure re
 controlled provider attempt summaries may be retained for integrity failures. Expected evidence
 gaps also use controlled error types instead of raw provider messages. Successful market evidence
 rejects unsafe source identifiers and writes bounded, sanitized provider-attempt records.
-The same pre-call and unknown-outcome rule applies to Intent, Planner, market evidence, and News
-acquisition.
-Intent and Planner share the model-call checkpoint and budget accounting path.
+The same pre-call and unknown-outcome rule applies to Intent, Planner, market evidence, News
+acquisition, and Replan. Intent, Planner, and Replan share the model-call checkpoint and budget
+accounting path.
 
 News has no production loader configured and makes no external request by default. Its ingestion
 and resume behavior are qualified with offline fixtures. Accepted article text remains untrusted
@@ -135,9 +144,9 @@ cancellation, not provider-side interruption of an in-flight call.
 2. Durable cancellation is qualified offline and through the Docker queue path. External-attempt
    observability now distinguishes completed, known-failure, and unknown-outcome steps with
    bounded secret-free metadata; pending-run reconciliation is implemented.
-3. Intent, provider-neutral News ingestion, and a deterministic Gap Judge are implemented with
-   offline fixture coverage. Extend the graph through model-based event extraction, bounded
-   Replan, and
+3. Intent, provider-neutral News ingestion, a deterministic Gap Judge, and bounded News Replan
+   are implemented with offline fixture coverage. Extend the graph through model-based event
+   extraction and
    Synthesis, then qualify the full Gate C limits.
 
 ADR-0019 closes the provider/cache architecture decision: current acquisition remains

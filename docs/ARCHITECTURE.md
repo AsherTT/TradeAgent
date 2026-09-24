@@ -9,8 +9,9 @@ BudgetGuard enforcement, durable transitions, cancellation, external-attempt obs
 safe terminal outcomes exist. Intent is a bounded persisted model step. A default-off News
 ingestion node now enforces document budgets, point-in-time admission, and untrusted-text guards;
 event extraction and a qualified live news adapter remain pending. A deterministic Gap Judge now
-checks required plan capabilities against eligible evidence and records coverage; bounded
-replanning and Synthesis remain before Gate C can pass.
+checks required plan capabilities against eligible evidence and records coverage. A bounded
+model-assisted Replan can retry missing required News without removing original requirements;
+Synthesis and broader Gate C qualification remain.
 
 ADR-0018 separates immutable fixed-cutoff research from current research whose decision cutoff is
 persisted only after evidence acquisition. The transport, state, migration, model context, and

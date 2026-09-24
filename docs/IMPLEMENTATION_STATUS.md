@@ -80,7 +80,7 @@ Last audited: 2026-09-24
 - Ordinary tests pass; the live-model test is skipped unless explicitly enabled
 - Live Gate A passed on 2026-09-17: Codex, Qwen, and DeepSeek returned the same
   validated `ResearchPlan`, with reasoning configuration, tracing, and usage metering active
-- Latest ordinary suite: 176 passed, 1 live-model test deselected, with 94.24% combined
+- Latest ordinary suite: 180 passed, 1 live-model test deselected, with 94.03% combined
   statement/branch coverage.
 - Ruff passes
 - strict mypy passes
@@ -180,6 +180,12 @@ Last audited: 2026-09-24
   required News, unrecognized text requirements, future-available evidence, and mismatched
   instrument or cutoff snapshots fail closed. Market and technical evidence remain the baseline
   requirement. This slice was qualified offline only.
+- Bounded model-assisted Replan now retries a missing required News capability when a configured
+  loader and all relevant budgets permit. Offline tests cover success after an empty first result,
+  a changed search objective reaching the News loader, replan budget exhaustion, prevention of
+  requirement deletion, time-budget expiry between replan and retry, and unknown-outcome safety after
+  interruption. Repeated completed News attempts retain bounded audit history. This slice makes
+  no live model or news-provider calls and does not retry market acquisition.
 
 ## Current phase assessment
 
@@ -196,7 +202,7 @@ Last audited: 2026-09-24
 - Phase 5 is partially complete. Intent, Planner, Market, Quant, market Evidence, default-off News
   ingestion, deterministic Gap Judge, BudgetGuard enforcement, durable execution, cancellation,
   external-attempt observability, and safe terminal outcomes are implemented. News event
-  extraction, a qualified live news adapter, bounded Replan behavior, and Synthesis remain; Gate C
+  extraction, a qualified live news adapter, broader Replan routing, and Synthesis remain; Gate C
   has not passed.
 - ADR-0017 and `docs/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,

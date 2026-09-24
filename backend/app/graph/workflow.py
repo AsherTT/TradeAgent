@@ -50,7 +50,7 @@ from backend.app.market_data.service import (
     MarketDataLoader,
     MarketDataRequest,
 )
-from backend.app.news import NewsResearchEvidence
+from backend.app.news import NewsResearchEvidence, NewsSearchRequest
 from backend.app.quant.indicators import IndicatorError, calculate_technical_snapshot
 
 StateSaver = Callable[[ResearchState], Awaitable[None]]
@@ -94,6 +94,8 @@ class ResearchNode(StrEnum):
     NEWS = "news"
     NEWS_STARTED = "news_started"
     GAP_JUDGE = "gap_judge"
+    REPLAN = "replan"
+    REPLAN_STARTED = "replan_started"
     FINISH = "finish"
     BUDGET_EXHAUSTED = "budget_exhausted"
     FAILED = "failed"
@@ -113,6 +115,7 @@ class MarketEvidenceIntegrityFailure(MarketDataIntegrityError):
 
 class BudgetDimension(StrEnum):
     ITERATIONS = "iterations"
+    REPLANS = "replans"
     TOOL_CALLS = "tool_calls"
     LLM_CALLS = "llm_calls"
     WALL_TIME_SECONDS = "wall_time_seconds"
@@ -313,6 +316,7 @@ class ResearchWorkflow:
         graph.add_node(ResearchNode.COLLECT_EVIDENCE, cast(Any, self._collect_evidence))
         graph.add_node(ResearchNode.NEWS, cast(Any, self._news))
         graph.add_node(ResearchNode.GAP_JUDGE, cast(Any, self._gap_judge))
+        graph.add_node(ResearchNode.REPLAN, cast(Any, self._replan))
         graph.add_node(ResearchNode.FINISH, cast(Any, self._finish))
         graph.add_edge(START, ResearchNode.START)
         graph.add_edge(ResearchNode.START, ResearchNode.INTENT)
@@ -320,7 +324,12 @@ class ResearchWorkflow:
         graph.add_edge(ResearchNode.PLAN, ResearchNode.COLLECT_EVIDENCE)
         graph.add_edge(ResearchNode.COLLECT_EVIDENCE, ResearchNode.NEWS)
         graph.add_edge(ResearchNode.NEWS, ResearchNode.GAP_JUDGE)
-        graph.add_edge(ResearchNode.GAP_JUDGE, ResearchNode.FINISH)
+        graph.add_edge(ResearchNode.GAP_JUDGE, ResearchNode.REPLAN)
+        graph.add_conditional_edges(
+            ResearchNode.REPLAN,
+            self._after_replan,
+            {"news": ResearchNode.NEWS, "finish": ResearchNode.FINISH},
+        )
         graph.add_edge(ResearchNode.FINISH, END)
         self._graph = graph.compile()
 
@@ -337,6 +346,7 @@ class ResearchWorkflow:
             ResearchNode.PLAN,
             ResearchNode.COLLECT_EVIDENCE,
             ResearchNode.NEWS,
+            ResearchNode.REPLAN,
         ):
             if _attempt_started(state, node):
                 failed = failed_research_state(
@@ -349,7 +359,18 @@ class ResearchWorkflow:
                 return failed
         self._run_started = perf_counter()
         self._initial_wall_time = state.budget_usage.wall_time_seconds
-        result = cast(_GraphState, await self._graph.ainvoke({"research": state}))
+        possible_replans = min(
+            state.research_budget.max_replans,
+            state.research_budget.max_iterations - 1,
+            state.research_budget.max_tool_calls,
+        )
+        result = cast(
+            _GraphState,
+            await self._graph.ainvoke(
+                {"research": state},
+                config={"recursion_limit": max(25, 4 * (possible_replans + 1) + 12)},
+            ),
+        )
         return result["research"]
 
     async def _start(self, graph_state: _GraphState) -> _GraphState:
@@ -484,9 +505,15 @@ class ResearchWorkflow:
         output = request.output_schema.model_validate(response.output)
         state = self._with_elapsed_time(state)
         metadata = response.metadata
+        replan_increment = int(node is ResearchNode.REPLAN)
+        if replan_increment:
+            _validate_revised_plan(state, cast(ResearchPlan, output))
+            state = _set_retry_news(state, True)
         usage = state.budget_usage.model_copy(
             update={
                 "llm_calls": state.budget_usage.llm_calls + 1,
+                "replans": state.budget_usage.replans + replan_increment,
+                "iterations": state.budget_usage.iterations + replan_increment,
                 "context_tokens": state.budget_usage.context_tokens
                 + (metadata.input_tokens or 0)
                 + (metadata.output_tokens or 0),
@@ -586,11 +613,16 @@ class ResearchWorkflow:
         if (
             state.status is not ResearchStatus.RUNNING
             or self._news_provider is None
-            or (isinstance(news_attempt, dict) and news_attempt.get("status") == "completed")
+            or (
+                isinstance(news_attempt, dict)
+                and news_attempt.get("status") == "completed"
+                and not _retry_news_pending(state)
+            )
         ):
             return {"research": state}
         analysis_timestamp = state.analysis_timestamp
         if analysis_timestamp is None:
+            state = _set_retry_news(state, False)
             state = _transition(
                 state,
                 node=ResearchNode.NEWS,
@@ -604,6 +636,13 @@ class ResearchWorkflow:
         if state.budget_usage.news_documents >= state.research_budget.max_news_documents:
             exhausted_fields = (*exhausted_fields, "news_documents")
         if exhausted_fields:
+            if _retry_news_pending(state):
+                state = _budget_exhausted(
+                    _set_retry_news(state, False),
+                    f"budget exhausted before news retry: {', '.join(exhausted_fields)}",
+                )
+                await self._save(state)
+                return {"research": state}
             state = _transition(
                 state,
                 node=ResearchNode.NEWS,
@@ -614,13 +653,15 @@ class ResearchWorkflow:
             )
             await self._save(state)
             return {"research": state}
+        state = _set_retry_news(state, False)
         state = _mark_attempt_started(state, ResearchNode.NEWS)
         await self._save(state)
-        collection = await self._news_provider.collect(
-            state.instrument_id,
+        collection = await self._news_provider.collect(NewsSearchRequest(
+            instrument_id=state.instrument_id,
             analysis_timestamp=analysis_timestamp,
+            query=_news_query(state),
             limit=state.research_budget.max_news_documents - state.budget_usage.news_documents,
-        )
+        ))
         state = self._with_elapsed_time(state)
         state = _transition(
             _mark_attempt_completed(state, ResearchNode.NEWS),
@@ -648,13 +689,82 @@ class ResearchWorkflow:
             state,
             node=ResearchNode.GAP_JUDGE,
             evidence_gap_result=result,
-            evidence_gaps=(*state.evidence_gaps, *(
+            evidence_gaps=(*(
+                gap for gap in state.evidence_gaps
+                if not gap.startswith("required capability unavailable: ")
+            ), *(
                 f"required capability unavailable: {capability}"
                 for capability in result.missing_capabilities
             )),
         )
         await self._save(state)
         return {"research": state}
+
+    async def _replan(self, graph_state: _GraphState) -> _GraphState:
+        state = graph_state["research"]
+        state = self._with_elapsed_time(state)
+        gap = state.evidence_gap_result
+        if (
+            state.status is not ResearchStatus.RUNNING
+            or gap is None
+            or gap.missing_capabilities != ("news",)
+            or self._news_provider is None
+        ):
+            return {"research": state}
+        if _retry_news_pending(state):
+            return {"research": state}
+        exhausted = _relevant_budget_decision(
+            state,
+            {
+                BudgetDimension.REPLANS,
+                BudgetDimension.ITERATIONS,
+                BudgetDimension.LLM_CALLS,
+                BudgetDimension.TOOL_CALLS,
+                BudgetDimension.WALL_TIME_SECONDS,
+                BudgetDimension.CONTEXT_TOKENS,
+                BudgetDimension.ESTIMATED_COST_USD,
+            },
+        )
+        if state.budget_usage.news_documents >= state.research_budget.max_news_documents:
+            exhausted = (*exhausted, "news_documents")
+        if exhausted:
+            state = _budget_exhausted(
+                state, f"budget exhausted before replan: {', '.join(exhausted)}"
+            )
+            await self._save(state)
+            return {"research": state}
+        current_plan = state.research_plan
+        if current_plan is None:  # pragma: no cover - gap-judge invariant
+            raise ValueError("replan requires a research plan")
+        request = ModelRequest[ResearchPlan](
+            task=(
+                "Revise the bounded research plan to retry missing news evidence. "
+                "Preserve the question, instrument, horizon, all required capabilities, "
+                "and every evidence requirement. Do not provide investment advice."
+            ),
+            task_kind=TaskKind.RESEARCH_PLANNING,
+            context={
+                "current_plan": current_plan.model_dump(mode="json"),
+                "missing_capabilities": gap.missing_capabilities,
+                "remaining_news_documents": (
+                    state.research_budget.max_news_documents
+                    - state.budget_usage.news_documents
+                ),
+            },
+            output_schema=ResearchPlan,
+        )
+        return {
+            "research": await self._run_model_node(
+                state, ResearchNode.REPLAN, request, "research_plan", "replan"
+            )
+        }
+
+    def _after_replan(self, graph_state: _GraphState) -> str:
+        state = graph_state["research"]
+        return "news" if (
+            state.status is ResearchStatus.RUNNING
+            and _retry_news_pending(state)
+        ) else "finish"
 
     async def _finish(self, graph_state: _GraphState) -> _GraphState:
         state = graph_state["research"]
@@ -723,6 +833,50 @@ def _transition(
     return state.model_copy(update={**updates, "runtime_metadata": runtime_metadata})
 
 
+def _retry_news_pending(state: ResearchState) -> bool:
+    return state.runtime_metadata.get("retry_news") is True
+
+
+def _set_retry_news(state: ResearchState, pending: bool) -> ResearchState:
+    return state.model_copy(update={
+        "runtime_metadata": {**state.runtime_metadata, "retry_news": pending}
+    })
+
+
+def _news_query(state: ResearchState) -> str:
+    if state.research_plan is not None:
+        for step in state.research_plan.steps:
+            if step.capability.strip().lower() == "news":
+                objective = step.objective.strip()
+                if objective:
+                    return objective[:500]
+    return (state.query.strip() or state.ticker.strip() or "instrument research")[:500]
+
+
+def _validate_revised_plan(state: ResearchState, revised: ResearchPlan) -> None:
+    previous = state.research_plan
+    if previous is None:
+        raise ValueError("replan requires a prior plan")
+    if (
+        revised.question != previous.question
+        or revised.instrument_symbol != previous.instrument_symbol
+        or revised.horizon != previous.horizon
+    ):
+        raise ValueError("replan changed the research subject")
+    required_before = {step.capability.strip().lower() for step in previous.steps if step.required}
+    required_after = {step.capability.strip().lower() for step in revised.steps if step.required}
+    requirements_before = {
+        " ".join(value.lower().split()) for value in previous.evidence_requirements
+    }
+    requirements_after = {
+        " ".join(value.lower().split()) for value in revised.evidence_requirements
+    }
+    if not required_before <= required_after or not requirements_before <= requirements_after:
+        raise ValueError("replan removed a required evidence capability")
+    if _news_query(state) == _news_query(state.model_copy(update={"research_plan": revised})):
+        raise ValueError("replan did not change the news query")
+
+
 def _mark_attempt_started(
     state: ResearchState,
     node: ResearchNode,
@@ -730,6 +884,12 @@ def _mark_attempt_started(
     request_id: str | None = None,
 ) -> ResearchState:
     attempts = dict(state.runtime_metadata.get("external_attempts", {}))
+    previous = attempts.get(node.value)
+    runtime_metadata = {**state.runtime_metadata, "external_attempts": attempts}
+    if isinstance(previous, dict) and previous.get("status") == "completed":
+        history = dict(state.runtime_metadata.get("external_attempt_history", {}))
+        history[node.value] = (*tuple(history.get(node.value, ())), previous)[-8:]
+        runtime_metadata["external_attempt_history"] = history
     attempts[node.value] = {
         "status": "started",
         "request_id": request_id,
@@ -739,7 +899,7 @@ def _mark_attempt_started(
     }
     marked = state.model_copy(
         update={
-            "runtime_metadata": {**state.runtime_metadata, "external_attempts": attempts}
+            "runtime_metadata": runtime_metadata
         }
     )
     transition = {
@@ -747,6 +907,7 @@ def _mark_attempt_started(
         ResearchNode.PLAN: ResearchNode.PLAN_STARTED,
         ResearchNode.COLLECT_EVIDENCE: ResearchNode.EVIDENCE_STARTED,
         ResearchNode.NEWS: ResearchNode.NEWS_STARTED,
+        ResearchNode.REPLAN: ResearchNode.REPLAN_STARTED,
     }[node]
     return _transition(marked, node=transition)
 
@@ -784,6 +945,7 @@ def failed_research_state(state: ResearchState, exc: Exception) -> ResearchState
         ResearchNode.PLAN,
         ResearchNode.COLLECT_EVIDENCE,
         ResearchNode.NEWS,
+        ResearchNode.REPLAN,
     ):
         attempt = attempts.get(node.value)
         if isinstance(attempt, dict) and attempt.get("status") == "started":
