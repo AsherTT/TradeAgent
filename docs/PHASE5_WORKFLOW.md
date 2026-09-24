@@ -152,9 +152,11 @@ cancellation, not provider-side interruption of an in-flight call.
    observability now distinguishes completed, known-failure, and unknown-outcome steps with
    bounded secret-free metadata; pending-run reconciliation is implemented.
 3. Intent, provider-neutral News ingestion, a deterministic Gap Judge, bounded News Replan, and
-   evidence-cited Synthesis are implemented with offline fixture coverage. Complete Gate C
-   qualification across loop limits and durable outcomes before advancing to Phase 6. Model-based
-   news-event extraction and a live news adapter remain separately pending.
+   evidence-cited Synthesis are implemented. `docs/GATE_C_QUALIFICATION.md` records offline
+   qualification of loop limits, durable outcomes, and the mock-provider API/task/SQLite complete
+   path. Final Gate C still requires the rebuilt Docker broker/PostgreSQL complete path before
+   advancing to Phase 6. Model-based news-event extraction and a live news adapter remain
+   separately pending.
 
 ADR-0019 closes the provider/cache architecture decision: current acquisition remains
 yfinance-only until a second adapter is independently qualified, and the fixed-cutoff qualified

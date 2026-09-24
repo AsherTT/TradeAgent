@@ -6,7 +6,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 import pytest
 from fastapi import HTTPException
@@ -25,13 +25,16 @@ from backend.app.api.research import (
     submit_research,
 )
 from backend.app.config import Settings
-from backend.app.contracts.evaluation import ResearchCompletion
+from backend.app.contracts.evaluation import DataQualityStatus, ResearchCompletion
+from backend.app.contracts.evidence import Evidence, TrustLevel
 from backend.app.contracts.instrument import (
     CorporateAction,
     CorporateActionType,
     Instrument,
+    PriceAdjustmentMode,
     SymbolHistory,
 )
+from backend.app.contracts.market import MarketBar, MarketSnapshot, TechnicalSnapshot
 from backend.app.contracts.model import ProviderName, TaskKind
 from backend.app.contracts.research import (
     ResearchPlan,
@@ -40,6 +43,7 @@ from backend.app.contracts.research import (
     ResearchStep,
     ResearchTimestampMode,
 )
+from backend.app.graph.workflow import EvidenceCollection
 from backend.app.jobs.celery_app import (
     celery_app,
     create_celery,
@@ -170,6 +174,18 @@ def _intent_or_plan(request: Any, plan_payload: dict[str, Any]) -> dict[str, Any
         return {
             "research_goal": "Assess the short-term setup",
             "focus_areas": ("price trend", "catalysts"),
+        }
+    if request.task_kind is TaskKind.SYNTHESIS:
+        return {
+            "summary": "Qualified market evidence supports a cautious assessment.",
+            "bull_case": "The trend may continue.",
+            "bear_case": "The trend may weaken.",
+            "limitations": ("Offline fixture evidence only",),
+            "evidence_ids": tuple(
+                UUID(item["evidence_id"])
+                for item in request.context["selected_evidence"]
+            ),
+            "confidence": 0.5,
         }
     return plan_payload
 
@@ -1154,8 +1170,12 @@ def test_queue_dispatch_failure_is_durable(tmp_path: Path) -> None:
     asyncio.run(scenario())
 
 
+@pytest.mark.parametrize("qualified_market", [False, True])
 def test_http_to_registered_celery_task_to_get_terminal_state(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, research_plan_payload: dict[str, Any]
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    research_plan_payload: dict[str, Any],
+    qualified_market: bool,
 ) -> None:
     database = Database(f"sqlite+aiosqlite:///{tmp_path / 'phase5-e2e.db'}")
     instrument = _instrument()
@@ -1174,6 +1194,76 @@ def test_http_to_registered_celery_task_to_get_terminal_state(
     executor.provider = ProviderName.CODEX_SUBSCRIPTION
     monkeypatch.setattr(celery_module, "get_database", lambda: database)
     monkeypatch.setattr(celery_module, "build_model_gateway", lambda _: ModelGateway([executor]))
+    if qualified_market:
+        monkeypatch.setattr(
+            celery_module,
+            "get_settings",
+            lambda: Settings(_env_file=None, market_data_enabled=True),
+        )
+        monkeypatch.setattr(
+            celery_module,
+            "build_market_data_loader",
+            lambda *args, **kwargs: object(),
+        )
+
+        class QualifiedMarketFixture:
+            async def collect(self, state: ResearchState) -> EvidenceCollection:
+                cutoff = state.analysis_timestamp
+                assert cutoff is not None
+                bar = MarketBar(
+                    instrument_id=state.instrument_id,
+                    symbol="KLAC",
+                    timestamp=cutoff - timedelta(days=1),
+                    open=100,
+                    high=101,
+                    low=99,
+                    close=100,
+                    volume=1000,
+                    adjustment_mode=PriceAdjustmentMode.POINT_IN_TIME_ADJUSTED,
+                    adjustment_factor=1,
+                    source="fixture",
+                    observed_at=cutoff - timedelta(days=1),
+                    available_at=cutoff - timedelta(days=1),
+                    data_quality_status=DataQualityStatus.VERIFIED,
+                    provider_quality_version="fixture-v1",
+                )
+                return EvidenceCollection(
+                    analysis_timestamp=cutoff,
+                    market_snapshot=MarketSnapshot(
+                        instrument_id=state.instrument_id,
+                        analysis_timestamp=cutoff,
+                        latest_bar=bar,
+                        currency="USD",
+                    ),
+                    technical_snapshot=TechnicalSnapshot(
+                        instrument_id=state.instrument_id,
+                        analysis_timestamp=cutoff,
+                        price_adjustment_mode=PriceAdjustmentMode.POINT_IN_TIME_ADJUSTED,
+                        feature_version="fixture-v1",
+                    ),
+                    evidence=(Evidence(
+                        instrument_id=state.instrument_id,
+                        evidence_type="market_technical_snapshot",
+                        source_name="fixture",
+                        observed_at=cutoff - timedelta(days=1),
+                        retrieved_at=cutoff,
+                        available_at=cutoff - timedelta(days=1),
+                        content="Qualified offline market snapshot",
+                        confidence=1,
+                        freshness=1,
+                        trust_level=TrustLevel.TRUSTED_PROVIDER,
+                        source_type="market_data",
+                        content_hash="fixture-hash",
+                        sanitization_status="structured_verified",
+                        injection_risk=0,
+                    ),),
+                )
+
+        monkeypatch.setattr(
+            celery_module,
+            "MarketResearchEvidence",
+            lambda *args, **kwargs: QualifiedMarketFixture(),
+        )
 
     def eager_enqueue(research_run_id: str) -> str:
         result: dict[str, Any] = {}
@@ -1212,16 +1302,29 @@ def test_http_to_registered_celery_task_to_get_terminal_state(
         research_run_id = response.json()["research_run_id"]
         terminal = client.get(f"/research/{research_run_id}")
         assert terminal.status_code == 200
-        assert terminal.json()["status"] == ResearchStatus.INSUFFICIENT_EVIDENCE.value
-        assert terminal.json()["runtime_metadata"]["transitions"] == [
+        assert terminal.json()["status"] == (
+            ResearchStatus.COMPLETE.value if qualified_market
+            else ResearchStatus.INSUFFICIENT_EVIDENCE.value
+        )
+        expected_transitions = [
             "start",
             "intent_started",
             "intent",
             "plan_started",
             "plan",
-            "gap_judge",
-            "finish",
         ]
+        if qualified_market:
+            expected_transitions.extend(["evidence_started", "collect_evidence"])
+        expected_transitions.extend([
+            "gap_judge",
+        ])
+        if qualified_market:
+            expected_transitions.extend(["synthesis_started", "synthesis"])
+        expected_transitions.append("finish")
+        assert terminal.json()["runtime_metadata"]["transitions"] == expected_transitions
+        if qualified_market:
+            assert terminal.json()["research_synthesis"]["summary"].startswith("Qualified")
+            assert len(terminal.json()["research_synthesis"]["evidence_ids"]) == 1
     finally:
         app.dependency_overrides.clear()
         asyncio.run(database.dispose())

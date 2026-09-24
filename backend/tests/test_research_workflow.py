@@ -772,6 +772,66 @@ def test_replan_budget_exhaustion_stops_without_another_model_or_news_call() -> 
     asyncio.run(scenario())
 
 
+@pytest.mark.parametrize(
+    ("budget", "expected_replans", "expected_news_calls"),
+    [
+        (ResearchBudget(max_replans=2), 2, 3),
+        (ResearchBudget(max_iterations=2), 1, 2),
+        (ResearchBudget(max_tool_calls=3), 1, 2),
+        (ResearchBudget(max_llm_calls=3), 1, 2),
+    ],
+)
+def test_gate_c_replan_loop_respects_each_budget(
+    budget: ResearchBudget, expected_replans: int, expected_news_calls: int
+) -> None:
+    async def scenario() -> None:
+        instrument_id = uuid4()
+        plan = _plan_payload()
+        plan["evidence_requirements"] = ("market data", "news documents")
+        fixture = _NewsFixture(())
+        planning_calls = 0
+
+        def payload(request: Any) -> dict[str, Any]:
+            nonlocal planning_calls
+            if request.task_kind is TaskKind.INTENT:
+                return _intent_payload()
+            planning_calls += 1
+            if planning_calls == 1:
+                return plan
+            revised = dict(plan)
+            revised["steps"] = (
+                *plan["steps"],
+                {
+                    "step_id": "news_retry",
+                    "objective": f"Retry news query {planning_calls - 1}",
+                    "capability": "news",
+                },
+            )
+            return revised
+
+        async def save(state: ResearchState) -> None:
+            pass
+
+        result = await ResearchWorkflow(
+            model_gateway=ModelGateway([MockExecutor(payload)]),
+            provider_order=(ProviderName.MOCK,),
+            evidence_provider=_market_evidence(instrument_id),
+            news_provider=NewsResearchEvidence(fixture),
+            save=save,
+        ).run(_state(instrument_id, budget=budget))
+        assert result.research_completion is ResearchCompletion.BUDGET_EXHAUSTED
+        assert result.status is ResearchStatus.INSUFFICIENT_EVIDENCE
+        assert result.budget_usage.replans == expected_replans
+        assert result.budget_usage.iterations <= budget.max_iterations
+        assert result.budget_usage.tool_calls <= budget.max_tool_calls
+        assert result.budget_usage.llm_calls <= budget.max_llm_calls
+        assert fixture.calls == expected_news_calls
+        assert result.evidence_gap_result is not None
+        assert result.evidence_gap_result.missing_capabilities == ("news",)
+
+    asyncio.run(scenario())
+
+
 def test_news_retry_stops_if_replan_exhausts_wall_time() -> None:
     async def scenario() -> None:
         instrument_id = uuid4()
