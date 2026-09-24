@@ -46,6 +46,7 @@ from backend.app.market_data.service import (
     MarketDataLoader,
     MarketDataRequest,
 )
+from backend.app.news import NewsResearchEvidence
 from backend.app.quant.indicators import IndicatorError, calculate_technical_snapshot
 
 StateSaver = Callable[[ResearchState], Awaitable[None]]
@@ -86,6 +87,8 @@ class ResearchNode(StrEnum):
     PLAN_STARTED = "plan_started"
     COLLECT_EVIDENCE = "collect_evidence"
     EVIDENCE_STARTED = "evidence_started"
+    NEWS = "news"
+    NEWS_STARTED = "news_started"
     FINISH = "finish"
     BUDGET_EXHAUSTED = "budget_exhausted"
     FAILED = "failed"
@@ -288,11 +291,13 @@ class ResearchWorkflow:
         model_gateway: ModelGateway,
         save: StateSaver,
         evidence_provider: ResearchEvidence | None = None,
+        news_provider: NewsResearchEvidence | None = None,
         provider_order: tuple[ProviderName, ...] | None = None,
     ) -> None:
         self._gateway = model_gateway
         self._save = save
         self._evidence_provider = evidence_provider
+        self._news_provider = news_provider
         self._provider_order = provider_order
         self._run_started = 0.0
         self._initial_wall_time = 0.0
@@ -301,12 +306,14 @@ class ResearchWorkflow:
         graph.add_node(ResearchNode.INTENT, cast(Any, self._intent))
         graph.add_node(ResearchNode.PLAN, cast(Any, self._plan))
         graph.add_node(ResearchNode.COLLECT_EVIDENCE, cast(Any, self._collect_evidence))
+        graph.add_node(ResearchNode.NEWS, cast(Any, self._news))
         graph.add_node(ResearchNode.FINISH, cast(Any, self._finish))
         graph.add_edge(START, ResearchNode.START)
         graph.add_edge(ResearchNode.START, ResearchNode.INTENT)
         graph.add_edge(ResearchNode.INTENT, ResearchNode.PLAN)
         graph.add_edge(ResearchNode.PLAN, ResearchNode.COLLECT_EVIDENCE)
-        graph.add_edge(ResearchNode.COLLECT_EVIDENCE, ResearchNode.FINISH)
+        graph.add_edge(ResearchNode.COLLECT_EVIDENCE, ResearchNode.NEWS)
+        graph.add_edge(ResearchNode.NEWS, ResearchNode.FINISH)
         graph.add_edge(ResearchNode.FINISH, END)
         self._graph = graph.compile()
 
@@ -322,6 +329,7 @@ class ResearchWorkflow:
             ResearchNode.INTENT,
             ResearchNode.PLAN,
             ResearchNode.COLLECT_EVIDENCE,
+            ResearchNode.NEWS,
         ):
             if _attempt_started(state, node):
                 failed = failed_research_state(
@@ -558,12 +566,77 @@ class ResearchWorkflow:
         await self._save(state)
         return {"research": state}
 
+    async def _news(self, graph_state: _GraphState) -> _GraphState:
+        state = graph_state["research"]
+        state = self._with_elapsed_time(state)
+        attempts = state.runtime_metadata.get("external_attempts", {})
+        news_attempt = attempts.get(ResearchNode.NEWS.value) if isinstance(attempts, dict) else None
+        if (
+            state.status is not ResearchStatus.RUNNING
+            or self._news_provider is None
+            or (isinstance(news_attempt, dict) and news_attempt.get("status") == "completed")
+        ):
+            return {"research": state}
+        analysis_timestamp = state.analysis_timestamp
+        if analysis_timestamp is None:
+            state = _transition(
+                state,
+                node=ResearchNode.NEWS,
+                evidence_gaps=(*state.evidence_gaps, "news requires a frozen analysis timestamp"),
+            )
+            await self._save(state)
+            return {"research": state}
+        exhausted_fields = _relevant_budget_decision(
+            state, {BudgetDimension.TOOL_CALLS, BudgetDimension.WALL_TIME_SECONDS}
+        )
+        if state.budget_usage.news_documents >= state.research_budget.max_news_documents:
+            exhausted_fields = (*exhausted_fields, "news_documents")
+        if exhausted_fields:
+            state = _transition(
+                state,
+                node=ResearchNode.NEWS,
+                evidence_gaps=(
+                    *state.evidence_gaps,
+                    f"news skipped: budget exhausted ({', '.join(exhausted_fields)})",
+                ),
+            )
+            await self._save(state)
+            return {"research": state}
+        state = _mark_attempt_started(state, ResearchNode.NEWS)
+        await self._save(state)
+        collection = await self._news_provider.collect(
+            state.instrument_id,
+            analysis_timestamp=analysis_timestamp,
+            limit=state.research_budget.max_news_documents - state.budget_usage.news_documents,
+        )
+        state = self._with_elapsed_time(state)
+        state = _transition(
+            _mark_attempt_completed(state, ResearchNode.NEWS),
+            node=ResearchNode.NEWS,
+            evidence=(*state.evidence, *collection.evidence),
+            evidence_gaps=(*state.evidence_gaps, *collection.gaps),
+            budget_usage=state.budget_usage.model_copy(
+                update={
+                    "tool_calls": state.budget_usage.tool_calls + 1,
+                    "news_documents": state.budget_usage.news_documents
+                    + collection.documents_scanned,
+                }
+            ),
+        )
+        await self._save(state)
+        return {"research": state}
+
     async def _finish(self, graph_state: _GraphState) -> _GraphState:
         state = graph_state["research"]
         state = self._with_elapsed_time(state)
         if state.status is not ResearchStatus.RUNNING:
             return {"research": state}
-        has_required_output = state.research_plan is not None and bool(state.evidence)
+        has_required_output = (
+            state.research_plan is not None
+            and state.market_snapshot is not None
+            and state.technical_snapshot is not None
+            and any(item.evidence_type == "market_technical_snapshot" for item in state.evidence)
+        )
         completion = (
             ResearchCompletion.COMPLETE
             if has_required_output
@@ -645,6 +718,7 @@ def _mark_attempt_started(
         ResearchNode.INTENT: ResearchNode.INTENT_STARTED,
         ResearchNode.PLAN: ResearchNode.PLAN_STARTED,
         ResearchNode.COLLECT_EVIDENCE: ResearchNode.EVIDENCE_STARTED,
+        ResearchNode.NEWS: ResearchNode.NEWS_STARTED,
     }[node]
     return _transition(marked, node=transition)
 
@@ -681,6 +755,7 @@ def failed_research_state(state: ResearchState, exc: Exception) -> ResearchState
         ResearchNode.INTENT,
         ResearchNode.PLAN,
         ResearchNode.COLLECT_EVIDENCE,
+        ResearchNode.NEWS,
     ):
         attempt = attempts.get(node.value)
         if isinstance(attempt, dict) and attempt.get("status") == "started":

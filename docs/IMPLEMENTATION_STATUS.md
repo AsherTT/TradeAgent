@@ -1,6 +1,6 @@
 # Implementation Status
 
-Last audited: 2026-09-22
+Last audited: 2026-09-24
 
 ## Implemented
 
@@ -80,7 +80,7 @@ Last audited: 2026-09-22
 - Ordinary tests pass; the live-model test is skipped unless explicitly enabled
 - Live Gate A passed on 2026-09-17: Codex, Qwen, and DeepSeek returned the same
   validated `ResearchPlan`, with reasoning configuration, tracing, and usage metering active
-- Latest ordinary suite: 166 passed, 1 live-model test deselected, with 94.20% combined
+- Latest ordinary suite: 172 passed, 1 live-model test deselected, with 94.24% combined
   statement/branch coverage.
 - Ruff passes
 - strict mypy passes
@@ -167,6 +167,14 @@ Last audited: 2026-09-22
   budget consumption, resumed unknown-outcome safety, legacy plan-only recovery, and use of its
   output in planning. This
   slice has not made or qualified a live model call or a new Docker queue-path run.
+- News ingestion is now a provider-neutral, default-off graph step after market evidence. Offline
+  tests cover a strict document limit, tool/document budget accounting, cutoff rejection,
+  HTML/script cleaning, instruction-like content rejection, URL userinfo rejection and query
+  removal, trust
+  metadata, persisted pre-call checkpoints, unknown-outcome redelivery, and news-only
+  insufficient-evidence behavior. A zero news-document budget skips the optional node without
+  blocking complete market/technical evidence. No live news request or new Docker queue-path
+  trial was made.
 
 ## Current phase assessment
 
@@ -180,10 +188,11 @@ Last audited: 2026-09-22
   nullable persisted cutoff. It is not live-data qualified, and no live request has been made.
 - The market-data architecture decision is closed offline. Live qualification remains optional and
   separately authorized rather than a prerequisite for the provider/cache interface.
-- Phase 5 is partially complete. Planner, Market, Quant, market Evidence, BudgetGuard enforcement,
-  durable execution, cancellation, external-attempt observability, and safe terminal outcomes are
-  implemented. Intent is implemented offline; News, an explicit Gap Judge, bounded Replan
-  behavior, and Synthesis remain; Gate C has not passed.
+- Phase 5 is partially complete. Intent, Planner, Market, Quant, market Evidence, default-off News
+  ingestion, BudgetGuard enforcement, durable execution, cancellation, external-attempt
+  observability, and safe terminal outcomes are implemented. News event extraction, a qualified
+  live news adapter, an explicit Gap Judge, bounded Replan behavior, and Synthesis remain; Gate C
+  has not passed.
 - ADR-0017 and `docs/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,
   real Research API integration waits for Gate C, and the formal frontend milestone remains

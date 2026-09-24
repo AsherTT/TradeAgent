@@ -12,7 +12,15 @@ It is deliberately provider-neutral and does not claim investment advice or live
 3. `plan` checks the remaining budget and uses the persisted intent through `ModelGateway`.
 4. `collect_evidence` optionally loads point-in-time bars through `MarketDataLoader`, then calls
    the deterministic indicator implementation.
-5. `finish` records a complete or insufficient-evidence quality assessment.
+5. `news` optionally requests bounded documents through a provider-neutral loader after the cutoff
+   is frozen. It admits only documents published, observed, and available by that cutoff, strips
+   HTML/script and invisible text, rejects instruction-like content and unsafe source URLs, and
+   records public-source trust metadata on accepted evidence. The provider must respect the
+   remaining document limit; over-returning fails the run. Each acquisition has a durable pre-call
+   marker and consumes one tool call plus the number of inspected documents. An exhausted news
+   budget skips this optional step and preserves a complete qualified market result.
+6. `finish` records a complete or insufficient-evidence quality assessment. News evidence alone
+   cannot satisfy the current market and technical evidence requirement.
 
 Each externally visible transition is saved by `ResearchRunRepository`. The API commits the run
 before publishing its task and persists queue-dispatch failures. A database execution lease admits
@@ -40,8 +48,15 @@ retried. Error messages and provider URLs are excluded from persisted failure re
 controlled provider attempt summaries may be retained for integrity failures. Expected evidence
 gaps also use controlled error types instead of raw provider messages. Successful market evidence
 rejects unsafe source identifiers and writes bounded, sanitized provider-attempt records.
-The same pre-call and unknown-outcome rule applies to Intent, Planner, and evidence acquisition.
+The same pre-call and unknown-outcome rule applies to Intent, Planner, market evidence, and News
+acquisition.
 Intent and Planner share the model-call checkpoint and budget accounting path.
+
+News has no production loader configured and makes no external request by default. Its ingestion
+and resume behavior are qualified with offline fixtures. Accepted article text remains untrusted
+data and carries source type, content hash, sanitization status, injection risk, and scanner
+version. This first News slice collects source documents; model-based event extraction and a
+qualified live news adapter remain pending.
 
 ## Outcomes
 
@@ -111,8 +126,9 @@ cancellation, not provider-side interruption of an in-flight call.
 2. Durable cancellation is qualified offline and through the Docker queue path. External-attempt
    observability now distinguishes completed, known-failure, and unknown-outcome steps with
    bounded secret-free metadata; pending-run reconciliation is implemented.
-3. Intent is implemented with offline fixture coverage. Extend the graph through News, evidence
-   aggregation, Gap Judge, bounded Replan, and
+3. Intent and the provider-neutral News ingestion node are implemented with offline fixture
+   coverage. Extend the graph through model-based event extraction, evidence aggregation, Gap
+   Judge, bounded Replan, and
    Synthesis, then qualify the full Gate C limits.
 
 ADR-0019 closes the provider/cache architecture decision: current acquisition remains
