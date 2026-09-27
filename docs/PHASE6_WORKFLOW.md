@@ -1,8 +1,9 @@
 # Phase 6 — Evidence, Thesis, Forecast
 
 Phase 6 begins after the fixture-scoped Gate C qualification. The implementation order is
-Evidence Repository, Thesis Lifecycle, then frozen ForecastRecord. Each slice is reviewed and
-committed with its tests and this progress record.
+Evidence Repository, Thesis Lifecycle, then frozen ForecastRecord. The complete phase received
+one consolidated code review; its provenance and immutability findings were fixed before
+qualification and the final push.
 
 ## Evidence Repository — implemented offline
 
@@ -29,7 +30,9 @@ New versions are appended under an expected-version check and a locked Thesis ro
 identity and horizon stay fixed, analysis time cannot move backward, invalidated or superseded
 Theses are terminal, and each transition requires a new research run. Earlier versions and
 transition history remain queryable; as-of reads require an aware timestamp and hide versions
-recorded later. This repository does not infer a direction or probability from Synthesis.
+recorded later. Migration `0010` rejects direct PostgreSQL UPDATE/DELETE of historical versions,
+transitions, and evidence links. Thesis-only history may carry an explicit prediction, while
+forward freezing requires exact agreement with the persisted Synthesis output.
 
 Offline tests cover version history, stale-version rejection, transition rules, source-run
 requirements, citation checks, and as-of visibility.
@@ -39,8 +42,10 @@ requirements, citation checks, and as-of visibility.
 Alembic migration `0009` stores ForecastRecords linked to the exact Thesis version and source
 research run. PostgreSQL rejects UPDATE and DELETE on this table. The repository creates a
 record from persisted Thesis and completed research only when the analysis cutoff is recent,
-the run is not marked with parametric look-ahead risk, and successful model execution IDs exist.
-It freezes direction and probability from the Thesis and retains its cited evidence IDs.
+the run is not marked with parametric look-ahead risk, and exactly one persisted successful
+Synthesis execution matches both the run's Synthesis and Thesis prediction. Migration `0010`
+stores typed execution metadata and structured model output and protects those rows against
+direct PostgreSQL changes. The Forecast retains that execution ID and cited evidence IDs.
 Repeated freezing of the same run/Thesis is idempotent if the requested benchmark and
 supersession are identical; changed inputs are rejected. A later forecast may reference an
 earlier one as superseded without changing the old record. As-of reads hide records created
@@ -55,16 +60,18 @@ probability is a research prediction, not SystemConfidence or a trade instructio
 `POST /research/{research_run_id}/theses` accepts an explicit Thesis direction, probability,
 summary, invalidation conditions, and a stable Thesis ID. It derives the instrument, cutoff,
 horizon, and evidence IDs from the completed cited research run. It creates a versioned Thesis
-and, by default, freezes a forward ForecastRecord in one transaction. For historical research,
+and, by default, freezes a forward ForecastRecord in one transaction. The submitted direction
+and probability must match the persisted Synthesis prediction to freeze. For historical research,
 the caller may set `freeze_forecast=false` to record Thesis memory without pretending it is a
 forward observation. The command is disabled until `PHASE6_WRITE_TOKEN` is configured, and then
 requires that token in `X-Phase6-Write-Token`. Offline HTTP tests cover disabled and invalid
-tokens, successful persistence, and a duplicate command conflict. No write token is shipped.
+tokens, prediction-mismatch rollback, successful persistence, and a duplicate command conflict.
+No write token is shipped. A Synthesis without both prediction fields cannot be frozen.
 
-## Remaining Phase 6 qualification
+## Qualification and activation
 
-1. Rebuild application images, apply migrations through `0009` on PostgreSQL, and verify the
-   complete Evidence → Thesis → Forecast lifecycle and database immutability with mock inputs.
-2. Exercise the command against completed mock-provider research in the real API/PostgreSQL stack.
-   Live forward forecasts start accumulating only when the command is explicitly configured and
-   called for real completed research.
+`docs/PHASE6_QUALIFICATION.md` records the successful rebuilt Docker
+API/Redis/Celery/PostgreSQL lifecycle and direct UPDATE/DELETE rejection. Phase 6 implementation
+is complete within this fixture-qualified scope. Live forward forecasts start accumulating only
+when the command is explicitly configured and called for real completed research; no provider
+or live forecast qualification is implied by the fixture result.

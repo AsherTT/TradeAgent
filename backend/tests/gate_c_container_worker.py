@@ -18,6 +18,7 @@ from backend.app.contracts.instrument import PriceAdjustmentMode
 from backend.app.contracts.market import MarketBar, MarketSnapshot, TechnicalSnapshot
 from backend.app.contracts.model import ModelRequest, ProviderName, TaskKind
 from backend.app.contracts.research import ResearchState
+from backend.app.contracts.thesis import Direction
 from backend.app.graph.workflow import EvidenceCollection
 
 
@@ -37,6 +38,8 @@ def _model_output(request: ModelRequest[BaseModel]) -> dict[str, object]:
             "limitations": ("Offline fixture only",),
             "evidence_ids": tuple(UUID(item["evidence_id"]) for item in selected),
             "confidence": 0.5,
+            "forecast_direction": Direction.BULLISH,
+            "forecast_probability": 0.6,
         }
     return {
         "question": "Assess the setup",

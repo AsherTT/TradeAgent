@@ -11,9 +11,11 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.contracts.base import utc_now
+from backend.app.contracts.evidence import ResearchSynthesis
+from backend.app.contracts.model import ExecutorMetadata, TaskKind
 from backend.app.contracts.research import ResearchStatus
 from backend.app.contracts.thesis import ForecastRecord, ThesisRevision
-from backend.app.persistence.models import ForecastRecordRow, ThesisVersionRow
+from backend.app.persistence.models import ForecastRecordRow, ModelExecutionRow, ThesisVersionRow
 from backend.app.persistence.repositories import ResearchRunRepository, _as_utc
 
 
@@ -22,9 +24,7 @@ class ForecastIntegrityError(ValueError):
 
 
 class ForecastRepository:
-    def __init__(
-        self, session: AsyncSession, *, clock: Callable[[], datetime] = utc_now
-    ) -> None:
+    def __init__(self, session: AsyncSession, *, clock: Callable[[], datetime] = utc_now) -> None:
         self._session = session
         self._clock = clock
 
@@ -80,18 +80,32 @@ class ForecastRepository:
             )
         if run.instrument_id != thesis.instrument_id or run.horizon != thesis.horizon:
             raise ForecastIntegrityError("Thesis and research identity differ")
-        execution_ids: list[UUID] = []
-        for item in run.model_history:
-            if item.get("status") != "success":
-                continue
-            try:
-                execution_id = UUID(str(item["execution_id"]))
-            except (KeyError, TypeError, ValueError) as exc:
-                raise ForecastIntegrityError("model execution history is invalid") from exc
-            if execution_id not in execution_ids:
-                execution_ids.append(execution_id)
-        if not execution_ids:
-            raise ForecastIntegrityError("forward forecast requires model execution provenance")
+        executions = (
+            await self._session.scalars(
+                select(ModelExecutionRow).where(
+                    ModelExecutionRow.research_run_id == run.research_id,
+                    ModelExecutionRow.task_kind == TaskKind.SYNTHESIS.value,
+                )
+            )
+        ).all()
+        if len(executions) != 1 or run.research_synthesis is None:
+            raise ForecastIntegrityError(
+                "forward forecast requires one persisted synthesis execution"
+            )
+        execution = executions[0]
+        metadata = ExecutorMetadata.model_validate_json(json.dumps(execution.metadata_json))
+        synthesis = ResearchSynthesis.model_validate_json(json.dumps(execution.output_json))
+        if (
+            metadata.execution_id != execution.execution_id
+            or metadata.status != "success"
+            or metadata.completed_at > now
+            or synthesis != run.research_synthesis
+            or synthesis.forecast_direction is None
+            or synthesis.forecast_probability is None
+            or thesis.direction != synthesis.forecast_direction
+            or thesis.direction_probability != synthesis.forecast_probability
+        ):
+            raise ForecastIntegrityError("Thesis forecast does not match persisted model output")
 
         if supersedes_forecast_id is not None:
             prior = await self._session.get(ForecastRecordRow, supersedes_forecast_id)
@@ -116,30 +130,30 @@ class ForecastRepository:
             benchmark_id=benchmark_id,
             thesis_id=thesis.thesis_id,
             thesis_version=revision.version,
-            model_execution_ids=tuple(execution_ids),
+            model_execution_ids=(execution.execution_id,),
             evidence_ids=thesis.evidence_ids,
             supersedes_forecast_id=supersedes_forecast_id,
         )
-        self._session.add(ForecastRecordRow(
-            forecast_id=record.forecast_id,
-            research_run_id=record.research_run_id,
-            instrument_id=record.instrument_id,
-            thesis_id=record.thesis_id,
-            thesis_version=record.thesis_version,
-            supersedes_forecast_id=record.supersedes_forecast_id,
-            created_at=record.created_at,
-            analysis_timestamp=record.analysis_timestamp,
-            horizon=record.horizon,
-            direction=record.direction.value,
-            probability=record.probability,
-            record_json=record.model_dump(mode="json"),
-        ))
+        self._session.add(
+            ForecastRecordRow(
+                forecast_id=record.forecast_id,
+                research_run_id=record.research_run_id,
+                instrument_id=record.instrument_id,
+                thesis_id=record.thesis_id,
+                thesis_version=record.thesis_version,
+                supersedes_forecast_id=record.supersedes_forecast_id,
+                created_at=record.created_at,
+                analysis_timestamp=record.analysis_timestamp,
+                horizon=record.horizon,
+                direction=record.direction.value,
+                probability=record.probability,
+                record_json=record.model_dump(mode="json"),
+            )
+        )
         await self._session.flush()
         return record
 
-    async def get_as_of(
-        self, forecast_id: UUID, *, at: datetime
-    ) -> ForecastRecord | None:
+    async def get_as_of(self, forecast_id: UUID, *, at: datetime) -> ForecastRecord | None:
         if at.tzinfo is None or at.utcoffset() is None:
             raise ValueError("as-of time must be timezone-aware")
         row = await self._session.get(ForecastRecordRow, forecast_id)

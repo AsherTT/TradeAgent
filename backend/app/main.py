@@ -8,7 +8,7 @@ from backend.app.api.thesis import router as thesis_router
 app = FastAPI(
     title="Agentic Equity Research Workbench",
     version="0.1.0",
-    description="Phase 5 research workflow over point-in-time data and deterministic quant",
+    description="Research workflow with evidence, Thesis lifecycle, and frozen forecasts",
 )
 app.include_router(research_router)
 app.include_router(thesis_router)
@@ -16,4 +16,4 @@ app.include_router(thesis_router)
 
 @app.get("/health", tags=["operations"])
 async def health() -> dict[str, str]:
-    return {"status": "ok", "milestone": "phase-5-slice"}
+    return {"status": "ok", "milestone": "phase-6"}

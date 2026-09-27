@@ -17,8 +17,13 @@ provider qualification remains separate.
 
 Phase 6 has append-only relational evidence persistence, explicit point-in-time reads, versioned
 Thesis memory, a forward-only ForecastRecord repository, and an opt-in, token-guarded application
-command. PostgreSQL qualification is still needed
-before live forward accumulation; no Phase 6 completion claim is made yet.
+command. Forecast freezing now requires the Thesis prediction to match one immutable, persisted
+Synthesis model execution and its structured output. PostgreSQL blocks direct changes to Thesis
+history, model execution history, and Forecast records. The rebuilt Docker
+API/Redis/Celery/PostgreSQL mock path has passed qualification. Phase 6 implementation is complete
+within that fixture scope;
+live provider qualification and real forward accumulation remain separate. Phase 7 Secure RAG
+and Gate D follow.
 
 ADR-0018 separates immutable fixed-cutoff research from current research whose decision cutoff is
 persisted only after evidence acquisition. The transport, state, migration, model context, and

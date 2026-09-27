@@ -25,13 +25,19 @@ Last audited: 2026-09-28
   `docs/PHASE6_WORKFLOW.md` for the remaining Thesis and Forecast work.
 - Phase 6 Thesis Lifecycle slice: append-only versions, transitions, evidence links, optimistic
   version checks, point-in-time history, and migration `0008`. Thesis creation requires a
-  completed cited research run; direction and probability are supplied explicitly.
+  completed cited research run; direction and probability are supplied explicitly. Migration
+  `0010` blocks direct PostgreSQL UPDATE/DELETE of version, transition, and evidence history.
 - Phase 6 ForecastRecord slice: forward-only freezing from a persisted Thesis version, completed
-  recent research, model execution IDs, and cited evidence; append-only supersession and as-of
-  reads; migration `0009` adds a PostgreSQL mutation-blocking trigger.
+  recent research, one persisted successful Synthesis execution with matching direction and
+  probability, and cited evidence; append-only supersession and as-of reads. Migration `0009`
+  blocks Forecast mutation; `0010` stores immutable typed model execution metadata and output.
 - Phase 6 opt-in Thesis/Forecast command: a token-guarded HTTP write composes completed cited
   research, versioned Thesis, and a forward ForecastRecord in one transaction. It defaults off
   until `PHASE6_WRITE_TOKEN` is configured; offline command coverage is in place.
+- Phase 6 mock-path qualification: rebuilt API/worker/Beat/migration images, PostgreSQL at
+  Alembic `0010`, real Redis/Celery execution, cited Thesis/Forecast persistence, exact model
+  output provenance, and direct PostgreSQL UPDATE/DELETE rejection. See
+  `docs/PHASE6_QUALIFICATION.md`.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary
@@ -232,9 +238,10 @@ Last audited: 2026-09-28
   extraction, a qualified live news adapter, and broader Replan routing remain. Synthesis and
   Gate C research-loop safety are qualified with fixtures; recorded live external-provider
   qualification remains separate and is not a Gate C claim.
-- Phase 6 Evidence Repository, Thesis Lifecycle, and frozen ForecastRecord storage are
-  implemented and tested offline. The application command is implemented but remains default-off.
-  Integrated PostgreSQL qualification remains before any live forward accumulation claim.
+- Phase 6 implementation and mock-path qualification are complete after a single whole-phase
+  code review and closure of its provenance and storage-immutability findings. The application
+  command remains default-off, and no live forward forecasts or provider qualification are claimed.
+  Phase 7 Secure RAG and Gate D are next in the architecture order.
 - ADR-0017 and `docs/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,
   Gate C now permits real Research API integration under that strategy, while the formal frontend

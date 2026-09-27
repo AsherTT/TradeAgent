@@ -111,6 +111,7 @@ async def record_thesis(
             )
             if submission.freeze_forecast else None
         )
+        await session.commit()
     except (ThesisLifecycleError, ForecastIntegrityError) as exc:
         await session.rollback()
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc

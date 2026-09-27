@@ -7,9 +7,10 @@ from enum import StrEnum
 from typing import Annotated, Any
 from uuid import UUID, uuid4
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
 from backend.app.contracts.base import ContractModel
+from backend.app.contracts.thesis import Direction
 
 
 class TrustLevel(StrEnum):
@@ -69,3 +70,11 @@ class ResearchSynthesis(ContractModel):
     )
     evidence_ids: tuple[UUID, ...] = Field(min_length=1, max_length=8)
     confidence: float = Field(ge=0, le=1)
+    forecast_direction: Direction | None = None
+    forecast_probability: float | None = Field(default=None, ge=0, le=1)
+
+    @model_validator(mode="after")
+    def complete_forecast_pair(self) -> ResearchSynthesis:
+        if (self.forecast_direction is None) != (self.forecast_probability is None):
+            raise ValueError("forecast direction and probability must be supplied together")
+        return self

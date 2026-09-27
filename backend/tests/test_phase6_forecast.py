@@ -9,6 +9,13 @@ import pytest
 
 from backend.app.contracts.evidence import Evidence, ResearchSynthesis, TrustLevel
 from backend.app.contracts.instrument import Instrument
+from backend.app.contracts.model import (
+    ExecutorMetadata,
+    ModelExecutionSnapshot,
+    ProviderName,
+    ReasoningLevel,
+    TaskKind,
+)
 from backend.app.contracts.research import ResearchState, ResearchStatus
 from backend.app.contracts.thesis import Direction, Thesis, ThesisStatus
 from backend.app.persistence.base import Base
@@ -35,6 +42,26 @@ def _run(instrument_id: UUID, cutoff: datetime, *, model_execution: bool = True)
         sanitization_status="structured_verified",
         injection_risk=0,
     )
+    synthesis = ResearchSynthesis(
+        summary="Cautious view",
+        bull_case="Trend persists",
+        bear_case="Trend weakens",
+        limitations=("Fixture only",),
+        evidence_ids=(evidence.evidence_id,),
+        confidence=0.5,
+        forecast_direction=Direction.BULLISH,
+        forecast_probability=0.6,
+    )
+    metadata = ExecutorMetadata(
+        request_id=uuid4(),
+        provider=ProviderName.MOCK,
+        model="fixture",
+        reasoning_level=ReasoningLevel.MEDIUM,
+        started_at=cutoff,
+        completed_at=cutoff + timedelta(seconds=1),
+        latency_ms=1,
+        status="success",
+    )
     return ResearchState(
         instrument_id=instrument_id,
         ticker="KLAC",
@@ -45,22 +72,24 @@ def _run(instrument_id: UUID, cutoff: datetime, *, model_execution: bool = True)
         status=ResearchStatus.COMPLETE,
         evidence=(evidence,),
         model_history=(
-            ({"execution_id": str(uuid4()), "status": "success"},)
-            if model_execution else ()
-        ),
-        research_synthesis=ResearchSynthesis(
-            summary="Cautious view",
-            bull_case="Trend persists",
-            bear_case="Trend weakens",
-            limitations=("Fixture only",),
-            evidence_ids=(evidence.evidence_id,),
-            confidence=0.5,
-        ),
+            ModelExecutionSnapshot(
+                task_kind=TaskKind.SYNTHESIS,
+                metadata=metadata,
+                output=synthesis.model_dump(mode="json"),
+            ).model_dump(mode="json"),
+        )
+        if model_execution
+        else (),
+        research_synthesis=synthesis,
     )
 
 
-def _thesis(run: ResearchState, *, thesis_id: UUID | None = None,
-            status: ThesisStatus = ThesisStatus.CREATED) -> Thesis:
+def _thesis(
+    run: ResearchState,
+    *,
+    thesis_id: UUID | None = None,
+    status: ThesisStatus = ThesisStatus.CREATED,
+) -> Thesis:
     assert run.analysis_timestamp is not None
     return Thesis(
         thesis_id=thesis_id or uuid4(),
@@ -87,8 +116,11 @@ def test_forward_forecasts_freeze_provenance_and_supersede_without_mutation(
         async with database.engine.begin() as connection:
             await connection.run_sync(Base.metadata.create_all)
         instrument = Instrument(
-            current_symbol="KLAC", exchange="NASDAQ", currency="USD",
-            asset_type="equity", company_name="KLA Corporation",
+            current_symbol="KLAC",
+            exchange="NASDAQ",
+            currency="USD",
+            asset_type="equity",
+            company_name="KLA Corporation",
         )
         now = datetime.now(UTC)
         first_run = _run(instrument.instrument_id, now - timedelta(minutes=2))
@@ -104,8 +136,11 @@ def test_forward_forecasts_freeze_provenance_and_supersede_without_mutation(
                 _thesis(first_run), research_run_id=first_run.research_id
             )
             second_revision = await thesis_repo.transition(
-                _thesis(second_run, thesis_id=first_revision.thesis.thesis_id,
-                        status=ThesisStatus.STRENGTHENED),
+                _thesis(
+                    second_run,
+                    thesis_id=first_revision.thesis.thesis_id,
+                    status=ThesisStatus.STRENGTHENED,
+                ),
                 research_run_id=second_run.research_id,
                 expected_version=1,
             )
@@ -130,7 +165,7 @@ def test_forward_forecasts_freeze_provenance_and_supersede_without_mutation(
             assert await later.freeze(first_revision) == first
             with pytest.raises(ForecastIntegrityError, match="historical or stale"):
                 await repository.freeze(old_revision)
-            with pytest.raises(ForecastIntegrityError, match="model execution"):
+            with pytest.raises(ForecastIntegrityError, match="synthesis execution"):
                 await repository.freeze(no_model_revision)
 
         async with database.sessions() as session, session.begin():
@@ -140,12 +175,13 @@ def test_forward_forecasts_freeze_provenance_and_supersede_without_mutation(
             )
             assert second.supersedes_forecast_id == first.forecast_id
             assert second.forecast_id != first.forecast_id
-            assert await repository.get_as_of(
-                first.forecast_id, at=first.created_at - timedelta(microseconds=1)
-            ) is None
-            assert await repository.get_as_of(
-                first.forecast_id, at=second.created_at
-            ) == first
+            assert (
+                await repository.get_as_of(
+                    first.forecast_id, at=first.created_at - timedelta(microseconds=1)
+                )
+                is None
+            )
+            assert await repository.get_as_of(first.forecast_id, at=second.created_at) == first
             with pytest.raises(ForecastIntegrityError, match="already differs"):
                 await repository.freeze(second_revision)
         await database.dispose()

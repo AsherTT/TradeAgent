@@ -22,11 +22,13 @@ from backend.app.contracts.instrument import (
     InstrumentStatus,
     SymbolHistory,
 )
+from backend.app.contracts.model import ModelExecutionSnapshot
 from backend.app.contracts.research import ResearchState, ResearchStatus
 from backend.app.persistence.evidence import EvidenceRepository
 from backend.app.persistence.models import (
     CorporateActionRow,
     InstrumentRow,
+    ModelExecutionRow,
     ResearchBudgetRow,
     ResearchPlanRow,
     ResearchRunRow,
@@ -141,9 +143,7 @@ class SecurityMasterRepository:
                 exchange=symbol_row.exchange,
                 valid_from=_as_utc(symbol_row.valid_from),
                 valid_to=(
-                    _as_utc(symbol_row.valid_to)
-                    if symbol_row.valid_to is not None
-                    else None
+                    _as_utc(symbol_row.valid_to) if symbol_row.valid_to is not None else None
                 ),
                 available_at=_as_utc(symbol_row.available_at),
             ),
@@ -254,9 +254,7 @@ def _require_immutable_analysis_timestamp(
     if persisted is None:
         return
     persisted_utc = (
-        persisted.replace(tzinfo=UTC)
-        if persisted.tzinfo is None
-        else persisted.astimezone(UTC)
+        persisted.replace(tzinfo=UTC) if persisted.tzinfo is None else persisted.astimezone(UTC)
     )
     proposed_utc = (
         proposed.replace(tzinfo=UTC)
@@ -433,9 +431,7 @@ class ResearchRunRepository:
         existing = await self._session.get(ResearchRunRow, state.research_id)
         if existing is None:
             raise LookupError(f"research run {state.research_id} does not exist")
-        _require_immutable_analysis_timestamp(
-            existing.analysis_timestamp, state.analysis_timestamp
-        )
+        _require_immutable_analysis_timestamp(existing.analysis_timestamp, state.analysis_timestamp)
         state = await _admitted_research_state(self._session, state)
         if execution_id is not None:
             now = datetime.now(UTC)
@@ -461,8 +457,7 @@ class ResearchRunRepository:
                     ResearchRunRow.lease_expires_at > now,
                     or_(
                         ResearchRunRow.analysis_timestamp.is_(None),
-                        ResearchRunRow.analysis_timestamp
-                        == state.analysis_timestamp,
+                        ResearchRunRow.analysis_timestamp == state.analysis_timestamp,
                     ),
                 )
                 .values(**values)
@@ -497,9 +492,7 @@ class ResearchRunRepository:
 
         row = existing
         if ResearchStatus(row.status) in _TERMINAL_RESEARCH_STATUSES:
-            raise ResearchRunBusyError(
-                f"research run {state.research_id} is already terminal"
-            )
+            raise ResearchRunBusyError(f"research run {state.research_id} is already terminal")
         row.status = state.status.value
         row.state_json = state.model_dump(mode="json")
         row.analysis_timestamp = state.analysis_timestamp
@@ -530,9 +523,7 @@ class ResearchRunRepository:
         state = _research_state_from_row(row)
         if state.status in _TERMINAL_RESEARCH_STATUSES:
             return state
-        updated = ResearchState.model_validate(
-            {**state.model_dump(), "status": status}
-        )
+        updated = ResearchState.model_validate({**state.model_dump(), "status": status})
         row.status = status.value
         row.state_json = updated.model_dump(mode="json")
         row.failure_reason = failure_reason
@@ -542,6 +533,30 @@ class ResearchRunRepository:
 
     async def _save_details(self, state: ResearchState) -> None:
         await EvidenceRepository(self._session).add_from_run(state)
+        for item in state.model_history:
+            if "metadata" not in item or "output" not in item:
+                continue  # legacy metadata alone cannot establish prediction provenance
+            snapshot = ModelExecutionSnapshot.model_validate_json(json.dumps(item))
+            execution_id = snapshot.metadata.execution_id
+            row = await self._session.get(ModelExecutionRow, execution_id)
+            metadata_json = snapshot.metadata.model_dump(mode="json")
+            if row is None:
+                self._session.add(
+                    ModelExecutionRow(
+                        execution_id=execution_id,
+                        research_run_id=state.research_id,
+                        task_kind=snapshot.task_kind.value,
+                        metadata_json=metadata_json,
+                        output_json=snapshot.output,
+                    )
+                )
+            elif (
+                row.research_run_id != state.research_id
+                or row.task_kind != snapshot.task_kind.value
+                or row.metadata_json != metadata_json
+                or row.output_json != snapshot.output
+            ):
+                raise ValueError("model execution history cannot be rewritten")
         plan_row = await self._session.get(ResearchPlanRow, state.research_id)
         if state.research_plan is None:
             if plan_row is not None:

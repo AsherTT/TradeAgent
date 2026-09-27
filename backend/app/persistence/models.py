@@ -96,8 +96,7 @@ class CorporateActionRow(Base):
             "available_at",
         ),
         CheckConstraint(
-            "action_type NOT IN ('split', 'reverse_split') OR "
-            "(ratio IS NOT NULL AND ratio > 0)",
+            "action_type NOT IN ('split', 'reverse_split') OR (ratio IS NOT NULL AND ratio > 0)",
             name="split_ratio_required",
         ),
         CheckConstraint(
@@ -150,6 +149,19 @@ class ResearchBudgetRow(Base):
         ForeignKey("research_run.research_run_id", ondelete="CASCADE"), primary_key=True
     )
     budget_json: Mapped[dict[str, Any]] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class ModelExecutionRow(Base):
+    __tablename__ = "model_execution"
+
+    execution_id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
+    research_run_id: Mapped[UUID] = mapped_column(
+        ForeignKey("research_run.research_run_id", ondelete="RESTRICT"), index=True
+    )
+    task_kind: Mapped[str] = mapped_column(String(32))
+    metadata_json: Mapped[dict[str, Any]] = mapped_column(JSON)
+    output_json: Mapped[dict[str, Any]] = mapped_column(JSON)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
 
 
@@ -206,9 +218,7 @@ class ThesisVersionRow(Base):
     recorded_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
 
     __table_args__ = (
-        ForeignKeyConstraint(
-            ["thesis_id"], ["thesis.thesis_id"], ondelete="RESTRICT"
-        ),
+        ForeignKeyConstraint(["thesis_id"], ["thesis.thesis_id"], ondelete="RESTRICT"),
         Index("ix_thesis_version_pit", "thesis_id", "recorded_at", "analysis_timestamp"),
     )
 

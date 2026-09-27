@@ -119,6 +119,12 @@ class ExecutorMetadata(ContractModel):
     status: str
 
 
+class ModelExecutionSnapshot(ContractModel):
+    task_kind: TaskKind
+    metadata: ExecutorMetadata
+    output: dict[str, Any]
+
+
 class ModelResponse(ContractModel, Generic[OutputT]):
     output: OutputT
     metadata: ExecutorMetadata
