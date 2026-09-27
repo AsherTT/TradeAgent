@@ -3,6 +3,7 @@
 from fastapi import FastAPI
 
 from backend.app.api.research import router as research_router
+from backend.app.api.thesis import router as thesis_router
 
 app = FastAPI(
     title="Agentic Equity Research Workbench",
@@ -10,6 +11,7 @@ app = FastAPI(
     description="Phase 5 research workflow over point-in-time data and deterministic quant",
 )
 app.include_router(research_router)
+app.include_router(thesis_router)
 
 
 @app.get("/health", tags=["operations"])

@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     research_reconcile_interval_seconds: int = Field(default=60, ge=1)
     research_reconcile_grace_seconds: int = Field(default=30, ge=0)
     research_reconcile_batch_size: int = Field(default=100, ge=1, le=1000)
+    phase6_write_token: str | None = None
 
     qwen_api_key: str | None = None
     qwen_base_url: str = "https://dashscope.aliyuncs.com/compatible-mode/v1"

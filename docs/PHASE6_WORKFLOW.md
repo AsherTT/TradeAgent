@@ -50,10 +50,21 @@ This records a forward observation only when the application invokes the reposit
 15 minutes of the analysis cutoff. No historic run is backfilled as a forward forecast. The
 probability is a research prediction, not SystemConfidence or a trade instruction.
 
+## Opt-in application command — implemented offline
+
+`POST /research/{research_run_id}/theses` accepts an explicit Thesis direction, probability,
+summary, invalidation conditions, and a stable Thesis ID. It derives the instrument, cutoff,
+horizon, and evidence IDs from the completed cited research run. It creates a versioned Thesis
+and, by default, freezes a forward ForecastRecord in one transaction. For historical research,
+the caller may set `freeze_forecast=false` to record Thesis memory without pretending it is a
+forward observation. The command is disabled until `PHASE6_WRITE_TOKEN` is configured, and then
+requires that token in `X-Phase6-Write-Token`. Offline HTTP tests cover disabled and invalid
+tokens, successful persistence, and a duplicate command conflict. No write token is shipped.
+
 ## Remaining Phase 6 qualification
 
 1. Rebuild application images, apply migrations through `0009` on PostgreSQL, and verify the
    complete Evidence → Thesis → Forecast lifecycle and database immutability with mock inputs.
-2. Wire an authorized application command for generating Thesis and freezing ForecastRecords
-   from real completed research. Until then the repository provides the controlled storage seam,
-   and no live forward forecasts are being accumulated.
+2. Exercise the command against completed mock-provider research in the real API/PostgreSQL stack.
+   Live forward forecasts start accumulating only when the command is explicitly configured and
+   called for real completed research.

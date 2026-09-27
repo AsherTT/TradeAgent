@@ -16,9 +16,9 @@ loop-safety tests and a mock-provider Docker API/Redis/Celery/PostgreSQL complet
 provider qualification remains separate.
 
 Phase 6 has append-only relational evidence persistence, explicit point-in-time reads, versioned
-Thesis memory, and a forward-only ForecastRecord repository. PostgreSQL qualification and an
-authorized application command are still needed before live forward accumulation; no Phase 6
-completion claim is made yet.
+Thesis memory, a forward-only ForecastRecord repository, and an opt-in, token-guarded application
+command. PostgreSQL qualification is still needed
+before live forward accumulation; no Phase 6 completion claim is made yet.
 
 ADR-0018 separates immutable fixed-cutoff research from current research whose decision cutoff is
 persisted only after evidence acquisition. The transport, state, migration, model context, and
