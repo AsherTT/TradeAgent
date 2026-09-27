@@ -26,6 +26,9 @@ Last audited: 2026-09-28
 - Phase 6 Thesis Lifecycle slice: append-only versions, transitions, evidence links, optimistic
   version checks, point-in-time history, and migration `0008`. Thesis creation requires a
   completed cited research run; direction and probability are supplied explicitly.
+- Phase 6 ForecastRecord slice: forward-only freezing from a persisted Thesis version, completed
+  recent research, model execution IDs, and cited evidence; append-only supersession and as-of
+  reads; migration `0009` adds a PostgreSQL mutation-blocking trigger.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary
@@ -226,8 +229,9 @@ Last audited: 2026-09-28
   extraction, a qualified live news adapter, and broader Replan routing remain. Synthesis and
   Gate C research-loop safety are qualified with fixtures; recorded live external-provider
   qualification remains separate and is not a Gate C claim.
-- Phase 6 Evidence Repository and Thesis Lifecycle are implemented and tested offline. Frozen
-  ForecastRecord persistence and the integrated Phase 6 qualification remain.
+- Phase 6 Evidence Repository, Thesis Lifecycle, and frozen ForecastRecord storage are
+  implemented and tested offline. The integrated PostgreSQL qualification and an authorized
+  application command to invoke the Thesis/Forecast flow remain before live forward accumulation.
 - ADR-0017 and `docs/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,
   Gate C now permits real Research API integration under that strategy, while the formal frontend

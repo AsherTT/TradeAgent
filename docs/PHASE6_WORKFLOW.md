@@ -34,8 +34,26 @@ recorded later. This repository does not infer a direction or probability from S
 Offline tests cover version history, stale-version rejection, transition rules, source-run
 requirements, citation checks, and as-of visibility.
 
-## Next slices
+## Frozen ForecastRecord — implemented offline
 
-1. Freeze forward ForecastRecords linked to completed research, Thesis, model executions, and
-   cited evidence. Keep forecast probability separate from system confidence.
-2. Qualify the completed Phase 6 lifecycle across the database and worker boundaries.
+Alembic migration `0009` stores ForecastRecords linked to the exact Thesis version and source
+research run. PostgreSQL rejects UPDATE and DELETE on this table. The repository creates a
+record from persisted Thesis and completed research only when the analysis cutoff is recent,
+the run is not marked with parametric look-ahead risk, and successful model execution IDs exist.
+It freezes direction and probability from the Thesis and retains its cited evidence IDs.
+Repeated freezing of the same run/Thesis is idempotent if the requested benchmark and
+supersession are identical; changed inputs are rejected. A later forecast may reference an
+earlier one as superseded without changing the old record. As-of reads hide records created
+after the requested time.
+
+This records a forward observation only when the application invokes the repository within
+15 minutes of the analysis cutoff. No historic run is backfilled as a forward forecast. The
+probability is a research prediction, not SystemConfidence or a trade instruction.
+
+## Remaining Phase 6 qualification
+
+1. Rebuild application images, apply migrations through `0009` on PostgreSQL, and verify the
+   complete Evidence → Thesis → Forecast lifecycle and database immutability with mock inputs.
+2. Wire an authorized application command for generating Thesis and freezing ForecastRecords
+   from real completed research. Until then the repository provides the controlled storage seam,
+   and no live forward forecasts are being accumulated.

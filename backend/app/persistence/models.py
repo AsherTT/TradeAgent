@@ -17,6 +17,7 @@ from sqlalchemy import (
     Index,
     String,
     Text,
+    UniqueConstraint,
     Uuid,
 )
 from sqlalchemy.orm import Mapped, mapped_column
@@ -241,4 +242,37 @@ class ThesisEvidenceRow(Base):
             ["thesis_version.thesis_id", "thesis_version.version"],
             ondelete="RESTRICT",
         ),
+    )
+
+
+class ForecastRecordRow(Base):
+    __tablename__ = "forecast_record"
+
+    forecast_id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
+    research_run_id: Mapped[UUID] = mapped_column(
+        ForeignKey("research_run.research_run_id", ondelete="RESTRICT"), index=True
+    )
+    instrument_id: Mapped[UUID] = mapped_column(
+        ForeignKey("instrument.instrument_id", ondelete="RESTRICT"), index=True
+    )
+    thesis_id: Mapped[UUID] = mapped_column(Uuid)
+    thesis_version: Mapped[int] = mapped_column()
+    supersedes_forecast_id: Mapped[UUID | None] = mapped_column(
+        ForeignKey("forecast_record.forecast_id", ondelete="RESTRICT")
+    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
+    analysis_timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    horizon: Mapped[str] = mapped_column(String(64))
+    direction: Mapped[str] = mapped_column(String(16))
+    probability: Mapped[float] = mapped_column(Float)
+    record_json: Mapped[dict[str, Any]] = mapped_column(JSON)
+
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["thesis_id", "thesis_version"],
+            ["thesis_version.thesis_id", "thesis_version.version"],
+            ondelete="RESTRICT",
+        ),
+        UniqueConstraint("research_run_id", "thesis_id", name="uq_forecast_run_thesis"),
+        CheckConstraint("probability >= 0 AND probability <= 1", name="forecast_probability"),
     )

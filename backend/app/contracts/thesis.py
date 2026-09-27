@@ -71,8 +71,10 @@ class ForecastRecord(ContractModel):
     probability: float = Field(ge=0, le=1)
     benchmark_id: UUID | None = None
     thesis_id: UUID
+    thesis_version: int = Field(ge=1)
     model_execution_ids: tuple[UUID, ...]
     evidence_ids: tuple[UUID, ...]
+    supersedes_forecast_id: UUID | None = None
     frozen: Literal[True] = True
 
 

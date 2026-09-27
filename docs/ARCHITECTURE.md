@@ -15,8 +15,9 @@ evidence-cited Synthesis now runs only after sufficient coverage. Gate C passes 
 loop-safety tests and a mock-provider Docker API/Redis/Celery/PostgreSQL complete path; live
 provider qualification remains separate.
 
-Phase 6 has begun with append-only relational evidence persistence, explicit point-in-time
-reads, and a versioned Thesis Lifecycle. Frozen ForecastRecord persistence is next; no Phase 6
+Phase 6 has append-only relational evidence persistence, explicit point-in-time reads, versioned
+Thesis memory, and a forward-only ForecastRecord repository. PostgreSQL qualification and an
+authorized application command are still needed before live forward accumulation; no Phase 6
 completion claim is made yet.
 
 ADR-0018 separates immutable fixed-cutoff research from current research whose decision cutoff is
