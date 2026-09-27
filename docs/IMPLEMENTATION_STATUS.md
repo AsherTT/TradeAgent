@@ -50,6 +50,9 @@ Last audited: 2026-09-28
 - Phase 7 application slice: default-off token-guarded document and search APIs, configurable
   HTTP embedding adapter, and a durable budgeted RAG research node with cited evidence. Offline
   API and graph tests pass; no live embedding provider is configured or qualified.
+- Phase 7 Gate D: 13/13 poisoned fixtures quarantined, 5/5 policy/trust-field injections
+  rejected, and PostgreSQL migration `0011` qualified with FTS/pgvector retrieval, PIT exclusion,
+  and immutable document/chunk rows. See `docs/GATE_D_QUALIFICATION.md`.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary
@@ -253,7 +256,12 @@ Last audited: 2026-09-28
 - Phase 6 implementation and mock-path qualification are complete after a single whole-phase
   code review and closure of its provenance and storage-immutability findings. The application
   command remains default-off, and no live forward forecasts or provider qualification are claimed.
-  Phase 7 Secure RAG is now in progress; Gate D is pending.
+  Phase 7 Secure RAG and Gate D are fixture-qualified after the single whole-phase code review.
+  SEC filing eligibility now requires verified primary provenance, API uploads receive a
+  server-side observation timestamp, and RAG source routing uses the research horizon and
+  model-produced plan. Its ordinary suite passes 231 tests with one opt-in live-model test
+  skipped and 91.92% combined coverage. RAG remains default-off; no real embedding service
+  or live document source is claimed. Phase 8 replay/evaluation is next.
 - ADR-0017 and `docs/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,
   Gate C now permits real Research API integration under that strategy, while the formal frontend
@@ -264,6 +272,6 @@ Last audited: 2026-09-28
 - Live Gate A remains excluded from the ordinary test suite so routine development does not
   consume provider API funds or subscription quota.
 - Live external market-data authorization and credentials, recorded live qualification, optional
-  broader current-provider coverage after independent qualification, research/RAG graph nodes,
-  backtesting, integrated frontend implementation, and Azure deployment remain deferred to their
-  documented gates.
+  broader current-provider coverage after independent qualification, remaining Phase 5 research
+  extensions, backtesting, integrated frontend implementation, and Azure deployment remain
+  deferred to their documented gates.

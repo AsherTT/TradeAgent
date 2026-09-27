@@ -59,7 +59,8 @@ def test_research_checkpoint_persists_append_only_evidence_with_pit_reads(
         )
         state = ResearchState(
             instrument_id=instrument.instrument_id, ticker="KLAC", query="Assess setup",
-            analysis_timestamp=cutoff, horizon="3-5 days", evidence=(known, future, offset),
+            analysis_timestamp=cutoff, requested_at=cutoff,
+            horizon="3-5 days", evidence=(known, future, offset),
         )
         async with database.sessions() as session, session.begin():
             await SecurityMasterRepository(session).add_instrument(instrument)
@@ -143,7 +144,8 @@ def test_migration_backfills_only_pit_eligible_historical_evidence(
         future = _evidence(instrument.instrument_id, cutoff + timedelta(hours=1), content="later")
         state = ResearchState(
             instrument_id=instrument.instrument_id, ticker="KLAC", query="Assess setup",
-            analysis_timestamp=cutoff, horizon="3-5 days", evidence=(known, future),
+            analysis_timestamp=cutoff, requested_at=cutoff,
+            horizon="3-5 days", evidence=(known, future),
         )
         async with database.sessions() as session, session.begin():
             await SecurityMasterRepository(session).add_instrument(instrument)

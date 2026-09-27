@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from backend.app.contracts.evidence import Evidence, EvidenceGapResult, TrustLevel
 from backend.app.contracts.research import ResearchState
+from backend.app.rag.ingestion import SCANNER_VERSION
 
 SUPPORTED_EVIDENCE_REQUIREMENTS = {
     "market data": "market",
@@ -42,7 +43,9 @@ def judge_evidence_gaps(state: ResearchState) -> EvidenceGapResult:
     news = any(item.evidence_type == "news_document" for item in eligible)
     rag = any(item.evidence_type == "rag_document" for item in eligible)
     filing = any(
-        item.evidence_type == "rag_document" and item.source_type == "sec_filing"
+        item.evidence_type == "rag_document"
+        and item.source_type == "sec_filing"
+        and item.trust_level is TrustLevel.OFFICIAL_PRIMARY
         for item in eligible
     )
     cutoff = state.analysis_timestamp
@@ -111,7 +114,7 @@ def qualified_evidence(state: ResearchState) -> tuple[Evidence, ...]:
                 item.evidence_type == "rag_document"
                 and item.trust_level is not TrustLevel.UNKNOWN
                 and item.sanitization_status == "parsed_normalized_scanned"
-                and item.scanner_version == "rag-guard-v1"
+                and item.scanner_version == SCANNER_VERSION
                 and item.injection_risk < 0.7
             )
         )

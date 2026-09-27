@@ -11,6 +11,7 @@ from backend.app.contracts.rag import RagSearchRequest
 from backend.app.contracts.research import ResearchState
 from backend.app.rag.context import build_rag_context
 from backend.app.rag.retrieval import RagRetriever
+from backend.app.rag.router import route_rag_hits
 
 
 @dataclass(frozen=True, slots=True)
@@ -35,9 +36,10 @@ class RagResearchEvidence:
                 instrument_id=state.instrument_id,
                 query=state.query[:500],
                 analysis_timestamp=cutoff,
-                top_k=min(remaining, 12),
+                top_k=12,
             )
         )
+        hits = route_rag_hits(state, hits)
         evidence_ids = {hit.chunk_id: uuid4() for hit in hits}
         context = build_rag_context(
             hits,

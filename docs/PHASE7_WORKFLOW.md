@@ -40,23 +40,32 @@ produces deterministic top-K results. A query embedding must have the configured
 and finite nonzero values. The `ContextBuilder` rechecks each selected hit, limits characters and
 chunks, records selected chunk IDs, and wraps JSON-escaped source content in explicit untrusted
 evidence markers. Offline tests cover fusion, bounded context, marker escaping, and rejection of
-future, poisoned, foreign, or unknown-trust hits. PostgreSQL query execution still needs its
+future, poisoned, foreign, or unknown-trust hits. PostgreSQL query execution passed its
 container qualification.
 
 ## 4. Application and research integration — implemented offline
 
 `/rag/documents` and `/rag/search` are default-off token-guarded endpoints. Intake accepts
-bounded base64 source bytes but never accepts a caller-selected trust level: uploaded SEC-labeled
-text remains `USER_CONTENT`. The write commits before returning success. A configurable
+bounded base64 source bytes but never accepts a caller-selected trust level or observation time:
+uploaded SEC-labeled text remains `USER_CONTENT`, and the service stamps ingestion time as its
+earliest point-in-time availability. The write commits before returning success. A configurable
 OpenAI-compatible HTTP embedding adapter requests exactly 384 dimensions and validates indexed,
 finite, nonzero responses; no provider or credential is enabled by default. The worker gains a
 default-off RAG node after News. It records a durable external-attempt marker, respects tool and
 RAG chunk budgets, converts only ContextBuilder-selected hits into cited research evidence, and
-fails closed on an interrupted call. Filing and general RAG requirements are now recognized by
-the deterministic gap judge. Offline API, adapter, and graph tests pass.
+fails closed on an interrupted call. A bounded source router applies horizon policy and the
+model-produced research plan before context selection. A filing requirement accepts only verified
+`OFFICIAL_PRIMARY` SEC evidence. Offline API, adapter, and graph tests pass.
 
-## Remaining work
+## 5. Gate D — fixture qualified
 
-- Run Gate D red-team regression and PostgreSQL-backed migration/retrieval qualification; record metrics.
+`docs/GATE_D_QUALIFICATION.md` records the 13/13 malicious-input quarantine result, five
+strict-schema policy/trust rejections, one benign control, and PostgreSQL point-in-time,
+isolation, FTS/pgvector, and immutability evidence. Phase 7 implementation is complete within
+this fixture-qualified scope. The application remains default-off until its embedding model,
+credentials, and access token are configured; live provider qualification is separate.
 
-The code-review skill is reserved for one complete Phase 7 review after these parts are finished.
+One whole-phase code review was completed after implementation and qualification. Its SEC
+provenance, upload-time, source-routing, and scanner-version findings are closed with regression
+checks. The ordinary suite passes with 231 tests, one opt-in live-model test skipped, and 91.92%
+combined coverage. The next large stage is Phase 8 replay and evaluation.

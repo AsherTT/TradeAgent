@@ -4,7 +4,7 @@ import asyncio
 import base64
 import importlib
 from collections.abc import AsyncIterator
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from uuid import UUID
 
@@ -69,7 +69,7 @@ def test_guarded_ingestion_quarantines_poisoned_content(
             rag_write_token="fixture-secret",
         ),
     )
-    now = datetime.now(UTC)
+    now = datetime.now(UTC) - timedelta(days=30)
     payload = {
         "instrument_id": str(instrument.instrument_id),
         "source_type": "sec_filing",
@@ -77,7 +77,6 @@ def test_guarded_ingestion_quarantines_poisoned_content(
         "source_uri": "https://www.sec.gov/Archives/sample",
         "document_format": "text",
         "content_base64": base64.b64encode(b"Revenue stayed stable.").decode(),
-        "observed_at": now.isoformat(),
         "available_at": now.isoformat(),
     }
     try:
@@ -95,10 +94,19 @@ def test_guarded_ingestion_quarantines_poisoned_content(
         )
         assert client.post(path, json=payload).status_code == 403
         headers = {"X-RAG-Token": "fixture-secret"}
+        before_upload = datetime.now(UTC)
         accepted = client.post(path, json=payload, headers=headers)
         assert accepted.status_code == 200
         assert accepted.json()["status"] == "accepted"
         assert accepted.json()["chunk_count"] == 1
+        assert client.post(
+            path, json={**payload, "observed_at": now.isoformat()}, headers=headers
+        ).status_code == 422
+        assert client.post(
+            path,
+            json={**payload, "available_at": now.replace(tzinfo=None).isoformat()},
+            headers=headers,
+        ).status_code == 422
         poisoned = client.post(
             path,
             json={
@@ -132,6 +140,8 @@ def test_guarded_ingestion_quarantines_poisoned_content(
                 saved = await session.get(RagDocumentRow, UUID(accepted.json()["document_id"]))
                 assert saved is not None
                 assert saved.trust_level == "user_content"
+                assert saved.observed_at.replace(tzinfo=UTC) >= before_upload
+                assert saved.available_at.replace(tzinfo=UTC) >= before_upload
                 poisoned_chunks = (await session.scalars(
                     select(RagChunkRow).where(
                         RagChunkRow.document_id == UUID(poisoned.json()["document_id"])

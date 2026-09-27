@@ -57,6 +57,7 @@ from backend.app.market_data.service import (
 )
 from backend.app.news import NewsResearchEvidence, NewsSearchRequest
 from backend.app.quant.indicators import IndicatorError, calculate_technical_snapshot
+from backend.app.rag.ingestion import SCANNER_VERSION
 from backend.app.rag.research import RagResearchEvidence
 
 StateSaver = Callable[[ResearchState], Awaitable[None]]
@@ -736,14 +737,25 @@ class ResearchWorkflow:
         state = _mark_attempt_started(state, ResearchNode.RAG)
         await self._save(state)
         collection = await self._rag_provider.collect(state)
-        if any(
-            item.instrument_id != state.instrument_id
-            or item.observed_at > cutoff
-            or item.available_at > cutoff
-            or (item.published_at is not None and item.published_at > cutoff)
-            for item in collection.evidence
+        if (
+            collection.chunks_selected != len(collection.evidence)
+            or collection.chunks_selected
+            > (state.research_budget.max_rag_chunks - state.budget_usage.rag_chunks)
+            or any(
+                item.instrument_id != state.instrument_id
+                or item.observed_at > cutoff
+                or item.available_at > cutoff
+                or (item.published_at is not None and item.published_at > cutoff)
+                or item.evidence_type != "rag_document"
+                or item.trust_level is TrustLevel.UNKNOWN
+                or item.sanitization_status != "parsed_normalized_scanned"
+                or item.scanner_version != SCANNER_VERSION
+                or item.injection_risk >= 0.7
+                or item.content_hash != sha256(item.content.encode()).hexdigest()
+                for item in collection.evidence
+            )
         ):
-            raise ValueError("RAG evidence violates point-in-time identity")
+            raise ValueError("RAG evidence violates point-in-time or trust boundary")
         state = _transition(
             _mark_attempt_completed(state, ResearchNode.RAG),
             node=ResearchNode.RAG,

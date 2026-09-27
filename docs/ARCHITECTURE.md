@@ -25,8 +25,9 @@ within that fixture scope;
 live provider qualification and real forward accumulation remain separate. Phase 7 Secure RAG
 has begun with bounded document intake, prompt-injection quarantine, and append-only
 document/chunk storage with pgvector and FTS indexes. PIT-filtered hybrid retrieval and a
-bounded untrusted ContextBuilder exist offline. Default-off guarded APIs and a durable RAG
-research node are integrated; Gate D and PostgreSQL qualification remain in progress.
+bounded untrusted ContextBuilder exist. Default-off guarded APIs and a durable RAG research
+node are integrated. Gate D and PostgreSQL/pgvector retrieval are fixture-qualified; real
+embedding and live document providers remain separate. Phase 8 replay/evaluation follows.
 
 ADR-0018 separates immutable fixed-cutoff research from current research whose decision cutoff is
 persisted only after evidence acquisition. The transport, state, migration, model context, and

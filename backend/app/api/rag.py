@@ -14,7 +14,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.config import get_settings
-from backend.app.contracts.base import ContractModel
+from backend.app.contracts.base import ContractModel, utc_now
 from backend.app.contracts.rag import (
     DocumentFormat,
     DocumentSourceType,
@@ -47,7 +47,6 @@ class RagDocumentSubmission(BaseModel):
     source_uri: str | None = Field(default=None, max_length=2048)
     document_format: DocumentFormat
     content_base64: str = Field(min_length=1, max_length=2_700_000)
-    observed_at: datetime
     available_at: datetime
     published_at: datetime | None = None
 
@@ -107,6 +106,12 @@ async def record_document(
     _require_access(token)
     try:
         content = b64decode(submission.content_base64, validate=True)
+        if (
+            submission.available_at.tzinfo is None
+            or submission.available_at.utcoffset() is None
+        ):
+            raise RagIngestionError("document timestamps must be timezone-aware")
+        ingested_at = utc_now()
         source = RagSource(
             instrument_id=submission.instrument_id,
             source_type=submission.source_type,
@@ -114,8 +119,8 @@ async def record_document(
             source_uri=submission.source_uri,
             document_format=submission.document_format,
             raw_content=content,
-            observed_at=submission.observed_at,
-            available_at=submission.available_at,
+            observed_at=ingested_at,
+            available_at=max(submission.available_at, ingested_at),
             published_at=submission.published_at,
         )
         result = ingest_document(source)

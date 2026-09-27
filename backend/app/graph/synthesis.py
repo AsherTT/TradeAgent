@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from backend.app.contracts.evidence import Evidence, ResearchSynthesis
+from backend.app.contracts.evidence import Evidence, ResearchSynthesis, TrustLevel
 from backend.app.contracts.research import ResearchState
 from backend.app.graph.evidence_gap import qualified_evidence
 
@@ -39,7 +39,9 @@ def select_synthesis_evidence(state: ResearchState) -> tuple[Evidence, ...]:
             (
                 item
                 for item in eligible
-                if item.evidence_type == "rag_document" and item.source_type == "sec_filing"
+                if item.evidence_type == "rag_document"
+                and item.source_type == "sec_filing"
+                and item.trust_level is TrustLevel.OFFICIAL_PRIMARY
             ),
             None,
         )
@@ -114,6 +116,7 @@ def validate_synthesis(
     if "filing" in required_capabilities and not any(
         item.evidence_type == "rag_document"
         and item.source_type == "sec_filing"
+        and item.trust_level is TrustLevel.OFFICIAL_PRIMARY
         and item.evidence_id in synthesis.evidence_ids
         for item in selected
     ):
