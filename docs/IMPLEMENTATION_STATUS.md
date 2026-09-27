@@ -38,6 +38,9 @@ Last audited: 2026-09-28
   Alembic `0010`, real Redis/Celery execution, cited Thesis/Forecast persistence, exact model
   output provenance, and direct PostgreSQL UPDATE/DELETE rejection. See
   `docs/PHASE6_QUALIFICATION.md`.
+- Phase 7 document-intake slice: bounded HTML/Markdown/text/JSON/PDF parsing, Unicode and
+  hidden-content cleanup, versioned prompt-injection scanning, trust classification, high-risk
+  quarantine, and structure-aware chunking. See `docs/PHASE7_WORKFLOW.md`.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary
@@ -241,7 +244,7 @@ Last audited: 2026-09-28
 - Phase 6 implementation and mock-path qualification are complete after a single whole-phase
   code review and closure of its provenance and storage-immutability findings. The application
   command remains default-off, and no live forward forecasts or provider qualification are claimed.
-  Phase 7 Secure RAG and Gate D are next in the architecture order.
+  Phase 7 Secure RAG is now in progress; Gate D is pending.
 - ADR-0017 and `docs/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,
   Gate C now permits real Research API integration under that strategy, while the formal frontend

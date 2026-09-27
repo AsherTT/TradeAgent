@@ -23,7 +23,8 @@ history, model execution history, and Forecast records. The rebuilt Docker
 API/Redis/Celery/PostgreSQL mock path has passed qualification. Phase 6 implementation is complete
 within that fixture scope;
 live provider qualification and real forward accumulation remain separate. Phase 7 Secure RAG
-and Gate D follow.
+has begun with bounded document intake and prompt-injection quarantine; retrieval, context
+integration, and Gate D remain in progress.
 
 ADR-0018 separates immutable fixed-cutoff research from current research whose decision cutoff is
 persisted only after evidence acquisition. The transport, state, migration, model context, and
