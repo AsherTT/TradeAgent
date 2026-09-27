@@ -41,6 +41,9 @@ Last audited: 2026-09-28
 - Phase 7 document-intake slice: bounded HTML/Markdown/text/JSON/PDF parsing, Unicode and
   hidden-content cleanup, versioned prompt-injection scanning, trust classification, high-risk
   quarantine, and structure-aware chunking. See `docs/PHASE7_WORKFLOW.md`.
+- Phase 7 storage slice: migration `0011` adds append-only RAG documents/chunks, 384-dimensional
+  pgvector embeddings, PostgreSQL FTS/HNSW indexes, model provenance, and mutation triggers;
+  repository validation and SQLite boundary tests pass. PostgreSQL qualification follows.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary

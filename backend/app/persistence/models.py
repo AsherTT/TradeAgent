@@ -6,6 +6,7 @@ from datetime import date, datetime
 from typing import Any
 from uuid import UUID, uuid4
 
+from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     JSON,
     CheckConstraint,
@@ -190,6 +191,53 @@ class EvidenceRow(Base):
             "observed_at",
             "published_at",
         ),
+    )
+
+
+class RagDocumentRow(Base):
+    __tablename__ = "rag_document"
+
+    document_id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
+    instrument_id: Mapped[UUID] = mapped_column(
+        ForeignKey("instrument.instrument_id", ondelete="RESTRICT"), index=True
+    )
+    source_type: Mapped[str] = mapped_column(String(32))
+    source_name: Mapped[str] = mapped_column(String(128))
+    source_uri: Mapped[str | None] = mapped_column(String(2048))
+    document_format: Mapped[str] = mapped_column(String(16))
+    observed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    available_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
+    published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    content: Mapped[str] = mapped_column(Text)
+    content_hash: Mapped[str] = mapped_column(String(64))
+    trust_level: Mapped[str] = mapped_column(String(32))
+    sanitization_status: Mapped[str] = mapped_column(String(64))
+    injection_risk: Mapped[float] = mapped_column(Float)
+    scanner_version: Mapped[str] = mapped_column(String(64))
+    status: Mapped[str] = mapped_column(String(16), index=True)
+    risk_reasons: Mapped[list[str]] = mapped_column(JSON)
+
+    __table_args__ = (
+        CheckConstraint("injection_risk >= 0 AND injection_risk <= 1", name="rag_injection_risk"),
+    )
+
+
+class RagChunkRow(Base):
+    __tablename__ = "rag_chunk"
+
+    chunk_id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
+    document_id: Mapped[UUID] = mapped_column(
+        ForeignKey("rag_document.document_id", ondelete="RESTRICT"), index=True
+    )
+    ordinal: Mapped[int] = mapped_column()
+    heading: Mapped[str | None] = mapped_column(String(200))
+    content: Mapped[str] = mapped_column(Text)
+    content_hash: Mapped[str] = mapped_column(String(64))
+    embedding: Mapped[list[float]] = mapped_column(Vector(384).with_variant(JSON(), "sqlite"))
+    embedding_model: Mapped[str] = mapped_column(String(128))
+
+    __table_args__ = (
+        UniqueConstraint("document_id", "ordinal", name="uq_rag_chunk_document_ordinal"),
     )
 
 

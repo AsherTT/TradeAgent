@@ -19,11 +19,21 @@ changes, and credential requests in both raw and cleaned text. High-risk documen
 quarantined and produce no retrievable chunks. Offline tests cover every supported format,
 hidden text, multilingual and invisible-character attacks, trust classification, and bounds.
 
+## 2. Relational and vector storage — implemented offline
+
+Migration `0011` adds immutable `rag_document` and `rag_chunk` tables. Accepted chunks carry
+384-dimensional embeddings and an embedding model ID; quarantined documents store their risk
+record with no chunk or embedding. PostgreSQL creates a functional English FTS GIN index and
+an HNSW cosine index for pgvector, and blocks direct UPDATE/DELETE on both tables. The repository
+requires the current scanner version, exact regenerated chunk content, complete idempotent
+retries, finite nonzero vectors of the schema dimension, and one embedding per accepted chunk.
+An `EmbeddingProvider` protocol keeps the model choice outside the repository. Offline SQLite
+tests cover persistence, quarantine, idempotence, mutation rejection, and bad embedding output.
+
 ## Remaining work
 
-- Persist documents, chunks, and embedding references in PostgreSQL/pgvector.
 - Build PIT-filtered lexical/vector retrieval, application RRF, trust filtering, and top-K bounds.
 - Build a bounded ContextBuilder and opt-in research integration.
-- Run Gate D red-team regression and PostgreSQL-backed qualification; record metrics.
+- Run Gate D red-team regression and PostgreSQL-backed migration/retrieval qualification; record metrics.
 
 The code-review skill is reserved for one complete Phase 7 review after these parts are finished.
