@@ -149,3 +149,31 @@ class ResearchBudgetRow(Base):
     )
     budget_json: Mapped[dict[str, Any]] = mapped_column(JSON)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class EvidenceRow(Base):
+    __tablename__ = "evidence"
+
+    evidence_id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
+    research_run_id: Mapped[UUID] = mapped_column(
+        ForeignKey("research_run.research_run_id", ondelete="CASCADE"), index=True
+    )
+    instrument_id: Mapped[UUID] = mapped_column(
+        ForeignKey("instrument.instrument_id", ondelete="RESTRICT"), index=True
+    )
+    evidence_type: Mapped[str] = mapped_column(String(64))
+    observed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    available_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    evidence_json: Mapped[dict[str, Any]] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+    __table_args__ = (
+        Index(
+            "ix_evidence_pit_lookup",
+            "instrument_id",
+            "available_at",
+            "observed_at",
+            "published_at",
+        ),
+    )

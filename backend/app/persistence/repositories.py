@@ -23,6 +23,7 @@ from backend.app.contracts.instrument import (
     SymbolHistory,
 )
 from backend.app.contracts.research import ResearchState, ResearchStatus
+from backend.app.persistence.evidence import EvidenceRepository
 from backend.app.persistence.models import (
     CorporateActionRow,
     InstrumentRow,
@@ -131,6 +132,7 @@ class SecurityMasterRepository:
         if not rows:
             return None
         instrument_row, symbol_row = rows[0]
+        assert symbol_row.available_at is not None  # enforced by the query predicate
         return (
             self._to_instrument(instrument_row),
             SymbolHistory(
@@ -273,11 +275,19 @@ def _research_state_from_row(row: ResearchRunRow) -> ResearchState:
     return ResearchState.model_validate_json(json.dumps(payload))
 
 
+async def _admitted_research_state(session: AsyncSession, state: ResearchState) -> ResearchState:
+    admitted = await EvidenceRepository(session).admitted_from_run(state)
+    if admitted == state.evidence:
+        return state
+    return state.model_copy(update={"evidence": admitted})
+
+
 class ResearchRunRepository:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
     async def create(self, state: ResearchState) -> ResearchState:
+        state = await _admitted_research_state(self._session, state)
         self._session.add(
             ResearchRunRow(
                 research_run_id=state.research_id,
@@ -426,6 +436,7 @@ class ResearchRunRepository:
         _require_immutable_analysis_timestamp(
             existing.analysis_timestamp, state.analysis_timestamp
         )
+        state = await _admitted_research_state(self._session, state)
         if execution_id is not None:
             now = datetime.now(UTC)
             values: dict[str, object] = {
@@ -530,6 +541,7 @@ class ResearchRunRepository:
         return updated
 
     async def _save_details(self, state: ResearchState) -> None:
+        await EvidenceRepository(self._session).add_from_run(state)
         plan_row = await self._session.get(ResearchPlanRow, state.research_id)
         if state.research_plan is None:
             if plan_row is not None:

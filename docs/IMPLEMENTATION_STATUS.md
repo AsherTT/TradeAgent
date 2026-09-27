@@ -1,6 +1,6 @@
 # Implementation Status
 
-Last audited: 2026-09-24
+Last audited: 2026-09-28
 
 ## Implemented
 
@@ -19,6 +19,10 @@ Last audited: 2026-09-24
 - opt-in live Gate A qualification test for Codex, Qwen, and DeepSeek
 - Phase 3 SQLAlchemy models and repositories for instruments, symbol history, corporate actions,
   research runs, plans, and budgets
+- Phase 6 Evidence Repository slice: append-only relational evidence checkpoints, explicit
+  point-in-time reads, immutable UUID/content enforcement, timezone normalization, and Alembic
+  migration `0007` with eligible historical backfill. See
+  `docs/PHASE6_WORKFLOW.md` for the remaining Thesis and Forecast work.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary
@@ -219,6 +223,8 @@ Last audited: 2026-09-24
   extraction, a qualified live news adapter, and broader Replan routing remain. Synthesis and
   Gate C research-loop safety are qualified with fixtures; recorded live external-provider
   qualification remains separate and is not a Gate C claim.
+- Phase 6 has started with the Evidence Repository offline slice. Thesis Lifecycle and frozen
+  ForecastRecord persistence have not yet been implemented or qualified.
 - ADR-0017 and `docs/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,
   Gate C now permits real Research API integration under that strategy, while the formal frontend
