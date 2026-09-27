@@ -30,10 +30,22 @@ retries, finite nonzero vectors of the schema dimension, and one embedding per a
 An `EmbeddingProvider` protocol keeps the model choice outside the repository. Offline SQLite
 tests cover persistence, quarantine, idempotence, mutation rejection, and bad embedding output.
 
+## 3. Hybrid retrieval and context — implemented offline
+
+PostgreSQL lexical search uses FTS and semantic search uses pgvector cosine distance; both
+apply instrument identity, explicit aware point-in-time cutoff, source type, accepted status,
+scanner version, sanitization status, trust, injection-risk, and embedding-model filters before
+ranking. Each arm is bounded to at most 50 candidates; application-level reciprocal rank fusion
+produces deterministic top-K results. A query embedding must have the configured 384 dimensions
+and finite nonzero values. The `ContextBuilder` rechecks each selected hit, limits characters and
+chunks, records selected chunk IDs, and wraps JSON-escaped source content in explicit untrusted
+evidence markers. Offline tests cover fusion, bounded context, marker escaping, and rejection of
+future, poisoned, foreign, or unknown-trust hits. PostgreSQL query execution still needs its
+container qualification.
+
 ## Remaining work
 
-- Build PIT-filtered lexical/vector retrieval, application RRF, trust filtering, and top-K bounds.
-- Build a bounded ContextBuilder and opt-in research integration.
+- Add a configured embedding adapter, guarded document/query API, and opt-in research integration.
 - Run Gate D red-team regression and PostgreSQL-backed migration/retrieval qualification; record metrics.
 
 The code-review skill is reserved for one complete Phase 7 review after these parts are finished.

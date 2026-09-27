@@ -76,3 +76,37 @@ class RagChunk(ContractModel):
 class RagIngestResult(ContractModel):
     document: RagDocument
     chunks: tuple[RagChunk, ...]
+
+
+class RagSearchRequest(ContractModel):
+    instrument_id: UUID
+    query: str = Field(min_length=1, max_length=500)
+    analysis_timestamp: datetime
+    top_k: int = Field(default=8, ge=1, le=12)
+    source_types: tuple[DocumentSourceType, ...] = ()
+
+
+class RagHit(ContractModel):
+    chunk_id: UUID
+    document_id: UUID
+    instrument_id: UUID
+    source_type: DocumentSourceType
+    source_name: str
+    source_uri: str | None
+    observed_at: datetime
+    available_at: datetime
+    published_at: datetime | None
+    heading: str | None
+    content: str
+    content_hash: str
+    trust_level: TrustLevel
+    sanitization_status: str
+    injection_risk: float = Field(ge=0, le=1)
+    scanner_version: str
+    score: float = Field(ge=0)
+
+
+class RagContext(ContractModel):
+    text: str
+    chunk_ids: tuple[UUID, ...]
+    truncated: bool

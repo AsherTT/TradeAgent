@@ -226,7 +226,7 @@ def ingest_document(source: RagSource, *, verified_source: bool = False) -> RagI
     content = _normalize(parsed)
     if not content:
         raise RagIngestionError("document has no visible text")
-    risk, reasons = _scan(raw_text, content)
+    risk, reasons = _scan(f"{raw_text}\n{source.source_name}\n{uri or ''}", content)
     trust = TrustLevel.USER_CONTENT
     if verified_source:
         trust = (
