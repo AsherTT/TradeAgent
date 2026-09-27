@@ -13,6 +13,7 @@ from sqlalchemy import (
     DateTime,
     Float,
     ForeignKey,
+    ForeignKeyConstraint,
     Index,
     String,
     Text,
@@ -175,5 +176,69 @@ class EvidenceRow(Base):
             "available_at",
             "observed_at",
             "published_at",
+        ),
+    )
+
+
+class ThesisRow(Base):
+    __tablename__ = "thesis"
+
+    thesis_id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
+    instrument_id: Mapped[UUID] = mapped_column(
+        ForeignKey("instrument.instrument_id", ondelete="RESTRICT"), index=True
+    )
+    latest_version: Mapped[int] = mapped_column(default=1)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class ThesisVersionRow(Base):
+    __tablename__ = "thesis_version"
+
+    thesis_id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
+    version: Mapped[int] = mapped_column(primary_key=True)
+    research_run_id: Mapped[UUID] = mapped_column(
+        ForeignKey("research_run.research_run_id", ondelete="RESTRICT"), index=True
+    )
+    analysis_timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    status: Mapped[str] = mapped_column(String(32))
+    thesis_json: Mapped[dict[str, Any]] = mapped_column(JSON)
+    recorded_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["thesis_id"], ["thesis.thesis_id"], ondelete="RESTRICT"
+        ),
+        Index("ix_thesis_version_pit", "thesis_id", "recorded_at", "analysis_timestamp"),
+    )
+
+
+class ThesisTransitionRow(Base):
+    __tablename__ = "thesis_transition"
+
+    transition_id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    thesis_id: Mapped[UUID] = mapped_column(
+        ForeignKey("thesis.thesis_id", ondelete="RESTRICT"), index=True
+    )
+    from_version: Mapped[int | None] = mapped_column()
+    to_version: Mapped[int] = mapped_column()
+    from_status: Mapped[str | None] = mapped_column(String(32))
+    to_status: Mapped[str] = mapped_column(String(32))
+    recorded_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class ThesisEvidenceRow(Base):
+    __tablename__ = "thesis_evidence"
+
+    thesis_id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
+    version: Mapped[int] = mapped_column(primary_key=True)
+    evidence_id: Mapped[UUID] = mapped_column(
+        ForeignKey("evidence.evidence_id", ondelete="RESTRICT"), primary_key=True
+    )
+
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["thesis_id", "version"],
+            ["thesis_version.thesis_id", "thesis_version.version"],
+            ondelete="RESTRICT",
         ),
     )

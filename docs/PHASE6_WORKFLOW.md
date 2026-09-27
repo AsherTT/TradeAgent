@@ -20,9 +20,22 @@ Offline tests cover checkpoint persistence, idempotent replay, mutation rejectio
 identity, non-UTC offsets, historical backfill, and future-evidence exclusion. No live provider
 qualification is claimed by this slice.
 
+## Thesis Lifecycle — implemented offline
+
+Alembic migration `0008` adds `thesis`, `thesis_version`, `thesis_transition`, and
+`thesis_evidence`. A Thesis version must originate from a completed research run with Synthesis;
+its evidence IDs must be unique citations from that run and present in the evidence repository.
+New versions are appended under an expected-version check and a locked Thesis root. Instrument
+identity and horizon stay fixed, analysis time cannot move backward, invalidated or superseded
+Theses are terminal, and each transition requires a new research run. Earlier versions and
+transition history remain queryable; as-of reads require an aware timestamp and hide versions
+recorded later. This repository does not infer a direction or probability from Synthesis.
+
+Offline tests cover version history, stale-version rejection, transition rules, source-run
+requirements, citation checks, and as-of visibility.
+
 ## Next slices
 
-1. Persist Thesis versions, transitions, and evidence links without overwriting old versions.
-2. Freeze forward ForecastRecords linked to completed research, Thesis, model executions, and
+1. Freeze forward ForecastRecords linked to completed research, Thesis, model executions, and
    cited evidence. Keep forecast probability separate from system confidence.
-3. Qualify the completed Phase 6 lifecycle across the database and worker boundaries.
+2. Qualify the completed Phase 6 lifecycle across the database and worker boundaries.

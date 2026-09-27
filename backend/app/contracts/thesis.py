@@ -44,6 +44,22 @@ class Thesis(ContractModel):
     status: ThesisStatus = ThesisStatus.CREATED
 
 
+class ThesisRevision(ContractModel):
+    thesis: Thesis
+    version: int = Field(ge=1)
+    research_run_id: UUID
+    recorded_at: datetime
+
+
+class ThesisTransition(ContractModel):
+    thesis_id: UUID
+    from_version: int | None = None
+    to_version: int = Field(ge=1)
+    from_status: ThesisStatus | None = None
+    to_status: ThesisStatus
+    recorded_at: datetime
+
+
 class ForecastRecord(ContractModel):
     forecast_id: UUID = Field(default_factory=uuid4)
     research_run_id: UUID
