@@ -10,6 +10,9 @@ SUPPORTED_EVIDENCE_REQUIREMENTS = {
     "point-in-time market data": "market",
     "technical indicators": "quant",
     "news documents": "news",
+    "filing documents": "filing",
+    "rag documents": "rag",
+    "external research": "rag",
 }
 _SUPPORTED_CAPABILITIES = frozenset(SUPPORTED_EVIDENCE_REQUIREMENTS.values())
 
@@ -37,6 +40,11 @@ def judge_evidence_gaps(state: ResearchState) -> EvidenceGapResult:
     eligible = qualified_evidence(state)
     market = any(item.evidence_type == "market_technical_snapshot" for item in eligible)
     news = any(item.evidence_type == "news_document" for item in eligible)
+    rag = any(item.evidence_type == "rag_document" for item in eligible)
+    filing = any(
+        item.evidence_type == "rag_document" and item.source_type == "sec_filing"
+        for item in eligible
+    )
     cutoff = state.analysis_timestamp
     market_snapshot = state.market_snapshot
     technical_snapshot = state.technical_snapshot
@@ -57,6 +65,8 @@ def judge_evidence_gaps(state: ResearchState) -> EvidenceGapResult:
         "market": market and snapshots_eligible,
         "quant": market and snapshots_eligible,
         "news": news,
+        "rag": rag,
+        "filing": filing,
     }
     missing = tuple(
         capability for capability in capabilities if not supported.get(capability, False)
@@ -84,13 +94,25 @@ def _eligible(item: Evidence, state: ResearchState) -> bool:
 def qualified_evidence(state: ResearchState) -> tuple[Evidence, ...]:
     """One shared admission rule for gap judgement and synthesis context."""
     return tuple(
-        item for item in state.evidence
+        item
+        for item in state.evidence
         if _eligible(item, state)
         and (
-            (item.evidence_type == "market_technical_snapshot"
-             and item.trust_level is TrustLevel.TRUSTED_PROVIDER)
-            or (item.evidence_type == "news_document"
+            (
+                item.evidence_type == "market_technical_snapshot"
+                and item.trust_level is TrustLevel.TRUSTED_PROVIDER
+            )
+            or (
+                item.evidence_type == "news_document"
                 and item.trust_level is TrustLevel.PUBLIC_SOURCE
-                and item.sanitization_status == "html_cleaned_and_scanned")
+                and item.sanitization_status == "html_cleaned_and_scanned"
+            )
+            or (
+                item.evidence_type == "rag_document"
+                and item.trust_level is not TrustLevel.UNKNOWN
+                and item.sanitization_status == "parsed_normalized_scanned"
+                and item.scanner_version == "rag-guard-v1"
+                and item.injection_risk < 0.7
+            )
         )
     )

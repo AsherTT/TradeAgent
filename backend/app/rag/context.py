@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Mapping
 from datetime import UTC, datetime
 from hashlib import sha256
 from uuid import UUID
@@ -25,6 +26,7 @@ def build_rag_context(
     analysis_timestamp: datetime,
     max_chars: int = 6000,
     max_chunks: int = 8,
+    citation_ids: Mapping[UUID, UUID] | None = None,
 ) -> RagContext:
     if analysis_timestamp.tzinfo is None or analysis_timestamp.utcoffset() is None:
         raise ValueError("analysis timestamp must be timezone-aware")
@@ -56,6 +58,11 @@ def build_rag_context(
             continue
         payload = {
             "chunk_id": str(hit.chunk_id),
+            "evidence_id": str(
+                citation_ids[hit.chunk_id]
+                if citation_ids is not None and hit.chunk_id in citation_ids
+                else hit.chunk_id
+            ),
             "source_name": hit.source_name,
             "source_uri": hit.source_uri,
             "trust_level": hit.trust_level.value,

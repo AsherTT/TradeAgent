@@ -14,6 +14,8 @@ _EVIDENCE_TYPE_BY_CAPABILITY = {
     "market": "market_technical_snapshot",
     "quant": "market_technical_snapshot",
     "news": "news_document",
+    "rag": "rag_document",
+    "filing": "rag_document",
 }
 
 
@@ -21,34 +23,54 @@ def select_synthesis_evidence(state: ResearchState) -> tuple[Evidence, ...]:
     eligible = qualified_evidence(state)
     required = (
         state.evidence_gap_result.required_capabilities
-        if state.evidence_gap_result is not None else ("market",)
+        if state.evidence_gap_result is not None
+        else ("market",)
     )
-    priority_types = tuple(dict.fromkeys(
-        _EVIDENCE_TYPE_BY_CAPABILITY[capability]
-        for capability in required if capability in _EVIDENCE_TYPE_BY_CAPABILITY
-    ))
+    priority_types = tuple(
+        dict.fromkeys(
+            _EVIDENCE_TYPE_BY_CAPABILITY[capability]
+            for capability in required
+            if capability in _EVIDENCE_TYPE_BY_CAPABILITY
+        )
+    )
     selected: list[Evidence] = []
+    if "filing" in required:
+        filing = next(
+            (
+                item
+                for item in eligible
+                if item.evidence_type == "rag_document" and item.source_type == "sec_filing"
+            ),
+            None,
+        )
+        if filing is not None:
+            selected.append(filing)
     for evidence_type in priority_types:
-        match = next((item for item in eligible if item.evidence_type == evidence_type), None)
+        match = next(
+            (
+                item
+                for item in eligible
+                if item.evidence_type == evidence_type
+                and item.evidence_id not in {chosen.evidence_id for chosen in selected}
+            ),
+            None,
+        )
         if match is not None:
             selected.append(match)
     selected_ids = {item.evidence_id for item in selected}
-    selected.extend(
-        item for item in eligible
-        if item.evidence_id not in selected_ids
-    )
+    selected.extend(item for item in eligible if item.evidence_id not in selected_ids)
     return tuple(selected[:8])
 
 
 def synthesis_context(state: ResearchState, selected: tuple[Evidence, ...]) -> dict[str, Any]:
     return {
         "research_plan": (
-            state.research_plan.model_dump(mode="json")
-            if state.research_plan is not None else None
+            state.research_plan.model_dump(mode="json") if state.research_plan is not None else None
         ),
         "technical_snapshot": (
             state.technical_snapshot.model_dump(mode="json")
-            if state.technical_snapshot is not None else None
+            if state.technical_snapshot is not None
+            else None
         ),
         "selected_evidence": [
             {
@@ -70,8 +92,9 @@ def synthesis_context(state: ResearchState, selected: tuple[Evidence, ...]) -> d
 
 
 def validate_synthesis(
-    synthesis: ResearchSynthesis, selected: tuple[Evidence, ...],
-    required_capabilities: tuple[str, ...]
+    synthesis: ResearchSynthesis,
+    selected: tuple[Evidence, ...],
+    required_capabilities: tuple[str, ...],
 ) -> None:
     allowed_ids = {item.evidence_id for item in selected}
     if len(set(synthesis.evidence_ids)) != len(synthesis.evidence_ids):
@@ -83,7 +106,15 @@ def validate_synthesis(
     }
     required_types = {
         _EVIDENCE_TYPE_BY_CAPABILITY[capability]
-        for capability in required_capabilities if capability in _EVIDENCE_TYPE_BY_CAPABILITY
+        for capability in required_capabilities
+        if capability in _EVIDENCE_TYPE_BY_CAPABILITY
     }
     if not required_types <= cited_types:
         raise ValueError("synthesis omits required evidence capability")
+    if "filing" in required_capabilities and not any(
+        item.evidence_type == "rag_document"
+        and item.source_type == "sec_filing"
+        and item.evidence_id in synthesis.evidence_ids
+        for item in selected
+    ):
+        raise ValueError("synthesis omits required SEC filing citation")

@@ -43,9 +43,20 @@ evidence markers. Offline tests cover fusion, bounded context, marker escaping, 
 future, poisoned, foreign, or unknown-trust hits. PostgreSQL query execution still needs its
 container qualification.
 
+## 4. Application and research integration — implemented offline
+
+`/rag/documents` and `/rag/search` are default-off token-guarded endpoints. Intake accepts
+bounded base64 source bytes but never accepts a caller-selected trust level: uploaded SEC-labeled
+text remains `USER_CONTENT`. The write commits before returning success. A configurable
+OpenAI-compatible HTTP embedding adapter requests exactly 384 dimensions and validates indexed,
+finite, nonzero responses; no provider or credential is enabled by default. The worker gains a
+default-off RAG node after News. It records a durable external-attempt marker, respects tool and
+RAG chunk budgets, converts only ContextBuilder-selected hits into cited research evidence, and
+fails closed on an interrupted call. Filing and general RAG requirements are now recognized by
+the deterministic gap judge. Offline API, adapter, and graph tests pass.
+
 ## Remaining work
 
-- Add a configured embedding adapter, guarded document/query API, and opt-in research integration.
 - Run Gate D red-team regression and PostgreSQL-backed migration/retrieval qualification; record metrics.
 
 The code-review skill is reserved for one complete Phase 7 review after these parts are finished.

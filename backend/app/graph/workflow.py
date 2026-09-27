@@ -57,6 +57,7 @@ from backend.app.market_data.service import (
 )
 from backend.app.news import NewsResearchEvidence, NewsSearchRequest
 from backend.app.quant.indicators import IndicatorError, calculate_technical_snapshot
+from backend.app.rag.research import RagResearchEvidence
 
 StateSaver = Callable[[ResearchState], Awaitable[None]]
 
@@ -94,6 +95,8 @@ class ResearchNode(StrEnum):
     EVIDENCE_STARTED = "evidence_started"
     NEWS = "news"
     NEWS_STARTED = "news_started"
+    RAG = "rag"
+    RAG_STARTED = "rag_started"
     GAP_JUDGE = "gap_judge"
     REPLAN = "replan"
     REPLAN_STARTED = "replan_started"
@@ -124,6 +127,7 @@ class BudgetDimension(StrEnum):
     WALL_TIME_SECONDS = "wall_time_seconds"
     CONTEXT_TOKENS = "context_tokens"
     ESTIMATED_COST_USD = "estimated_cost_usd"
+    RAG_CHUNKS = "rag_chunks"
 
 
 class ResearchEvidence(Protocol):
@@ -291,12 +295,14 @@ class ResearchWorkflow:
         save: StateSaver,
         evidence_provider: ResearchEvidence | None = None,
         news_provider: NewsResearchEvidence | None = None,
+        rag_provider: RagResearchEvidence | None = None,
         provider_order: tuple[ProviderName, ...] | None = None,
     ) -> None:
         self._gateway = model_gateway
         self._save = save
         self._evidence_provider = evidence_provider
         self._news_provider = news_provider
+        self._rag_provider = rag_provider
         self._provider_order = provider_order
         self._run_started = 0.0
         self._initial_wall_time = 0.0
@@ -306,6 +312,7 @@ class ResearchWorkflow:
         graph.add_node(ResearchNode.PLAN, cast(Any, self._plan))
         graph.add_node(ResearchNode.COLLECT_EVIDENCE, cast(Any, self._collect_evidence))
         graph.add_node(ResearchNode.NEWS, cast(Any, self._news))
+        graph.add_node(ResearchNode.RAG, cast(Any, self._rag))
         graph.add_node(ResearchNode.GAP_JUDGE, cast(Any, self._gap_judge))
         graph.add_node(ResearchNode.REPLAN, cast(Any, self._replan))
         graph.add_node(ResearchNode.SYNTHESIS, cast(Any, self._synthesis))
@@ -315,7 +322,8 @@ class ResearchWorkflow:
         graph.add_edge(ResearchNode.INTENT, ResearchNode.PLAN)
         graph.add_edge(ResearchNode.PLAN, ResearchNode.COLLECT_EVIDENCE)
         graph.add_edge(ResearchNode.COLLECT_EVIDENCE, ResearchNode.NEWS)
-        graph.add_edge(ResearchNode.NEWS, ResearchNode.GAP_JUDGE)
+        graph.add_edge(ResearchNode.NEWS, ResearchNode.RAG)
+        graph.add_edge(ResearchNode.RAG, ResearchNode.GAP_JUDGE)
         graph.add_edge(ResearchNode.GAP_JUDGE, ResearchNode.REPLAN)
         graph.add_conditional_edges(
             ResearchNode.REPLAN,
@@ -339,6 +347,7 @@ class ResearchWorkflow:
             ResearchNode.PLAN,
             ResearchNode.COLLECT_EVIDENCE,
             ResearchNode.NEWS,
+            ResearchNode.RAG,
             ResearchNode.REPLAN,
             ResearchNode.SYNTHESIS,
         ):
@@ -685,6 +694,70 @@ class ResearchWorkflow:
         await self._save(state)
         return {"research": state}
 
+    async def _rag(self, graph_state: _GraphState) -> _GraphState:
+        state = graph_state["research"]
+        state = self._with_elapsed_time(state)
+        attempts = state.runtime_metadata.get("external_attempts", {})
+        prior = attempts.get(ResearchNode.RAG.value) if isinstance(attempts, dict) else None
+        if (
+            state.status is not ResearchStatus.RUNNING
+            or self._rag_provider is None
+            or (isinstance(prior, dict) and prior.get("status") == "completed")
+        ):
+            return {"research": state}
+        cutoff = state.analysis_timestamp
+        if cutoff is None or state.research_budget.max_context_tokens < 128:
+            state = _transition(
+                state,
+                node=ResearchNode.RAG,
+                evidence_gaps=(*state.evidence_gaps, "RAG requires a usable frozen cutoff"),
+            )
+            await self._save(state)
+            return {"research": state}
+        exhausted = _relevant_budget_decision(
+            state,
+            {
+                BudgetDimension.TOOL_CALLS,
+                BudgetDimension.RAG_CHUNKS,
+                BudgetDimension.WALL_TIME_SECONDS,
+            },
+        )
+        if exhausted:
+            state = _transition(
+                state,
+                node=ResearchNode.RAG,
+                evidence_gaps=(
+                    *state.evidence_gaps,
+                    f"RAG skipped: budget exhausted ({', '.join(exhausted)})",
+                ),
+            )
+            await self._save(state)
+            return {"research": state}
+        state = _mark_attempt_started(state, ResearchNode.RAG)
+        await self._save(state)
+        collection = await self._rag_provider.collect(state)
+        if any(
+            item.instrument_id != state.instrument_id
+            or item.observed_at > cutoff
+            or item.available_at > cutoff
+            or (item.published_at is not None and item.published_at > cutoff)
+            for item in collection.evidence
+        ):
+            raise ValueError("RAG evidence violates point-in-time identity")
+        state = _transition(
+            _mark_attempt_completed(state, ResearchNode.RAG),
+            node=ResearchNode.RAG,
+            evidence=(*state.evidence, *collection.evidence),
+            budget_usage=state.budget_usage.model_copy(
+                update={
+                    "tool_calls": state.budget_usage.tool_calls + 1,
+                    "rag_chunks": state.budget_usage.rag_chunks + collection.chunks_selected,
+                }
+            ),
+        )
+        await self._save(state)
+        return {"research": state}
+
     async def _gap_judge(self, graph_state: _GraphState) -> _GraphState:
         state = graph_state["research"]
         state = self._with_elapsed_time(state)
@@ -943,6 +1016,7 @@ def _mark_attempt_started(
         ResearchNode.PLAN: ResearchNode.PLAN_STARTED,
         ResearchNode.COLLECT_EVIDENCE: ResearchNode.EVIDENCE_STARTED,
         ResearchNode.NEWS: ResearchNode.NEWS_STARTED,
+        ResearchNode.RAG: ResearchNode.RAG_STARTED,
         ResearchNode.REPLAN: ResearchNode.REPLAN_STARTED,
         ResearchNode.SYNTHESIS: ResearchNode.SYNTHESIS_STARTED,
     }[node]
@@ -976,6 +1050,7 @@ def failed_research_state(state: ResearchState, exc: Exception) -> ResearchState
         ResearchNode.PLAN,
         ResearchNode.COLLECT_EVIDENCE,
         ResearchNode.NEWS,
+        ResearchNode.RAG,
         ResearchNode.REPLAN,
         ResearchNode.SYNTHESIS,
     ):

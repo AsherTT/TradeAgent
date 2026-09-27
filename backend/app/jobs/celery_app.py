@@ -26,6 +26,9 @@ from backend.app.persistence.repositories import (
     SecurityMasterRepository,
 )
 from backend.app.persistence.session import get_database
+from backend.app.rag.embedding import build_rag_embedding_provider
+from backend.app.rag.research import RagResearchEvidence
+from backend.app.rag.retrieval import RagRetriever
 
 
 def create_celery(settings: Settings | None = None) -> Celery:
@@ -75,17 +78,13 @@ def run_research(task: Any, research_run_id: str) -> dict[str, Any]:
 
     execution_id = str(task.request.id or uuid4())
     try:
-        state = asyncio.run(
-            _execute_worker_task(UUID(research_run_id), execution_id=execution_id)
-        )
+        state = asyncio.run(_execute_worker_task(UUID(research_run_id), execution_id=execution_id))
     except (ResearchRunBusyError, ResearchRunNotReadyError) as exc:
         raise task.retry(exc=exc, countdown=5) from exc
     return {"research_run_id": research_run_id, "state": state.status.value}
 
 
-async def _execute_worker_task(
-    research_run_id: UUID, *, execution_id: str
-) -> ResearchState:
+async def _execute_worker_task(research_run_id: UUID, *, execution_id: str) -> ResearchState:
     """Dispose loop-bound connections before the synchronous task loop closes."""
 
     database = get_database()
@@ -105,9 +104,7 @@ async def execute_research_run(
         repository = ResearchRunRepository(session)
         state = await repository.get(research_run_id)
         if state is None:
-            raise ResearchRunNotReadyError(
-                f"research run {research_run_id} is not committed yet"
-            )
+            raise ResearchRunNotReadyError(f"research run {research_run_id} is not committed yet")
         if state.status in {
             ResearchStatus.COMPLETE,
             ResearchStatus.INSUFFICIENT_EVIDENCE,
@@ -141,17 +138,20 @@ async def execute_research_run(
                 loader = build_market_data_loader(
                     settings,
                     instrument_resolver=SecurityMasterInstrumentResolver(security_master),
-                    cache=_get_market_data_cache(
-                        settings.market_data_cache_max_entries
-                    ),
+                    cache=_get_market_data_cache(settings.market_data_cache_max_entries),
                 )
-                evidence_provider = MarketResearchEvidence(
-                    loader, currency=instrument.currency
-                )
+                evidence_provider = MarketResearchEvidence(loader, currency=instrument.currency)
+            rag_provider = None
+            if settings.rag_enabled:
+                rag_embeddings = build_rag_embedding_provider(settings)
+                if rag_embeddings is None:
+                    raise ValueError("RAG is enabled without an embedding provider")
+                rag_provider = RagResearchEvidence(RagRetriever(session, embeddings=rag_embeddings))
             workflow = ResearchWorkflow(
                 model_gateway=build_model_gateway(settings),
                 save=save,
                 evidence_provider=evidence_provider,
+                rag_provider=rag_provider,
             )
             return await workflow.run(state)
         except ResearchRunBusyError:
@@ -202,9 +202,7 @@ async def _reconcile_pending_worker_task() -> dict[str, int]:
 async def _reconcile_pending_runs() -> dict[str, int]:
     settings = get_settings()
     database = get_database()
-    cutoff = datetime.now(UTC) - timedelta(
-        seconds=settings.research_reconcile_grace_seconds
-    )
+    cutoff = datetime.now(UTC) - timedelta(seconds=settings.research_reconcile_grace_seconds)
     async with database.sessions() as session:
         run_ids = await ResearchRunRepository(session).list_reconcilable_pending_ids(
             older_than=cutoff,

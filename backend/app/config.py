@@ -11,13 +11,20 @@ class Settings(BaseSettings):
 
     app_env: str = "local"
     log_level: str = "INFO"
-    database_url: str = "postgresql+asyncpg://tradeagent:tradeagent-local-only@localhost:5432/tradeagent"
+    database_url: str = (
+        "postgresql+asyncpg://tradeagent:tradeagent-local-only@localhost:5432/tradeagent"
+    )
     redis_broker_url: str = "redis://localhost:6379/0"
     redis_result_url: str = "redis://localhost:6379/1"
     research_reconcile_interval_seconds: int = Field(default=60, ge=1)
     research_reconcile_grace_seconds: int = Field(default=30, ge=0)
     research_reconcile_batch_size: int = Field(default=100, ge=1, le=1000)
     phase6_write_token: str | None = None
+    rag_enabled: bool = False
+    rag_write_token: str | None = None
+    rag_embedding_base_url: str | None = None
+    rag_embedding_api_key: str | None = None
+    rag_embedding_model: str | None = None
 
     qwen_api_key: str | None = None
     qwen_base_url: str = "https://dashscope.aliyuncs.com/compatible-mode/v1"

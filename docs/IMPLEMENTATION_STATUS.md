@@ -46,7 +46,10 @@ Last audited: 2026-09-28
   repository validation and SQLite boundary tests pass. PostgreSQL qualification follows.
 - Phase 7 retrieval slice: PIT-filtered PostgreSQL FTS and pgvector query, bounded application
   RRF, trust/risk filtering, and bounded untrusted ContextBuilder have offline boundary tests.
-  Container query qualification and application integration follow.
+  Container query qualification follows.
+- Phase 7 application slice: default-off token-guarded document and search APIs, configurable
+  HTTP embedding adapter, and a durable budgeted RAG research node with cited evidence. Offline
+  API and graph tests pass; no live embedding provider is configured or qualified.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary
