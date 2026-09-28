@@ -15,5 +15,21 @@ time rather than the wall clock at read time. The ResearchState contract also re
 strict and forward modes if another caller bypasses the HTTP transport.
 
 Offline contract and persistence tests cover explicit selection, mode rejection, and
-the existing point-in-time research path. This slice does not claim Gate E completion:
-the separate replay execution paths and their full temporal qualification follow.
+the existing point-in-time research path. The separate evidence path follows below.
+
+## 2. Evidence-constrained replay — implemented offline
+
+Evidence-Constrained Replay requires an explicit aware fixed cutoff. The worker reads a
+bounded set of immutable evidence rows through the point-in-time repository instead
+of contacting a market-data or RAG provider. Repository reads require observation,
+availability, and publication times at or before the cutoff; the replay adapter
+checks those fields again before passing evidence to the graph. Persisted market and
+technical snapshots are validated against the requested instrument and exact cutoff.
+If no matching market snapshot exists, the graph receives an explicit evidence gap
+and cannot produce a fully qualified forecast. The current LLM remains subject to
+`parametric_lookahead_risk`; this path is not a strict historical Alpha test.
+
+Offline SQLite tests exercise PIT selection and exclusion of a future record, and an
+adapter test rejects future evidence even if its repository violates the query rule.
+The full Gate E acceptance record remains open until both replay paths and metadata
+are qualified together.

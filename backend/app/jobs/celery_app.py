@@ -12,13 +12,20 @@ from celery import Celery
 
 from backend.app.ai.runtime import build_model_gateway
 from backend.app.config import Settings, get_settings
+from backend.app.contracts.evaluation import ReplayIntegrityLevel
 from backend.app.contracts.research import ResearchState, ResearchStatus
-from backend.app.graph import MarketResearchEvidence, ResearchWorkflow, failed_research_state
+from backend.app.graph import (
+    MarketResearchEvidence,
+    ResearchEvidence,
+    ResearchWorkflow,
+    failed_research_state,
+)
 from backend.app.market_data.cache import InMemoryQualifiedMarketDataCache
 from backend.app.market_data.runtime import (
     SecurityMasterInstrumentResolver,
     build_market_data_loader,
 )
+from backend.app.persistence.evidence import EvidenceRepository
 from backend.app.persistence.repositories import (
     ResearchRunBusyError,
     ResearchRunNotReadyError,
@@ -29,6 +36,7 @@ from backend.app.persistence.session import get_database
 from backend.app.rag.embedding import build_rag_embedding_provider
 from backend.app.rag.research import RagResearchEvidence
 from backend.app.rag.retrieval import RagRetriever
+from backend.app.replay import PersistedReplayEvidence
 
 
 def create_celery(settings: Settings | None = None) -> Celery:
@@ -127,8 +135,10 @@ async def execute_research_run(
 
         try:
             settings = get_settings()
-            evidence_provider = None
-            if settings.market_data_enabled:
+            evidence_provider: ResearchEvidence | None = None
+            if state.replay_integrity_level is ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY:
+                evidence_provider = PersistedReplayEvidence(EvidenceRepository(session))
+            elif settings.market_data_enabled:
                 security_master = SecurityMasterRepository(session)
                 instrument = await security_master.get_instrument(state.instrument_id)
                 if instrument is None:
@@ -142,7 +152,9 @@ async def execute_research_run(
                 )
                 evidence_provider = MarketResearchEvidence(loader, currency=instrument.currency)
             rag_provider = None
-            if settings.rag_enabled:
+            if settings.rag_enabled and (
+                state.replay_integrity_level is not ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY
+            ):
                 rag_embeddings = build_rag_embedding_provider(settings)
                 if rag_embeddings is None:
                     raise ValueError("RAG is enabled without an embedding provider")

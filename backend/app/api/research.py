@@ -42,11 +42,21 @@ class ResearchSubmission(BaseModel):
 
     @model_validator(mode="after")
     def validate_timestamp_intent(self) -> ResearchSubmission:
+        if self.analysis_timestamp is not None and (
+            self.analysis_timestamp.tzinfo is None
+            or self.analysis_timestamp.utcoffset() is None
+        ):
+            raise ValueError("analysis_timestamp must be timezone-aware")
         if self.replay_integrity_level not in {
             ReplayIntegrityLevel.RESEARCH_REPLAY,
             ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY,
         }:
             raise ValueError("research execution only supports explicit replay modes")
+        if self.replay_integrity_level is ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY and (
+            self.timestamp_mode is not ResearchTimestampMode.FIXED_CUTOFF
+            or self.analysis_timestamp is None
+        ):
+            raise ValueError("evidence-constrained replay requires an explicit fixed cutoff")
         if (
             self.timestamp_mode is ResearchTimestampMode.CURRENT_RESEARCH
             and self.analysis_timestamp is not None

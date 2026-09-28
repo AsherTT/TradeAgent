@@ -8,6 +8,7 @@ from uuid import UUID, uuid4
 
 import pytest
 
+from backend.app.contracts.evaluation import ReplayIntegrityLevel
 from backend.app.contracts.evidence import Evidence, TrustLevel
 from backend.app.contracts.instrument import Instrument
 from backend.app.contracts.research import ResearchState
@@ -16,6 +17,7 @@ from backend.app.persistence.evidence import EvidenceIntegrityError, EvidenceRep
 from backend.app.persistence.models import ResearchRunRow
 from backend.app.persistence.repositories import ResearchRunRepository, SecurityMasterRepository
 from backend.app.persistence.session import Database
+from backend.app.replay import PersistedReplayEvidence
 
 
 def _evidence(instrument_id: UUID, observed_at: datetime, *, content: str) -> Evidence:
@@ -74,6 +76,12 @@ def test_research_checkpoint_persists_append_only_evidence_with_pit_reads(
             assert await repository.list_for_instrument(
                 instrument.instrument_id, analysis_timestamp=cutoff
             ) == (known, offset)
+            constrained = state.model_copy(update={
+                "replay_integrity_level": ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY,
+            })
+            replayed = await PersistedReplayEvidence(repository).collect(constrained)
+            assert replayed.evidence == (known, offset)
+            assert replayed.gaps == ("no persisted market snapshot at cutoff",)
             assert await repository.list_for_instrument(
                 instrument.instrument_id, analysis_timestamp=cutoff + timedelta(days=2)
             ) == (known, offset)

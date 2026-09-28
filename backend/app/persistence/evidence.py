@@ -97,12 +97,14 @@ class EvidenceRepository:
             await self._session.flush()
 
     async def list_for_instrument(
-        self, instrument_id: UUID, *, analysis_timestamp: datetime
+        self, instrument_id: UUID, *, analysis_timestamp: datetime, limit: int | None = None
     ) -> tuple[Evidence, ...]:
         if analysis_timestamp.tzinfo is None or analysis_timestamp.utcoffset() is None:
             raise ValueError("analysis_timestamp must be timezone-aware")
         cutoff = analysis_timestamp.astimezone(UTC)
-        rows = await self._session.scalars(
+        if limit is not None and limit < 1:
+            raise ValueError("limit must be positive")
+        statement = (
             select(EvidenceRow)
             .where(
                 EvidenceRow.instrument_id == instrument_id,
@@ -110,8 +112,14 @@ class EvidenceRepository:
                 EvidenceRow.available_at <= cutoff,
                 or_(EvidenceRow.published_at.is_(None), EvidenceRow.published_at <= cutoff),
             )
-            .order_by(EvidenceRow.available_at, EvidenceRow.evidence_id)
+            .order_by(EvidenceRow.available_at.desc(), EvidenceRow.evidence_id)
+        )
+        if limit is not None:
+            statement = statement.limit(limit)
+        rows = await self._session.scalars(
+            statement
         )
         return tuple(
-            Evidence.model_validate_json(json.dumps(row.evidence_json)) for row in rows
+            Evidence.model_validate_json(json.dumps(row.evidence_json))
+            for row in reversed(rows.all())
         )
