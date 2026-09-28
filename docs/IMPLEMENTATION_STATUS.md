@@ -56,10 +56,13 @@ Last audited: 2026-09-28
 - Phase 8 replay submission slice: research requests explicitly select Research Replay or
   Evidence-Constrained Replay; historical cutoffs retain parametric look-ahead risk metadata,
   and the research workflow rejects strict quant and forward evaluation modes. See
-  `docs/PHASE8_WORKFLOW.md`; Gate E remains open.
+  `docs/PHASE8_WORKFLOW.md`.
 - Phase 8 evidence-constrained replay slice: a separate worker path reads bounded immutable
   evidence at the requested cutoff and avoids live market/RAG calls; PIT fields and embedded
   market snapshots are checked before graph use. Offline tests cover future-evidence exclusion.
+- Phase 8 Gate E is qualified with local contract, SQLite, and worker-composition fixtures:
+  explicit modes, historical LLM risk metadata, evidence time filtering, and the strict
+  quant-backtest exclusion. See `docs/GATE_E_QUALIFICATION.md`; no live-source result is claimed.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary

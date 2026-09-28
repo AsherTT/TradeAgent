@@ -169,9 +169,9 @@ class ResearchState(ContractModel):
             ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY,
         }
         historical_cutoff = self.requested_at - timedelta(minutes=5)
-        if (
-            self.replay_integrity_level in historical_modes
-            and self.analysis_timestamp < historical_cutoff
+        if self.replay_integrity_level in historical_modes and (
+            self.replay_integrity_level is ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY
+            or self.analysis_timestamp < historical_cutoff
         ):
             if not self.parametric_lookahead_risk:
                 raise ValueError("historical LLM replay must declare parametric_lookahead_risk")

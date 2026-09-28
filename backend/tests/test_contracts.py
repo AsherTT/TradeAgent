@@ -95,10 +95,24 @@ def test_fixed_cutoff_does_not_become_historical_as_wall_clock_advances() -> Non
         timestamp_mode=ResearchTimestampMode.FIXED_CUTOFF,
         analysis_timestamp=accepted_at,
         horizon="3-5 days",
-        replay_integrity_level=ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY,
+        replay_integrity_level=ReplayIntegrityLevel.RESEARCH_REPLAY,
     )
 
     assert ResearchState.model_validate_json(state.model_dump_json()) == state
+
+
+def test_evidence_constrained_replay_always_discloses_parametric_risk() -> None:
+    accepted_at = datetime(2020, 1, 1, tzinfo=UTC)
+    with pytest.raises(ValidationError, match="parametric_lookahead_risk"):
+        ResearchState(
+            instrument_id=uuid4(),
+            ticker="KLAC",
+            query="replay",
+            requested_at=accepted_at,
+            analysis_timestamp=accepted_at,
+            horizon="3-5 days",
+            replay_integrity_level=ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY,
+        )
 
 
 def test_current_research_transport_rejects_a_caller_supplied_cutoff() -> None:

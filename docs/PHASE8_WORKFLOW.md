@@ -19,7 +19,8 @@ the existing point-in-time research path. The separate evidence path follows bel
 
 ## 2. Evidence-constrained replay — implemented offline
 
-Evidence-Constrained Replay requires an explicit aware fixed cutoff. The worker reads a
+Evidence-Constrained Replay requires an explicit aware fixed cutoff and always declares
+`parametric_lookahead_risk=true`. The worker reads a
 bounded set of immutable evidence rows through the point-in-time repository instead
 of contacting a market-data or RAG provider. Repository reads require observation,
 availability, and publication times at or before the cutoff; the replay adapter
@@ -31,5 +32,4 @@ and cannot produce a fully qualified forecast. The current LLM remains subject t
 
 Offline SQLite tests exercise PIT selection and exclusion of a future record, and an
 adapter test rejects future evidence even if its repository violates the query rule.
-The full Gate E acceptance record remains open until both replay paths and metadata
-are qualified together.
+The combined offline Gate E acceptance record is in `docs/GATE_E_QUALIFICATION.md`.

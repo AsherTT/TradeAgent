@@ -1,18 +1,24 @@
 """Fail-closed evidence-constrained replay selection."""
 
 import asyncio
+import importlib
 from datetime import UTC, datetime, timedelta
+from pathlib import Path
 from uuid import UUID, uuid4
 
 import pytest
 from pydantic import ValidationError
 
 from backend.app.api.research import ResearchSubmission
+from backend.app.config import Settings
 from backend.app.contracts.evaluation import DataQualityStatus, ReplayIntegrityLevel
 from backend.app.contracts.evidence import Evidence
-from backend.app.contracts.instrument import PriceAdjustmentMode
+from backend.app.contracts.instrument import Instrument, PriceAdjustmentMode
 from backend.app.contracts.market import MarketBar, MarketSnapshot, TechnicalSnapshot
 from backend.app.contracts.research import ResearchState, ResearchTimestampMode
+from backend.app.persistence.base import Base
+from backend.app.persistence.repositories import ResearchRunRepository, SecurityMasterRepository
+from backend.app.persistence.session import Database
 from backend.app.replay import PersistedReplayEvidence
 
 
@@ -151,3 +157,62 @@ def test_persisted_replay_restores_only_matching_market_snapshots() -> None:
     item = corrupted
     with pytest.raises(ValueError, match="violate replay cutoff"):
         asyncio.run(adapter.collect(state))
+
+
+def test_worker_selects_persisted_replay_without_live_sources(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    celery_module = importlib.import_module("backend.app.jobs.celery_app")
+
+    async def scenario() -> None:
+        database = Database(f"sqlite+aiosqlite:///{tmp_path / 'replay-worker.db'}")
+        async with database.engine.begin() as connection:
+            await connection.run_sync(Base.metadata.create_all)
+        instrument = Instrument(
+            current_symbol="KLAC", exchange="NASDAQ", currency="USD",
+            asset_type="equity", company_name="KLA Corporation",
+        )
+        cutoff = datetime(2020, 1, 1, tzinfo=UTC)
+        state = ResearchState(
+            instrument_id=instrument.instrument_id,
+            ticker="KLAC", query="historical setup", horizon="3-5 days",
+            requested_at=cutoff + timedelta(days=1), analysis_timestamp=cutoff,
+            replay_integrity_level=ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY,
+            parametric_lookahead_risk=True,
+        )
+        async with database.sessions() as session, session.begin():
+            await SecurityMasterRepository(session).add_instrument(instrument)
+            await ResearchRunRepository(session).create(state)
+
+        monkeypatch.setattr(celery_module, "get_database", lambda: database)
+        monkeypatch.setattr(
+            celery_module, "get_settings",
+            lambda: Settings(_env_file=None, market_data_enabled=True, rag_enabled=True),
+        )
+        monkeypatch.setattr(
+            celery_module, "build_market_data_loader",
+            lambda *args, **kwargs: pytest.fail("live market loader was built"),
+        )
+        monkeypatch.setattr(
+            celery_module, "build_rag_embedding_provider",
+            lambda *args, **kwargs: pytest.fail("RAG embedding provider was built"),
+        )
+
+        class InspectWorkflow:
+            def __init__(self, **kwargs: object) -> None:
+                provider = kwargs["evidence_provider"]
+                assert isinstance(provider, PersistedReplayEvidence)
+                assert kwargs["rag_provider"] is None
+
+            async def run(self, loaded: ResearchState) -> ResearchState:
+                assert loaded.parametric_lookahead_risk is True
+                return loaded
+
+        monkeypatch.setattr(celery_module, "ResearchWorkflow", InspectWorkflow)
+        try:
+            result = await celery_module.execute_research_run(state.research_id)
+            assert result.replay_integrity_level is ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY
+        finally:
+            await database.dispose()
+
+    asyncio.run(scenario())

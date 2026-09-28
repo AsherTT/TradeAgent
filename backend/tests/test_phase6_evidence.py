@@ -78,6 +78,7 @@ def test_research_checkpoint_persists_append_only_evidence_with_pit_reads(
             ) == (known, offset)
             constrained = state.model_copy(update={
                 "replay_integrity_level": ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY,
+                "parametric_lookahead_risk": True,
             })
             replayed = await PersistedReplayEvidence(repository).collect(constrained)
             assert replayed.evidence == (known, offset)

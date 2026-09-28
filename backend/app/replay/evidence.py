@@ -26,8 +26,11 @@ class PersistedReplayEvidence:
             state.replay_integrity_level is not ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY
             or state.timestamp_mode is not ResearchTimestampMode.FIXED_CUTOFF
             or state.analysis_timestamp is None
+            or not state.parametric_lookahead_risk
         ):
-            raise ValueError("persisted evidence requires evidence-constrained fixed-cutoff replay")
+            raise ValueError(
+                "persisted evidence requires evidence-constrained fixed-cutoff replay with risk"
+            )
         cutoff = state.analysis_timestamp
         evidence = await self._repository.list_for_instrument(
             state.instrument_id, analysis_timestamp=cutoff, limit=self._max_items

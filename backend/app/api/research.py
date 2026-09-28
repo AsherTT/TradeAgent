@@ -98,8 +98,12 @@ async def submit_research(
         horizon=submission.horizon,
         replay_integrity_level=submission.replay_integrity_level,
         parametric_lookahead_risk=(
-            analysis_timestamp is not None
-            and analysis_timestamp < requested_at - timedelta(minutes=5)
+            submission.replay_integrity_level
+            is ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY
+            or (
+                analysis_timestamp is not None
+                and analysis_timestamp < requested_at - timedelta(minutes=5)
+            )
         ),
         research_budget=submission.budget,
     )
