@@ -33,3 +33,20 @@ and cannot produce a fully qualified forecast. The current LLM remains subject t
 Offline SQLite tests exercise PIT selection and exclusion of a future record, and an
 adapter test rejects future evidence even if its repository violates the query rule.
 The combined offline Gate E acceptance record is in `docs/GATE_E_QUALIFICATION.md`.
+
+## 3. Forward forecast statistics — implemented offline
+
+The evaluation module joins frozen ForecastRecords to matured OutcomeRecords by ID,
+rejects duplicate or unmatched outcomes, and requires a single horizon cohort. A
+configurable policy sets the minimum early sample, mature sample, outcome coverage,
+and usable bucket size. The report always exposes `EvaluationMaturity`, sample count,
+coverage, directional accuracy, Brier score, log loss, and all ten probability buckets.
+Every bucket includes `sample_count`, predicted probability, observed frequency,
+Wilson confidence interval, mean MFE, MAE, excess return, and statistical status.
+Empty or small buckets are explicitly `INSUFFICIENT_SAMPLE`; reports below `MATURE`
+are marked exploratory. Tests cover cold start, accumulation, mature cohorts, the
+70–80% bucket, and duplicate or unmatched outcomes. Brier is reported beside the
+bucket reliability data and is not labeled a calibration score.
+
+This is an offline evaluation calculation. Outcome persistence and automatic
+post-horizon production remain the next slice; no live forward performance is claimed.

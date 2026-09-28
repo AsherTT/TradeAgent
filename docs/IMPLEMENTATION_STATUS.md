@@ -63,6 +63,9 @@ Last audited: 2026-09-28
 - Phase 8 Gate E is qualified with local contract, SQLite, and worker-composition fixtures:
   explicit modes, historical LLM risk metadata, evidence time filtering, and the strict
   quant-backtest exclusion. See `docs/GATE_E_QUALIFICATION.md`; no live-source result is claimed.
+- Phase 8 forward-statistics slice: configurable evaluation maturity and bucket thresholds,
+  linked Forecast/Outcome descriptive scores, per-bucket sample counts and Wilson intervals,
+  with cold-start and small-sample limits. Outcome persistence and production follow.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary
