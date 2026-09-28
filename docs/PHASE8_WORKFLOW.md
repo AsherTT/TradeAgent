@@ -83,3 +83,16 @@ these observable invariants; corporate-action, privilege, credential, and broker
 invariants require their separate structural or adversarial probes. Offline tests
 cover repeated unnecessary tools, label denominators, and simultaneous integrity
 violations.
+
+## Remaining Phase 8 work
+
+- Connect a qualified forward-outcome observation source and a default-off periodic
+  runner, then prove end-to-end forecast-to-outcome behavior after a configured
+  horizon. The current runner is invoked explicitly with an injected source.
+- Expose cohort evaluation and `EvaluationMaturity` through an application read
+  path, with policy configuration scoped by horizon, universe, and outcome definition.
+- Qualify migration `0012` and immutable Outcome rows on PostgreSQL when Docker is
+  available. Docker Desktop is currently unavailable on this host.
+- Run the single whole-phase code review after these slices, resolve findings,
+  and then mark Phase 8 complete. Do not infer live provider performance from
+  fixture results.

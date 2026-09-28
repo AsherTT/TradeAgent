@@ -282,7 +282,8 @@ Last audited: 2026-09-28
   server-side observation timestamp, and RAG source routing uses the research horizon and
   model-produced plan. Its ordinary suite passes 231 tests with one opt-in live-model test
   skipped and 91.92% combined coverage. RAG remains default-off; no real embedding service
-  or live document source is claimed. Phase 8 replay/evaluation is next.
+  or live document source is claimed. Phase 8 offline replay and evaluation slices are
+  underway as listed above; production forward-observation wiring remains pending.
 - ADR-0017 and `docs/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,
   Gate C now permits real Research API integration under that strategy, while the formal frontend
