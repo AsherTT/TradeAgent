@@ -71,6 +71,9 @@ Last audited: 2026-09-28
   A bounded due-runner accepts an injected observation source and skips already evaluated
   forecasts. Offline SQLite checks pass; a production source, schedule, and PostgreSQL
   qualification follow.
+- Phase 8 Agent and Integrity evaluation slice: labeled engineering metrics and observable
+  PIT, future-evidence, budget, and security-state violation counts have offline tests;
+  external structural invariants are not inferred from these reports.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary

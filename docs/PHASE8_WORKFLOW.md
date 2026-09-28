@@ -70,3 +70,16 @@ configured due time, asks an injected observation source for available data, and
 records exactly one Outcome per matured forecast. A repeated run skips recorded
 forecasts. The test verifies due selection and idempotent repeat execution. No
 production observation adapter or periodic schedule is configured yet.
+
+## 5. Agent and integrity evaluation — implemented offline
+
+The Agent evaluation layer accepts labeled cases and aggregates tool-selection,
+evidence-selection, citation, unsupported-claim, structured-output, replanning,
+iteration, latency, token, cost, fallback, timeout, and provider-error metrics.
+Rates with no denominator are `null`, so an empty evaluation cannot appear perfect.
+The integrity layer counts future evidence, visible PIT and budget violations, and
+blocked security states across persisted research states. Its pass flag covers only
+these observable invariants; corporate-action, privilege, credential, and broker
+invariants require their separate structural or adversarial probes. Offline tests
+cover repeated unnecessary tools, label denominators, and simultaneous integrity
+violations.
