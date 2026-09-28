@@ -64,3 +64,9 @@ idempotence, and immutability.
 
 This storage path does not yet schedule outcome acquisition from a qualified provider.
 PostgreSQL migration qualification and live forward observations remain pending.
+
+The bounded `ForwardEvaluationRunner` scans forecasts without Outcomes, checks their
+configured due time, asks an injected observation source for available data, and
+records exactly one Outcome per matured forecast. A repeated run skips recorded
+forecasts. The test verifies due selection and idempotent repeat execution. No
+production observation adapter or periodic schedule is configured yet.

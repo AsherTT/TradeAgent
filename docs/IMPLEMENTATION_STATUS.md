@@ -68,7 +68,9 @@ Last audited: 2026-09-28
   with cold-start and small-sample limits.
 - Phase 8 OutcomeRecord slice: migration `0012` and an append-only repository link matured
   observations to frozen forecasts with configured horizon policy and derived returns/direction.
-  Offline SQLite checks pass; automatic source acquisition and PostgreSQL qualification follow.
+  A bounded due-runner accepts an injected observation source and skips already evaluated
+  forecasts. Offline SQLite checks pass; a production source, schedule, and PostgreSQL
+  qualification follow.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary

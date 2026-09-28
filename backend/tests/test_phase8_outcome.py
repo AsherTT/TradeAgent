@@ -8,6 +8,7 @@ from uuid import uuid4
 import pytest
 
 from backend.app.contracts.thesis import Direction, ForecastRecord
+from backend.app.evaluation.forward import ForwardEvaluationRunner
 from backend.app.persistence.base import Base
 from backend.app.persistence.models import ForecastRecordRow
 from backend.app.persistence.outcome import (
@@ -75,6 +76,48 @@ def test_forward_outcome_requires_maturity_and_is_append_only(tmp_path: Path) ->
             with pytest.raises(OutcomeIntegrityError, match="immutable"):
                 await repository.record(forecast.forecast_id, changed, policy=policy)
             assert await repository.list_for_forecasts((forecast.forecast_id,)) == (result,)
+        second = forecast.model_copy(update={
+            "forecast_id": uuid4(),
+            "research_run_id": uuid4(),
+            "thesis_id": uuid4(),
+        })
+        async with database.sessions() as session, session.begin():
+            session.add(ForecastRecordRow(
+                forecast_id=second.forecast_id,
+                research_run_id=second.research_run_id,
+                instrument_id=second.instrument_id,
+                thesis_id=second.thesis_id,
+                thesis_version=second.thesis_version,
+                created_at=second.created_at,
+                analysis_timestamp=second.analysis_timestamp,
+                horizon=second.horizon,
+                direction=second.direction.value,
+                probability=second.probability,
+                record_json=second.model_dump(mode="json"),
+            ))
+
+        class Source:
+            calls = 0
+
+            async def observe(
+                self, proposed: ForecastRecord, *, horizon_end_at: datetime
+            ) -> OutcomeObservation:
+                self.calls += 1
+                assert proposed.forecast_id == second.forecast_id
+                assert horizon_end_at == created + timedelta(days=5)
+                return observation
+
+        source = Source()
+        async with database.sessions() as session, session.begin():
+            runner = ForwardEvaluationRunner(
+                session, source=source, policy=policy,
+                clock=lambda: created + timedelta(days=6),
+            )
+            produced = await runner.run_due()
+            assert len(produced) == 1
+            assert produced[0].forecast_id == second.forecast_id
+            assert await runner.run_due() == ()
+            assert source.calls == 1
         await database.dispose()
 
     asyncio.run(scenario())
