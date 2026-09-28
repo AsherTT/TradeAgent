@@ -65,7 +65,10 @@ Last audited: 2026-09-28
   quant-backtest exclusion. See `docs/GATE_E_QUALIFICATION.md`; no live-source result is claimed.
 - Phase 8 forward-statistics slice: configurable evaluation maturity and bucket thresholds,
   linked Forecast/Outcome descriptive scores, per-bucket sample counts and Wilson intervals,
-  with cold-start and small-sample limits. Outcome persistence and production follow.
+  with cold-start and small-sample limits.
+- Phase 8 OutcomeRecord slice: migration `0012` and an append-only repository link matured
+  observations to frozen forecasts with configured horizon policy and derived returns/direction.
+  Offline SQLite checks pass; automatic source acquisition and PostgreSQL qualification follow.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary

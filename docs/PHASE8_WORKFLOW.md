@@ -48,5 +48,19 @@ are marked exploratory. Tests cover cold start, accumulation, mature cohorts, th
 70–80% bucket, and duplicate or unmatched outcomes. Brier is reported beside the
 bucket reliability data and is not labeled a calibration score.
 
-This is an offline evaluation calculation. Outcome persistence and automatic
-post-horizon production remain the next slice; no live forward performance is claimed.
+This is an offline evaluation calculation. No live forward performance is claimed.
+
+## 4. Frozen OutcomeRecord persistence — implemented offline
+
+Migration `0012` adds one append-only OutcomeRecord per frozen ForecastRecord, with
+its observation payload, evaluated time, and configured horizon end. PostgreSQL
+rejects direct UPDATE and DELETE. The repository requires an existing forecast,
+explicit horizon-to-days policy, an observation at or after maturity whose availability
+precedes evaluation, finite returns and excursions, and a source name/version.
+Direction correctness and excess return are derived rather than accepted from a
+caller. Repeating the exact observation is idempotent; changed observations are
+rejected. SQLite tests cover early rejection, successful linking, derivation,
+idempotence, and immutability.
+
+This storage path does not yet schedule outcome acquisition from a qualified provider.
+PostgreSQL migration qualification and live forward observations remain pending.

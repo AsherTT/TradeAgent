@@ -334,3 +334,15 @@ class ForecastRecordRow(Base):
         UniqueConstraint("research_run_id", "thesis_id", name="uq_forecast_run_thesis"),
         CheckConstraint("probability >= 0 AND probability <= 1", name="forecast_probability"),
     )
+
+
+class OutcomeRecordRow(Base):
+    __tablename__ = "outcome_record"
+
+    forecast_id: Mapped[UUID] = mapped_column(
+        ForeignKey("forecast_record.forecast_id", ondelete="RESTRICT"), primary_key=True
+    )
+    evaluated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
+    horizon_end_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    observation_json: Mapped[dict[str, Any]] = mapped_column(JSON)
+    record_json: Mapped[dict[str, Any]] = mapped_column(JSON)
