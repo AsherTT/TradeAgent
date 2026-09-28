@@ -148,6 +148,13 @@ class ResearchState(ContractModel):
 
     @model_validator(mode="after")
     def historical_replay_discloses_parametric_risk(self) -> ResearchState:
+        if self.replay_integrity_level not in {
+            ReplayIntegrityLevel.RESEARCH_REPLAY,
+            ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY,
+        }:
+            raise ValueError(
+                "research workflow cannot execute strict backtest or forward evaluation"
+            )
         if (
             self.timestamp_mode is ResearchTimestampMode.FIXED_CUTOFF
             and self.analysis_timestamp is None

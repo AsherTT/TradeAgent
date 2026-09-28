@@ -99,6 +99,7 @@ async def main() -> None:
                 "query": "Assess the setup",
                 "horizon": "3-5 days",
                 "timestamp_mode": "fixed_cutoff",
+                "replay_integrity_level": "research_replay",
             },
         )
         run_id = str(accepted["research_run_id"])

@@ -532,6 +532,7 @@ def test_submitted_run_executes_to_durable_terminal_state(
                     query="Assess the setup",
                     horizon="3-5 days",
                     timestamp_mode=ResearchTimestampMode.FIXED_CUTOFF,
+                    replay_integrity_level="research_replay",
                 ),
                 session,
                 lambda _: "offline-task",
@@ -580,6 +581,7 @@ def test_current_research_submission_persists_a_pending_cutoff(tmp_path: Path) -
                     query="Assess the current setup",
                     horizon="3-5 days",
                     timestamp_mode=ResearchTimestampMode.CURRENT_RESEARCH,
+                    replay_integrity_level="research_replay",
                 ),
                 session,
                 lambda _: "offline-current-task",
@@ -966,6 +968,7 @@ def test_research_api_service_boundary(tmp_path: Path) -> None:
                     query="Assess the setup",
                     horizon="3-5 days",
                     timestamp_mode=ResearchTimestampMode.FIXED_CUTOFF,
+                    replay_integrity_level="research_replay",
                 ),
                 session,
                 lambda _: "task-id",
@@ -1111,6 +1114,7 @@ def test_research_http_submission(tmp_path: Path) -> None:
                 "query": "Assess the setup",
                 "horizon": "3-5 days",
                 "timestamp_mode": "fixed_cutoff",
+                "replay_integrity_level": "research_replay",
             },
         )
         assert response.status_code == 202
@@ -1153,6 +1157,7 @@ def test_queue_dispatch_failure_is_durable(tmp_path: Path) -> None:
                         query="Assess the setup",
                         horizon="3-5 days",
                         timestamp_mode=ResearchTimestampMode.FIXED_CUTOFF,
+                        replay_integrity_level="research_replay",
                     ),
                     session,
                     fail_enqueue,
@@ -1296,6 +1301,7 @@ def test_http_to_registered_celery_task_to_get_terminal_state(
                 "query": "Assess the setup",
                 "horizon": "3-5 days",
                 "timestamp_mode": "fixed_cutoff",
+                "replay_integrity_level": "research_replay",
             },
         )
         assert response.status_code == 202

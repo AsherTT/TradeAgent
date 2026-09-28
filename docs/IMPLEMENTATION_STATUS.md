@@ -53,6 +53,10 @@ Last audited: 2026-09-28
 - Phase 7 Gate D: 13/13 poisoned fixtures quarantined, 5/5 policy/trust-field injections
   rejected, and PostgreSQL migration `0011` qualified with FTS/pgvector retrieval, PIT exclusion,
   and immutable document/chunk rows. See `docs/GATE_D_QUALIFICATION.md`.
+- Phase 8 replay submission slice: research requests explicitly select Research Replay or
+  Evidence-Constrained Replay; historical cutoffs retain parametric look-ahead risk metadata,
+  and the research workflow rejects strict quant and forward evaluation modes. See
+  `docs/PHASE8_WORKFLOW.md`; Gate E remains open.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary

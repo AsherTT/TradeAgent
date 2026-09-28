@@ -109,6 +109,7 @@ def test_current_research_transport_rejects_a_caller_supplied_cutoff() -> None:
             query="current analysis",
             horizon="3-5 days",
             timestamp_mode=ResearchTimestampMode.CURRENT_RESEARCH,
+            replay_integrity_level="research_replay",
             analysis_timestamp=datetime.now(UTC),
         )
 
@@ -120,4 +121,33 @@ def test_research_transport_requires_explicit_timestamp_mode() -> None:
             ticker="KLAC",
             query="current analysis",
             horizon="3-5 days",
+        )
+
+
+def test_research_transport_requires_explicit_replay_mode() -> None:
+    with pytest.raises(ValidationError, match="replay_integrity_level"):
+        ResearchSubmission(
+            instrument_id=uuid4(),
+            ticker="KLAC",
+            query="historical analysis",
+            horizon="3-5 days",
+            timestamp_mode=ResearchTimestampMode.FIXED_CUTOFF,
+            analysis_timestamp=datetime(2020, 1, 1, tzinfo=UTC),
+        )
+
+
+@pytest.mark.parametrize(
+    "mode",
+    [ReplayIntegrityLevel.STRICT_QUANT_BACKTEST, ReplayIntegrityLevel.FORWARD_EVALUATION],
+)
+def test_research_transport_rejects_other_evaluation_modes(mode: ReplayIntegrityLevel) -> None:
+    with pytest.raises(ValidationError, match="only supports explicit replay modes"):
+        ResearchSubmission(
+            instrument_id=uuid4(),
+            ticker="KLAC",
+            query="historical analysis",
+            horizon="3-5 days",
+            timestamp_mode=ResearchTimestampMode.FIXED_CUTOFF,
+            replay_integrity_level=mode,
+            analysis_timestamp=datetime(2020, 1, 1, tzinfo=UTC),
         )

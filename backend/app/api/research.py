@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Annotated
 from uuid import UUID
 
@@ -12,6 +12,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.contracts.base import ContractModel, utc_now
+from backend.app.contracts.evaluation import ReplayIntegrityLevel
 from backend.app.contracts.research import (
     ResearchBudget,
     ResearchState,
@@ -35,11 +36,17 @@ class ResearchSubmission(BaseModel):
     query: str = Field(min_length=1)
     horizon: str = Field(min_length=1, max_length=64)
     timestamp_mode: ResearchTimestampMode
+    replay_integrity_level: ReplayIntegrityLevel
     analysis_timestamp: datetime | None = None
     budget: ResearchBudget = Field(default_factory=ResearchBudget)
 
     @model_validator(mode="after")
     def validate_timestamp_intent(self) -> ResearchSubmission:
+        if self.replay_integrity_level not in {
+            ReplayIntegrityLevel.RESEARCH_REPLAY,
+            ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY,
+        }:
+            raise ValueError("research execution only supports explicit replay modes")
         if (
             self.timestamp_mode is ResearchTimestampMode.CURRENT_RESEARCH
             and self.analysis_timestamp is not None
@@ -79,6 +86,11 @@ async def submit_research(
         timestamp_mode=submission.timestamp_mode,
         analysis_timestamp=analysis_timestamp,
         horizon=submission.horizon,
+        replay_integrity_level=submission.replay_integrity_level,
+        parametric_lookahead_risk=(
+            analysis_timestamp is not None
+            and analysis_timestamp < requested_at - timedelta(minutes=5)
+        ),
         research_budget=submission.budget,
     )
     repository = ResearchRunRepository(session)
