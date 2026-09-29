@@ -1,5 +1,15 @@
 # yfinance Qualification
 
+## Windows system proxy diagnosis (2026-09-29)
+
+A live KLAC history call initially timed out in `curl_cffi` while the same Yahoo chart endpoint
+was reachable through the Windows system HTTPS proxy. `curl_cffi` did not automatically inherit
+that proxy. The library adapter now supplies a request-scoped `curl_cffi` session with the system
+HTTPS proxy (also honoring standard proxy environment variables through Python's proxy lookup).
+On this workstation, a subsequent real KLAC 60-day current acquisition returned 41 bars ending
+2026-09-28; two successive history calls also succeeded. This verifies connectivity and parsing
+here, not the unverified Yahoo corporate-action provenance or complete synthesis quality.
+
 The yfinance adapter is an offline-qualified, whole-request fallback for the user's personal
 research workflow. It is not affiliated with Yahoo, and the library license does not grant rights
 to redistribute downloaded Yahoo market data.
@@ -25,5 +35,5 @@ to redistribute downloaded Yahoo market data.
 
 The route is allowed for qualified non-strict research. It is not eligible for strict
 point-in-time backtests until independent golden cases, historical action publication times, and
-a versioned quality report support that claim. Qualification remains fixture-only: no live Yahoo
-request was made.
+a versioned quality report support that claim. The provider quality report remains fixture-only;
+the live KLAC connectivity check above does not promote that report's quality status.

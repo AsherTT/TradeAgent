@@ -8,9 +8,11 @@ from contextlib import asynccontextmanager
 from contextvars import ContextVar
 from datetime import UTC, date, datetime, time, timedelta
 from typing import Any, Protocol, cast
+from urllib.request import getproxies
 from uuid import NAMESPACE_URL, UUID, uuid5
 
 import pandas as pd
+from curl_cffi import requests as curl_requests
 from curl_cffi.requests.exceptions import (
     ConnectionError as CurlConnectionError,
 )
@@ -62,10 +64,21 @@ class YFinanceLibraryClient:
 
     def _history(self, symbol: str, start: datetime, end: datetime) -> pd.DataFrame:
         factory = self._ticker_factory
+        session: curl_requests.Session[Any] | None = None
         if factory is None:
             import yfinance as yf
 
-            factory = yf.Ticker
+            proxy = getproxies().get("https")
+            if proxy:
+                session = curl_requests.Session(
+                    impersonate="chrome", proxies={"http": proxy, "https": proxy}
+                )
+                def proxied_ticker(ticker: str) -> Any:
+                    return yf.Ticker(ticker, session=session)
+
+                factory = proxied_ticker
+            else:
+                factory = yf.Ticker
         try:
             result = factory(symbol).history(
                 start=start.date().isoformat(),
@@ -108,6 +121,9 @@ class YFinanceLibraryClient:
             ) from exc
         except YFException as exc:
             raise YFinanceProviderError(f"yfinance rejected the request: {exc}") from exc
+        finally:
+            if session is not None:
+                session.close()
         if not isinstance(result, pd.DataFrame):
             raise YFinanceProviderError("yfinance history did not return a DataFrame")
         return result

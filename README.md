@@ -15,7 +15,8 @@ Phase 4 is covered by golden-case tests and a Docker-backed PostgreSQL migration
 The Phase 5 slice is qualified offline with deterministic model and market-data adapters. The
 free market-data route checks a qualified local cache, prefers Alpha Vantage, and retries the
 complete request through yfinance only after typed operational failures. It is wired behind the
-default-off `MARKET_DATA_ENABLED` setting and has made no live market-data request. Broader
+default-off `MARKET_DATA_ENABLED` setting. A later KLAC Yahoo connectivity check succeeded through
+this workstation's system proxy; provider quality remains fixture-qualified. Broader
 research/RAG nodes, a backtesting engine, the integrated product UI, and Azure deployment remain
 deferred to later architecture gates. Phase 5 may begin an isolated frontend design clone lab,
 but real API integration is gated by stable backend contracts and does not count as Phase 10.

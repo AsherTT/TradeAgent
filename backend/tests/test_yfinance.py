@@ -154,6 +154,50 @@ async def test_yfinance_library_requests_unadjusted_unrepaired_daily_history() -
     }
 
 
+def test_yfinance_library_uses_system_https_proxy_for_its_curl_session(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import yfinance as yf
+
+    frame = _fixture_frame("daily_raw_success.json")
+    observed: dict[str, object] = {}
+
+    class FakeSession:
+        def __init__(self, *, impersonate: str, proxies: dict[str, str]) -> None:
+            observed["impersonate"] = impersonate
+            observed["proxies"] = proxies
+
+        def close(self) -> None:
+            observed["closed"] = True
+
+    class FakeTicker:
+        def history(self, **_kwargs: object) -> pd.DataFrame:
+            return frame
+
+    def ticker_factory(symbol: str, *, session: FakeSession) -> FakeTicker:
+        observed["symbol"] = symbol
+        observed["session"] = session
+        return FakeTicker()
+
+    monkeypatch.setattr("backend.app.market_data.yfinance.getproxies", lambda: {
+        "https": "http://127.0.0.1:7890"
+    })
+    monkeypatch.setattr("backend.app.market_data.yfinance.curl_requests.Session", FakeSession)
+    monkeypatch.setattr(yf, "Ticker", ticker_factory)
+
+    result = YFinanceLibraryClient()._history(
+        "KLAC", datetime(2024, 1, 9, tzinfo=UTC), datetime(2024, 1, 10, tzinfo=UTC)
+    )
+    assert result is frame
+    assert observed["symbol"] == "KLAC"
+    assert observed["impersonate"] == "chrome"
+    assert observed["proxies"] == {
+        "http": "http://127.0.0.1:7890",
+        "https": "http://127.0.0.1:7890",
+    }
+    assert observed["closed"] is True
+
+
 @pytest.mark.asyncio
 async def test_yfinance_actions_remain_observed_and_unverified() -> None:
     provider = YFinanceCorporateActionProvider(
