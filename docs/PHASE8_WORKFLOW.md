@@ -103,8 +103,9 @@ display or live forecast performance is claimed.
   horizon. The current runner is invoked explicitly with an injected source.
 - Qualify the configured cohort read path against PostgreSQL after the HTTP/SQLite
   check, including cold start and linked Outcome reads.
-- Qualify the Outcome repository with a synthetic due observation against PostgreSQL;
-  migration, foreign-key, and immutable-trigger checks have passed locally.
+- Exercise a linked nonempty Outcome cohort through the read endpoint against
+  PostgreSQL; repository due-write/idempotency, empty cold-start cohort reads,
+  migration, foreign key, and immutable trigger have passed locally.
 - Run the single whole-phase code review after these slices, resolve findings,
   and then mark Phase 8 complete. Do not infer live provider performance from
   fixture results.

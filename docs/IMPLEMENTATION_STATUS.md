@@ -78,7 +78,8 @@ Last audited: 2026-09-28
   synthetic rows. See `docs/PHASE8_POSTGRES_QUALIFICATION.md`.
 - Phase 8 read-only evaluation endpoint: a server-configured universe/horizon/outcome cohort
   exposes policy, maturity, coverage, scores, and all sample-counted buckets. Offline HTTP
-  tests cover exploratory low-sample output and unconfigured cohort rejection.
+  tests cover exploratory low-sample output and unconfigured cohort rejection. PostgreSQL
+  fixture checks cover a zero-Outcome cohort and a rolled-back due Outcome write/retry.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary
