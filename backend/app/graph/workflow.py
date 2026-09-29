@@ -70,6 +70,8 @@ class EvidenceCollection:
     technical_snapshot: TechnicalSnapshot | None = None
     evidence: tuple[Evidence, ...] = ()
     gaps: tuple[str, ...] = ()
+    tool_calls: int = 1
+    news_documents_scanned: int = 0
 
 
 def _provider_attempt_summary(service: object) -> str:
@@ -614,9 +616,9 @@ class ResearchWorkflow:
             ),
             budget_usage=state.budget_usage.model_copy(
                 update={
-                    "tool_calls": state.budget_usage.tool_calls + 1,
+                    "tool_calls": state.budget_usage.tool_calls + collection.tool_calls,
                     "news_documents": state.budget_usage.news_documents
-                    + sum(item.evidence_type == "news_document" for item in collection.evidence),
+                    + collection.news_documents_scanned,
                 }
             ),
         )

@@ -80,7 +80,9 @@ checkpoint and budget accounting path.
 News remains default-off. With an explicit Finnhub free key and current-research mode, the worker
 fetches company news before the market adapter freezes the cutoff, then sanitizes and persists
 eligible headline/summary evidence with the market checkpoint. The later News step skips a
-document already captured. Fixed-cutoff runs cannot use a fresh live retrieval as historical
+document already captured. This combined checkpoint charges two provider calls and the number of
+news documents inspected; when only one tool call remains, it reserves that call for market data.
+Fixed-cutoff runs cannot use a fresh live retrieval as historical
 evidence. The adapter has offline HTTP fixture tests; live entitlement, network behavior, and
 report quality are not yet qualified. Model-based news-event extraction remains pending.
 

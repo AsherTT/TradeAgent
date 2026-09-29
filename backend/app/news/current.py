@@ -16,11 +16,18 @@ class CurrentNewsSnapshot:
         self._gap: str | None = None
 
     async def collect(self, state: ResearchState) -> EvidenceCollection:
-        if (
+        should_fetch = (
             state.timestamp_mode is ResearchTimestampMode.CURRENT_RESEARCH
             and state.analysis_timestamp is None
             and state.research_budget.max_news_documents > 0
-        ):
+        )
+        has_call_budget = (
+            state.budget_usage.tool_calls + 1 < state.research_budget.max_tool_calls
+        )
+        attempted_news = should_fetch and has_call_budget
+        if should_fetch and not has_call_budget:
+            self._gap = "news skipped: tool call budget reserved for market acquisition"
+        if attempted_news:
             try:
                 self._documents = await self._loader.load_current_news(
                     state.instrument_id, limit=state.research_budget.max_news_documents
@@ -30,7 +37,10 @@ class CurrentNewsSnapshot:
         collection = await self._market.collect(state)
         cutoff = collection.analysis_timestamp
         if cutoff is None:
-            return collection
+            return EvidenceCollection(
+                gaps=(*collection.gaps, *((self._gap,) if self._gap else ())),
+                tool_calls=collection.tool_calls + int(attempted_news),
+            )
         news = (
             await NewsResearchEvidence(self).collect(
                 NewsSearchRequest(
@@ -53,6 +63,8 @@ class CurrentNewsSnapshot:
                 *(news.gaps if news else ()),
                 *((self._gap,) if self._gap else ()),
             ),
+            tool_calls=collection.tool_calls + int(attempted_news),
+            news_documents_scanned=len(self._documents),
         )
 
     async def load_news(self, request: NewsSearchRequest) -> tuple[NewsDocument, ...]:
