@@ -6,7 +6,12 @@ from uuid import UUID, uuid4
 import httpx
 import pytest
 
-from backend.app.contracts.research import ResearchBudget, ResearchState, ResearchTimestampMode
+from backend.app.contracts.research import (
+    BudgetUsage,
+    ResearchBudget,
+    ResearchState,
+    ResearchTimestampMode,
+)
 from backend.app.graph.workflow import EvidenceCollection
 from backend.app.market_data.instrument import ProviderInstrument
 from backend.app.news import FinnhubNewsLoader, NewsResearchEvidence, NewsSearchRequest
@@ -89,7 +94,7 @@ async def test_current_news_is_captured_before_cutoff_and_becomes_cited_evidence
         assert collection.analysis_timestamp == NOW + timedelta(minutes=2)
         assert len(collection.evidence) == 1
         assert collection.tool_calls == 2
-        assert collection.news_documents_scanned == 1
+        assert collection.news_documents_scanned == 3
         news = await NewsResearchEvidence(snapshot).collect(
             NewsSearchRequest(
                 instrument_id=INSTRUMENT_ID,
@@ -151,7 +156,36 @@ async def test_current_news_respects_tool_budget_and_counts_rejected_documents()
         assert collection.tool_calls == 1
         assert collection.news_documents_scanned == 0
         assert "news skipped: tool call budget reserved for market acquisition" in collection.gaps
+        exhausted = state.model_copy(update={"budget_usage": BudgetUsage(news_documents=1)})
+        collection = await CurrentNewsSnapshot(loader, Market()).collect(exhausted)
+        assert collection.tool_calls == 1
+        assert collection.news_documents_scanned == 0
     assert calls == 1
+
+
+@pytest.mark.asyncio
+async def test_finnhub_sorts_full_response_then_scans_only_budgeted_documents() -> None:
+    older = _payload()[0]
+    older["datetime"] = int((NOW - timedelta(days=3)).timestamp())
+    newest = {
+        "datetime": int((NOW - timedelta(minutes=5)).timestamp()),
+        "headline": "Latest KLA update",
+        "url": "https://example.org/latest",
+        "related": "KLAC",
+    }
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json=[older, newest])
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+        batch = await FinnhubNewsLoader(
+            api_key="offline-key",
+            instrument_resolver=_Resolver(),
+            client=client,
+            observed_at=lambda: NOW,
+        ).load_current_news(INSTRUMENT_ID, limit=1)
+    assert batch.documents_scanned == 1
+    assert [doc.content for doc in batch.documents] == ["Latest KLA update"]
 
 
 @pytest.mark.asyncio
@@ -175,6 +209,38 @@ async def test_fixed_cutoff_rejects_newly_observed_news_without_network_request(
             )
         )
     assert documents == ()
+
+
+@pytest.mark.asyncio
+async def test_fixed_cutoff_snapshot_does_not_charge_a_news_call() -> None:
+    def handler(_request: httpx.Request) -> httpx.Response:
+        raise AssertionError("fixed-cutoff news must not make a live request")
+
+    class Market:
+        async def collect(self, state: ResearchState) -> EvidenceCollection:
+            return EvidenceCollection(analysis_timestamp=state.analysis_timestamp)
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+        loader = FinnhubNewsLoader(
+            api_key="offline-key",
+            instrument_resolver=_Resolver(),
+            client=client,
+            observed_at=lambda: NOW,
+        )
+        state = ResearchState(
+            instrument_id=INSTRUMENT_ID,
+            ticker="KLAC",
+            query="Historical KLA catalysts",
+            horizon="3-5 days",
+            timestamp_mode=ResearchTimestampMode.FIXED_CUTOFF,
+            analysis_timestamp=NOW - timedelta(days=1),
+            requested_at=NOW,
+            parametric_lookahead_risk=True,
+        )
+        collection = await CurrentNewsSnapshot(loader, Market()).collect(state)
+    assert collection.tool_calls == 1
+    assert collection.news_documents_scanned == 0
+    assert collection.evidence == ()
 
 
 @pytest.mark.asyncio

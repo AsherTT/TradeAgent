@@ -13,7 +13,7 @@ from celery import Celery
 from backend.app.ai.runtime import build_model_gateway
 from backend.app.config import Settings, get_settings
 from backend.app.contracts.evaluation import ReplayIntegrityLevel
-from backend.app.contracts.research import ResearchState, ResearchStatus
+from backend.app.contracts.research import ResearchState, ResearchStatus, ResearchTimestampMode
 from backend.app.evaluation.forward import ForwardEvaluationRunner
 from backend.app.graph import (
     MarketResearchEvidence,
@@ -26,7 +26,7 @@ from backend.app.market_data.runtime import (
     SecurityMasterInstrumentResolver,
     build_market_data_loader,
 )
-from backend.app.news import FinnhubNewsLoader, NewsResearchEvidence
+from backend.app.news import FinnhubNewsLoader
 from backend.app.news.current import CurrentNewsSnapshot
 from backend.app.persistence.evidence import EvidenceRepository
 from backend.app.persistence.outcome import OutcomePolicy
@@ -163,9 +163,12 @@ async def execute_research_run(
                 )
                 evidence_provider = MarketResearchEvidence(loader, currency=instrument.currency)
             rag_provider = None
-            news_provider = None
-            if settings.news_enabled and (
-                state.replay_integrity_level is not ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY
+            if (
+                settings.news_enabled
+                and state.timestamp_mode is ResearchTimestampMode.CURRENT_RESEARCH
+                and state.analysis_timestamp is None
+                and state.replay_integrity_level
+                is not ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY
             ):
                 if not settings.finnhub_api_key:
                     raise ValueError("news is enabled without a Finnhub API key")
@@ -181,7 +184,6 @@ async def execute_research_run(
                     evidence_provider,
                 )
                 evidence_provider = news_snapshot
-                news_provider = NewsResearchEvidence(news_snapshot)
             if settings.rag_enabled and (
                 state.replay_integrity_level is not ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY
             ):
@@ -194,7 +196,6 @@ async def execute_research_run(
                 save=save,
                 evidence_provider=evidence_provider,
                 rag_provider=rag_provider,
-                news_provider=news_provider,
             )
             return await workflow.run(state)
         except ResearchRunBusyError:

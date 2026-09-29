@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Mapping
+from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from typing import Any
 from urllib.parse import urlsplit
@@ -19,6 +20,12 @@ FINNHUB_COMPANY_NEWS_URL = "https://finnhub.io/api/v1/company-news"
 
 class FinnhubNewsError(Exception):
     """A Finnhub request or response cannot support trustworthy news evidence."""
+
+
+@dataclass(frozen=True, slots=True)
+class FinnhubNewsBatch:
+    documents: tuple[NewsDocument, ...]
+    documents_scanned: int
 
 
 class FinnhubNewsLoader:
@@ -62,11 +69,12 @@ class FinnhubNewsLoader:
         instrument = await self._resolver.resolve_instrument(
             request.instrument_id, at=request.analysis_timestamp
         )
-        return await self._fetch(request, instrument.symbol.upper(), request.analysis_timestamp)
+        batch = await self._fetch(request, instrument.symbol.upper(), request.analysis_timestamp)
+        return batch.documents
 
     async def load_current_news(
         self, instrument_id: UUID, *, limit: int
-    ) -> tuple[NewsDocument, ...]:
+    ) -> FinnhubNewsBatch:
         """Acquire before current research freezes its evidence cutoff."""
         now = self._observed_at()
         instrument = await self._resolver.resolve_instrument(instrument_id, at=now)
@@ -80,7 +88,7 @@ class FinnhubNewsLoader:
 
     async def _fetch(
         self, request: NewsSearchRequest, symbol: str, query_end: datetime
-    ) -> tuple[NewsDocument, ...]:
+    ) -> FinnhubNewsBatch:
         start = (query_end - timedelta(days=self._lookback_days)).date()
         end = query_end.date()
         owns_client = self._client is None
@@ -108,12 +116,13 @@ class FinnhubNewsLoader:
                 await client.aclose()
         observed = self._observed_at()
         if observed > request.analysis_timestamp:
-            return ()
+            return FinnhubNewsBatch((), 0)
         if not isinstance(payload, list):
             raise FinnhubNewsError("Finnhub company news response must be a list")
         documents: list[NewsDocument] = []
         seen_urls: set[str] = set()
-        for item in payload[:500]:
+        candidates = sorted(payload, key=_published_epoch, reverse=True)[: request.limit]
+        for item in candidates:
             if not isinstance(item, Mapping):
                 continue
             document = _document(item, request, symbol, observed)
@@ -121,8 +130,15 @@ class FinnhubNewsLoader:
                 continue
             seen_urls.add(document.source_uri)
             documents.append(document)
-        documents.sort(key=lambda item: item.published_at, reverse=True)
-        return tuple(documents[: request.limit])
+        return FinnhubNewsBatch(tuple(documents), len(candidates))
+
+
+def _published_epoch(item: object) -> int:
+    if isinstance(item, Mapping):
+        timestamp = item.get("datetime")
+        if isinstance(timestamp, int) and not isinstance(timestamp, bool):
+            return timestamp
+    return -1
 
 
 def _document(
