@@ -71,12 +71,6 @@ def build_strict_features(
     if not 1 <= fast_window < slow_window:
         raise ValueError("feature windows require 1 <= fast < slow")
     bars = data.bars
-    if tuple(sorted(bars, key=lambda bar: bar.timestamp)) != bars:
-        raise StrictInputError("market bars must be ordered by timestamp")
-    if len({bar.timestamp for bar in bars}) != len(bars):
-        raise StrictInputError("duplicate market-bar timestamps")
-    if data.universe_as_of > bars[0].timestamp:
-        raise StrictInputError("historical universe was selected after the test began")
     if any(bar.instrument_id != data.instrument_id for bar in bars):
         raise StrictInputError("market bars must belong to the selected instrument")
     if len({bar.symbol for bar in bars}) != 1:
@@ -84,11 +78,22 @@ def build_strict_features(
     if any(bar.adjustment_mode is not PriceAdjustmentMode.RAW for bar in bars):
         raise StrictInputError("execution prices require RAW market bars")
     if any(
+        timestamp.tzinfo is None or timestamp.utcoffset() is None
+        for bar in bars
+        for timestamp in (bar.timestamp, bar.observed_at, bar.available_at)
+    ):
+        raise StrictInputError("market-bar timestamps must be timezone-aware")
+    if any(
         bar.observed_at > bar.available_at or bar.timestamp > bar.observed_at
-        or bar.timestamp.tzinfo is None or bar.available_at.tzinfo is None
         for bar in bars
     ):
         raise StrictInputError("market-bar chronology is invalid")
+    if tuple(sorted(bars, key=lambda bar: bar.timestamp)) != bars:
+        raise StrictInputError("market bars must be ordered by timestamp")
+    if len({bar.timestamp for bar in bars}) != len(bars):
+        raise StrictInputError("duplicate market-bar timestamps")
+    if data.universe_as_of > bars[0].timestamp:
+        raise StrictInputError("historical universe was selected after the test began")
     require_strict_backtest_eligible(data.market_quality)
     require_strict_backtest_eligible(data.corporate_action_quality)
     require_strict_bars_eligible(bars)
@@ -96,6 +101,24 @@ def build_strict_features(
     require_report_matches_actions(data.corporate_action_quality, data.corporate_actions)
     if any(action.instrument_id != data.instrument_id for action in data.corporate_actions):
         raise StrictInputError("corporate actions must belong to the selected instrument")
+    if any(
+        timestamp.tzinfo is None or timestamp.utcoffset() is None
+        for action in data.corporate_actions
+        for timestamp in (action.effective_at, action.available_at)
+    ):
+        raise StrictInputError("corporate-action timestamps must be timezone-aware")
+    action_keys = tuple(
+        (
+            action.action_type, action.effective_at, action.ratio,
+            action.cash_amount, action.currency,
+        )
+        for action in data.corporate_actions
+    )
+    if (
+        len({action.action_id for action in data.corporate_actions}) != len(action_keys)
+        or len(set(action_keys)) != len(action_keys)
+    ):
+        raise StrictInputError("duplicate corporate actions would distort position accounting")
     unsupported = {
         CorporateActionType.MERGER,
         CorporateActionType.SPINOFF,
@@ -110,9 +133,7 @@ def build_strict_features(
     ):
         raise StrictInputError("unsupported corporate action inside backtest window")
     if any(
-        action.available_at.tzinfo is None
-        or action.effective_at.tzinfo is None
-        or action.available_at > action.effective_at
+        action.available_at > action.effective_at
         for action in data.corporate_actions
         if action.action_type in {
             CorporateActionType.SPLIT,

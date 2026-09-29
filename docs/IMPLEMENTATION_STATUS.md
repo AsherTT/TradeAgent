@@ -98,6 +98,14 @@ Last audited: 2026-09-29
   a timestamped universe, qualified market and action providers, raw execution
   bars, and only point-in-time-visible corporate actions. Unsupported lifecycle
   changes fail closed. See `docs/PHASE9_WORKFLOW.md`.
+- Phase 9 deterministic signal/backtest slice: point-in-time moving-average signals
+  execute at the following raw open in a bounded long-or-cash simulation with
+  split/dividend accounting, costs, NAV, and reproducible metrics. This remains
+  offline fixture-qualified and does not regenerate historical LLM signals.
+- Phase 9 deterministic risk/TradeIntent slice: quality, age, loss, exposure,
+  liquidity, price, hours, duplicate, and kill-switch checks produce only a
+  non-executable, externally authorized intent. Gate F is fixture-qualified for
+  the restricted deterministic path. See `docs/GATE_F_QUALIFICATION.md`.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary
