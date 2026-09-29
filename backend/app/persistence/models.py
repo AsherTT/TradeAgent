@@ -346,3 +346,13 @@ class OutcomeRecordRow(Base):
     horizon_end_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     observation_json: Mapped[dict[str, Any]] = mapped_column(JSON)
     record_json: Mapped[dict[str, Any]] = mapped_column(JSON)
+
+
+class OutcomeObservationRow(Base):
+    __tablename__ = "outcome_observation"
+
+    forecast_id: Mapped[UUID] = mapped_column(
+        ForeignKey("forecast_record.forecast_id", ondelete="RESTRICT"), primary_key=True
+    )
+    available_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
+    observation_json: Mapped[dict[str, Any]] = mapped_column(JSON)

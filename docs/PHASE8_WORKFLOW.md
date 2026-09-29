@@ -69,8 +69,12 @@ PostgreSQL migration, foreign-key, and mutation-trigger qualification is recorde
 The bounded `ForwardEvaluationRunner` scans forecasts without Outcomes, checks their
 configured due time, asks an injected observation source for available data, and
 records exactly one Outcome per matured forecast. A repeated run skips recorded
-forecasts. The test verifies due selection and idempotent repeat execution. No
-production observation adapter or periodic schedule is configured yet.
+forecasts. Migration `0013` adds an append-only source observation store; its
+repository checks a frozen forecast, configured horizon, observation time, and
+availability before accepting an observation. `PersistedOutcomeSource` supplies
+these stored observations to the runner. SQLite and PostgreSQL fixtures verify
+observation-to-Outcome execution, exact retries, mutation rejection, and rollback.
+No live observation adapter or periodic schedule is configured yet.
 
 ## 5. Agent and integrity evaluation — implemented offline
 
@@ -98,9 +102,9 @@ display or live forecast performance is claimed.
 
 ## Remaining Phase 8 work
 
-- Connect a qualified forward-outcome observation source and a default-off periodic
-  runner, then prove end-to-end forecast-to-outcome behavior after a configured
-  horizon. The current runner is invoked explicitly with an injected source.
+- Connect the default-off periodic runner to the immutable observation store and
+  prove scheduled forecast-to-Outcome behavior after a configured horizon. A live
+  market/benchmark observation adapter still needs separate qualification.
 - Qualify the configured cohort read path against PostgreSQL after the HTTP/SQLite
   check, including cold start and linked Outcome reads.
 - Exercise a linked nonempty Outcome cohort through the read endpoint against

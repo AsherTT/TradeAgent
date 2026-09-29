@@ -17,6 +17,10 @@ from backend.app.persistence.outcome import (
     OutcomePolicy,
     OutcomeRepository,
 )
+from backend.app.persistence.outcome_observation import (
+    OutcomeObservationRepository,
+    PersistedOutcomeSource,
+)
 from backend.app.persistence.session import Database
 
 
@@ -96,28 +100,28 @@ def test_forward_outcome_requires_maturity_and_is_append_only(tmp_path: Path) ->
                 record_json=second.model_dump(mode="json"),
             ))
 
-        class Source:
-            calls = 0
-
-            async def observe(
-                self, proposed: ForecastRecord, *, horizon_end_at: datetime
-            ) -> OutcomeObservation:
-                self.calls += 1
-                assert proposed.forecast_id == second.forecast_id
-                assert horizon_end_at == created + timedelta(days=5)
-                return observation
-
-        source = Source()
         async with database.sessions() as session, session.begin():
+            observed_at = created + timedelta(days=6)
+            observations = OutcomeObservationRepository(
+                session, clock=lambda: observed_at
+            )
+            await observations.store(second.forecast_id, observation, policy=policy)
+            await observations.store(second.forecast_id, observation, policy=policy)
+            with pytest.raises(OutcomeIntegrityError, match="immutable"):
+                await observations.store(
+                    second.forecast_id,
+                    observation.model_copy(update={"actual_return": -0.1}),
+                    policy=policy,
+                )
+            source = PersistedOutcomeSource(session, clock=lambda: observed_at)
             runner = ForwardEvaluationRunner(
                 session, source=source, policy=policy,
-                clock=lambda: created + timedelta(days=6),
+                clock=lambda: observed_at,
             )
             produced = await runner.run_due()
             assert len(produced) == 1
             assert produced[0].forecast_id == second.forecast_id
             assert await runner.run_due() == ()
-            assert source.calls == 1
         await database.dispose()
 
     asyncio.run(scenario())

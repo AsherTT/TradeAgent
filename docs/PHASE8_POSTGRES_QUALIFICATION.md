@@ -16,6 +16,10 @@ Date: 2026-09-29. Local Docker Desktop PostgreSQL 18 with pgvector.
   transaction was rolled back. A follow-up read confirmed no Outcome remained.
 - The configured cohort reader returned one existing fixture Forecast, zero Outcomes,
   `ACCUMULATING` maturity, and all ten empty buckets from PostgreSQL.
+- Upgraded from `0012` to `0013_phase8_outcome_observation`. A synthetic source
+  observation passed through `PersistedOutcomeSource` and the due runner into an
+  OutcomeRecord. PostgreSQL rejected direct UPDATE and DELETE of the observation;
+  the observation and Outcome were both rolled back and confirmed absent.
 
 This qualifies the migration, repository write/read, foreign key, and direct-mutation
 trigger on the local container. It does not evaluate a real forecast, qualify a live observation provider,

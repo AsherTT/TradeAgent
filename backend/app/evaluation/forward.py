@@ -55,6 +55,7 @@ class ForwardEvaluationRunner:
             .where(OutcomeRecordRow.forecast_id.is_(None))
             .order_by(ForecastRecordRow.created_at, ForecastRecordRow.forecast_id)
             .limit(limit)
+            .with_for_update(of=ForecastRecordRow, skip_locked=True)
         )
         repository = OutcomeRepository(self._session, clock=lambda: now)
         recorded: list[OutcomeRecord] = []

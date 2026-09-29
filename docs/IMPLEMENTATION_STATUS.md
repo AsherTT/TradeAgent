@@ -80,6 +80,9 @@ Last audited: 2026-09-28
   exposes policy, maturity, coverage, scores, and all sample-counted buckets. Offline HTTP
   tests cover exploratory low-sample output and unconfigured cohort rejection. PostgreSQL
   fixture checks cover a zero-Outcome cohort and a rolled-back due Outcome write/retry.
+- Phase 8 immutable observation source: migration `0013` stores one validated source
+  observation per Forecast for the due runner. SQLite and PostgreSQL fixtures exercise
+  observation-to-Outcome flow; direct PostgreSQL observation UPDATE/DELETE is rejected.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary
