@@ -20,7 +20,10 @@ Date: 2026-09-29. Local Docker Desktop PostgreSQL 18 with pgvector.
   observation passed through `PersistedOutcomeSource` and the due runner into an
   OutcomeRecord. PostgreSQL rejected direct UPDATE and DELETE of the observation;
   the observation and Outcome were both rolled back and confirmed absent.
+- After adding observation-backed candidate selection and Forecast row locks, the
+  due runner again produced one Outcome on PostgreSQL; a second run produced zero.
+  Both rows were rolled back and confirmed absent.
 
 This qualifies the migration, repository write/read, foreign key, and direct-mutation
-trigger on the local container. It does not evaluate a real forecast, qualify a live observation provider,
-or establish forward prediction performance.
+trigger on the local container. It does not evaluate a real forecast, qualify a live
+observation provider, or establish forward prediction performance.

@@ -14,6 +14,7 @@ from backend.app.ai.runtime import build_model_gateway
 from backend.app.config import Settings, get_settings
 from backend.app.contracts.evaluation import ReplayIntegrityLevel
 from backend.app.contracts.research import ResearchState, ResearchStatus
+from backend.app.evaluation.forward import ForwardEvaluationRunner
 from backend.app.graph import (
     MarketResearchEvidence,
     ResearchEvidence,
@@ -26,6 +27,8 @@ from backend.app.market_data.runtime import (
     build_market_data_loader,
 )
 from backend.app.persistence.evidence import EvidenceRepository
+from backend.app.persistence.outcome import OutcomePolicy
+from backend.app.persistence.outcome_observation import PersistedOutcomeSource
 from backend.app.persistence.repositories import (
     ResearchRunBusyError,
     ResearchRunNotReadyError,
@@ -41,6 +44,17 @@ from backend.app.replay import PersistedReplayEvidence
 
 def create_celery(settings: Settings | None = None) -> Celery:
     runtime = settings or get_settings()
+    beat_schedule: dict[str, dict[str, Any]] = {
+        "reconcile-pending-research-runs": {
+            "task": "research.reconcile_pending",
+            "schedule": runtime.research_reconcile_interval_seconds,
+        }
+    }
+    if runtime.forward_evaluation_enabled:
+        beat_schedule["evaluate-due-forward-forecasts"] = {
+            "task": "evaluation.run_due",
+            "schedule": runtime.forward_evaluation_interval_seconds,
+        }
     app = Celery(
         "tradeagent",
         broker=runtime.redis_broker_url,
@@ -58,12 +72,7 @@ def create_celery(settings: Settings | None = None) -> Celery:
         result_backend_transport_options={"global_keyprefix": "tradeagent:result:"},
         timezone="UTC",
         enable_utc=True,
-        beat_schedule={
-            "reconcile-pending-research-runs": {
-                "task": "research.reconcile_pending",
-                "schedule": runtime.research_reconcile_interval_seconds,
-            }
-        },
+        beat_schedule=beat_schedule,
     )
     return app
 
@@ -239,3 +248,29 @@ async def _reconcile_pending_runs() -> dict[str, int]:
         result["failed"],
     )
     return result
+
+
+@celery_app.task(name="evaluation.run_due")  # type: ignore[untyped-decorator]
+def evaluate_due_forecasts() -> dict[str, int]:
+    """Freeze Outcomes whose configured horizon and source observation have matured."""
+
+    return asyncio.run(_evaluate_due_worker_task())
+
+
+async def _evaluate_due_worker_task() -> dict[str, int]:
+    settings = get_settings()
+    if not settings.forward_evaluation_enabled:
+        return {"evaluated": 0}
+    database = get_database()
+    try:
+        policy = OutcomePolicy(horizon_days=settings.forward_evaluation_horizon_days)
+        async with database.sessions() as session, session.begin():
+            runner = ForwardEvaluationRunner(
+                session,
+                source=PersistedOutcomeSource(session),
+                policy=policy,
+            )
+            outcomes = await runner.run_due(limit=settings.forward_evaluation_batch_size)
+        return {"evaluated": len(outcomes)}
+    finally:
+        await database.dispose()

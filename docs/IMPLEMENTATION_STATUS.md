@@ -83,6 +83,10 @@ Last audited: 2026-09-28
 - Phase 8 immutable observation source: migration `0013` stores one validated source
   observation per Forecast for the due runner. SQLite and PostgreSQL fixtures exercise
   observation-to-Outcome flow; direct PostgreSQL observation UPDATE/DELETE is rejected.
+- Phase 8 default-off scheduled evaluation: Celery Beat registers the due task only
+  with explicit positive horizon mappings. The task reads available immutable
+  observations, locks Forecast rows, and freezes Outcomes; offline tests verify one
+  write and a zero-write retry. No live observation adapter is configured.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary

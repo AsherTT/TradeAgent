@@ -7,11 +7,16 @@ from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 from uuid import UUID
 
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.contracts.base import utc_now
 from backend.app.contracts.thesis import ForecastRecord
-from backend.app.persistence.models import ForecastRecordRow, OutcomeObservationRow
+from backend.app.persistence.models import (
+    ForecastRecordRow,
+    OutcomeObservationRow,
+    OutcomeRecordRow,
+)
 from backend.app.persistence.outcome import OutcomeIntegrityError, OutcomeObservation, OutcomePolicy
 from backend.app.persistence.repositories import _as_utc
 
@@ -55,6 +60,26 @@ class PersistedOutcomeSource:
     def __init__(self, session: AsyncSession, *, clock: Callable[[], datetime] = utc_now) -> None:
         self._session = session
         self._clock = clock
+
+    async def pending_forecast_ids(
+        self, *, now: datetime, limit: int
+    ) -> tuple[UUID, ...]:
+        if limit < 1 or now.tzinfo is None or now.utcoffset() is None:
+            raise ValueError("candidate query requires positive limit and aware time")
+        rows = await self._session.scalars(
+            select(OutcomeObservationRow.forecast_id)
+            .outerjoin(
+                OutcomeRecordRow,
+                OutcomeRecordRow.forecast_id == OutcomeObservationRow.forecast_id,
+            )
+            .where(
+                OutcomeObservationRow.available_at <= now.astimezone(UTC),
+                OutcomeRecordRow.forecast_id.is_(None),
+            )
+            .order_by(OutcomeObservationRow.available_at, OutcomeObservationRow.forecast_id)
+            .limit(limit)
+        )
+        return tuple(rows)
 
     async def observe(
         self, forecast: ForecastRecord, *, horizon_end_at: datetime

@@ -74,7 +74,11 @@ repository checks a frozen forecast, configured horizon, observation time, and
 availability before accepting an observation. `PersistedOutcomeSource` supplies
 these stored observations to the runner. SQLite and PostgreSQL fixtures verify
 observation-to-Outcome execution, exact retries, mutation rejection, and rollback.
-No live observation adapter or periodic schedule is configured yet.
+The Celery Beat due task is default-off. With an explicit positive horizon mapping,
+it scans only available stored observations without Outcomes, locks selected Forecasts,
+and freezes new Outcomes in one transaction. Tests cover schedule absence by default,
+configuration rejection, one due write, and a repeated zero-write run. No live
+market/benchmark observation adapter is configured or qualified.
 
 ## 5. Agent and integrity evaluation — implemented offline
 
@@ -102,9 +106,8 @@ display or live forecast performance is claimed.
 
 ## Remaining Phase 8 work
 
-- Connect the default-off periodic runner to the immutable observation store and
-  prove scheduled forecast-to-Outcome behavior after a configured horizon. A live
-  market/benchmark observation adapter still needs separate qualification.
+- Qualify a live market/benchmark observation adapter separately before enabling
+  production forward evaluation. The default-off scheduled path is fixture-qualified.
 - Qualify the configured cohort read path against PostgreSQL after the HTTP/SQLite
   check, including cold start and linked Outcome reads.
 - Exercise a linked nonempty Outcome cohort through the read endpoint against

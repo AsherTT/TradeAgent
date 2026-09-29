@@ -6,6 +6,7 @@ import json
 from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 from typing import Protocol
+from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -19,6 +20,10 @@ from backend.app.persistence.repositories import _as_utc
 
 class ForwardOutcomeSource(Protocol):
     """Return a source-qualified observation, or None while it is unavailable."""
+
+    async def pending_forecast_ids(
+        self, *, now: datetime, limit: int
+    ) -> tuple[UUID, ...]: ...
 
     async def observe(
         self, forecast: ForecastRecord, *, horizon_end_at: datetime
@@ -46,13 +51,21 @@ class ForwardEvaluationRunner:
         if now.tzinfo is None or now.utcoffset() is None:
             raise ValueError("forward evaluation clock must be timezone-aware")
         now = now.astimezone(UTC)
+        candidate_ids = await self._source.pending_forecast_ids(now=now, limit=limit)
+        if len(candidate_ids) > limit or len(set(candidate_ids)) != len(candidate_ids):
+            raise ValueError("outcome source returned invalid candidate identifiers")
+        if not candidate_ids:
+            return ()
         rows = await self._session.scalars(
             select(ForecastRecordRow)
             .outerjoin(
                 OutcomeRecordRow,
                 OutcomeRecordRow.forecast_id == ForecastRecordRow.forecast_id,
             )
-            .where(OutcomeRecordRow.forecast_id.is_(None))
+            .where(
+                ForecastRecordRow.forecast_id.in_(candidate_ids),
+                OutcomeRecordRow.forecast_id.is_(None),
+            )
             .order_by(ForecastRecordRow.created_at, ForecastRecordRow.forecast_id)
             .limit(limit)
             .with_for_update(of=ForecastRecordRow, skip_locked=True)

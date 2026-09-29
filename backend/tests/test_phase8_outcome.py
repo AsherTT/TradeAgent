@@ -1,14 +1,15 @@
 """One immutable OutcomeRecord after the configured forward horizon."""
 
 import asyncio
+import importlib
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from uuid import uuid4
 
 import pytest
 
+from backend.app.config import Settings
 from backend.app.contracts.thesis import Direction, ForecastRecord
-from backend.app.evaluation.forward import ForwardEvaluationRunner
 from backend.app.persistence.base import Base
 from backend.app.persistence.models import ForecastRecordRow
 from backend.app.persistence.outcome import (
@@ -19,12 +20,13 @@ from backend.app.persistence.outcome import (
 )
 from backend.app.persistence.outcome_observation import (
     OutcomeObservationRepository,
-    PersistedOutcomeSource,
 )
 from backend.app.persistence.session import Database
 
 
-def test_forward_outcome_requires_maturity_and_is_append_only(tmp_path: Path) -> None:
+def test_forward_outcome_requires_maturity_and_is_append_only(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     async def scenario() -> None:
         database = Database(f"sqlite+aiosqlite:///{tmp_path / 'outcome.db'}")
         async with database.engine.begin() as connection:
@@ -113,15 +115,23 @@ def test_forward_outcome_requires_maturity_and_is_append_only(tmp_path: Path) ->
                     observation.model_copy(update={"actual_return": -0.1}),
                     policy=policy,
                 )
-            source = PersistedOutcomeSource(session, clock=lambda: observed_at)
-            runner = ForwardEvaluationRunner(
-                session, source=source, policy=policy,
-                clock=lambda: observed_at,
-            )
-            produced = await runner.run_due()
-            assert len(produced) == 1
-            assert produced[0].forecast_id == second.forecast_id
-            assert await runner.run_due() == ()
+        celery_module = importlib.import_module("backend.app.jobs.celery_app")
+        monkeypatch.setattr(celery_module, "get_database", lambda: database)
+        monkeypatch.setattr(
+            celery_module,
+            "get_settings",
+            lambda: Settings(
+                _env_file=None,
+                forward_evaluation_enabled=True,
+                forward_evaluation_horizon_days={"5d": 5},
+            ),
+        )
+        assert await celery_module._evaluate_due_worker_task() == {"evaluated": 1}
+        assert await celery_module._evaluate_due_worker_task() == {"evaluated": 0}
+        async with database.sessions() as session:
+            assert len(await OutcomeRepository(session).list_for_forecasts(
+                (second.forecast_id,)
+            )) == 1
         await database.dispose()
 
     asyncio.run(scenario())

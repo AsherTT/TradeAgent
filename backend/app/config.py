@@ -1,9 +1,11 @@
 """Environment-backed application settings."""
 
+from __future__ import annotations
+
 from functools import lru_cache
 from typing import Any
 
-from pydantic import Field
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -22,6 +24,22 @@ class Settings(BaseSettings):
     research_reconcile_batch_size: int = Field(default=100, ge=1, le=1000)
     phase6_write_token: str | None = None
     evaluation_cohorts: tuple[dict[str, Any], ...] = ()
+    forward_evaluation_enabled: bool = False
+    forward_evaluation_interval_seconds: int = Field(default=3600, ge=60)
+    forward_evaluation_batch_size: int = Field(default=100, ge=1, le=1000)
+    forward_evaluation_horizon_days: dict[str, int] = Field(default_factory=dict)
+
+    @model_validator(mode="after")
+    def validate_forward_evaluation(self) -> Settings:
+        if self.forward_evaluation_enabled and (
+            not self.forward_evaluation_horizon_days
+            or any(
+                days < 1 or not label
+                for label, days in self.forward_evaluation_horizon_days.items()
+            )
+        ):
+            raise ValueError("forward evaluation requires positive horizon mappings")
+        return self
     rag_enabled: bool = False
     rag_write_token: str | None = None
     rag_embedding_base_url: str | None = None
