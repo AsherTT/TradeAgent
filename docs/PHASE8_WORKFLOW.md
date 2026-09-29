@@ -63,7 +63,8 @@ rejected. SQLite tests cover early rejection, successful linking, derivation,
 idempotence, and immutability.
 
 This storage path does not yet schedule outcome acquisition from a qualified provider.
-PostgreSQL migration qualification and live forward observations remain pending.
+PostgreSQL migration, foreign-key, and mutation-trigger qualification is recorded in
+`docs/PHASE8_POSTGRES_QUALIFICATION.md`. Live forward observations remain pending.
 
 The bounded `ForwardEvaluationRunner` scans forecasts without Outcomes, checks their
 configured due time, asks an injected observation source for available data, and
@@ -91,8 +92,8 @@ violations.
   horizon. The current runner is invoked explicitly with an injected source.
 - Expose cohort evaluation and `EvaluationMaturity` through an application read
   path, with policy configuration scoped by horizon, universe, and outcome definition.
-- Qualify migration `0012` and immutable Outcome rows on PostgreSQL when Docker is
-  available. Docker Desktop is currently unavailable on this host.
+- Qualify the Outcome repository with a synthetic due observation against PostgreSQL;
+  migration, foreign-key, and immutable-trigger checks have passed locally.
 - Run the single whole-phase code review after these slices, resolve findings,
   and then mark Phase 8 complete. Do not infer live provider performance from
   fixture results.

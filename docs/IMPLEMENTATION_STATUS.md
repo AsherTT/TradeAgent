@@ -69,11 +69,13 @@ Last audited: 2026-09-28
 - Phase 8 OutcomeRecord slice: migration `0012` and an append-only repository link matured
   observations to frozen forecasts with configured horizon policy and derived returns/direction.
   A bounded due-runner accepts an injected observation source and skips already evaluated
-  forecasts. Offline SQLite checks pass; a production source, schedule, and PostgreSQL
-  qualification follow.
+  forecasts. Offline SQLite checks pass; a production source and schedule follow.
 - Phase 8 Agent and Integrity evaluation slice: labeled engineering metrics and observable
   PIT, future-evidence, budget, and security-state violation counts have offline tests;
   external structural invariants are not inferred from these reports.
+- Phase 8 PostgreSQL `0012` qualification: migration upgrade, Outcome foreign key, and direct
+  UPDATE/DELETE rejection passed in the restored local Docker environment using rolled-back
+  synthetic rows. See `docs/PHASE8_POSTGRES_QUALIFICATION.md`.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary
