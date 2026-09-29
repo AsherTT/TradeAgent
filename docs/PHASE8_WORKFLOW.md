@@ -85,13 +85,24 @@ invariants require their separate structural or adversarial probes. Offline test
 cover repeated unnecessary tools, label denominators, and simultaneous integrity
 violations.
 
+## 6. Configured cohort read path — implemented offline
+
+`GET /evaluation/forecasts` reads a server-configured cohort keyed by universe ID,
+horizon, and `directional_return` outcome definition. `EVALUATION_COHORTS` supplies
+the cohort's instrument IDs and its maturity and bucket thresholds; no client can
+set those thresholds in the request. The response includes the policy, full
+`EvaluationMaturity`, sample count, outcome coverage, scores, and every bucket.
+The read is capped at 1,000 ForecastRecords; oversized cohorts fail explicitly.
+An offline HTTP test verifies the linked result and low-sample state. No frontend
+display or live forecast performance is claimed.
+
 ## Remaining Phase 8 work
 
 - Connect a qualified forward-outcome observation source and a default-off periodic
   runner, then prove end-to-end forecast-to-outcome behavior after a configured
   horizon. The current runner is invoked explicitly with an injected source.
-- Expose cohort evaluation and `EvaluationMaturity` through an application read
-  path, with policy configuration scoped by horizon, universe, and outcome definition.
+- Qualify the configured cohort read path against PostgreSQL after the HTTP/SQLite
+  check, including cold start and linked Outcome reads.
 - Qualify the Outcome repository with a synthetic due observation against PostgreSQL;
   migration, foreign-key, and immutable-trigger checks have passed locally.
 - Run the single whole-phase code review after these slices, resolve findings,

@@ -2,6 +2,7 @@
 
 from fastapi import FastAPI
 
+from backend.app.api.evaluation import router as evaluation_router
 from backend.app.api.rag import router as rag_router
 from backend.app.api.research import router as research_router
 from backend.app.api.thesis import router as thesis_router
@@ -14,6 +15,7 @@ app = FastAPI(
 app.include_router(research_router)
 app.include_router(thesis_router)
 app.include_router(rag_router)
+app.include_router(evaluation_router)
 
 
 @app.get("/health", tags=["operations"])
