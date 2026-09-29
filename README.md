@@ -62,6 +62,13 @@ SecurityMaster symbol epoch. The fixed-cutoff cache is a bounded worker-local LR
 independently qualified. Ordinary tests use deterministic offline adapters and never spend model
 or provider quota.
 
+Free Finnhub company news is available for current research when `NEWS_ENABLED=true`,
+`MARKET_DATA_ENABLED=true`, and `FINNHUB_API_KEY` is set to a free Finnhub key. The worker
+captures company news before freezing the current market cutoff, filters and stores eligible
+headline/summary evidence, and includes the original article link. Fixed-cutoff historical runs
+do not fetch newly observed news. Finnhub access and the separate market-data route still require
+live network qualification before a full live report can be claimed.
+
 Celery Beat periodically republishes old, unclaimed pending runs to close the database-commit/
 broker-publication crash window. `RESEARCH_RECONCILE_INTERVAL_SECONDS`,
 `RESEARCH_RECONCILE_GRACE_SECONDS`, and `RESEARCH_RECONCILE_BATCH_SIZE` bound that work. A

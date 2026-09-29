@@ -26,6 +26,8 @@ from backend.app.market_data.runtime import (
     SecurityMasterInstrumentResolver,
     build_market_data_loader,
 )
+from backend.app.news import FinnhubNewsLoader, NewsResearchEvidence
+from backend.app.news.current import CurrentNewsSnapshot
 from backend.app.persistence.evidence import EvidenceRepository
 from backend.app.persistence.outcome import OutcomePolicy
 from backend.app.persistence.outcome_observation import PersistedOutcomeSource
@@ -161,6 +163,25 @@ async def execute_research_run(
                 )
                 evidence_provider = MarketResearchEvidence(loader, currency=instrument.currency)
             rag_provider = None
+            news_provider = None
+            if settings.news_enabled and (
+                state.replay_integrity_level is not ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY
+            ):
+                if not settings.finnhub_api_key:
+                    raise ValueError("news is enabled without a Finnhub API key")
+                security_master = SecurityMasterRepository(session)
+                if evidence_provider is None:
+                    raise ValueError("live news requires market data to freeze the current cutoff")
+                news_snapshot = CurrentNewsSnapshot(
+                    FinnhubNewsLoader(
+                        api_key=settings.finnhub_api_key,
+                        instrument_resolver=SecurityMasterInstrumentResolver(security_master),
+                        base_url=settings.finnhub_base_url,
+                    ),
+                    evidence_provider,
+                )
+                evidence_provider = news_snapshot
+                news_provider = NewsResearchEvidence(news_snapshot)
             if settings.rag_enabled and (
                 state.replay_integrity_level is not ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY
             ):
@@ -173,6 +194,7 @@ async def execute_research_run(
                 save=save,
                 evidence_provider=evidence_provider,
                 rag_provider=rag_provider,
+                news_provider=news_provider,
             )
             return await workflow.run(state)
         except ResearchRunBusyError:

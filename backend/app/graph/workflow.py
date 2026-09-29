@@ -613,7 +613,11 @@ class ResearchWorkflow:
                 else state.data_quality_status
             ),
             budget_usage=state.budget_usage.model_copy(
-                update={"tool_calls": state.budget_usage.tool_calls + 1}
+                update={
+                    "tool_calls": state.budget_usage.tool_calls + 1,
+                    "news_documents": state.budget_usage.news_documents
+                    + sum(item.evidence_type == "news_document" for item in collection.evidence),
+                }
             ),
         )
         await self._save(state)
@@ -627,6 +631,7 @@ class ResearchWorkflow:
         if (
             state.status is not ResearchStatus.RUNNING
             or self._news_provider is None
+            or any(item.evidence_type == "news_document" for item in state.evidence)
             or (
                 isinstance(news_attempt, dict)
                 and news_attempt.get("status") == "completed"

@@ -267,7 +267,10 @@ Last audited: 2026-09-29
   metadata, persisted pre-call checkpoints, unknown-outcome redelivery, and news-only
   insufficient-evidence behavior. A zero news-document budget skips the optional node without
   blocking complete market/technical evidence. No live news request or new Docker queue-path
-  trial was made.
+  trial was made for that slice. A later opt-in Finnhub company-news adapter now captures current
+  news before cutoff freeze, persists accepted headline/summary evidence with market evidence,
+  and rejects fresh retrieval for historical cutoffs. HTTP behavior has offline tests; no live
+  entitlement or network qualification has been claimed.
 - A deterministic Gap Judge now persists a typed coverage result before completion. Required plan
   capabilities are checked against eligible, typed evidence; unsupported capabilities, missing
   required News, unrecognized text requirements, future-available evidence, and mismatched
@@ -309,7 +312,8 @@ Last audited: 2026-09-29
 - Phase 5 is partially complete. Intent, Planner, Market, Quant, market Evidence, default-off News
   ingestion, deterministic Gap Judge, BudgetGuard enforcement, durable execution, cancellation,
   external-attempt observability, and safe terminal outcomes are implemented. News event
-  extraction, a qualified live news adapter, and broader Replan routing remain. Synthesis and
+  extraction, live qualification of the Finnhub news adapter, and broader Replan routing remain.
+  Synthesis and
   Gate C research-loop safety are qualified with fixtures; recorded live external-provider
   qualification remains separate and is not a Gate C claim.
 - Phase 6 implementation and mock-path qualification are complete after a single whole-phase

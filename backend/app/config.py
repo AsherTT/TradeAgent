@@ -78,6 +78,9 @@ class Settings(BaseSettings):
     market_data_cache_max_entries: int = Field(default=256, ge=1)
     alpha_vantage_api_key: str | None = None
     alpha_vantage_base_url: str = "https://www.alphavantage.co/query"
+    news_enabled: bool = False
+    finnhub_api_key: str | None = None
+    finnhub_base_url: str = "https://finnhub.io/api/v1/company-news"
 
 
 @lru_cache

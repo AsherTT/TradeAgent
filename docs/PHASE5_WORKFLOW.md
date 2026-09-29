@@ -77,11 +77,12 @@ The same pre-call and unknown-outcome rule applies to Intent, Planner, market ev
 acquisition, Replan, and Synthesis. Intent, Planner, Replan, and Synthesis share the model-call
 checkpoint and budget accounting path.
 
-News has no production loader configured and makes no external request by default. Its ingestion
-and resume behavior are qualified with offline fixtures. Accepted article text remains untrusted
-data and carries source type, content hash, sanitization status, injection risk, and scanner
-version. This first News slice collects source documents; model-based event extraction and a
-qualified live news adapter remain pending.
+News remains default-off. With an explicit Finnhub free key and current-research mode, the worker
+fetches company news before the market adapter freezes the cutoff, then sanitizes and persists
+eligible headline/summary evidence with the market checkpoint. The later News step skips a
+document already captured. Fixed-cutoff runs cannot use a fresh live retrieval as historical
+evidence. The adapter has offline HTTP fixture tests; live entitlement, network behavior, and
+report quality are not yet qualified. Model-based news-event extraction remains pending.
 
 ## Outcomes
 
@@ -156,7 +157,7 @@ cancellation, not provider-side interruption of an in-flight call.
    qualification of loop limits, durable outcomes, the mock-provider API/task/SQLite complete
    path, and the rebuilt Docker API/Redis/Celery/PostgreSQL complete path. Gate C passes within
    that recorded fixture scope. Model-based news-event extraction and a live news adapter remain
-   separately pending.
+   separately pending; the Finnhub company-news adapter has offline tests but no live qualification.
 
 ADR-0019 closes the provider/cache architecture decision: current acquisition remains
 yfinance-only until a second adapter is independently qualified, and the fixed-cutoff qualified
