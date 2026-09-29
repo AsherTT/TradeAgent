@@ -110,9 +110,10 @@ display or live forecast performance is claimed.
   production forward evaluation. The default-off scheduled path is fixture-qualified.
 - Qualify the configured cohort read path against PostgreSQL after the HTTP/SQLite
   check, including cold start and linked Outcome reads.
-- Exercise a linked nonempty Outcome cohort through the read endpoint against
-  PostgreSQL; repository due-write/idempotency, empty cold-start cohort reads,
-  migration, foreign key, and immutable trigger have passed locally.
+- A linked nonempty Outcome cohort, repository due-write/idempotency, empty
+  accumulating cohort reads, migration, foreign key, and immutable triggers have
+  passed against PostgreSQL using rolled-back fixtures. Direct HTTP against the
+  containerized API remains a separate integration check.
 - Run the single whole-phase code review after these slices, resolve findings,
   and then mark Phase 8 complete. Do not infer live provider performance from
   fixture results.

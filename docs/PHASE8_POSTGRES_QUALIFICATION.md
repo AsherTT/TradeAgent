@@ -23,6 +23,9 @@ Date: 2026-09-29. Local Docker Desktop PostgreSQL 18 with pgvector.
 - After adding observation-backed candidate selection and Forecast row locks, the
   due runner again produced one Outcome on PostgreSQL; a second run produced zero.
   Both rows were rolled back and confirmed absent.
+- A linked synthetic observation and Outcome were read through the configured cohort
+  reader in the same transaction. It reported one sample and `ACCUMULATING` maturity;
+  the transaction was rolled back afterward.
 
 This qualifies the migration, repository write/read, foreign key, and direct-mutation
 trigger on the local container. It does not evaluate a real forecast, qualify a live
