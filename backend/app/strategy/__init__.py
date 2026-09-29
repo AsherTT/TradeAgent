@@ -8,6 +8,7 @@ from backend.app.strategy.backtest import (
     run_strict_backtest,
 )
 from backend.app.strategy.features import (
+    HistoricalUniverseSnapshot,
     StrictBacktestInput,
     StrictFeature,
     StrictInputError,
@@ -24,6 +25,7 @@ from backend.app.strategy.risk import (
 
 __all__ = [
     "BacktestRiskPolicy",
+    "HistoricalUniverseSnapshot",
     "PortfolioSnapshot",
     "RiskDisposition",
     "SignalSide",

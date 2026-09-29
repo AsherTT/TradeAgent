@@ -5,12 +5,13 @@ from __future__ import annotations
 from datetime import datetime
 from enum import StrEnum
 from math import sqrt
+from uuid import UUID
 
 from pydantic import Field
 
 from backend.app.contracts.base import ContractModel
 from backend.app.contracts.evaluation import ReplayIntegrityLevel
-from backend.app.contracts.instrument import CorporateActionType
+from backend.app.contracts.instrument import CorporateAction, CorporateActionType
 from backend.app.strategy.features import StrictBacktestInput, StrictFeature, build_strict_features
 
 
@@ -21,6 +22,7 @@ class SignalSide(StrEnum):
 
 
 class StrategySignal(ContractModel):
+    instrument_id: UUID
     bar_timestamp: datetime
     generated_at: datetime
     side: SignalSide
@@ -78,6 +80,7 @@ def make_strategy_signals(features: tuple[StrictFeature, ...]) -> tuple[Strategy
 
     return tuple(
         StrategySignal(
+            instrument_id=feature.instrument_id,
             bar_timestamp=feature.bar_timestamp,
             generated_at=feature.as_of,
             side=SignalSide.BUY if feature.fast_mean > feature.slow_mean else SignalSide.SELL,
@@ -121,30 +124,17 @@ def run_strict_backtest(
         ),
     )
     for bar in data.bars:
-        for action in ordered_actions:
-            if (
-                (prior_bar_at is None or prior_bar_at < action.effective_at)
-                and action.effective_at <= bar.timestamp
-            ):
-                if action.action_type in {
-                    CorporateActionType.SPLIT, CorporateActionType.REVERSE_SPLIT
-                }:
-                    if action.ratio is None:
-                        raise ValueError("split ratio is missing")
-                    shares *= action.ratio
-                elif action.action_type is CorporateActionType.CASH_DIVIDEND:
-                    if action.cash_amount is None:
-                        raise ValueError("cash dividend amount is missing")
-                    cash += shares * action.cash_amount
+        cash, shares = _settle_actions(
+            ordered_actions, prior_bar_at=prior_bar_at,
+            bar_at=bar.timestamp, cash=cash, shares=shares,
+        )
         signal_ready = pending is not None and pending.generated_at < bar.timestamp
         risk_exit_ready = (
             blocked and shares > 0 and risk_trigger_at is not None
             and risk_trigger_at < bar.timestamp
         )
-        if signal_ready or risk_exit_ready:
-            if bar.volume < risk.minimum_bar_volume:
-                blocked = True
-            elif (
+        if (signal_ready or risk_exit_ready) and bar.volume >= risk.minimum_bar_volume:
+            if (
                 signal_ready and pending is not None
                 and pending.side is SignalSide.BUY and not blocked and shares == 0
             ):
@@ -188,6 +178,42 @@ def run_strict_backtest(
         nav.append(NavPoint(timestamp=bar.timestamp, cash=cash, shares=shares, nav=value))
         pending = by_bar.get(bar.timestamp)
         prior_bar_at = bar.timestamp
+    return StrictBacktestResult(
+        replay_integrity_level=ReplayIntegrityLevel.STRICT_QUANT_BACKTEST,
+        signals=signals,
+        trades=tuple(trades),
+        nav=tuple(nav),
+        metrics=_calculate_metrics(nav, trades, risk.initial_cash, commission_paid),
+        risk_blocked=blocked,
+    )
+
+
+def _settle_actions(
+    actions: list[CorporateAction], *, prior_bar_at: datetime | None,
+    bar_at: datetime, cash: float, shares: float,
+) -> tuple[float, float]:
+    for action in actions:
+        if (
+            (prior_bar_at is None or prior_bar_at < action.effective_at)
+            and action.effective_at <= bar_at
+        ):
+            if action.action_type in {
+                CorporateActionType.SPLIT, CorporateActionType.REVERSE_SPLIT
+            }:
+                if action.ratio is None:
+                    raise ValueError("split ratio is missing")
+                shares *= action.ratio
+            elif action.action_type is CorporateActionType.CASH_DIVIDEND:
+                if action.cash_amount is None:
+                    raise ValueError("cash dividend amount is missing")
+                cash += shares * action.cash_amount
+    return cash, shares
+
+
+def _calculate_metrics(
+    nav: list[NavPoint], trades: list[BacktestTrade],
+    initial_cash: float, commission_paid: float,
+) -> BacktestMetrics:
     values = [point.nav for point in nav]
     returns = [values[index] / values[index - 1] - 1 for index in range(1, len(values))]
     mean = sum(returns) / len(returns) if returns else 0
@@ -200,17 +226,10 @@ def run_strict_backtest(
     for value in values:
         running_peak = max(running_peak, value)
         max_drawdown = max(max_drawdown, 1 - value / running_peak)
-    return StrictBacktestResult(
-        replay_integrity_level=ReplayIntegrityLevel.STRICT_QUANT_BACKTEST,
-        signals=signals,
-        trades=tuple(trades),
-        nav=tuple(nav),
-        metrics=BacktestMetrics(
-            total_return=values[-1] / risk.initial_cash - 1,
-            max_drawdown=max_drawdown,
-            volatility_per_bar=volatility,
-            trade_count=len(trades),
-            commission_paid=commission_paid,
-        ),
-        risk_blocked=blocked,
+    return BacktestMetrics(
+        total_return=values[-1] / initial_cash - 1,
+        max_drawdown=max_drawdown,
+        volatility_per_bar=volatility,
+        trade_count=len(trades),
+        commission_paid=commission_paid,
     )

@@ -21,6 +21,7 @@ class RiskDisposition(StrEnum):
 
 
 class PortfolioSnapshot(ContractModel):
+    instrument_id: UUID
     as_of: datetime
     cash: float = Field(ge=0)
     net_asset_value: float = Field(gt=0)
@@ -35,6 +36,7 @@ class TradeRiskPolicy(ContractModel):
     max_position_fraction: float = Field(default=0.25, gt=0, le=1)
     max_portfolio_exposure_fraction: float = Field(default=0.8, gt=0, le=1)
     max_trade_fraction: float = Field(default=0.1, gt=0, le=1)
+    max_trade_risk_fraction: float = Field(default=0.01, gt=0, le=1)
     max_daily_loss_fraction: float = Field(default=0.05, gt=0, le=1)
     max_drawdown_fraction: float = Field(default=0.3, gt=0, le=1)
     min_quote_volume: float = Field(default=1000, ge=0)
@@ -59,6 +61,7 @@ class TradeIntent(ContractModel):
     side: SignalSide
     target_notional: float = Field(gt=0)
     reference_price: float = Field(gt=0)
+    stop_price: float | None = Field(default=None, gt=0)
     signal_generated_at: datetime
     requires_external_authorization: bool = True
 
@@ -71,13 +74,13 @@ class TradeRiskAssessment(ContractModel):
 
 def assess_trade_intent(
     *,
-    instrument_id: UUID,
     signal: StrategySignal,
     portfolio: PortfolioSnapshot,
     quality_gate: QualityGateDecision,
     quote_price: float,
     quote_reference_price: float,
     quote_volume: float,
+    stop_price: float | None,
     now: datetime,
     policy: TradeRiskPolicy,
 ) -> TradeRiskAssessment:
@@ -100,6 +103,8 @@ def assess_trade_intent(
         )
     now_utc = now.astimezone(UTC)
     reasons: list[str] = []
+    if signal.instrument_id != portfolio.instrument_id:
+        reasons.append("signal and portfolio instrument differ")
     if not signal.deterministic:
         reasons.append("unqualified nondeterministic signal")
     if (now - signal.generated_at).total_seconds() > policy.max_signal_age_seconds:
@@ -120,6 +125,11 @@ def assess_trade_intent(
         reasons.append("quote liquidity below minimum")
     if abs(quote_price / quote_reference_price - 1) > policy.max_price_deviation_fraction:
         reasons.append("quote price deviation exceeded")
+    if signal.side is SignalSide.BUY and (
+        stop_price is None or not isfinite(stop_price) or stop_price <= 0
+        or stop_price >= quote_price
+    ):
+        reasons.append("buy intent requires a valid downside stop")
     if reasons:
         return TradeRiskAssessment(disposition=RiskDisposition.BLOCKED, reasons=tuple(reasons))
     if signal.side is SignalSide.WATCH:
@@ -129,6 +139,8 @@ def assess_trade_intent(
     if signal.side is SignalSide.SELL:
         amount = portfolio.current_position_value
     else:
+        assert stop_price is not None
+        loss_fraction = (quote_price - stop_price) / quote_price
         amount = min(
             portfolio.cash,
             portfolio.net_asset_value * policy.max_trade_fraction,
@@ -136,6 +148,7 @@ def assess_trade_intent(
             - portfolio.current_position_value,
             portfolio.net_asset_value * policy.max_portfolio_exposure_fraction
             - portfolio.total_exposure_value,
+            portfolio.net_asset_value * policy.max_trade_risk_fraction / loss_fraction,
         )
     if amount <= 0:
         return TradeRiskAssessment(
@@ -146,11 +159,12 @@ def assess_trade_intent(
         disposition=RiskDisposition.ALLOWED,
         reasons=(),
         intent=TradeIntent(
-            instrument_id=instrument_id,
+            instrument_id=signal.instrument_id,
             created_at=now,
             side=signal.side,
             target_notional=amount,
             reference_price=quote_price,
+            stop_price=stop_price if signal.side is SignalSide.BUY else None,
             signal_generated_at=signal.generated_at,
         ),
     )

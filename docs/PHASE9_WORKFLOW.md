@@ -7,9 +7,10 @@ this phase begins with deterministic quant inputs instead.
 
 ## 1. Strict point-in-time feature input — implemented offline
 
-`StrictBacktestInput` requires an instrument in a historical universe snapshot,
-ordered raw execution bars, and complete provider-quality reports for market and
-corporate-action data. The builder rejects unqualified providers, low-quality bars,
+`StrictBacktestInput` requires an instrument in a source-qualified historical
+universe snapshot with capture and availability times no later than the test start,
+ordered raw execution bars, and complete provider-quality reports for universe,
+market, and corporate-action data. The builder rejects unqualified providers, low-quality bars,
 provenance mismatch, ambiguous prices, late corporate actions, and unsupported
 symbol or lifecycle changes. At each decision cutoff it recomputes normalized
 features using only bars and actions then visible. A fixture split confirms earlier
@@ -31,16 +32,22 @@ generate any historical signal.
 
 ## 3. Deterministic trade risk and intent — implemented offline
 
-The pre-trade policy checks QualityGate, signal age and provenance, portfolio
+The pre-trade policy binds the signal and portfolio to one instrument, then checks
+QualityGate, signal age and provenance, portfolio
 timestamps, kill switch, duplicate intent, daily loss, drawdown, liquidity,
-price deviation, and configured UTC trading hours. It caps notional by cash,
-single-position, total-exposure, and per-trade limits. Its only positive output
+price deviation, and configured UTC trading hours. A BUY requires a downside stop;
+the possible stop loss is capped separately from notional. It caps notional by cash,
+single-position, total-exposure, per-trade allocation, and loss-risk limits. Its only positive output
 is an immutable `TradeIntent` requiring external authorization; there is no
 broker order, credential, or execution call. Offline tests cover allowed,
 blocked, and no-action outcomes. See `docs/GATE_F_QUALIFICATION.md`.
 
 ## Remaining qualification
 
-Run the single whole-phase code review, resolve findings, and then make one
-Phase 9 push. All current tests are fixtures. A live provider and historical
-LLM Alpha performance are not qualified by this phase.
+The single whole-phase `skills/code-review` found no hard Standards violations,
+two maintainability suggestions, and three Spec gaps. Action settlement, input
+validation, and metrics were extracted from the main functions. The three Spec
+gaps were closed with a source-qualified historical universe snapshot, a separate
+loss-at-stop limit, and signal-to-portfolio instrument lineage. Re-run the suite
+after these fixes, then make one Phase 9 push. All current tests are fixtures.
+A live provider and historical LLM Alpha performance are not qualified.

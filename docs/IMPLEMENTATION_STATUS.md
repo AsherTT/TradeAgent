@@ -106,6 +106,12 @@ Last audited: 2026-09-29
   liquidity, price, hours, duplicate, and kill-switch checks produce only a
   non-executable, externally authorized intent. Gate F is fixture-qualified for
   the restricted deterministic path. See `docs/GATE_F_QUALIFICATION.md`.
+- Phase 9 whole-phase review identified and closed historical-universe provenance,
+  loss-at-stop sizing, and signal/instrument lineage gaps. The two maintainability
+  suggestions were addressed by separating input validation, action accounting,
+  and metrics from the main calculation paths. Ruff and strict mypy pass; the
+  ordinary suite has 260 passed, one opt-in live-model test skipped, and 90.52%
+  combined coverage.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary
@@ -321,6 +327,10 @@ Last audited: 2026-09-29
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,
   Gate C now permits real Research API integration under that strategy, while the formal frontend
   milestone remains Phase 10.
+- Phase 9 Gate F is fixture-qualified for a restricted deterministic strategy and
+  non-executable TradeIntent. Historical universe, market, and corporate-action
+  sources are represented by explicit qualified inputs; real provider completeness,
+  LLM historical Alpha, and broker execution are outside this claim.
 
 ## Intentionally pending
 
@@ -328,5 +338,5 @@ Last audited: 2026-09-29
   consume provider API funds or subscription quota.
 - Live external market-data authorization and credentials, recorded live qualification, optional
   broader current-provider coverage after independent qualification, remaining Phase 5 research
-  extensions, backtesting, integrated frontend implementation, and Azure deployment remain
+  extensions, broader/live backtesting, integrated frontend implementation, and Azure deployment remain
   deferred to their documented gates.

@@ -28,10 +28,31 @@ class StrictInputError(ValueError):
     """The input cannot support an honest point-in-time historical test."""
 
 
+class HistoricalUniverseSnapshot(ContractModel):
+    universe_id: str = Field(min_length=1)
+    as_of: datetime
+    captured_at: datetime
+    available_at: datetime
+    instrument_ids: tuple[UUID, ...] = Field(min_length=1)
+    source: str = Field(min_length=1)
+    source_version: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_provenance(self) -> HistoricalUniverseSnapshot:
+        for timestamp in (self.as_of, self.captured_at, self.available_at):
+            if timestamp.tzinfo is None or timestamp.utcoffset() is None:
+                raise ValueError("universe timestamps must be timezone-aware")
+        if self.as_of > self.captured_at or self.captured_at > self.available_at:
+            raise ValueError("universe provenance chronology is invalid")
+        if len(set(self.instrument_ids)) != len(self.instrument_ids):
+            raise ValueError("historical universe has duplicate instruments")
+        return self
+
+
 class StrictBacktestInput(ContractModel):
     instrument_id: UUID
-    universe_as_of: datetime
-    universe_instrument_ids: tuple[UUID, ...] = Field(min_length=1)
+    historical_universe: HistoricalUniverseSnapshot
+    universe_quality: ProviderQualityReport
     bars: tuple[MarketBar, ...] = Field(min_length=2)
     corporate_actions: tuple[CorporateAction, ...] = ()
     market_quality: ProviderQualityReport
@@ -42,12 +63,8 @@ class StrictBacktestInput(ContractModel):
     def validate_input(self) -> StrictBacktestInput:
         if self.replay_integrity_level is not ReplayIntegrityLevel.STRICT_QUANT_BACKTEST:
             raise ValueError("strategy input requires strict quant backtest integrity")
-        if self.universe_as_of.tzinfo is None or self.universe_as_of.utcoffset() is None:
-            raise ValueError("universe timestamp must be timezone-aware")
-        if self.instrument_id not in self.universe_instrument_ids:
+        if self.instrument_id not in self.historical_universe.instrument_ids:
             raise ValueError("instrument is absent from the historical universe")
-        if len(set(self.universe_instrument_ids)) != len(self.universe_instrument_ids):
-            raise ValueError("historical universe has duplicate instruments")
         return self
 
 
@@ -70,6 +87,44 @@ def build_strict_features(
 
     if not 1 <= fast_window < slow_window:
         raise ValueError("feature windows require 1 <= fast < slow")
+    _validate_strict_input(data)
+    bars = data.bars
+    features: list[StrictFeature] = []
+    for index, bar in enumerate(bars):
+        if index + 1 < slow_window:
+            continue
+        if index + 1 < len(bars) and bar.available_at >= bars[index + 1].timestamp:
+            continue
+        visible = tuple(item for item in bars[: index + 1] if item.available_at <= bar.available_at)
+        try:
+            adjusted = normalize_prices(
+                visible,
+                data.corporate_actions,
+                mode=PriceAdjustmentMode.POINT_IN_TIME_ADJUSTED,
+                analysis_timestamp=bar.available_at,
+            )
+        except PriceNormalizationError as exc:
+            raise StrictInputError(str(exc)) from exc
+        if len(adjusted) < slow_window or adjusted[-1].timestamp != bar.timestamp:
+            raise StrictInputError("current bar is not point-in-time visible")
+        closes = [item.close for item in adjusted]
+        features.append(StrictFeature(
+            instrument_id=data.instrument_id,
+            bar_timestamp=bar.timestamp,
+            as_of=bar.available_at,
+            price_adjustment_mode=PriceAdjustmentMode.POINT_IN_TIME_ADJUSTED,
+            feature_version="strict-sma-v1",
+            close=closes[-1],
+            fast_mean=sum(closes[-fast_window:]) / fast_window,
+            slow_mean=sum(closes[-slow_window:]) / slow_window,
+            source_bar_count=len(adjusted),
+        ))
+    return tuple(features)
+
+
+def _validate_strict_input(data: StrictBacktestInput) -> None:
+    """Reject unqualified provenance before producing any historical feature."""
+
     bars = data.bars
     if any(bar.instrument_id != data.instrument_id for bar in bars):
         raise StrictInputError("market bars must belong to the selected instrument")
@@ -92,8 +147,15 @@ def build_strict_features(
         raise StrictInputError("market bars must be ordered by timestamp")
     if len({bar.timestamp for bar in bars}) != len(bars):
         raise StrictInputError("duplicate market-bar timestamps")
-    if data.universe_as_of > bars[0].timestamp:
-        raise StrictInputError("historical universe was selected after the test began")
+    universe = data.historical_universe
+    if universe.as_of > bars[0].timestamp or universe.available_at > bars[0].timestamp:
+        raise StrictInputError("historical universe was not available when the test began")
+    require_strict_backtest_eligible(data.universe_quality)
+    if (
+        universe.source != data.universe_quality.provider
+        or universe.source_version != data.universe_quality.provider_version
+    ):
+        raise StrictInputError("historical universe provenance is not qualified")
     require_strict_backtest_eligible(data.market_quality)
     require_strict_backtest_eligible(data.corporate_action_quality)
     require_strict_bars_eligible(bars)
@@ -143,34 +205,3 @@ def build_strict_features(
         }
     ):
         raise StrictInputError("corporate action became available after its effective time")
-    features: list[StrictFeature] = []
-    for index, bar in enumerate(bars):
-        if index + 1 < slow_window:
-            continue
-        if index + 1 < len(bars) and bar.available_at >= bars[index + 1].timestamp:
-            continue
-        visible = tuple(item for item in bars[: index + 1] if item.available_at <= bar.available_at)
-        try:
-            adjusted = normalize_prices(
-                visible,
-                data.corporate_actions,
-                mode=PriceAdjustmentMode.POINT_IN_TIME_ADJUSTED,
-                analysis_timestamp=bar.available_at,
-            )
-        except PriceNormalizationError as exc:
-            raise StrictInputError(str(exc)) from exc
-        if len(adjusted) < slow_window or adjusted[-1].timestamp != bar.timestamp:
-            raise StrictInputError("current bar is not point-in-time visible")
-        closes = [item.close for item in adjusted]
-        features.append(StrictFeature(
-            instrument_id=data.instrument_id,
-            bar_timestamp=bar.timestamp,
-            as_of=bar.available_at,
-            price_adjustment_mode=PriceAdjustmentMode.POINT_IN_TIME_ADJUSTED,
-            feature_version="strict-sma-v1",
-            close=closes[-1],
-            fast_mean=sum(closes[-fast_window:]) / fast_window,
-            slow_mean=sum(closes[-slow_window:]) / slow_window,
-            source_bar_count=len(adjusted),
-        ))
-    return tuple(features)

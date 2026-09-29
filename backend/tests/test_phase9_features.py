@@ -19,6 +19,7 @@ from backend.app.contracts.market import MarketBar
 from backend.app.market_data.quality import ProviderQualityError
 from backend.app.strategy import (
     BacktestRiskPolicy,
+    HistoricalUniverseSnapshot,
     SignalSide,
     StrictBacktestInput,
     StrictInputError,
@@ -60,8 +61,13 @@ def _input() -> StrictBacktestInput:
         source="fixture-actions", provider_quality_version="fixture-v1",
     )
     return StrictBacktestInput(
-        instrument_id=instrument_id, universe_as_of=START,
-        universe_instrument_ids=(instrument_id,), bars=bars,
+        instrument_id=instrument_id,
+        historical_universe=HistoricalUniverseSnapshot(
+            universe_id="fixture-universe", as_of=START, captured_at=START,
+            available_at=START, instrument_ids=(instrument_id,),
+            source="fixture-universe", source_version="fixture-v1",
+        ),
+        universe_quality=_quality("fixture-universe"), bars=bars,
         corporate_actions=(split,), market_quality=_quality("fixture-market"),
         corporate_action_quality=_quality("fixture-actions"),
     )
@@ -86,12 +92,20 @@ def test_strict_input_rejects_unqualified_and_late_information() -> None:
         }))
     with pytest.raises(ValueError, match="historical universe"):
         StrictBacktestInput.model_validate(data.model_dump() | {
-            "universe_as_of": START + timedelta(days=1),
-            "universe_instrument_ids": (uuid4(),),
+            "historical_universe": data.historical_universe.model_copy(update={
+                "instrument_ids": (uuid4(),),
+            }),
         })
     with pytest.raises(StrictInputError, match="historical universe"):
         build_strict_features(data.model_copy(update={
-            "universe_as_of": START + timedelta(days=1),
+            "historical_universe": data.historical_universe.model_copy(update={
+                "captured_at": START + timedelta(days=1),
+                "available_at": START + timedelta(days=1),
+            }),
+        }))
+    with pytest.raises(StrictInputError, match="provenance"):
+        build_strict_features(data.model_copy(update={
+            "universe_quality": _quality("another-universe"),
         }))
     with pytest.raises(StrictInputError, match="effective time"):
         build_strict_features(data.model_copy(update={
