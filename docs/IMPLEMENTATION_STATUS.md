@@ -94,6 +94,10 @@ Last audited: 2026-09-29
   ordinary suite pass: 252 passed, one opt-in live-model test skipped, 91.03%
   combined coverage. PostgreSQL due-runner and cohort reads passed again after the
   fixes with rolled-back synthetic rows.
+- Phase 9 strict PIT feature-input slice: deterministic historical features require
+  a timestamped universe, qualified market and action providers, raw execution
+  bars, and only point-in-time-visible corporate actions. Unsupported lifecycle
+  changes fail closed. See `docs/PHASE9_WORKFLOW.md`.
 - Alembic migration for the Phase 3 PostgreSQL schema and pgvector extension
 - `POST /research` and `GET /research/{research_run_id}` service boundaries
 - Celery/Redis JSON-only queue configuration and worker task boundary
