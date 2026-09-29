@@ -87,4 +87,5 @@ class OutcomeRecord(ContractModel):
     mfe: float
     mae: float
     invalidation_hit: bool
+    invalidation_alert: bool | None = None
     evaluated_at: datetime

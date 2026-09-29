@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -20,7 +21,7 @@ router = APIRouter(prefix="/evaluation", tags=["evaluation"])
 
 def get_evaluation_cohorts() -> tuple[EvaluationCohortConfig, ...]:
     configured = tuple(
-        EvaluationCohortConfig.model_validate(item)
+        EvaluationCohortConfig.model_validate_json(json.dumps(item))
         for item in get_settings().evaluation_cohorts
     )
     keys = {(item.universe_id, item.horizon, item.outcome_definition) for item in configured}

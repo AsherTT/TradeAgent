@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Callable
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 from uuid import UUID
 
 from sqlalchemy import select
@@ -33,15 +33,12 @@ class OutcomeObservationRepository:
         if row is None:
             raise OutcomeIntegrityError("observation requires a frozen forecast")
         forecast = ForecastRecord.model_validate_json(json.dumps(row.record_json))
-        days = policy.horizon_days.get(forecast.horizon)
-        if days is None:
-            raise OutcomeIntegrityError("forecast horizon has no configured maturity rule")
-        due_at = _as_utc(row.created_at) + timedelta(days=days)
+        policy.check_observation(forecast, observation)
         now = self._clock()
         if now.tzinfo is None or now.utcoffset() is None:
             raise OutcomeIntegrityError("observation clock must be timezone-aware")
-        if observation.observed_at < due_at or observation.available_at > now.astimezone(UTC):
-            raise OutcomeIntegrityError("observation is early or not yet available")
+        if observation.available_at > now.astimezone(UTC):
+            raise OutcomeIntegrityError("observation is not yet available")
         payload = observation.model_dump(mode="json")
         existing = await self._session.get(OutcomeObservationRow, forecast_id)
         if existing is not None:

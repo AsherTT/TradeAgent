@@ -28,6 +28,8 @@ class Settings(BaseSettings):
     forward_evaluation_interval_seconds: int = Field(default=3600, ge=60)
     forward_evaluation_batch_size: int = Field(default=100, ge=1, le=1000)
     forward_evaluation_horizon_days: dict[str, int] = Field(default_factory=dict)
+    forward_evaluation_max_settlement_lag_days: int = Field(default=7, ge=0)
+    forward_evaluation_allow_cash_benchmark: bool = False
 
     @model_validator(mode="after")
     def validate_forward_evaluation(self) -> Settings:
@@ -40,6 +42,7 @@ class Settings(BaseSettings):
         ):
             raise ValueError("forward evaluation requires positive horizon mappings")
         return self
+
     rag_enabled: bool = False
     rag_write_token: str | None = None
     rag_embedding_base_url: str | None = None

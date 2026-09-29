@@ -7,6 +7,7 @@ from pathlib import Path
 from uuid import uuid4
 
 import pytest
+from pydantic import ValidationError
 
 from backend.app.config import Settings
 from backend.app.contracts.thesis import Direction, ForecastRecord
@@ -36,6 +37,7 @@ def test_forward_outcome_requires_maturity_and_is_append_only(
             research_run_id=uuid4(), instrument_id=uuid4(), created_at=created,
             analysis_timestamp=created, horizon="5d", direction=Direction.BULLISH,
             probability=0.7, thesis_id=uuid4(), thesis_version=1,
+            benchmark_id=uuid4(),
             model_execution_ids=(uuid4(),), evidence_ids=(uuid4(),),
         )
         async with database.sessions() as session, session.begin():
@@ -53,8 +55,11 @@ def test_forward_outcome_requires_maturity_and_is_append_only(
                 record_json=forecast.model_dump(mode="json"),
             ))
         observation = OutcomeObservation(
+            window_start_at=created,
+            window_end_at=created + timedelta(days=5),
             observed_at=created + timedelta(days=5),
             available_at=created + timedelta(days=5, hours=1),
+            benchmark_id=forecast.benchmark_id,
             actual_return=0.1,
             benchmark_return=0.03,
             mfe=0.2,
@@ -63,11 +68,27 @@ def test_forward_outcome_requires_maturity_and_is_append_only(
             source_name="offline fixture",
             source_version="v1",
         )
+        with pytest.raises(ValidationError, match="invalidation alert requires"):
+            OutcomeObservation.model_validate(
+                observation.model_dump() | {"invalidation_alert": True}
+            )
         policy = OutcomePolicy(horizon_days={"5d": 5})
         async with database.sessions() as session, session.begin():
             early = OutcomeRepository(session, clock=lambda: created + timedelta(days=4))
             with pytest.raises(OutcomeIntegrityError, match="not matured"):
                 await early.record(forecast.forecast_id, observation, policy=policy)
+            with pytest.raises(OutcomeIntegrityError, match="window or benchmark"):
+                await early.record(
+                    forecast.forecast_id,
+                    observation.model_copy(update={"benchmark_id": uuid4()}),
+                    policy=policy,
+                )
+            with pytest.raises(OutcomeIntegrityError, match="window or benchmark"):
+                await early.record(
+                    forecast.forecast_id,
+                    observation.model_copy(update={"window_start_at": created + timedelta(days=1)}),
+                    policy=policy,
+                )
             repository = OutcomeRepository(
                 session, clock=lambda: created + timedelta(days=6)
             )

@@ -80,3 +80,19 @@ def test_integrity_counts_future_evidence_budget_and_security_block() -> None:
     assert report.budget_guard_violation_count == 1
     assert report.security_blocked_count == 1
     assert report.observable_invariants_pass is False
+
+
+def test_correctly_blocked_research_is_not_an_integrity_violation() -> None:
+    cutoff = datetime(2020, 1, 1, tzinfo=UTC)
+    state = ResearchState(
+        instrument_id=uuid4(),
+        ticker="KLAC",
+        query="blocked attack",
+        requested_at=cutoff,
+        analysis_timestamp=cutoff,
+        horizon="3-5 days",
+        security_status=SecurityStatus.BLOCKED,
+    )
+    report = evaluate_integrity((state,))
+    assert report.security_blocked_count == 1
+    assert report.observable_invariants_pass is True

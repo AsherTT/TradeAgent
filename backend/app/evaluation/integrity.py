@@ -63,5 +63,5 @@ def evaluate_integrity(states: tuple[ResearchState, ...]) -> IntegrityEvaluation
         future_evidence_leakage_count=leakage,
         budget_guard_violation_count=budget,
         security_blocked_count=blocked,
-        observable_invariants_pass=pit == leakage == budget == blocked == 0,
+        observable_invariants_pass=pit == leakage == budget == 0,
     )

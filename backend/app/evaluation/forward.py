@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Callable
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 from typing import Protocol
 from uuid import UUID
 
@@ -15,7 +15,6 @@ from backend.app.contracts.base import utc_now
 from backend.app.contracts.thesis import ForecastRecord, OutcomeRecord
 from backend.app.persistence.models import ForecastRecordRow, OutcomeRecordRow
 from backend.app.persistence.outcome import OutcomeObservation, OutcomePolicy, OutcomeRepository
-from backend.app.persistence.repositories import _as_utc
 
 
 class ForwardOutcomeSource(Protocol):
@@ -73,13 +72,10 @@ class ForwardEvaluationRunner:
         repository = OutcomeRepository(self._session, clock=lambda: now)
         recorded: list[OutcomeRecord] = []
         for row in rows:
-            days = self._policy.horizon_days.get(row.horizon)
-            if days is None:
-                continue
-            due_at = _as_utc(row.created_at) + timedelta(days=days)
+            forecast = ForecastRecord.model_validate_json(json.dumps(row.record_json))
+            due_at = self._policy.due_at(forecast)
             if now < due_at:
                 continue
-            forecast = ForecastRecord.model_validate_json(json.dumps(row.record_json))
             observation = await self._source.observe(forecast, horizon_end_at=due_at)
             if observation is None:
                 continue

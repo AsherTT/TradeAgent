@@ -11,14 +11,16 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.app.config import get_settings
 from backend.app.contracts.base import ContractModel, utc_now
-from backend.app.contracts.evaluation import ReplayIntegrityLevel
+from backend.app.contracts.evaluation import EvaluationMaturity, ReplayIntegrityLevel
 from backend.app.contracts.research import (
     ResearchBudget,
     ResearchState,
     ResearchStatus,
     ResearchTimestampMode,
 )
+from backend.app.evaluation.reporting import maturity_for_research
 from backend.app.jobs.celery_app import enqueue_research_run
 from backend.app.persistence.repositories import ResearchRunRepository
 from backend.app.persistence.session import get_session
@@ -88,6 +90,16 @@ async def submit_research(
     analysis_timestamp = submission.analysis_timestamp
     if submission.timestamp_mode is ResearchTimestampMode.FIXED_CUTOFF:
         analysis_timestamp = analysis_timestamp or requested_at
+    evaluation_maturity = (
+        await maturity_for_research(
+            session,
+            instrument_id=submission.instrument_id,
+            horizon=submission.horizon,
+            configured_cohorts=get_settings().evaluation_cohorts,
+        )
+        if submission.timestamp_mode is ResearchTimestampMode.CURRENT_RESEARCH
+        else EvaluationMaturity.COLD_START
+    )
     state = ResearchState(
         instrument_id=submission.instrument_id,
         ticker=submission.ticker,
@@ -96,6 +108,7 @@ async def submit_research(
         timestamp_mode=submission.timestamp_mode,
         analysis_timestamp=analysis_timestamp,
         horizon=submission.horizon,
+        evaluation_maturity=evaluation_maturity,
         replay_integrity_level=submission.replay_integrity_level,
         parametric_lookahead_risk=(
             submission.replay_integrity_level

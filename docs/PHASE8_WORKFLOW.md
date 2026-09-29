@@ -38,15 +38,18 @@ The combined offline Gate E acceptance record is in `docs/GATE_E_QUALIFICATION.m
 
 The evaluation module joins frozen ForecastRecords to matured OutcomeRecords by ID,
 rejects duplicate or unmatched outcomes, and requires a single horizon cohort. A
-configurable policy sets the minimum early sample, mature sample, outcome coverage,
-and usable bucket size. The report always exposes `EvaluationMaturity`, sample count,
-coverage, directional accuracy, Brier score, log loss, and all ten probability buckets.
+configurable policy sets the horizon length, minimum early sample, mature sample,
+outcome coverage, and usable bucket size. Coverage uses only forecasts past their
+configured horizon. The report exposes `EvaluationMaturity`, eligible sample count,
+coverage, directional accuracy, Brier score, log loss, calibration error and curve,
+invalidation precision/recall when alert labels exist, and all ten probability buckets.
 Every bucket includes `sample_count`, predicted probability, observed frequency,
 Wilson confidence interval, mean MFE, MAE, excess return, and statistical status.
 Empty or small buckets are explicitly `INSUFFICIENT_SAMPLE`; reports below `MATURE`
 are marked exploratory. Tests cover cold start, accumulation, mature cohorts, the
-70–80% bucket, and duplicate or unmatched outcomes. Brier is reported beside the
-bucket reliability data and is not labeled a calibration score.
+70–80% bucket, and duplicate or unmatched outcomes. Calibration error is the
+sample-weighted absolute difference between mean predicted and observed frequency
+across nonempty buckets. Brier remains a separate proper score.
 
 This is an offline evaluation calculation. No live forward performance is claimed.
 
@@ -55,8 +58,11 @@ This is an offline evaluation calculation. No live forward performance is claime
 Migration `0012` adds one append-only OutcomeRecord per frozen ForecastRecord, with
 its observation payload, evaluated time, and configured horizon end. PostgreSQL
 rejects direct UPDATE and DELETE. The repository requires an existing forecast,
-explicit horizon-to-days policy, an observation at or after maturity whose availability
-precedes evaluation, finite returns and excursions, and a source name/version.
+explicit horizon-to-days policy, a bounded return window starting at the forecast
+analysis time and closing after maturity, matching benchmark identity, an observation
+whose availability precedes evaluation, finite returns and excursions, and a source
+name/version. A cash benchmark requires explicit deployment policy and zero benchmark
+return. Invalidation alerts carry an in-window timestamp when present.
 Direction correctness and excess return are derived rather than accepted from a
 caller. Repeating the exact observation is idempotent; changed observations are
 rejected. SQLite tests cover early rejection, successful linking, derivation,
@@ -87,7 +93,8 @@ evidence-selection, citation, unsupported-claim, structured-output, replanning,
 iteration, latency, token, cost, fallback, timeout, and provider-error metrics.
 Rates with no denominator are `null`, so an empty evaluation cannot appear perfect.
 The integrity layer counts future evidence, visible PIT and budget violations, and
-blocked security states across persisted research states. Its pass flag covers only
+blocked security states across persisted research states. A correctly blocked unsafe
+run is counted but is not itself an integrity violation. The pass flag covers only
 these observable invariants; corporate-action, privilege, credential, and broker
 invariants require their separate structural or adversarial probes. Offline tests
 cover repeated unnecessary tools, label denominators, and simultaneous integrity
@@ -101,19 +108,21 @@ the cohort's instrument IDs and its maturity and bucket thresholds; no client ca
 set those thresholds in the request. The response includes the policy, full
 `EvaluationMaturity`, sample count, outcome coverage, scores, and every bucket.
 The read is capped at 1,000 ForecastRecords; oversized cohorts fail explicitly.
-An offline HTTP test verifies the linked result and low-sample state. No frontend
-display or live forecast performance is claimed.
+An offline HTTP test verifies the linked result and low-sample state. Current research
+submissions also read the matching configured cohort maturity into ResearchState;
+the workflow copies it into QualityAssessment. Historical fixed-cutoff replay stays
+cold start to avoid using
+future Outcomes. No frontend display or live forecast performance is claimed.
 
-## Remaining Phase 8 work
+## Phase 8 review and qualification
 
-- Qualify a live market/benchmark observation adapter separately before enabling
-  production forward evaluation. The default-off scheduled path is fixture-qualified.
-- Qualify the configured cohort read path against PostgreSQL after the HTTP/SQLite
-  check, including cold start and linked Outcome reads.
-- A linked nonempty Outcome cohort, repository due-write/idempotency, empty
-  accumulating cohort reads, migration, foreign key, and immutable triggers have
-  passed against PostgreSQL using rolled-back fixtures. Direct HTTP against the
-  containerized API remains a separate integration check.
-- Run the single whole-phase code review after these slices, resolve findings,
-  and then mark Phase 8 complete. Do not infer live provider performance from
-  fixture results.
+The single whole-phase `skills/code-review` covered the diff since Phase 7. Its
+Standards axis found no hard violations; duplicated horizon calculation and silent
+unknown-horizon handling were corrected. Its Spec axis found four gaps: calibration
+and invalidation metrics, outcome window/benchmark validation, blocked-state integrity
+classification, and cohort maturity linkage. Those gaps are fixed and covered by the
+ordinary suite. Docker PostgreSQL migration, immutability, due write/retry, and cohort
+reads passed with rolled-back fixtures, including a repeat after the review fixes.
+Gate E and the offline portion of Gate G are qualified. A live market/benchmark
+observation adapter, real forward performance, and containerized HTTP integration
+remain separately pending before production forward evaluation can be enabled.

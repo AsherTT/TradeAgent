@@ -26,6 +26,8 @@ class OutcomePolicy(ContractModel):
     """Horizon labels are explicitly mapped to days by the deployment."""
 
     horizon_days: dict[str, int] = Field(min_length=1)
+    max_settlement_lag_days: int = Field(default=7, ge=0)
+    allow_cash_benchmark: bool = False
 
     @model_validator(mode="after")
     def positive_horizons(self) -> OutcomePolicy:
@@ -33,25 +35,68 @@ class OutcomePolicy(ContractModel):
             raise ValueError("horizon mappings require labels and positive days")
         return self
 
+    def due_at(self, forecast: ForecastRecord) -> datetime:
+        days = self.horizon_days.get(forecast.horizon)
+        if days is None:
+            raise OutcomeIntegrityError("forecast horizon has no configured maturity rule")
+        return forecast.created_at.astimezone(UTC) + timedelta(days=days)
+
+    def check_observation(
+        self, forecast: ForecastRecord, observation: OutcomeObservation
+    ) -> datetime:
+        due_at = self.due_at(forecast)
+        if (
+            observation.window_start_at != forecast.analysis_timestamp
+            or observation.window_end_at < due_at
+            or observation.window_end_at > due_at + timedelta(days=self.max_settlement_lag_days)
+            or observation.benchmark_id != forecast.benchmark_id
+        ):
+            raise OutcomeIntegrityError("outcome window or benchmark differs from forecast")
+        if forecast.benchmark_id is None and (
+            not self.allow_cash_benchmark or observation.benchmark_return != 0
+        ):
+            raise OutcomeIntegrityError("cash benchmark requires explicit policy and zero return")
+        return due_at
+
 
 class OutcomeObservation(ContractModel):
+    window_start_at: datetime
+    window_end_at: datetime
     observed_at: datetime
     available_at: datetime
+    benchmark_id: UUID | None = None
     actual_return: float
     benchmark_return: float
     mfe: float
     mae: float
     invalidation_hit: bool
+    invalidation_alert: bool | None = None
+    invalidation_alert_at: datetime | None = None
     source_name: str = Field(min_length=1)
     source_version: str = Field(min_length=1)
 
     @model_validator(mode="after")
     def validate_observation(self) -> OutcomeObservation:
-        for timestamp in (self.observed_at, self.available_at):
+        for timestamp in (
+            self.window_start_at, self.window_end_at, self.observed_at, self.available_at
+        ):
             if timestamp.tzinfo is None or timestamp.utcoffset() is None:
                 raise ValueError("outcome timestamps must be timezone-aware")
         if self.available_at < self.observed_at:
             raise ValueError("outcome cannot be available before observation")
+        if self.window_end_at < self.window_start_at or self.observed_at != self.window_end_at:
+            raise ValueError("observation time must close the return window")
+        if self.invalidation_alert is True:
+            alert_at = self.invalidation_alert_at
+            if (
+                alert_at is None
+                or alert_at.tzinfo is None
+                or alert_at.utcoffset() is None
+                or not self.window_start_at <= alert_at <= self.window_end_at
+            ):
+                raise ValueError("invalidation alert requires a time inside the return window")
+        elif self.invalidation_alert_at is not None:
+            raise ValueError("invalidation alert time requires a true alert")
         if not all(isfinite(value) for value in (
             self.actual_return, self.benchmark_return, self.mfe, self.mae
         )):
@@ -77,15 +122,12 @@ class OutcomeRepository:
         if row is None:
             raise OutcomeIntegrityError("forecast is not frozen in persistence")
         forecast = ForecastRecord.model_validate_json(json.dumps(row.record_json))
-        days = policy.horizon_days.get(forecast.horizon)
-        if days is None:
-            raise OutcomeIntegrityError("forecast horizon has no configured maturity rule")
-        due_at = _as_utc(row.created_at) + timedelta(days=days)
+        due_at = policy.check_observation(forecast, observation)
         now = self._clock()
         if now.tzinfo is None or now.utcoffset() is None:
             raise OutcomeIntegrityError("outcome clock must be timezone-aware")
         now = now.astimezone(UTC)
-        if now < due_at or observation.observed_at < due_at:
+        if now < due_at:
             raise OutcomeIntegrityError("forecast horizon has not matured")
         if observation.available_at > now:
             raise OutcomeIntegrityError("outcome observation is not yet available")
@@ -110,6 +152,7 @@ class OutcomeRepository:
             mfe=observation.mfe,
             mae=observation.mae,
             invalidation_hit=observation.invalidation_hit,
+            invalidation_alert=observation.invalidation_alert,
             evaluated_at=now,
         )
         self._session.add(OutcomeRecordRow(

@@ -11,6 +11,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.contracts.base import ContractModel
+from backend.app.contracts.evaluation import EvaluationMaturity
 from backend.app.contracts.thesis import ForecastRecord
 from backend.app.evaluation.forecast import (
     ForecastEvaluationPolicy,
@@ -68,3 +69,27 @@ async def read_cohort_evaluation(
         policy=config.policy,
         evaluation=evaluate_forecasts(forecasts, outcomes, policy=config.policy),
     )
+
+
+async def maturity_for_research(
+    session: AsyncSession,
+    *,
+    instrument_id: UUID,
+    horizon: str,
+    configured_cohorts: tuple[dict[str, object], ...],
+) -> EvaluationMaturity:
+    matching: list[EvaluationCohortConfig] = []
+    for raw in configured_cohorts:
+        cohort = EvaluationCohortConfig.model_validate_json(json.dumps(raw))
+        if (
+            cohort.horizon == horizon
+            and instrument_id in cohort.instrument_ids
+            and cohort.outcome_definition == "directional_return"
+        ):
+            matching.append(cohort)
+    if not matching:
+        return EvaluationMaturity.COLD_START
+    if len(matching) != 1:
+        raise ValueError("research matches multiple evaluation cohort policies")
+    report = await read_cohort_evaluation(session, matching[0])
+    return report.evaluation.evaluation_maturity

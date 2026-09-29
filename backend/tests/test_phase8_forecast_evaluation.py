@@ -9,8 +9,9 @@ from backend.app.contracts.evaluation import EvaluationMaturity, StatisticalStat
 from backend.app.contracts.thesis import Direction, ForecastRecord, OutcomeRecord
 from backend.app.evaluation import ForecastEvaluationPolicy, evaluate_forecasts
 
-NOW = datetime(2026, 9, 28, tzinfo=UTC)
+NOW = datetime(2020, 1, 1, tzinfo=UTC)
 POLICY = ForecastEvaluationPolicy(
+    horizon_days=5,
     min_early_sample=2,
     min_mature_sample=4,
     min_bucket_usable=3,
@@ -66,6 +67,7 @@ def test_calibration_bucket_reports_n_wilson_interval_and_maturity() -> None:
     ))
     report = evaluate_forecasts(forecasts, outcomes, policy=POLICY)
     assert report.evaluation_maturity is EvaluationMaturity.MATURE
+    assert report.eligible_forecast_count == 4
     assert report.exploratory is False
     bucket = report.buckets[7]
     assert bucket.sample_count == 4
@@ -79,6 +81,26 @@ def test_calibration_bucket_reports_n_wilson_interval_and_maturity() -> None:
         sum((f.probability - float(o.direction_correct)) ** 2
             for f, o in zip(forecasts, outcomes, strict=True)) / 4
     )
+    assert report.calibration_error == pytest.approx(0.0025)
+    assert report.calibration_curve == report.buckets
+
+
+def test_invalidation_precision_and_recall_require_labeled_alerts() -> None:
+    forecasts = tuple(_forecast(0.75) for _ in range(4))
+    raw = tuple(_outcome(f, True) for f in forecasts)
+    assert evaluate_forecasts(forecasts, raw, policy=POLICY).invalidation_precision is None
+    outcomes = tuple(
+        outcome.model_copy(update={
+            "invalidation_alert": alert,
+            "invalidation_hit": hit,
+        })
+        for outcome, alert, hit in zip(
+            raw, (True, True, False, False), (True, False, True, False), strict=True
+        )
+    )
+    report = evaluate_forecasts(forecasts, outcomes, policy=POLICY)
+    assert report.invalidation_precision == 0.5
+    assert report.invalidation_recall == 0.5
 
 
 def test_small_bucket_stays_insufficient_even_with_mature_cohort() -> None:
@@ -90,6 +112,28 @@ def test_small_bucket_stays_insufficient_even_with_mature_cohort() -> None:
     assert report.buckets[7].statistical_status is StatisticalStatus.INSUFFICIENT_SAMPLE
 
 
+def test_pending_forecasts_do_not_reduce_matured_outcome_coverage() -> None:
+    matured = tuple(_forecast(0.75) for _ in range(4))
+    pending_at = datetime(2026, 9, 29, tzinfo=UTC)
+    pending = tuple(
+        _forecast(0.75).model_copy(update={
+            "created_at": pending_at,
+            "analysis_timestamp": pending_at,
+        })
+        for _ in range(10)
+    )
+    report = evaluate_forecasts(
+        matured + pending,
+        tuple(_outcome(forecast, True) for forecast in matured),
+        policy=POLICY,
+        as_of=pending_at,
+    )
+    assert report.forecast_count == 14
+    assert report.eligible_forecast_count == 4
+    assert report.outcome_coverage == 1
+    assert report.evaluation_maturity is EvaluationMaturity.MATURE
+
+
 def test_unmatched_or_duplicate_outcomes_are_rejected() -> None:
     forecast = _forecast(0.75)
     outcome = _outcome(forecast, True)
@@ -97,3 +141,6 @@ def test_unmatched_or_duplicate_outcomes_are_rejected() -> None:
         evaluate_forecasts((forecast,), (outcome, outcome), policy=POLICY)
     with pytest.raises(ValueError, match="no forecast"):
         evaluate_forecasts((), (outcome,), policy=POLICY)
+    premature = outcome.model_copy(update={"evaluated_at": NOW + timedelta(days=3)})
+    with pytest.raises(ValueError, match="precedes configured forecast horizon"):
+        evaluate_forecasts((forecast,), (premature,), policy=POLICY)

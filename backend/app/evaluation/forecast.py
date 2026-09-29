@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
+from datetime import UTC, datetime, timedelta
 from math import log, sqrt
 from uuid import UUID
 
 from pydantic import Field, model_validator
 
-from backend.app.contracts.base import ContractModel
+from backend.app.contracts.base import ContractModel, utc_now
 from backend.app.contracts.evaluation import EvaluationMaturity, StatisticalStatus
 from backend.app.contracts.thesis import ForecastRecord, OutcomeRecord
 
@@ -16,6 +17,7 @@ class ForecastEvaluationPolicy(ContractModel):
     """Thresholds are configured per horizon, universe and outcome definition."""
 
     min_early_sample: int = Field(ge=1)
+    horizon_days: int = Field(ge=1)
     min_mature_sample: int = Field(ge=2)
     min_bucket_usable: int = Field(ge=1)
     min_outcome_coverage: float = Field(ge=0, le=1)
@@ -44,12 +46,17 @@ class CalibrationBucket(ContractModel):
 
 class ForecastEvaluationReport(ContractModel):
     forecast_count: int = Field(ge=0)
+    eligible_forecast_count: int = Field(ge=0)
     sample_count: int = Field(ge=0)
     outcome_coverage: float = Field(ge=0, le=1)
     evaluation_maturity: EvaluationMaturity
     directional_accuracy: float | None = None
     brier_score: float | None = None
     log_loss: float | None = None
+    calibration_error: float | None = None
+    calibration_curve: tuple[CalibrationBucket, ...]
+    invalidation_precision: float | None = None
+    invalidation_recall: float | None = None
     buckets: tuple[CalibrationBucket, ...]
     exploratory: bool
 
@@ -70,9 +77,14 @@ def evaluate_forecasts(
     outcomes: tuple[OutcomeRecord, ...],
     *,
     policy: ForecastEvaluationPolicy,
+    as_of: datetime | None = None,
 ) -> ForecastEvaluationReport:
     """Report one comparable cohort; callers choose horizon/universe/outcome scope."""
 
+    cutoff = as_of or utc_now()
+    if cutoff.tzinfo is None or cutoff.utcoffset() is None:
+        raise ValueError("evaluation as_of must be timezone-aware")
+    cutoff = cutoff.astimezone(UTC)
     forecast_by_id: dict[UUID, ForecastRecord] = {}
     for forecast in forecasts:
         if forecast.forecast_id in forecast_by_id:
@@ -88,10 +100,23 @@ def evaluate_forecasts(
             raise ValueError("duplicate outcome for forecast")
         if outcome.evaluated_at <= forecast_by_id[outcome.forecast_id].created_at:
             raise ValueError("outcome cannot precede frozen forecast")
+        if outcome.evaluated_at < (
+            forecast_by_id[outcome.forecast_id].created_at
+            + timedelta(days=policy.horizon_days)
+        ):
+            raise ValueError("outcome precedes configured forecast horizon")
+        if outcome.evaluated_at > cutoff:
+            raise ValueError("outcome is not yet available at evaluation time")
         outcome_by_id[outcome.forecast_id] = outcome
     n = len(outcome_by_id)
     forecast_count = len(forecasts)
-    coverage = n / forecast_count if forecast_count else 0.0
+    eligible_count = sum(
+        forecast.created_at + timedelta(days=policy.horizon_days) <= cutoff
+        for forecast in forecasts
+    )
+    if n > eligible_count:
+        raise ValueError("outcomes exceed eligible matured forecasts")
+    coverage = n / eligible_count if eligible_count else 0.0
     if n == 0:
         maturity = (
             EvaluationMaturity.ACCUMULATING if forecast_count else EvaluationMaturity.COLD_START
@@ -160,14 +185,36 @@ def evaluate_forecasts(
         ) / n
         if n else None
     )
+    calibration_error = (
+        sum(
+            bucket.sample_count
+            * abs(bucket.mean_predicted_probability - bucket.observed_frequency)
+            for bucket in buckets
+            if bucket.sample_count
+            and bucket.mean_predicted_probability is not None
+            and bucket.observed_frequency is not None
+        ) / n
+        if n else None
+    )
+    labeled = tuple(o for _, o in pairs if o.invalidation_alert is not None)
+    true_positive = sum(o.invalidation_alert is True and o.invalidation_hit for o in labeled)
+    predicted_positive = sum(o.invalidation_alert is True for o in labeled)
+    actual_positive = sum(o.invalidation_hit for o in labeled)
     return ForecastEvaluationReport(
         forecast_count=forecast_count,
+        eligible_forecast_count=eligible_count,
         sample_count=n,
         outcome_coverage=coverage,
         evaluation_maturity=maturity,
         directional_accuracy=sum(o.direction_correct for _, o in pairs) / n if n else None,
         brier_score=brier,
         log_loss=log_loss,
+        calibration_error=calibration_error,
+        calibration_curve=tuple(buckets),
+        invalidation_precision=(
+            true_positive / predicted_positive if predicted_positive else None
+        ),
+        invalidation_recall=(true_positive / actual_positive if actual_positive else None),
         buckets=tuple(buckets),
         exploratory=maturity is not EvaluationMaturity.MATURE,
     )

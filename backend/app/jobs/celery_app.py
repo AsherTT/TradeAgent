@@ -263,7 +263,11 @@ async def _evaluate_due_worker_task() -> dict[str, int]:
         return {"evaluated": 0}
     database = get_database()
     try:
-        policy = OutcomePolicy(horizon_days=settings.forward_evaluation_horizon_days)
+        policy = OutcomePolicy(
+            horizon_days=settings.forward_evaluation_horizon_days,
+            max_settlement_lag_days=settings.forward_evaluation_max_settlement_lag_days,
+            allow_cash_benchmark=settings.forward_evaluation_allow_cash_benchmark,
+        )
         async with database.sessions() as session, session.begin():
             runner = ForwardEvaluationRunner(
                 session,

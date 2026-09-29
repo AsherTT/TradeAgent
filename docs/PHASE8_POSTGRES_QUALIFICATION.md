@@ -26,6 +26,11 @@ Date: 2026-09-29. Local Docker Desktop PostgreSQL 18 with pgvector.
 - A linked synthetic observation and Outcome were read through the configured cohort
   reader in the same transaction. It reported one sample and `ACCUMULATING` maturity;
   the transaction was rolled back afterward.
+- After the whole-phase review fixes, Docker reported server 29.8.0 and the existing
+  PostgreSQL container healthy. A new synthetic observation with explicit return
+  window, matching benchmark identity, and a fixture-only one-day horizon passed
+  storage, the due runner, exact zero-write retry, and the configured cohort reader.
+  The transaction was rolled back.
 
 This qualifies the migration, repository write/read, foreign key, and direct-mutation
 trigger on the local container. It does not evaluate a real forecast, qualify a live
