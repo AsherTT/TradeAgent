@@ -36,6 +36,12 @@ class SecFinancialError(Exception):
     """Controlled acquisition/normalization failure, without response or contact data."""
 
 
+def _supported_period(concept: str, start: date | None, end: date) -> bool:
+    if concept in _INSTANT:
+        return start is None
+    return start is not None and 350 <= (end - start).days + 1 <= 380
+
+
 class SecFinancialFact(ContractModel):
     cik: int = Field(ge=1, le=9_999_999_999)
     concept: str
@@ -58,14 +64,8 @@ class SecFinancialFact(ContractModel):
             raise ValueError("financial observation requires an aware timestamp")
         if self.period_end > self.filed_on or self.filed_on > self.observed_at.date():
             raise ValueError("financial period or filing is in the future")
-        if self.concept in _INSTANT:
-            if self.period_start is not None:
-                raise ValueError("instant financial fact cannot have a start")
-        elif (
-            self.period_start is None
-            or not 350 <= (self.period_end - self.period_start).days + 1 <= 380
-        ):
-            raise ValueError("financial duration is not annual")
+        if not _supported_period(self.concept, self.period_start, self.period_end):
+            raise ValueError("financial period is not a supported instant or annual duration")
         return self
 
     @property
@@ -191,23 +191,22 @@ def _annual_rows(
     for row in rows:
         if not isinstance(row, dict):
             raise SecFinancialError("invalid SEC financial record")
-        if row.get("form") not in {"10-K", "10-K/A"}:
+        if not isinstance(row.get("form"), str):
+            raise SecFinancialError("invalid SEC financial form")
+        if row["form"] not in {"10-K", "10-K/A"}:
             continue
         try:
             end = date.fromisoformat(row["end"])
             filed = date.fromisoformat(row["filed"])
             start = date.fromisoformat(row["start"]) if "start" in row else None
+            if end > observed_at.date() or filed > observed_at.date():
+                continue
+            if not _supported_period(concept, start, end):
+                continue
             value = row["val"]
             accession = row["accn"]
             if type(value) not in {int, float, Decimal} or not _ACCESSION.fullmatch(accession):
                 raise ValueError
-            if end > observed_at.date() or filed > observed_at.date():
-                continue
-            if concept in _INSTANT:
-                if start is not None:
-                    continue
-            elif start is None or not 350 <= (end - start).days + 1 <= 380:
-                continue
             fact = SecFinancialFact(
                 cik=cik,
                 concept=concept,

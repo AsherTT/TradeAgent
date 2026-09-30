@@ -227,7 +227,10 @@ def test_openai_compatible_closes_owned_client(
         def __init__(self, **kwargs: Any) -> None:
             assert "Authorization" in kwargs["headers"]
 
-        async def post(self, url: str, json: dict[str, Any]) -> httpx.Response:
+        async def post(
+            self, url: str, json: dict[str, Any], **kwargs: Any
+        ) -> httpx.Response:
+            assert kwargs["timeout"] == 60
             return httpx.Response(
                 200,
                 request=httpx.Request("POST", url),

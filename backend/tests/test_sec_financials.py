@@ -192,6 +192,23 @@ def test_missing_entity_and_naive_observation_are_rejected() -> None:
         )
 
 
+def test_malformed_form_is_a_controlled_failure() -> None:
+    data = payload()
+    data["facts"]["us-gaap"]["Assets"]["units"]["USD"][0]["form"] = []
+    with pytest.raises(SecFinancialError, match="financial form"):
+        normalize(data)
+
+
+def test_unsupported_quarter_value_does_not_invalidate_annual_facts() -> None:
+    data = payload()
+    quarter = data["facts"]["us-gaap"]["NetIncomeLoss"]["units"]["USD"][2]
+    quarter["val"] = "unsupported quarter value"
+    quarter["accn"] = "unsupported quarter accession"
+    result = normalize(data)
+    assert len(result.facts) == 2
+    assert result.facts[-1].value == Decimal(120)
+
+
 @pytest.mark.asyncio
 async def test_network_failure_has_controlled_diagnostic() -> None:
     def handler(request: httpx.Request) -> httpx.Response:

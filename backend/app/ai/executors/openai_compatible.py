@@ -9,7 +9,7 @@ from typing import Any
 import httpx
 from pydantic import BaseModel
 
-from backend.app.ai.errors import ProviderUnavailableError
+from backend.app.ai.errors import ProviderTimeoutError, ProviderUnavailableError
 from backend.app.ai.executors.base import ModelExecutor
 from backend.app.ai.structured_output import PydanticStructuredOutputAdapter
 from backend.app.contracts.base import utc_now
@@ -77,9 +77,13 @@ class OpenAICompatibleExecutor(ModelExecutor):
             timeout=request.timeout_seconds,
         )
         try:
-            response = await client.post(f"{self._base_url}/chat/completions", json=body)
+            response = await client.post(
+                f"{self._base_url}/chat/completions", json=body, timeout=request.timeout_seconds
+            )
             response.raise_for_status()
             payload = response.json()
+        except httpx.TimeoutException:
+            raise ProviderTimeoutError(f"{self.provider.value} request exceeded timeout") from None
         except (httpx.HTTPError, ValueError, KeyError) as exc:
             raise ProviderUnavailableError(f"{self.provider.value} request failed: {exc}") from exc
         finally:
@@ -199,6 +203,7 @@ class DeepSeekExecutor(OpenAICompatibleExecutor):
     @staticmethod
     def _response_format(schema: type[BaseModel]) -> dict[str, str]:
         return {"type": "json_object"}
+
 
 class OpenAIAPIExecutor(OpenAICompatibleExecutor):
     profile = ModelCapabilityProfile(

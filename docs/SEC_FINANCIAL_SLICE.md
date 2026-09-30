@@ -31,3 +31,7 @@ from the worker until durable budgeting and financial gap/synthesis contracts ar
   reports unavailable access honestly. No model, database or credential is required.
 
 Official API semantics and sources are recorded in SEC_FINANCIAL_SOURCE.md.
+
+Offline implementation and dual-axis review results are recorded in
+SEC_FINANCIAL_REVIEW.md. Live qualification is still pending the operator's
+identifying User-Agent; the opt-in probe made no request without that setting.

@@ -3,9 +3,16 @@ import json
 from typing import Any
 
 import httpx
+import pytest
 
 from backend.app.ai.executors.codex_subscription import CodexSubscriptionExecutor
-from backend.app.ai.executors.openai_compatible import DeepSeekExecutor, QwenExecutor
+from backend.app.ai.executors.mock import MockExecutor
+from backend.app.ai.executors.openai_compatible import (
+    DeepSeekExecutor,
+    OpenAIAPIExecutor,
+    QwenExecutor,
+)
+from backend.app.ai.gateway import ModelGateway
 from backend.app.contracts.model import ModelRequest, ProviderName
 from backend.app.contracts.research import ResearchPlan
 
@@ -122,3 +129,39 @@ async def _execute_all(
 ) -> tuple[ResearchPlan, ...]:
     responses = [await executor.execute(request) for executor in executors]
     return tuple(response.output for response in responses)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("executor_type", [QwenExecutor, DeepSeekExecutor, OpenAIAPIExecutor])
+async def test_http_timeout_moves_to_fallback_once(
+    executor_type: type[QwenExecutor | DeepSeekExecutor | OpenAIAPIExecutor],
+    research_plan_payload: dict[str, Any],
+) -> None:
+    calls = 0
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        nonlocal calls
+        calls += 1
+        assert request.extensions["timeout"]["read"] == 7
+        raise httpx.ReadTimeout("private transport detail", request=request)
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+        executor = executor_type(
+            model="fixture",
+            api_key="test-only",
+            base_url="https://provider.invalid/v1",
+            client=client,
+        )
+        gateway = ModelGateway(
+            [executor, MockExecutor(lambda _: research_plan_payload)], max_attempts_per_provider=2
+        )
+        response = await gateway.execute(
+            ModelRequest[ResearchPlan](
+                task="Plan", context={}, output_schema=ResearchPlan, timeout_seconds=7
+            ),
+            provider_order=(executor.provider, ProviderName.MOCK),
+        )
+    assert calls == 1
+    assert response.metadata.provider is ProviderName.MOCK
+    assert len(gateway.tracer.attempts) == 2
+    assert "private transport detail" not in (response.metadata.fallback_reason or "")
