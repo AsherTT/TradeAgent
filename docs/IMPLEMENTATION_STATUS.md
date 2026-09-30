@@ -316,6 +316,19 @@ Last audited: 2026-09-29
   Synthesis and
   Gate C research-loop safety are qualified with fixtures; recorded live external-provider
   qualification remains separate and is not a Gate C claim.
+- A read-only research report projection now exposes persisted synthesis, eligible citation
+  metadata, quality state, and explicit missing sections through
+  `GET /research/{research_run_id}/report`. It is deliberately marked incomplete while verified
+  financial/catalyst evidence and claim-level attribution are unavailable. See
+  `docs/RESEARCH_REPORT.md`.
+- A 2026-09-30 live KLAC provider-composition probe verified Finnhub free-key access and admitted
+  19 news items alongside a frozen Yahoo cutoff. Yahoo action quality remained `UNVERIFIED`, so
+  the technical and market evidence requirement correctly stayed unsatisfied. This did not
+  exercise the durable API/Redis/worker/PostgreSQL/model path. See
+  `docs/KLAC_CURRENT_QUALIFICATION.md`.
+- Subsequent Phase 5 work records a typed, bounded market acquisition summary even when returned
+  bars fail the technical quality gate. It exposes provider/count/date/quality diagnostics in the
+  report without promoting an unqualified price or evidence claim.
 - Phase 6 implementation and mock-path qualification are complete after a single whole-phase
   code review and closure of its provenance and storage-immutability findings. The application
   command remains default-off, and no live forward forecasts or provider qualification are claimed.

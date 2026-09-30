@@ -6,6 +6,9 @@ from uuid import UUID, uuid4
 import httpx
 import pytest
 
+from backend.app.contracts.evaluation import DataQualityStatus
+from backend.app.contracts.instrument import PriceAdjustmentMode
+from backend.app.contracts.market import MarketAcquisitionSummary
 from backend.app.contracts.research import (
     BudgetUsage,
     ResearchBudget,
@@ -71,7 +74,22 @@ async def test_current_news_is_captured_before_cutoff_and_becomes_cited_evidence
     class Market:
         async def collect(self, state: ResearchState) -> EvidenceCollection:
             assert calls == 1  # News acquisition precedes the market cutoff.
-            return EvidenceCollection(analysis_timestamp=NOW + timedelta(minutes=2))
+            cutoff = NOW + timedelta(minutes=2)
+            return EvidenceCollection(
+                analysis_timestamp=cutoff,
+                market_acquisition=MarketAcquisitionSummary(
+                    instrument_id=state.instrument_id,
+                    analysis_timestamp=cutoff,
+                    first_bar_at=NOW - timedelta(days=30),
+                    latest_bar_at=NOW - timedelta(days=1),
+                    observed_at=cutoff,
+                    bar_count=20,
+                    source_names=("yfinance",),
+                    provider_quality_versions=("fixture-v1",),
+                    adjustment_mode=PriceAdjustmentMode.POINT_IN_TIME_ADJUSTED,
+                    data_quality_status=DataQualityStatus.UNVERIFIED,
+                ),
+            )
 
     async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
         loader = FinnhubNewsLoader(
@@ -95,6 +113,8 @@ async def test_current_news_is_captured_before_cutoff_and_becomes_cited_evidence
         assert len(collection.evidence) == 1
         assert collection.tool_calls == 2
         assert collection.news_documents_scanned == 3
+        assert collection.market_acquisition is not None
+        assert collection.market_acquisition.bar_count == 20
         news = await NewsResearchEvidence(snapshot).collect(
             NewsSearchRequest(
                 instrument_id=INSTRUMENT_ID,

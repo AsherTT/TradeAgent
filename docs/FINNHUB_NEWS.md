@@ -20,6 +20,7 @@ the key in a header. Provider HTTP or network failure leaves an explicit evidenc
 The current run fetches news before freezing the market cutoff so the true observation time can
 be represented without lookahead. Fixed-cutoff historical research never acquires fresh news as
 historical evidence. This adapter and the cutoff sequence are tested with offline HTTP fixtures.
-A live Finnhub entitlement and current KLAC response have not yet been verified because no key is
-configured in this workspace. The full analysis also depends on successful market acquisition and
-model synthesis, which are independent of this news adapter.
+A narrow live KLAC request with a locally configured free key succeeded on 2026-09-30; the combined
+current-news and Yahoo acquisition admitted 19 scanned news records but stopped at the market
+quality gate. See `docs/KLAC_CURRENT_QUALIFICATION.md`. News relevance and complete model synthesis
+are still unqualified.

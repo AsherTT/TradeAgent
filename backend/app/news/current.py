@@ -66,6 +66,7 @@ class CurrentNewsSnapshot:
         return EvidenceCollection(
             analysis_timestamp=cutoff,
             market_snapshot=collection.market_snapshot,
+            market_acquisition=collection.market_acquisition,
             technical_snapshot=collection.technical_snapshot,
             evidence=(*collection.evidence, *(news.evidence if news else ())),
             gaps=(

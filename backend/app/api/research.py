@@ -24,6 +24,7 @@ from backend.app.evaluation.reporting import maturity_for_research
 from backend.app.jobs.celery_app import enqueue_research_run
 from backend.app.persistence.repositories import ResearchRunRepository
 from backend.app.persistence.session import get_session
+from backend.app.reports.research import ResearchReport, build_research_report
 
 ResearchEnqueuer = Callable[[str], str]
 
@@ -163,3 +164,14 @@ async def cancel_research(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="research run not found")
     await session.commit()
     return cancelled
+
+
+@router.get("/{research_run_id}/report", response_model=ResearchReport)
+async def get_research_report(
+    research_run_id: UUID,
+    session: Annotated[AsyncSession, Depends(get_session)],
+) -> ResearchReport:
+    state = await ResearchRunRepository(session).get(research_run_id)
+    if state is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="research run not found")
+    return build_research_report(state)

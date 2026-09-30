@@ -1561,6 +1561,63 @@ def test_unavailable_market_evidence_is_insufficient_not_failed() -> None:
     asyncio.run(scenario())
 
 
+def test_unverified_action_quality_is_an_explicit_market_gap() -> None:
+    async def scenario() -> None:
+        instrument_id = uuid4()
+        bars = (
+            MarketBar(
+                instrument_id=instrument_id,
+                symbol="ACME",
+                timestamp=NOW - timedelta(days=1),
+                open=100,
+                high=100,
+                low=100,
+                close=100,
+                volume=1000,
+                adjustment_mode=PriceAdjustmentMode.RAW,
+                adjustment_factor=1,
+                source="fixture",
+                observed_at=NOW - timedelta(days=1),
+                available_at=NOW - timedelta(days=1),
+                data_quality_status=DataQualityStatus.ACCEPTABLE,
+                provider_quality_version="fixture-v1",
+            ),
+        )
+        bar_report = ProviderQualityReport(
+            provider="fixture",
+            provider_version="fixture-v1",
+            evaluated_at=NOW,
+            golden_case_count=1,
+            passed_case_count=1,
+            coverage=1,
+            quality_status=DataQualityStatus.ACCEPTABLE,
+        )
+        action_report = bar_report.model_copy(
+            update={"quality_status": DataQualityStatus.UNVERIFIED}
+        )
+        service = MarketDataService(
+            market_data_provider=InMemoryMarketDataProvider(
+                bars=bars, quality_report=bar_report
+            ),
+            corporate_action_provider=InMemoryCorporateActionProvider(
+                actions=(), quality_report=action_report
+            ),
+        )
+        collection = await MarketResearchEvidence(service, currency="USD").collect(
+            _state(instrument_id)
+        )
+        assert collection.market_snapshot is None
+        assert collection.technical_snapshot is None
+        assert collection.market_acquisition is not None
+        assert collection.market_acquisition.bar_count == 1
+        assert collection.market_acquisition.data_quality_status is DataQualityStatus.UNVERIFIED
+        assert collection.gaps == (
+            "IndicatorError: market-bar quality is below ACCEPTABLE",
+        )
+
+    asyncio.run(scenario())
+
+
 def test_current_provider_failure_persists_attempt_in_terminal_gap() -> None:
     async def scenario() -> None:
         class UnavailableCurrentLoader:

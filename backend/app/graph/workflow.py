@@ -23,7 +23,11 @@ from backend.app.contracts.evaluation import (
 )
 from backend.app.contracts.evidence import Evidence, ResearchSynthesis, TrustLevel
 from backend.app.contracts.instrument import PriceAdjustmentMode
-from backend.app.contracts.market import MarketSnapshot, TechnicalSnapshot
+from backend.app.contracts.market import (
+    MarketAcquisitionSummary,
+    MarketSnapshot,
+    TechnicalSnapshot,
+)
 from backend.app.contracts.model import ModelExecutionSnapshot, ModelRequest, ProviderName, TaskKind
 from backend.app.contracts.research import (
     ResearchIntent,
@@ -47,7 +51,7 @@ from backend.app.market_data.errors import (
     MarketDataOperationalError,
 )
 from backend.app.market_data.normalization import PriceNormalizationError
-from backend.app.market_data.quality import ProviderQualityError
+from backend.app.market_data.quality import ProviderQualityError, worse_quality
 from backend.app.market_data.service import (
     CurrentMarketDataLoader,
     CurrentMarketDataRequest,
@@ -67,6 +71,7 @@ StateSaver = Callable[[ResearchState], Awaitable[None]]
 class EvidenceCollection:
     analysis_timestamp: datetime | None = None
     market_snapshot: MarketSnapshot | None = None
+    market_acquisition: MarketAcquisitionSummary | None = None
     technical_snapshot: TechnicalSnapshot | None = None
     evidence: tuple[Evidence, ...] = ()
     gaps: tuple[str, ...] = ()
@@ -157,6 +162,7 @@ class MarketResearchEvidence:
 
     async def collect(self, state: ResearchState) -> EvidenceCollection:
         analysis_timestamp: datetime | None = None
+        acquisition: MarketAcquisitionSummary | None = None
         try:
             if (
                 state.timestamp_mode is ResearchTimestampMode.CURRENT_RESEARCH
@@ -209,6 +215,24 @@ class MarketResearchEvidence:
             )
             if any(_safe_provider_token(bar.source) != bar.source for bar in bars):
                 raise MarketDataIntegrityError("unsafe market-data source identifier")
+            if bars:
+                quality = bars[0].data_quality_status
+                for bar in bars[1:]:
+                    quality = worse_quality(quality, bar.data_quality_status)
+                acquisition = MarketAcquisitionSummary(
+                    instrument_id=state.instrument_id,
+                    analysis_timestamp=analysis_timestamp,
+                    first_bar_at=min(bar.timestamp for bar in bars),
+                    latest_bar_at=max(bar.timestamp for bar in bars),
+                    observed_at=max(bar.observed_at for bar in bars),
+                    bar_count=len(bars),
+                    source_names=tuple(sorted({bar.source for bar in bars})),
+                    provider_quality_versions=tuple(
+                        sorted({bar.provider_quality_version for bar in bars})
+                    ),
+                    adjustment_mode=bars[0].adjustment_mode,
+                    data_quality_status=quality,
+                )
             technical = calculate_technical_snapshot(bars, analysis_timestamp=analysis_timestamp)
         except MarketDataIntegrityError as exc:
             attempt_summary = _provider_attempt_summary(self._service)
@@ -224,6 +248,12 @@ class MarketResearchEvidence:
             attempt_summary = _provider_attempt_summary(self._service)
             return EvidenceCollection(
                 analysis_timestamp=analysis_timestamp,
+                market_acquisition=(
+                    acquisition
+                    if isinstance(exc, IndicatorError)
+                    and str(exc) == "bar quality is below ACCEPTABLE"
+                    else None
+                ),
                 gaps=(
                     (
                         _safe_evidence_gap(exc),
@@ -279,6 +309,7 @@ class MarketResearchEvidence:
         return EvidenceCollection(
             analysis_timestamp=analysis_timestamp,
             market_snapshot=market,
+            market_acquisition=acquisition,
             technical_snapshot=technical,
             evidence=(evidence,),
         )
@@ -601,11 +632,17 @@ class ResearchWorkflow:
             for item in collection.evidence
         ):
             raise ValueError("evidence exceeds analysis_timestamp")
+        if collection.market_acquisition is not None and (
+            collection.market_acquisition.instrument_id != state.instrument_id
+            or collection.market_acquisition.analysis_timestamp != analysis_timestamp
+        ):
+            raise ValueError("market acquisition does not match the research cutoff")
         state = _transition(
             _mark_attempt_completed(state, ResearchNode.COLLECT_EVIDENCE),
             node=ResearchNode.COLLECT_EVIDENCE,
             analysis_timestamp=analysis_timestamp,
             market_snapshot=collection.market_snapshot,
+            market_acquisition=collection.market_acquisition,
             technical_snapshot=collection.technical_snapshot,
             evidence=collection.evidence,
             evidence_gaps=(*state.evidence_gaps, *collection.gaps),
@@ -1108,6 +1145,8 @@ def failed_research_state(state: ResearchState, exc: Exception) -> ResearchState
 
 
 def _safe_evidence_gap(exc: Exception) -> str:
+    if isinstance(exc, IndicatorError) and str(exc) == "bar quality is below ACCEPTABLE":
+        return "IndicatorError: market-bar quality is below ACCEPTABLE"
     return f"{type(exc).__name__[:64]}: qualified market evidence unavailable"
 
 

@@ -21,7 +21,11 @@ from backend.app.contracts.evaluation import (
     SystemConfidence,
 )
 from backend.app.contracts.evidence import Evidence, EvidenceGapResult, ResearchSynthesis
-from backend.app.contracts.market import MarketSnapshot, TechnicalSnapshot
+from backend.app.contracts.market import (
+    MarketAcquisitionSummary,
+    MarketSnapshot,
+    TechnicalSnapshot,
+)
 from backend.app.contracts.thesis import Thesis
 
 
@@ -118,6 +122,7 @@ class ResearchState(ContractModel):
     research_budget: ResearchBudget = Field(default_factory=ResearchBudget)
     budget_usage: BudgetUsage = Field(default_factory=BudgetUsage)
     market_snapshot: MarketSnapshot | None = None
+    market_acquisition: MarketAcquisitionSummary | None = None
     technical_snapshot: TechnicalSnapshot | None = None
     news_events: tuple[dict[str, Any], ...] = ()
     filings: tuple[dict[str, Any], ...] = ()
@@ -148,6 +153,11 @@ class ResearchState(ContractModel):
 
     @model_validator(mode="after")
     def historical_replay_discloses_parametric_risk(self) -> ResearchState:
+        if self.market_acquisition is not None and (
+            self.market_acquisition.instrument_id != self.instrument_id
+            or self.market_acquisition.analysis_timestamp != self.analysis_timestamp
+        ):
+            raise ValueError("market acquisition must match the instrument and analysis cutoff")
         if self.replay_integrity_level not in {
             ReplayIntegrityLevel.RESEARCH_REPLAY,
             ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY,

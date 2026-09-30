@@ -11,7 +11,9 @@ It is deliberately provider-neutral and does not claim investment advice or live
    persisted plan is treated as a legacy checkpoint and resumes without another model call.
 3. `plan` checks the remaining budget and uses the persisted intent through `ModelGateway`.
 4. `collect_evidence` optionally loads point-in-time bars through `MarketDataLoader`, then calls
-   the deterministic indicator implementation.
+   the deterministic indicator implementation. It persists a bounded acquisition summary
+   (source, bar count, dates, and quality) when bars arrive. If bar quality is below the indicator
+   gate, the summary remains inspectable, while market/technical evidence stays absent.
 5. `news` optionally requests bounded documents through a provider-neutral loader after the cutoff
    is frozen. It admits only documents published, observed, and available by that cutoff, strips
    HTML/script and invisible text, rejects instruction-like content and unsafe source URLs, and

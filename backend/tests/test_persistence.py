@@ -1312,6 +1312,11 @@ def test_http_to_registered_celery_task_to_get_terminal_state(
             ResearchStatus.COMPLETE.value if qualified_market
             else ResearchStatus.INSUFFICIENT_EVIDENCE.value
         )
+        report = client.get(f"/research/{research_run_id}/report")
+        assert report.status_code == 200
+        assert report.json()["complete_analysis"] is False
+        assert report.json()["status"] == terminal.json()["status"]
+        assert client.get(f"/research/{uuid4()}/report").status_code == 404
         expected_transitions = [
             "start",
             "intent_started",
@@ -1331,6 +1336,10 @@ def test_http_to_registered_celery_task_to_get_terminal_state(
         if qualified_market:
             assert terminal.json()["research_synthesis"]["summary"].startswith("Qualified")
             assert len(terminal.json()["research_synthesis"]["evidence_ids"]) == 1
+            assert len(report.json()["citations"]) == 1
+            assert report.json()["sections"][1]["title"] == "Summary"
+        else:
+            assert report.json()["citations"] == []
     finally:
         app.dependency_overrides.clear()
         asyncio.run(database.dispose())
