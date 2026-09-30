@@ -26,7 +26,39 @@ created. The Finnhub key was read from a local ignored `.env` and was not logged
 1. Qualify a current corporate-action source or a separately defined price mode with evidence of
    action completeness and independent golden cases. Do not promote the Yahoo report by setting
    its quality field to `ACCEPTABLE`.
-2. Run a current KLAC request through the durable API, Redis, worker, and PostgreSQL path after
-   the market quality decision is resolved. Record the actual quality gate and model output.
+2. Resolve the market quality gate, then run a current KLAC request through the durable path
+   with a configured model to qualify synthesis and its report citations.
 3. Assess news relevance and source diversity, then add source-specific financial and catalyst
    evidence with claim-level report citations.
+
+## Durable queue-path observation
+
+An opt-in current-research probe on 2026-09-30 exercised PostgreSQL state creation, Redis
+dispatch, a Celery worker, and read-only API state/report retrieval. Run
+`2430c488-058c-482e-a4a2-521cc6ef6fe8` used a prepopulated market plan and a zero model-call
+budget, so it did not qualify HTTP submission, planning, synthesis, or model output. The worker
+used the locally configured Finnhub key without printing or persisting it.
+
+- The worker made two provider calls and persisted 15 eligible Finnhub news documents.
+- Yahoo returned 41 bars, with the latest dated 2026-09-29 UTC. The new market-acquisition
+  summary persisted the bar count, provider, cutoff, and `UNVERIFIED` quality.
+- The indicator quality gate withheld market and technical snapshots. The durable outcome was
+  `insufficient_evidence`, and the report did not claim a qualified price analysis.
+- The report initially omitted the collected news. A subsequent read-only projection change
+  adds a bounded news-observation section with eligible source metadata and explicit unverified
+  status; it does not expose article text or convert news into catalyst conclusions.
+
+The reproducible opt-in driver is `backend/tests/klac_current_durable_probe.py`. It needs a
+running API, PostgreSQL, Redis, and a worker started with `MARKET_DATA_ENABLED=true` and
+`NEWS_ENABLED=true`; the worker must have a Finnhub key in its environment. It uses current
+provider data and should not run as part of ordinary tests.
+
+An additional real `POST /research` request, run
+`ed73761a-46be-4b22-8295-eb637cbcc7c2`, was accepted through the API and claimed by a
+local Celery worker with the configured Codex subscription executor. Its intent call reached
+the 120-second wall-time limit and ended in `AllProvidersFailedError`; no plan, provider call,
+or synthesis was produced. This demonstrates the HTTP submission and queue claim but does
+not qualify live model execution. The public state retains a controlled failure type and
+does not expose the underlying SDK error. A reliable model route or a separately defined
+server-generated collection-only mode is needed before unseeded live requests can reach
+provider acquisition.

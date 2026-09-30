@@ -194,3 +194,53 @@ def test_report_shows_unqualified_acquisition_without_technical_claims() -> None
     assert "unavailable" in next(
         section.text for section in report.sections if section.title == "Price and technicals"
     )
+
+
+def test_incomplete_report_lists_bounded_eligible_news_metadata() -> None:
+    cutoff = datetime(2026, 9, 30, tzinfo=UTC)
+    instrument_id = uuid4()
+    news = tuple(
+        Evidence(
+            instrument_id=instrument_id,
+            evidence_type="news_document",
+            source_name="finnhub",
+            source_uri="https://example.org/story?token=private",
+            published_at=cutoff - timedelta(hours=index + 1),
+            observed_at=cutoff,
+            retrieved_at=cutoff,
+            available_at=cutoff,
+            content="Unverified headline text",
+            confidence=0.5,
+            freshness=1,
+            trust_level=TrustLevel.PUBLIC_SOURCE,
+            source_type="news",
+            content_hash=f"news-{index}",
+            sanitization_status="html_cleaned_and_scanned",
+            injection_risk=0,
+        )
+        for index in range(10)
+    )
+    future = news[0].model_copy(
+        update={"evidence_id": uuid4(), "published_at": cutoff + timedelta(minutes=1)}
+    )
+    state = ResearchState(
+        instrument_id=instrument_id,
+        ticker="KLAC",
+        query="Assess KLAC",
+        requested_at=cutoff,
+        analysis_timestamp=cutoff,
+        horizon="3 months",
+        status=ResearchStatus.INSUFFICIENT_EVIDENCE,
+        evidence=(*news, future),
+    )
+
+    report = build_research_report(state)
+
+    section = next(item for item in report.sections if item.title == "News observations")
+    assert "10 point-in-time eligible" in section.text
+    assert "Unverified headline text" not in section.text
+    assert len(section.evidence_ids) == 8
+    assert len(report.citations) == 8
+    assert all(item.evidence_id != future.evidence_id for item in report.citations)
+    assert all(item.source_uri == "https://example.org/story" for item in report.citations)
+    assert report.complete_analysis is False

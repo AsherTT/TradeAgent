@@ -10,7 +10,9 @@ recorded gaps, and point-in-time eligible metadata for evidence cited by a compl
 It includes the persisted summary and bull/bear cases only when every synthesis citation is
 still eligible at the cutoff. Citation IDs belong to the synthesis as a whole; the current
 contract does not support attribution of individual claims to individual sources. The report
-does not reproduce untrusted evidence text. If a synthesis citation is no longer eligible, the
+does not reproduce untrusted evidence text. Eligible news documents receive a metadata-only
+observation section with at most eight recent source links. Their presence does not verify a
+catalyst. If a synthesis citation is no longer eligible, the
 report suppresses all synthesis text and citations and adds an explicit citation gap.
 
 The price section shows stored technical values only when both the run and latest bar are at

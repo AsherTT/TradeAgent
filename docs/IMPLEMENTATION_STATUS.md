@@ -329,6 +329,16 @@ Last audited: 2026-09-29
 - Subsequent Phase 5 work records a typed, bounded market acquisition summary even when returned
   bars fail the technical quality gate. It exposes provider/count/date/quality diagnostics in the
   report without promoting an unqualified price or evidence claim.
+- A later current KLAC probe traversed PostgreSQL, Redis, Celery, and API retrieval with a
+  prepopulated plan and zero model-call budget. It persisted 15 Finnhub news records and 41
+  Yahoo bars as an `UNVERIFIED` acquisition, ending `insufficient_evidence` without market or
+  technical claims. The report now projects bounded eligible news source metadata without
+  showing untrusted article text or claiming verified catalysts. HTTP submission, live planning,
+  model synthesis, and a complete report remain unqualified.
+- A separate live API submission was accepted and claimed by a local Celery worker but stopped
+  at the first configured Codex subscription intent call after its 120-second limit. It
+  persisted a controlled `AllProvidersFailedError` and made no provider call. This leaves
+  unseeded model planning unqualified; see `docs/KLAC_CURRENT_QUALIFICATION.md`.
 - Phase 6 implementation and mock-path qualification are complete after a single whole-phase
   code review and closure of its provenance and storage-immutability findings. The application
   command remains default-off, and no live forward forecasts or provider qualification are claimed.

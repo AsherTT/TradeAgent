@@ -79,7 +79,7 @@ def build_research_report(state: ResearchState) -> ResearchReport:
         and len(cited_ids) == len(synthesis.evidence_ids)
         and len(set(cited_ids)) == len(cited_ids)
     )
-    citations = tuple(
+    cited_synthesis = tuple(
         ReportCitation(
             evidence_id=eligible[evidence_id].evidence_id,
             evidence_type=eligible[evidence_id].evidence_type,
@@ -91,6 +91,27 @@ def build_research_report(state: ResearchState) -> ResearchReport:
         )
         for evidence_id in cited_ids if synthesis_cited
     )
+    eligible_news = sorted(
+        (item for item in eligible.values() if item.evidence_type == "news_document"),
+        key=lambda item: (item.published_at or item.available_at, str(item.evidence_id)),
+        reverse=True,
+    )
+    news_citations = tuple(
+        ReportCitation(
+            evidence_id=item.evidence_id,
+            evidence_type=item.evidence_type,
+            source_name=item.source_name,
+            source_uri=_safe_source_uri(item.source_uri),
+            published_at=item.published_at,
+            observed_at=item.observed_at,
+            available_at=item.available_at,
+        )
+        for item in eligible_news[:8]
+    )
+    citations_by_id = {
+        citation.evidence_id: citation for citation in (*cited_synthesis, *news_citations)
+    }
+    citations = tuple(citations_by_id.values())
     sections = [
         ReportSection(
             title="Research status",
@@ -121,6 +142,25 @@ def build_research_report(state: ResearchState) -> ResearchReport:
             text="No separately verified catalyst analysis is available in this run.",
         )
     )
+    if eligible_news:
+        published = [item.published_at for item in eligible_news if item.published_at is not None]
+        publication_range = (
+            f" Published from {min(published).isoformat()} to {max(published).isoformat()}."
+            if published
+            else ""
+        )
+        sections.append(
+            ReportSection(
+                title="News observations",
+                text=(
+                    f"{len(eligible_news)} point-in-time eligible news documents were collected; "
+                    f"{len(news_citations)} recent source records are linked below."
+                    f"{publication_range} Headlines and summaries are unverified source content, "
+                    "not an established catalyst analysis."
+                ),
+                evidence_ids=tuple(item.evidence_id for item in news_citations),
+            )
+        )
     acquisition = state.market_acquisition
     sections.append(
         ReportSection(
@@ -210,7 +250,8 @@ def build_research_report(state: ResearchState) -> ResearchReport:
         complete_analysis=False,
         citation_note=(
             "Synthesis citations support the synthesis as a whole; individual claims have "
-            "not been mapped to individual sources."
+            "not been mapped to individual sources. News observation citations identify "
+            "source records only, not verified catalyst claims."
         ),
         sections=tuple(sections),
         citations=citations,
