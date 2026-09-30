@@ -16,8 +16,10 @@ from backend.app.contracts.base import ContractModel, utc_now
 from backend.app.contracts.evaluation import EvaluationMaturity, ReplayIntegrityLevel
 from backend.app.contracts.research import (
     ResearchBudget,
+    ResearchPlan,
     ResearchState,
     ResearchStatus,
+    ResearchStep,
     ResearchTimestampMode,
 )
 from backend.app.evaluation.reporting import maturity_for_research
@@ -42,6 +44,7 @@ class ResearchSubmission(BaseModel):
     replay_integrity_level: ReplayIntegrityLevel
     analysis_timestamp: datetime | None = None
     budget: ResearchBudget = Field(default_factory=ResearchBudget)
+    collection_only: bool = False
 
     @model_validator(mode="after")
     def validate_timestamp_intent(self) -> ResearchSubmission:
@@ -119,7 +122,32 @@ async def submit_research(
                 and analysis_timestamp < requested_at - timedelta(minutes=5)
             )
         ),
-        research_budget=submission.budget,
+        research_plan=(
+            ResearchPlan(
+                question=submission.query,
+                instrument_symbol=submission.ticker,
+                horizon=submission.horizon,
+                steps=(
+                    ResearchStep(
+                        step_id="market_snapshot",
+                        objective="Collect and qualify market evidence",
+                        capability="market",
+                    ),
+                ),
+                stop_conditions=("market evidence and gaps recorded",),
+                evidence_requirements=("market data",),
+            )
+            if submission.collection_only
+            else None
+        ),
+        research_budget=(
+            submission.budget.model_copy(update={"max_llm_calls": 0})
+            if submission.collection_only
+            else submission.budget
+        ),
+        runtime_metadata={"submission_mode": "collection_only"}
+        if submission.collection_only
+        else {},
     )
     repository = ResearchRunRepository(session)
     await repository.create(state)

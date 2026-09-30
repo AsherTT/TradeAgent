@@ -339,6 +339,11 @@ Last audited: 2026-09-29
   at the first configured Codex subscription intent call after its 120-second limit. It
   persisted a controlled `AllProvidersFailedError` and made no provider call. This leaves
   unseeded model planning unqualified; see `docs/KLAC_CURRENT_QUALIFICATION.md`.
+- A server-generated `collection_only` submission mode now lets ordinary HTTP requests reach
+  provider acquisition with zero model calls while preserving all quality gates. A live KLAC
+  request completed the API/Redis/Celery/PostgreSQL/report path with 15 Finnhub news records,
+  41 unverified Yahoo bars, and an explicit incomplete report. This improves partial-result
+  usability without claiming synthesis or a qualified price analysis.
 - Phase 6 implementation and mock-path qualification are complete after a single whole-phase
   code review and closure of its provenance and storage-immutability findings. The application
   command remains default-off, and no live forward forecasts or provider qualification are claimed.

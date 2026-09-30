@@ -62,3 +62,11 @@ not qualify live model execution. The public state retains a controlled failure 
 does not expose the underlying SDK error. A reliable model route or a separately defined
 server-generated collection-only mode is needed before unseeded live requests can reach
 provider acquisition.
+
+The server-generated `collection_only` mode was subsequently implemented and qualified through
+real HTTP submission, Redis dispatch, Celery execution, PostgreSQL persistence, and report
+retrieval in run `720f6591-8adc-4c3c-8d0a-6392e71f8603`. It made zero model calls and two
+provider calls, saved 15 eligible news documents and a 41-bar Yahoo acquisition summary, and
+linked eight recent news source records in the report. Yahoo action quality remained
+`UNVERIFIED`; the run ended `insufficient_evidence` with no market or technical snapshot and
+`complete_analysis=false`. This validates the collection-only path, not model synthesis.

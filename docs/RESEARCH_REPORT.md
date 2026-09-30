@@ -4,6 +4,8 @@
 research state. It does not call a model or provider, change budgets, or create a new research
 artifact. Unknown IDs return 404. Pending, failed, cancelled, and insufficient-evidence runs
 return an explicit incomplete report rather than a fabricated analysis.
+For `collection_only` submissions, the status section explicitly says no model synthesis was
+requested.
 
 The endpoint lists the frozen analysis cutoff, run status, data quality, quality-gate decision,
 recorded gaps, and point-in-time eligible metadata for evidence cited by a completed synthesis.

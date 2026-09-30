@@ -244,3 +244,22 @@ def test_incomplete_report_lists_bounded_eligible_news_metadata() -> None:
     assert all(item.evidence_id != future.evidence_id for item in report.citations)
     assert all(item.source_uri == "https://example.org/story" for item in report.citations)
     assert report.complete_analysis is False
+
+
+def test_collection_only_report_discloses_absent_synthesis() -> None:
+    cutoff = datetime(2026, 9, 30, tzinfo=UTC)
+    state = ResearchState(
+        instrument_id=uuid4(),
+        ticker="KLAC",
+        query="Collect current KLAC evidence",
+        requested_at=cutoff,
+        analysis_timestamp=cutoff,
+        horizon="3-5 days",
+        status=ResearchStatus.INSUFFICIENT_EVIDENCE,
+        runtime_metadata={"submission_mode": "collection_only"},
+    )
+
+    report = build_research_report(state)
+
+    assert report.sections[0].text == "Collection-only run; no model synthesis was requested."
+    assert report.complete_analysis is False

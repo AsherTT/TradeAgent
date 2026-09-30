@@ -92,6 +92,12 @@ report quality are not yet qualified. Model-based news-event extraction remains 
 
 ## Outcomes
 
+`POST /research` also accepts `collection_only: true`. The server creates a minimal market
+plan from the submitted ticker, question, and horizon, and forces the model-call budget to zero.
+It still uses the same provider, cutoff, evidence, gap, persistence, and report gates. The
+report identifies this mode and never labels it a complete analysis. This is useful when no
+model route is available; it does not replace model-assisted planning or synthesis.
+
 - `complete`: a validated plan, all required capabilities, and an evidence-cited synthesis exist.
 - `insufficient_evidence`: planning may have succeeded, but qualified evidence is unavailable.
 - `failed`: execution raised an error; its type and a controlled reason are saved with a blocked

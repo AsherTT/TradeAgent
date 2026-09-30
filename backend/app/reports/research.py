@@ -118,6 +118,8 @@ def build_research_report(state: ResearchState) -> ResearchReport:
             text=(
                 "A cited research synthesis is available."
                 if synthesis_cited
+                else "Collection-only run; no model synthesis was requested."
+                if state.runtime_metadata.get("submission_mode") == "collection_only"
                 else "A complete, cited research synthesis is not available."
             ),
         )

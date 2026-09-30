@@ -597,6 +597,55 @@ def test_current_research_submission_persists_a_pending_cutoff(tmp_path: Path) -
     asyncio.run(scenario())
 
 
+def test_collection_only_submission_seeds_server_plan_without_model_calls(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    async def scenario() -> None:
+        database = Database(f"sqlite+aiosqlite:///{tmp_path / 'collection-only.db'}")
+        async with database.engine.begin() as connection:
+            await connection.run_sync(Base.metadata.create_all)
+        instrument = _instrument()
+        async with database.sessions() as session, session.begin():
+            await SecurityMasterRepository(session).add_instrument(instrument)
+            accepted = await submit_research(
+                ResearchSubmission(
+                    instrument_id=instrument.instrument_id,
+                    ticker="KLAC",
+                    query="Collect current KLAC evidence",
+                    horizon="3-5 days",
+                    timestamp_mode=ResearchTimestampMode.CURRENT_RESEARCH,
+                    replay_integrity_level="research_replay",
+                    collection_only=True,
+                ),
+                session,
+                lambda _: "collection-task",
+            )
+
+        async with database.sessions() as session:
+            persisted = await ResearchRunRepository(session).get(accepted.research_run_id)
+            assert persisted is not None
+            assert persisted.analysis_timestamp is None
+            assert persisted.research_plan is not None
+            assert persisted.research_plan.question == "Collect current KLAC evidence"
+            assert persisted.research_plan.evidence_requirements == ("market data",)
+            assert persisted.research_budget.max_llm_calls == 0
+            assert persisted.runtime_metadata["submission_mode"] == "collection_only"
+        monkeypatch.setattr(celery_module, "get_database", lambda: database)
+        monkeypatch.setattr(
+            celery_module,
+            "get_settings",
+            lambda: Settings(_env_file=None, market_data_enabled=False, news_enabled=False),
+        )
+        result = await execute_research_run(accepted.research_run_id)
+        assert result.status is ResearchStatus.INSUFFICIENT_EVIDENCE
+        assert result.model_history == ()
+        assert result.budget_usage.llm_calls == 0
+        assert "intent_started" not in result.runtime_metadata["transitions"]
+        await database.dispose()
+
+    asyncio.run(scenario())
+
+
 def test_current_research_save_persists_the_frozen_cutoff(tmp_path: Path) -> None:
     async def scenario() -> None:
         database = Database(f"sqlite+aiosqlite:///{tmp_path / 'frozen-cutoff.db'}")
