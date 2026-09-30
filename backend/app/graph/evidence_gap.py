@@ -90,6 +90,16 @@ def _eligible(item: Evidence, state: ResearchState) -> bool:
     cutoff = state.analysis_timestamp
     return (
         cutoff is not None
+        and all(
+            timestamp.tzinfo is not None and timestamp.utcoffset() is not None
+            for timestamp in (
+                cutoff,
+                item.observed_at,
+                item.available_at,
+                item.retrieved_at,
+                *((item.published_at,) if item.published_at is not None else ()),
+            )
+        )
         and item.instrument_id == state.instrument_id
         and item.observed_at <= cutoff
         and item.available_at <= cutoff

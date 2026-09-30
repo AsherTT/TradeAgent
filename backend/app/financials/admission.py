@@ -2,6 +2,7 @@
 
 import json
 from datetime import UTC, date, datetime
+from decimal import Decimal
 
 from pydantic import ValidationError
 
@@ -16,8 +17,10 @@ from backend.app.financials.sec import (
 
 def admitted_financial_fact(item: Evidence, *, cutoff: datetime) -> SecFinancialFact | None:
     if (
-        cutoff.tzinfo is None
-        or cutoff.utcoffset() is None
+        any(
+            timestamp.tzinfo is None or timestamp.utcoffset() is None
+            for timestamp in (cutoff, item.observed_at, item.available_at, item.retrieved_at)
+        )
         or item.evidence_type != "financial_fact"
         or item.trust_level is not TrustLevel.OFFICIAL_PRIMARY
         or item.source_name != "sec.companyfacts"
@@ -72,15 +75,29 @@ def select_financial_group(
 ) -> tuple[Evidence, ...]:
     groups: dict[tuple[int, date], dict[str, tuple[SecFinancialFact, Evidence]]] = {}
     conflicts: set[tuple[int, date]] = set()
+    observations: dict[tuple[int, date, str, date], tuple[date | None, Decimal]] = {}
+    accessions: dict[tuple[int, date, str, str], tuple[date | None, Decimal]] = {}
+    starts: dict[tuple[int, date, str], date | None] = {}
     for item in evidence:
         fact = admitted_financial_fact(item, cutoff=cutoff)
         if fact is not None:
             key = (fact.cik, fact.period_end)
+            semantic = (fact.period_start, fact.value)
+            observation = (*key, fact.concept, fact.filed_on)
+            accession = (*key, fact.concept, fact.accession)
+            concept_period = (*key, fact.concept)
+            if (
+                (observation in observations and observations[observation] != semantic)
+                or (accession in accessions and accessions[accession] != semantic)
+                or (concept_period in starts and starts[concept_period] != fact.period_start)
+            ):
+                conflicts.add(key)
+            observations[observation] = semantic
+            accessions[accession] = semantic
+            starts[concept_period] = fact.period_start
             group = groups.setdefault(key, {})
             previous = group.get(fact.concept)
             if previous is not None:
-                if previous[0].filed_on == fact.filed_on and previous[0].value != fact.value:
-                    conflicts.add(key)
                 if (previous[0].filed_on, previous[0].observed_at) >= (
                     fact.filed_on,
                     fact.observed_at,
@@ -93,4 +110,6 @@ def select_financial_group(
     if latest in conflicts:
         return ()
     group = groups[latest]
+    if len({fact.period_start for fact, _ in group.values() if fact.period_start is not None}) > 1:
+        return ()
     return tuple(group[concept][1] for concept in CONCEPTS if concept in group)

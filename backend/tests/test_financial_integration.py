@@ -206,12 +206,18 @@ async def test_fixed_cutoff_never_calls_current_financial_loader() -> None:
         {"content": "forged financial conclusion"},
         {"injection_risk": 0.1},
         {"published_at": NOW - timedelta(days=1)},
+        {"observed_at": NOW.replace(tzinfo=None)},
+        {"available_at": NOW.replace(tzinfo=None)},
+        {"retrieved_at": NOW.replace(tzinfo=None)},
     ],
 )
 def test_forged_financial_provenance_is_not_admitted(change: dict[str, Any]) -> None:
     item = financial_evidence()[0].model_copy(update=change)
     assert admitted_financial_fact(item, cutoff=NOW) is None
     assert qualified_evidence(state(analysis_timestamp=NOW, evidence=(item,))) == ()
+    incoming = state(analysis_timestamp=NOW, evidence=(item,))
+    assert not judge_evidence_gaps(incoming).sufficient
+    assert build_research_report(incoming).financial_observations == ()
 
 
 def test_freshness_and_future_cutoff_are_rechecked_at_report_time() -> None:
@@ -239,6 +245,9 @@ def test_all_four_concepts_need_one_period_and_cik_without_satisfying_market() -
         .to_evidence(ID, cutoff=NOW)
     )
     assert not financial_coverage((*items[:-1], different_period), cutoff=NOW)
+    inconsistent = state(analysis_timestamp=NOW, evidence=(*items[:-1], different_period))
+    assert build_research_report(inconsistent).financial_observations == ()
+    assert build_research_report(inconsistent).citations == ()
     plan = ResearchPlan(
         question="Assess KLAC",
         instrument_symbol="KLAC",
@@ -259,6 +268,40 @@ def test_all_four_concepts_need_one_period_and_cik_without_satisfying_market() -
     assert gap.missing_capabilities == ("market",)
     assert not gap.sufficient
     assert "financials" in gap.required_capabilities
+
+
+def test_naive_cutoff_is_rejected_by_admission_gap_and_report() -> None:
+    items = financial_evidence()
+    cutoff = NOW.replace(tzinfo=None)
+    assert admitted_financial_fact(items[0], cutoff=cutoff) is None
+    incoming = state(analysis_timestamp=cutoff, evidence=items)
+    assert qualified_evidence(incoming) == ()
+    assert not judge_evidence_gaps(incoming).sufficient
+    assert build_research_report(incoming).financial_observations == ()
+
+
+@pytest.mark.parametrize("conflict", ["older_same_date", "same_accession", "annual_start"])
+def test_conflicts_in_any_revision_suppress_coverage_and_report(conflict: str) -> None:
+    items = financial_evidence()
+    original = snapshot().facts[-1]
+    if conflict == "older_same_date":
+        changes = (
+            {"filed_on": date(2026, 8, 1), "value": Decimal(50),
+             "accession": "0000319201-26-000020"},
+            {"filed_on": date(2026, 8, 1), "value": Decimal(60),
+             "accession": "0000319201-26-000021"},
+        )
+    elif conflict == "same_accession":
+        changes = ({"filed_on": date(2026, 8, 7), "value": Decimal(60)},)
+    else:
+        changes = ({"period_start": date(2025, 6, 26)},)
+    contradictions = tuple(original.model_copy(update=change).to_evidence(ID, cutoff=NOW)
+                           for change in changes)
+    for evidence in ((*items, *contradictions), (*contradictions, *items)):
+        assert not financial_coverage(evidence, cutoff=NOW)
+        report = build_research_report(state(analysis_timestamp=NOW, evidence=evidence))
+        assert report.financial_observations == ()
+        assert report.citations == ()
 
 
 def test_synthesis_selects_and_requires_each_financial_concept_citation() -> None:

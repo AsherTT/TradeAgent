@@ -260,7 +260,7 @@ def _annual_rows(
 
 
 class SecFinancialClient:
-    """Single-client five-RPS limit; not yet suitable for concurrent worker composition."""
+    """Single-client five-RPS bound, with an optional shared worker admission gate."""
 
     def __init__(
         self,
