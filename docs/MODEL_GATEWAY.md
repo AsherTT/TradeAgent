@@ -7,7 +7,8 @@
 1. Accept a provider-neutral `ModelRequest` and Pydantic output schema.
 2. Select an ordered provider route through `TaskPolicy`.
 3. Reject executors that do not meet required capabilities.
-4. Retry each eligible provider a bounded number of times.
+4. Retry each eligible provider a bounded number of times. An explicit request timeout skips
+   another attempt at the same provider and proceeds to the next configured provider.
 5. Fall back to the next configured provider.
 6. Validate the result with Pydantic; invalid JSON or schema mismatch is a failed execution.
 7. Record every attempted, failed, skipped, and successful provider decision in tracing.

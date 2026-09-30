@@ -70,3 +70,8 @@ provider calls, saved 15 eligible news documents and a 41-bar Yahoo acquisition 
 linked eight recent news source records in the report. Yahoo action quality remained
 `UNVERIFIED`; the run ended `insufficient_evidence` with no market or technical snapshot and
 `complete_analysis=false`. This validates the collection-only path, not model synthesis.
+
+A separate minimal local Codex SDK probe also timed out, confirming the model issue occurs
+outside the research graph. The gateway now treats an explicit provider timeout as one failed
+attempt and moves to the next configured provider rather than spending another full timeout
+window on the same provider. No live model success is claimed.

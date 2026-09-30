@@ -14,7 +14,7 @@ from typing import Any
 
 from pydantic import BaseModel
 
-from backend.app.ai.errors import ProviderUnavailableError
+from backend.app.ai.errors import ProviderTimeoutError, ProviderUnavailableError
 from backend.app.ai.executors.base import ModelExecutor
 from backend.app.ai.structured_output import PydanticStructuredOutputAdapter
 from backend.app.contracts.base import utc_now
@@ -125,5 +125,7 @@ class CodexSubscriptionExecutor(ModelExecutor):
                     thread = await codex.thread_start(**kwargs)
                     result = await thread.run(prompt)
                     return str(result.final_response)
+        except TimeoutError as exc:
+            raise ProviderTimeoutError("Codex app-server request timed out") from exc
         except Exception as exc:
             raise ProviderUnavailableError(f"Codex app-server request failed: {exc}") from exc

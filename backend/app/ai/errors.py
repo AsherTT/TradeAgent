@@ -9,6 +9,10 @@ class ProviderUnavailableError(ModelRuntimeError):
     """The selected provider cannot currently accept a request."""
 
 
+class ProviderTimeoutError(ProviderUnavailableError):
+    """The provider exceeded the request deadline; retry at a higher level if warranted."""
+
+
 class CapabilityError(ModelRuntimeError):
     """An executor does not satisfy required capabilities."""
 

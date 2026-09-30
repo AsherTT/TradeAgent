@@ -9,7 +9,11 @@ from typing import Any
 
 from pydantic import BaseModel
 
-from backend.app.ai.errors import AllProvidersFailedError, ModelRuntimeError
+from backend.app.ai.errors import (
+    AllProvidersFailedError,
+    ModelRuntimeError,
+    ProviderTimeoutError,
+)
 from backend.app.ai.executors.base import ModelExecutor
 from backend.app.ai.gateway.observability import (
     AttemptStatus,
@@ -145,6 +149,8 @@ class ModelGateway:
                             error=prior_failure,
                         )
                     )
+                    if isinstance(exc, TimeoutError | ProviderTimeoutError):
+                        break
                     if attempt + 1 < self._max_attempts and self._retry_backoff_seconds:
                         await asyncio.sleep(self._retry_backoff_seconds * (attempt + 1))
 

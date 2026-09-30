@@ -4,7 +4,11 @@ from typing import Any
 import pytest
 from pydantic import BaseModel
 
-from backend.app.ai.errors import AllProvidersFailedError, ProviderUnavailableError
+from backend.app.ai.errors import (
+    AllProvidersFailedError,
+    ProviderTimeoutError,
+    ProviderUnavailableError,
+)
 from backend.app.ai.executors.base import ModelExecutor
 from backend.app.ai.executors.mock import MockExecutor
 from backend.app.ai.gateway import AttemptStatus, ModelGateway
@@ -28,6 +32,39 @@ class FailingExecutor(ModelExecutor):
     async def execute(self, request: ModelRequest[BaseModel]) -> ModelResponse[Any]:
         self.call_count += 1
         raise ProviderUnavailableError("temporary failure")
+
+
+class TimeoutExecutor(FailingExecutor):
+    async def execute(self, request: ModelRequest[BaseModel]) -> ModelResponse[Any]:
+        self.call_count += 1
+        raise ProviderTimeoutError("deadline exceeded")
+
+
+def test_gateway_skips_repeated_timeout_and_uses_fallback(
+    research_plan_payload: dict[str, Any],
+) -> None:
+    timed_out = TimeoutExecutor()
+    fallback = MockExecutor(lambda _: research_plan_payload)
+    gateway = ModelGateway([timed_out, fallback], max_attempts_per_provider=2)
+    request = ModelRequest[ResearchPlan](
+        task="Create a research plan",
+        context={"ticker": "KLAC"},
+        output_schema=ResearchPlan,
+    )
+
+    response = asyncio.run(
+        gateway.execute(
+            request,
+            provider_order=(ProviderName.CODEX_SUBSCRIPTION, ProviderName.MOCK),
+        )
+    )
+
+    assert timed_out.call_count == 1
+    assert response.metadata.provider is ProviderName.MOCK
+    assert [item.status for item in gateway.tracer.attempts] == [
+        AttemptStatus.FAILED,
+        AttemptStatus.SUCCEEDED,
+    ]
 
 
 def test_gateway_falls_back_after_bounded_retries(
