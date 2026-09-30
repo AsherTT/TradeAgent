@@ -478,6 +478,11 @@ class ResearchWorkflow:
         request = ModelRequest[ResearchPlan](
             task=(
                 "Create a bounded equity-research plan. Do not provide investment advice. "
+                "Use only these step capability names: "
+                + ", ".join(sorted(set(SUPPORTED_EVIDENCE_REQUIREMENTS.values())))
+                + ". Preserve the submitted ticker, question and horizon. "
+                "Required steps must address the submitted question; "
+                "mark exploratory extras optional. "
                 "Use only these evidence_requirements values: "
                 + ", ".join(repr(value) for value in SUPPORTED_EVIDENCE_REQUIREMENTS)
                 + ". Unsupported requirements safely stop as insufficient evidence."
@@ -485,6 +490,7 @@ class ResearchWorkflow:
             task_kind=TaskKind.RESEARCH_PLANNING,
             context={
                 "instrument_id": str(state.instrument_id),
+                "ticker": state.ticker,
                 "query": state.query,
                 "horizon": state.horizon,
                 "research_goal": state.research_intent.research_goal
@@ -589,6 +595,7 @@ class ResearchWorkflow:
             state.status is not ResearchStatus.RUNNING
             or state.evidence
             or self._evidence_provider is None
+            or _attempt_status(state, ResearchNode.COLLECT_EVIDENCE) == "completed"
         ):
             return {"research": state}
         if _attempt_started(state, ResearchNode.COLLECT_EVIDENCE):
@@ -1093,9 +1100,14 @@ def _mark_attempt_completed(state: ResearchState, node: ResearchNode) -> Researc
 
 
 def _attempt_started(state: ResearchState, node: ResearchNode) -> bool:
+    return _attempt_status(state, node) == "started"
+
+
+def _attempt_status(state: ResearchState, node: ResearchNode) -> str | None:
     attempts = state.runtime_metadata.get("external_attempts", {})
     attempt = attempts.get(node.value, {}) if isinstance(attempts, dict) else {}
-    return isinstance(attempt, dict) and attempt.get("status") == "started"
+    status = attempt.get("status") if isinstance(attempt, dict) else None
+    return status if isinstance(status, str) else None
 
 
 def failed_research_state(state: ResearchState, exc: Exception) -> ResearchState:

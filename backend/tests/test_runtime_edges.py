@@ -227,9 +227,7 @@ def test_openai_compatible_closes_owned_client(
         def __init__(self, **kwargs: Any) -> None:
             assert "Authorization" in kwargs["headers"]
 
-        async def post(
-            self, url: str, json: dict[str, Any], **kwargs: Any
-        ) -> httpx.Response:
+        async def post(self, url: str, json: dict[str, Any], **kwargs: Any) -> httpx.Response:
             assert kwargs["timeout"] == 60
             return httpx.Response(
                 200,
@@ -267,7 +265,10 @@ def test_codex_sdk_runner_uses_read_only_sandbox(
     class FakeThread:
         async def run(self, prompt: str) -> Any:
             observed["prompt"] = prompt
-            return SimpleNamespace(final_response=json.dumps(research_plan_payload))
+            return SimpleNamespace(
+                status=SimpleNamespace(value="completed"),
+                final_response=json.dumps(research_plan_payload)
+            )
 
     class FakeCodex:
         async def __aenter__(self) -> "FakeCodex":
@@ -308,8 +309,9 @@ def test_codex_sdk_runner_wraps_sdk_errors(monkeypatch: pytest.MonkeyPatch) -> N
         "openai_codex",
         SimpleNamespace(AsyncCodex=FailingCodex, Sandbox=FakeSandbox),
     )
-    with pytest.raises(ProviderUnavailableError, match="sdk failed"):
+    with pytest.raises(ProviderUnavailableError, match="request failed") as caught:
         asyncio.run(CodexSubscriptionExecutor._run_with_sdk("prompt", None, 1, "medium"))
+    assert "sdk failed" not in str(caught.value)
 
 
 def test_codex_sdk_runner_reports_missing_optional_dependency(
@@ -337,7 +339,10 @@ def test_codex_sdk_runner_omits_empty_model(
 
     class FakeThread:
         async def run(self, prompt: str) -> Any:
-            return SimpleNamespace(final_response=json.dumps(research_plan_payload))
+            return SimpleNamespace(
+                status=SimpleNamespace(value="completed"),
+                final_response=json.dumps(research_plan_payload)
+            )
 
     class FakeCodex:
         async def __aenter__(self) -> "FakeCodex":

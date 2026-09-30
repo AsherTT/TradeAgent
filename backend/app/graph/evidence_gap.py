@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from backend.app.contracts.evidence import Evidence, EvidenceGapResult, TrustLevel
 from backend.app.contracts.research import ResearchState
+from backend.app.financials.admission import admitted_financial_fact, financial_coverage
 from backend.app.rag.ingestion import SCANNER_VERSION
 
 SUPPORTED_EVIDENCE_REQUIREMENTS = {
@@ -14,6 +15,7 @@ SUPPORTED_EVIDENCE_REQUIREMENTS = {
     "filing documents": "filing",
     "rag documents": "rag",
     "external research": "rag",
+    "annual financial facts": "financials",
 }
 _SUPPORTED_CAPABILITIES = frozenset(SUPPORTED_EVIDENCE_REQUIREMENTS.values())
 
@@ -70,6 +72,7 @@ def judge_evidence_gaps(state: ResearchState) -> EvidenceGapResult:
         "news": news,
         "rag": rag,
         "filing": filing,
+        "financials": cutoff is not None and financial_coverage(eligible, cutoff=cutoff),
     }
     missing = tuple(
         capability for capability in capabilities if not supported.get(capability, False)
@@ -109,6 +112,11 @@ def qualified_evidence(state: ResearchState) -> tuple[Evidence, ...]:
                 item.evidence_type == "news_document"
                 and item.trust_level is TrustLevel.PUBLIC_SOURCE
                 and item.sanitization_status == "html_cleaned_and_scanned"
+            )
+            or (
+                item.evidence_type == "financial_fact"
+                and state.analysis_timestamp is not None
+                and admitted_financial_fact(item, cutoff=state.analysis_timestamp) is not None
             )
             or (
                 item.evidence_type == "rag_document"

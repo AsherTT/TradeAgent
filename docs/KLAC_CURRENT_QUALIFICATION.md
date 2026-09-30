@@ -75,3 +75,19 @@ A separate minimal local Codex SDK probe also timed out, confirming the model is
 outside the research graph. The gateway now treats an explicit provider timeout as one failed
 attempt and moves to the next configured provider rather than spending another full timeout
 window on the same provider. No live model success is claimed.
+
+## 2026-10-01 local model transport recovery
+
+The SDK child needed the workstation's existing loopback proxy. An explicit local
+`CODEX_PROXY_URL` fixed the minimal probe without increasing its timeout. Two real
+structured outputs then passed. Run `c11a6a2a-b952-4f59-8fb8-905e368420d2` qualified
+model-assisted HTTP submission and durable intent/planning through real Redis/Celery/
+PostgreSQL, collecting eight news records and 41 Yahoo bars. It still ended
+`insufficient_evidence` with `UNVERIFIED` action quality and no synthesis. SEC financials
+remained disabled pending an identifying contact User-Agent. See
+`docs/CODEX_TRANSPORT_QUALIFICATION.md`; earlier timeout observations remain historical.
+
+After supplying the planner's supported capability vocabulary, run
+`6dbc59d4-c8fb-4281-ba43-36fad58c1966` repeated the real path in 21.50 seconds.
+The plan used supported names. It still disclosed market/quant/filing/RAG gaps,
+withheld synthesis and returned `insufficient_evidence`.

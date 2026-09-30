@@ -7,6 +7,7 @@ from typing import Any
 
 from backend.app.contracts.evidence import Evidence, ResearchSynthesis, TrustLevel
 from backend.app.contracts.research import ResearchState
+from backend.app.financials.admission import financial_coverage, select_financial_group
 from backend.app.graph.evidence_gap import qualified_evidence
 
 _BOUNDARY_MARKER = re.compile(r"(?i)\b(BEGIN|END)\s+UNTRUSTED\s+EVIDENCE\b")
@@ -16,6 +17,7 @@ _EVIDENCE_TYPE_BY_CAPABILITY = {
     "news": "news_document",
     "rag": "rag_document",
     "filing": "rag_document",
+    "financials": "financial_fact",
 }
 
 
@@ -34,6 +36,8 @@ def select_synthesis_evidence(state: ResearchState) -> tuple[Evidence, ...]:
         )
     )
     selected: list[Evidence] = []
+    if "financials" in required and state.analysis_timestamp is not None:
+        selected.extend(select_financial_group(eligible, cutoff=state.analysis_timestamp))
     if "filing" in required:
         filing = next(
             (
@@ -48,6 +52,8 @@ def select_synthesis_evidence(state: ResearchState) -> tuple[Evidence, ...]:
         if filing is not None:
             selected.append(filing)
     for evidence_type in priority_types:
+        if evidence_type == "financial_fact":
+            continue
         match = next(
             (
                 item
@@ -121,3 +127,13 @@ def validate_synthesis(
         for item in selected
     ):
         raise ValueError("synthesis omits required SEC filing citation")
+    if "financials" in required_capabilities:
+        cited_financials = tuple(
+            item
+            for item in selected
+            if item.evidence_id in synthesis.evidence_ids and item.evidence_type == "financial_fact"
+        )
+        # Admission already bounded these observations to the research cutoff.
+        cutoff = max((item.available_at for item in selected), default=None)
+        if cutoff is None or not financial_coverage(cited_financials, cutoff=cutoff):
+            raise ValueError("synthesis omits required annual financial concepts")

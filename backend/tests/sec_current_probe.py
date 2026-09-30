@@ -10,11 +10,12 @@ import os
 import tempfile
 from pathlib import Path
 
+from backend.app.config import Settings
 from backend.app.financials.sec import SecFinancialClient, SecFinancialError
 
 
 async def main() -> None:
-    agent = os.environ.get("SEC_USER_AGENT", "")
+    agent = os.environ.get("SEC_USER_AGENT") or Settings().sec_user_agent or ""
     if not agent:
         print("SEC probe unavailable: SEC_USER_AGENT is not configured")
         return

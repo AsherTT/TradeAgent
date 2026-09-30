@@ -160,6 +160,32 @@ cancellation, not provider-side interruption of an in-flight call.
 
 ## Remaining Phase 5 path
 
+### Current financial and model increment (2026-10-01)
+
+`FINANCIALS_ENABLED` defaults false and requires an identifying local `SEC_USER_AGENT`
+plus current market acquisition. A current-only financial wrapper collects at most two
+official SEC responses before news/market acquisition freezes the cutoff; the existing
+durable collection pre-call marker protects all these requests. A completed collection
+checkpoint now prevents reacquisition even if zero evidence was admitted.
+
+The wrapper charges actual SEC HTTP initiations, reserves a market call, propagates remaining
+budgets to news/market and refuses to start the market step after financial wall-time exhaustion.
+Redis provides cross-worker SEC admission at four requests/second. Fixed-cutoff and constrained
+replay do not fetch financials. Current annual financial coverage requires all four supported
+USD concepts for one CIK, period end and duration start; freshness/provenance gates are rechecked
+for synthesis and report. Each reported observation has its own typed value and citation.
+This does not replace the market/quant baseline or enable `complete_analysis`.
+
+The planner prompt now supplies exact capability names as well as requirement values;
+unsupported requirements/capabilities still fail closed. The local Codex transport issue
+was resolved with a child-only proxy; two real intent/planning nodes and a live durable
+KLAC collection passed while market quality continued to block synthesis. See
+`docs/SEC_FINANCIAL_INTEGRATION.md`, `docs/CODEX_TRANSPORT_QUALIFICATION.md`, and
+`docs/KLAC_ACTION_SOURCE_RESEARCH.md`. SEC real-client qualification, company-action
+completeness, verified catalyst claims and full report synthesis remain pending.
+
+### Earlier path record
+
 1. Request separate authorization before a narrow recorded live market-data trial.
 2. Durable cancellation is qualified offline and through the Docker queue path. External-attempt
    observability now distinguishes completed, known-failure, and unknown-outcome steps with

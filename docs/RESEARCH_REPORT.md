@@ -27,6 +27,13 @@ market evidence.
 and freshness checks are implemented and qualified. This endpoint must not be presented as a
 complete KLAC investment report.
 
+The default-off SEC current financial integration now adds at most four typed annual
+financial observations. Each shows its own fact citation, USD value, reporting period,
+filing date, form and accession. Admission checks provenance, cutoff, freshness and
+consistent entity/period; duration concepts must share their start date. These are raw
+reported facts and do not establish business analysis or historical point-in-time coverage.
+See `docs/SEC_FINANCIAL_INTEGRATION.md` for the acceptance contract.
+
 Next work: qualify a source for current corporate actions without promoting Yahoo's
 `UNVERIFIED` action report by fiat; run the live API/worker/Redis/PostgreSQL path with an
 authorized model and provider configuration; add typed financial and catalyst evidence; extend

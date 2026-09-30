@@ -15,6 +15,9 @@ from backend.app.config import Settings, get_settings
 from backend.app.contracts.evaluation import ReplayIntegrityLevel
 from backend.app.contracts.research import ResearchState, ResearchStatus, ResearchTimestampMode
 from backend.app.evaluation.forward import ForwardEvaluationRunner
+from backend.app.financials.current import CurrentFinancialSnapshot
+from backend.app.financials.limiter import RedisSecRequestLimiter
+from backend.app.financials.sec import SecFinancialClient
 from backend.app.graph import (
     MarketResearchEvidence,
     ResearchEvidence,
@@ -184,6 +187,25 @@ async def execute_research_run(
                     evidence_provider,
                 )
                 evidence_provider = news_snapshot
+            if (
+                settings.financials_enabled
+                and state.timestamp_mode is ResearchTimestampMode.CURRENT_RESEARCH
+                and state.analysis_timestamp is None
+                and state.replay_integrity_level
+                is not ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY
+            ):
+                if evidence_provider is None or not settings.sec_user_agent:
+                    raise ValueError(
+                        "live financials require current acquisition and SEC User-Agent"
+                    )
+                evidence_provider = CurrentFinancialSnapshot(
+                    SecFinancialClient(
+                        user_agent=settings.sec_user_agent,
+                        before_request=RedisSecRequestLimiter(settings.redis_broker_url),
+                    ),
+                    evidence_provider,
+                    resolver=SecurityMasterInstrumentResolver(SecurityMasterRepository(session)),
+                )
             if settings.rag_enabled and (
                 state.replay_integrity_level is not ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY
             ):

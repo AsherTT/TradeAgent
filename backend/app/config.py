@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from functools import lru_cache
 from typing import Any
+from urllib.parse import urlsplit
 
-from pydantic import Field, model_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -62,6 +63,32 @@ class Settings(BaseSettings):
     openai_model: str | None = None
 
     codex_model: str | None = Field(default=None)
+    codex_proxy_url: str | None = None
+
+    @field_validator("codex_proxy_url")
+    @classmethod
+    def validate_codex_proxy(cls, value: str | None) -> str | None:
+        if not value:
+            return None
+        try:
+            parsed = urlsplit(value)
+            if (
+                parsed.scheme not in {"http", "https"}
+                or not parsed.hostname
+                or parsed.port is None
+                or parsed.username is not None
+                or parsed.password is not None
+                or parsed.query
+                or parsed.fragment
+                or parsed.path not in {"", "/"}
+                or any(char.isspace() for char in value)
+            ):
+                raise ValueError
+        except ValueError:
+            raise ValueError(
+                "Codex proxy must be an HTTP(S) host:port without credentials"
+            ) from None
+        return value
 
     market_data_enabled: bool = False
     market_data_provider_order: tuple[str, ...] = ("alpha_vantage", "yfinance")
@@ -81,6 +108,14 @@ class Settings(BaseSettings):
     news_enabled: bool = False
     finnhub_api_key: str | None = None
     finnhub_base_url: str = "https://finnhub.io/api/v1/company-news"
+    financials_enabled: bool = False
+    sec_user_agent: str | None = None
+
+    @model_validator(mode="after")
+    def validate_financial_configuration(self) -> Settings:
+        if self.financials_enabled and (not self.market_data_enabled or not self.sec_user_agent):
+            raise ValueError("live financials require market acquisition and SEC User-Agent")
+        return self
 
 
 @lru_cache

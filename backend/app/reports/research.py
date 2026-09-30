@@ -12,6 +12,8 @@ from backend.app.contracts.base import ContractModel
 from backend.app.contracts.evaluation import DataQualityStatus, QualityGateDecision
 from backend.app.contracts.market import MarketAcquisitionSummary
 from backend.app.contracts.research import ResearchState, ResearchStatus
+from backend.app.financials.admission import admitted_financial_fact, select_financial_group
+from backend.app.financials.sec import SecFinancialFact
 from backend.app.graph.evidence_gap import qualified_evidence
 
 
@@ -44,6 +46,12 @@ class ResearchReport(ContractModel):
     sections: tuple[ReportSection, ...] = Field(min_length=1)
     citations: tuple[ReportCitation, ...] = ()
     gaps: tuple[str, ...] = ()
+    financial_observations: tuple[FinancialReportObservation, ...] = Field(default=(), max_length=4)
+
+
+class FinancialReportObservation(ContractModel):
+    evidence_id: UUID
+    fact: SecFinancialFact
 
 
 def _safe_source_uri(uri: str | None) -> str | None:
@@ -89,7 +97,8 @@ def build_research_report(state: ResearchState) -> ResearchReport:
             observed_at=eligible[evidence_id].observed_at,
             available_at=eligible[evidence_id].available_at,
         )
-        for evidence_id in cited_ids if synthesis_cited
+        for evidence_id in cited_ids
+        if synthesis_cited
     )
     eligible_news = sorted(
         (item for item in eligible.values() if item.evidence_type == "news_document"),
@@ -108,8 +117,34 @@ def build_research_report(state: ResearchState) -> ResearchReport:
         )
         for item in eligible_news[:8]
     )
+    financial_items = (
+        select_financial_group(tuple(eligible.values()), cutoff=state.analysis_timestamp)
+        if state.analysis_timestamp is not None
+        else ()
+    )
+    financial_observations = []
+    for item in financial_items:
+        assert state.analysis_timestamp is not None
+        fact = admitted_financial_fact(item, cutoff=state.analysis_timestamp)
+        assert fact is not None
+        financial_observations.append(
+            FinancialReportObservation(evidence_id=item.evidence_id, fact=fact)
+        )
+    financial_citations = tuple(
+        ReportCitation(
+            evidence_id=item.evidence_id,
+            evidence_type=item.evidence_type,
+            source_name=item.source_name,
+            source_uri=_safe_source_uri(item.source_uri),
+            published_at=None,
+            observed_at=item.observed_at,
+            available_at=item.available_at,
+        )
+        for item in financial_items
+    )
     citations_by_id = {
-        citation.evidence_id: citation for citation in (*cited_synthesis, *news_citations)
+        citation.evidence_id: citation
+        for citation in (*cited_synthesis, *news_citations, *financial_citations)
     }
     citations = tuple(citations_by_id.values())
     sections = [
@@ -138,6 +173,22 @@ def build_research_report(state: ResearchState) -> ResearchReport:
             text="No separately verified business or financial analysis is available in this run.",
         )
     )
+    if financial_observations:
+        sections.extend(
+            ReportSection(
+                title=f"Annual financial observation: {observation.fact.concept}",
+                text=(
+                    f"SEC reported {observation.fact.value} USD; period "
+                    f"{observation.fact.period_start or 'instant'} to "
+                    f"{observation.fact.period_end}; filed {observation.fact.filed_on}; "
+                    f"{observation.fact.form}, accession {observation.fact.accession}. "
+                    "Current acquired observation; not a business conclusion "
+                    "or historical PIT proof."
+                ),
+                evidence_ids=(observation.evidence_id,),
+            )
+            for observation in financial_observations
+        )
     sections.append(
         ReportSection(
             title="Catalysts",
@@ -188,8 +239,7 @@ def build_research_report(state: ResearchState) -> ResearchReport:
         technical is not None
         and state.market_snapshot is not None
         and market_citations
-        and state.data_quality_status
-        in {DataQualityStatus.VERIFIED, DataQualityStatus.ACCEPTABLE}
+        and state.data_quality_status in {DataQualityStatus.VERIFIED, DataQualityStatus.ACCEPTABLE}
         and state.market_snapshot.latest_bar.data_quality_status
         in {DataQualityStatus.VERIFIED, DataQualityStatus.ACCEPTABLE}
     ):
@@ -258,4 +308,5 @@ def build_research_report(state: ResearchState) -> ResearchReport:
         sections=tuple(sections),
         citations=citations,
         gaps=gaps,
+        financial_observations=tuple(financial_observations),
     )

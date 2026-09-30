@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 import re
-from collections.abc import Callable
+from collections.abc import Awaitable, Callable
 from datetime import UTC, date, datetime
 from decimal import Decimal
 from hashlib import sha256
@@ -30,6 +30,8 @@ _ACCESSION = re.compile(r"^\d{10}-\d{2}-\d{6}$")
 _TICKER = re.compile(r"^[A-Z0-9][A-Z0-9.-]{0,14}$")
 TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 MAX_BYTES = 10_000_000
+MAX_PERIOD_AGE_DAYS = 550
+MAX_FILING_AGE_DAYS = 400
 
 
 class SecFinancialError(Exception):
@@ -62,7 +64,10 @@ class SecFinancialFact(ContractModel):
             raise ValueError("unsupported financial form")
         if self.observed_at.tzinfo is None or self.observed_at.utcoffset() is None:
             raise ValueError("financial observation requires an aware timestamp")
-        if self.period_end > self.filed_on or self.filed_on > self.observed_at.date():
+        if (
+            self.period_end > self.filed_on
+            or self.filed_on > self.observed_at.astimezone(UTC).date()
+        ):
             raise ValueError("financial period or filing is in the future")
         if not _supported_period(self.concept, self.period_start, self.period_end):
             raise ValueError("financial period is not a supported instant or annual duration")
@@ -96,7 +101,12 @@ class SecFinancialFact(ContractModel):
             content=content,
             structured_data=data,
             confidence=1.0,
-            freshness=1.0,
+            freshness=max(
+                0.0,
+                1
+                - (self.observed_at.astimezone(UTC).date() - self.period_end).days
+                / MAX_PERIOD_AGE_DAYS,
+            ),
             trust_level=TrustLevel.OFFICIAL_PRIMARY,
             source_type="sec_xbrl_current_observation",
             content_hash=sha256(content.encode()).hexdigest(),
@@ -111,6 +121,20 @@ class SecFinancialSnapshot(ContractModel):
     observed_at: datetime
     facts: tuple[SecFinancialFact, ...]
     gaps: tuple[str, ...]
+
+    @model_validator(mode="after")
+    def consistent_snapshot(self) -> SecFinancialSnapshot:
+        if (
+            not _TICKER.fullmatch(self.ticker)
+            or not 1 <= self.cik <= 9_999_999_999
+            or self.observed_at.tzinfo is None
+            or self.observed_at.utcoffset() is None
+            or any(
+                fact.cik != self.cik or fact.observed_at != self.observed_at for fact in self.facts
+            )
+        ):
+            raise ValueError("financial snapshot identity or acquisition time mismatch")
+        return self
 
 
 def resolve_cik(payload: Any, ticker: str) -> int:
@@ -244,6 +268,7 @@ class SecFinancialClient:
         user_agent: str,
         client: httpx.AsyncClient | None = None,
         observed_at: Callable[[], datetime] = utc_now,
+        before_request: Callable[[], Awaitable[None]] | None = None,
     ) -> None:
         if (
             not user_agent.strip()
@@ -255,10 +280,13 @@ class SecFinancialClient:
         self._user_agent = user_agent
         self._client = client
         self._clock = observed_at
+        self._before_request = before_request
+        self.requests_made = 0
         self._lock = asyncio.Lock()
         self._last_request = 0.0
 
     async def load_current(self, ticker: str) -> SecFinancialSnapshot:
+        self.requests_made = 0
         ticker = ticker.strip().upper()
         if not _TICKER.fullmatch(ticker):
             raise SecFinancialError("invalid SEC ticker request")
@@ -282,6 +310,9 @@ class SecFinancialClient:
             await asyncio.sleep(max(0.0, 0.2 - (monotonic() - self._last_request)))
             self._last_request = monotonic()
             try:
+                if self._before_request is not None:
+                    await self._before_request()
+                self.requests_made += 1
                 async with (
                     asyncio.timeout(20),
                     client.stream(

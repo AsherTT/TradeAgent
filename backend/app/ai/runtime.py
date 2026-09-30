@@ -12,7 +12,7 @@ from backend.app.config import Settings
 
 def build_model_gateway(settings: Settings) -> ModelGateway:
     executors = [
-        CodexSubscriptionExecutor(model=settings.codex_model),
+        CodexSubscriptionExecutor(model=settings.codex_model, proxy_url=settings.codex_proxy_url),
         QwenExecutor(
             model=settings.qwen_model,
             api_key=settings.qwen_api_key,

@@ -8,7 +8,9 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 from collections.abc import Awaitable, Callable
+from functools import partial
 from time import perf_counter
 from typing import Any
 
@@ -48,10 +50,16 @@ class CodexSubscriptionExecutor(ModelExecutor):
         cost_tier=CostTier.SUBSCRIPTION,
     )
 
-    def __init__(self, *, model: str | None = None, runner: CodexRunner | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        model: str | None = None,
+        runner: CodexRunner | None = None,
+        proxy_url: str | None = None,
+    ) -> None:
         self.model = model or "codex-account-default"
         self._configured_model = model
-        self._runner = runner or self._run_with_sdk
+        self._runner = runner or partial(self._run_with_sdk, proxy_url=proxy_url)
 
     async def execute(self, request: ModelRequest[BaseModel]) -> ModelResponse[Any]:
         started = perf_counter()
@@ -105,6 +113,8 @@ class CodexSubscriptionExecutor(ModelExecutor):
         model: str | None,
         timeout_seconds: float,
         reasoning_effort: str,
+        *,
+        proxy_url: str | None = None,
     ) -> str:
         try:
             from openai_codex import AsyncCodex, Sandbox
@@ -114,8 +124,15 @@ class CodexSubscriptionExecutor(ModelExecutor):
             ) from exc
 
         try:
+            sdk_options: dict[str, Any] = {}
+            if proxy_url:
+                from openai_codex import CodexConfig
+
+                child_env = os.environ.copy()
+                child_env["HTTPS_PROXY"] = child_env["HTTP_PROXY"] = proxy_url
+                sdk_options["config"] = CodexConfig(env=child_env)
             async with asyncio.timeout(timeout_seconds):
-                async with AsyncCodex() as codex:
+                async with AsyncCodex(**sdk_options) as codex:
                     kwargs: dict[str, Any] = {
                         "sandbox": Sandbox.read_only,
                         "config": {"model_reasoning_effort": reasoning_effort},
@@ -124,8 +141,12 @@ class CodexSubscriptionExecutor(ModelExecutor):
                         kwargs["model"] = model
                     thread = await codex.thread_start(**kwargs)
                     result = await thread.run(prompt)
-                    return str(result.final_response)
+                    if result.status.value != "completed" or not isinstance(
+                        result.final_response, str
+                    ):
+                        raise ProviderUnavailableError("Codex turn did not complete with text")
+                    return result.final_response
         except TimeoutError as exc:
             raise ProviderTimeoutError("Codex app-server request timed out") from exc
-        except Exception as exc:
-            raise ProviderUnavailableError(f"Codex app-server request failed: {exc}") from exc
+        except Exception:
+            raise ProviderUnavailableError("Codex app-server request failed") from None
