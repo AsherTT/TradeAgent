@@ -4,6 +4,14 @@ Last audited: 2026-09-29
 
 ## Implemented
 
+- Phase 5 standalone SEC financial-source slice (2026-10-01): exact current ticker/CIK
+  resolution, bounded official Company Facts client, typed USD annual facts, conservative
+  acquisition-time availability, revision/conflict checks and filing-index citations.
+  Offline golden cases pass. See `docs/SEC_FINANCIAL_SLICE.md` and
+  `docs/SEC_FINANCIAL_SOURCE.md`. It is not wired to the worker/report, and live client
+  qualification remains pending an identifying SEC User-Agent. No complete financial
+  research or historical PIT qualification is claimed.
+
 - Phase 0 repository and Python 3.12 project baseline
 - FastAPI health skeleton
 - Docker Compose service boundaries for API, worker, PostgreSQL/pgvector, and Redis
