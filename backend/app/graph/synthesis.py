@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from backend.app.contracts.evidence import Evidence, ResearchSynthesis, TrustLevel
+from backend.app.contracts.evidence import Evidence, ResearchSynthesis, SynthesisClaim, TrustLevel
 from backend.app.contracts.research import ResearchState
 from backend.app.financials.admission import financial_coverage, select_financial_group
 from backend.app.graph.evidence_gap import qualified_evidence
@@ -142,6 +142,12 @@ def validate_synthesis(
 
 
 def validate_synthesis_claims(synthesis: ResearchSynthesis, selected: tuple[Evidence, ...]) -> None:
+    validate_source_claims(synthesis.claims, selected, set(synthesis.evidence_ids))
+
+
+def validate_source_claims(
+    claims: tuple[SynthesisClaim, ...], selected: tuple[Evidence, ...], cited_ids: set[object],
+) -> None:
     sources = {item.evidence_id: item for item in selected}
     seen: set[tuple[str, str, object]] = set()
     allowed_types = {
@@ -149,9 +155,9 @@ def validate_synthesis_claims(synthesis: ResearchSynthesis, selected: tuple[Evid
         "price": {"market_technical_snapshot"},
         "catalyst": {"news_document", "rag_document"},
     }
-    for claim in synthesis.claims:
+    for claim in claims:
         source = sources.get(claim.evidence_id)
-        if source is None or claim.evidence_id not in synthesis.evidence_ids:
+        if source is None or claim.evidence_id not in cited_ids:
             raise ValueError("claim citation must be selected and globally cited")
         if claim.supporting_quote not in source.content[:1000]:
             raise ValueError("claim supporting quote is outside selected source excerpt")

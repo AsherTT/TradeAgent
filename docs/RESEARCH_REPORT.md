@@ -41,3 +41,10 @@ Next work: qualify a source for current corporate actions without promoting Yaho
 `UNVERIFIED` action report by fiat; run the live API/worker/Redis/PostgreSQL path with an
 authorized model and provider configuration; add typed financial and catalyst evidence; extend
 the synthesis contract for section-specific claims and citations.
+
+The partial analysis projection now recomputes two annual financial fractions from
+the shared qualified four-concept group, with formula, period and two input citations.
+Optional catalyst interpretations have exact supporting quotes and individual citations;
+invalid source/quote attribution suppresses the entire assessment. A valid empty
+assessment exposes its model-reported limitations. These additions do not establish
+verified business/catalyst analysis or complete reports. See FINANCIAL_CATALYST_ANALYSIS.md.

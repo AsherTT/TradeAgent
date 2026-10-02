@@ -107,6 +107,7 @@ class Settings(BaseSettings):
     alpha_vantage_api_key: str | None = None
     alpha_vantage_base_url: str = "https://www.alphavantage.co/query"
     news_enabled: bool = False
+    catalysts_enabled: bool = False
     finnhub_api_key: str | None = None
     finnhub_base_url: str = "https://finnhub.io/api/v1/company-news"
     financials_enabled: bool = False

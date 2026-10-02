@@ -94,3 +94,16 @@ class ResearchSynthesis(ContractModel):
         if (self.forecast_direction is None) != (self.forecast_probability is None):
             raise ValueError("forecast direction and probability must be supplied together")
         return self
+
+
+class CatalystAssessment(ContractModel):
+    claims: tuple[SynthesisClaim, ...] = Field(default=(), max_length=5)
+    limitations: tuple[Annotated[str, Field(min_length=1, max_length=300)], ...] = Field(
+        max_length=3
+    )
+
+    @model_validator(mode="after")
+    def catalyst_sections(self) -> CatalystAssessment:
+        if any(claim.section != "catalyst" for claim in self.claims):
+            raise ValueError("catalyst assessment permits only catalyst interpretations")
+        return self

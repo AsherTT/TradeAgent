@@ -75,7 +75,9 @@ async def main() -> None:
                     "replay_integrity_level": "research_replay",
                     "collection_only": False,
                     "budget": {
-                        "max_llm_calls": 2,
+                        "max_llm_calls": (
+                            3 if os.environ.get("KLAC_PROBE_CATALYSTS") == "true" else 2
+                        ),
                         "max_tool_calls": (
                             6 if os.environ.get("KLAC_PROBE_RAG_LEXICAL") == "true" else 4
                         ),
@@ -125,6 +127,9 @@ async def main() -> None:
             }),
             "report_citations": len(report["citations"]),
             "complete_analysis": report["complete_analysis"],
+            "financial_metrics": report.get("financial_metrics", []),
+            "catalyst_claim_count": len(report.get("catalyst_interpretations", [])),
+            "has_catalyst_assessment": state.get("catalyst_assessment") is not None,
             "gaps": report["gaps"],
         }
         path = Path(tempfile.gettempdir()) / "tradeagent-klac-current-model-durable.json"

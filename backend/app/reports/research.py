@@ -14,9 +14,11 @@ from backend.app.contracts.evidence import SynthesisClaim
 from backend.app.contracts.market import MarketAcquisitionSummary
 from backend.app.contracts.research import ResearchState, ResearchStatus
 from backend.app.financials.admission import admitted_financial_fact, select_financial_group
+from backend.app.financials.analysis import FinancialMetric, derive_financial_metrics
 from backend.app.financials.sec import SecFinancialFact
 from backend.app.graph.evidence_gap import qualified_evidence
 from backend.app.graph.synthesis import validate_synthesis_claims
+from backend.app.news.catalysts import catalyst_sources, validate_catalysts
 
 
 class ReportCitation(ContractModel):
@@ -50,6 +52,9 @@ class ResearchReport(ContractModel):
     gaps: tuple[str, ...] = ()
     financial_observations: tuple[FinancialReportObservation, ...] = Field(default=(), max_length=4)
     claims: tuple[SynthesisClaim, ...] = Field(default=(), max_length=8)
+    financial_metrics: tuple[FinancialMetric, ...] = Field(default=(), max_length=2)
+    catalyst_interpretations: tuple[SynthesisClaim, ...] = Field(default=(), max_length=5)
+    catalyst_limitations: tuple[str, ...] = Field(default=(), max_length=3)
 
 
 class FinancialReportObservation(ContractModel):
@@ -80,6 +85,20 @@ def build_research_report(state: ResearchState) -> ResearchReport:
     """Expose only persisted claims and point-in-time eligible citation metadata."""
     synthesis = state.research_synthesis if state.status is ResearchStatus.COMPLETE else None
     eligible = {item.evidence_id: item for item in qualified_evidence(state)}
+    catalyst_claims: tuple[SynthesisClaim, ...] = ()
+    catalyst_invalid = False
+    catalyst_limitations: tuple[str, ...] = ()
+    if state.catalyst_assessment is not None:
+        try:
+            validate_catalysts(state.catalyst_assessment, catalyst_sources(state))
+            catalyst_claims = state.catalyst_assessment.claims
+            catalyst_limitations = state.catalyst_assessment.limitations
+        except ValueError:
+            catalyst_invalid = True
+    metrics = (
+        derive_financial_metrics(tuple(eligible.values()), cutoff=state.analysis_timestamp)
+        if state.analysis_timestamp is not None else ()
+    )
     cited_ids = (
         tuple(evidence_id for evidence_id in synthesis.evidence_ids if evidence_id in eligible)
         if synthesis is not None
@@ -153,9 +172,21 @@ def build_research_report(state: ResearchState) -> ResearchReport:
         )
         for item in financial_items
     )
+    catalyst_citations = tuple(
+        ReportCitation(
+            evidence_id=claim.evidence_id, evidence_type=eligible[claim.evidence_id].evidence_type,
+            source_name=eligible[claim.evidence_id].source_name,
+            source_uri=_safe_source_uri(eligible[claim.evidence_id].source_uri),
+            published_at=eligible[claim.evidence_id].published_at,
+            observed_at=eligible[claim.evidence_id].observed_at,
+            available_at=eligible[claim.evidence_id].available_at,
+        ) for claim in catalyst_claims
+    )
     citations_by_id = {
         citation.evidence_id: citation
-        for citation in (*cited_synthesis, *news_citations, *financial_citations)
+        for citation in (
+            *cited_synthesis, *news_citations, *financial_citations, *catalyst_citations,
+        )
     }
     citations = tuple(citations_by_id.values())
     sections = [
@@ -208,12 +239,35 @@ def build_research_report(state: ResearchState) -> ResearchReport:
             )
             for observation in financial_observations
         )
+    sections.extend(
+        ReportSection(
+            title=f"Derived annual financial metric: {metric.name}",
+            text=(f"{metric.formula} = {metric.value} (decimal fraction); "
+                  f"period ending {metric.period_end}. Derived from cited reported values; "
+                  "not a growth, valuation or investment conclusion."),
+            evidence_ids=metric.evidence_ids,
+        ) for metric in metrics
+    )
+    sections.extend(
+        ReportSection(
+            title="Source-reported catalyst interpretation",
+            text=(
+                claim.text + " Quote establishes source attribution, not independent confirmation."
+            ),
+            evidence_ids=(claim.evidence_id,),
+        ) for claim in catalyst_claims
+    )
     sections.append(
         ReportSection(
             title="Catalysts",
             text="No separately verified catalyst analysis is available in this run.",
         )
     )
+    if catalyst_limitations:
+        sections.append(ReportSection(
+            title="Catalyst interpretation limitations",
+            text="Model-reported limits: " + "; ".join(catalyst_limitations),
+        ))
     if eligible_news:
         published = [item.published_at for item in eligible_news if item.published_at is not None]
         publication_range = (
@@ -299,6 +353,7 @@ def build_research_report(state: ResearchState) -> ResearchReport:
                 *state.evidence_gaps,
                 *citation_gap,
                 *(("synthesis claim attribution is invalid",) if attribution_invalid else ()),
+                *(("catalyst interpretation attribution is invalid",) if catalyst_invalid else ()),
                 *limitations,
                 "separately verified business and financial analysis unavailable",
                 "separately verified catalyst analysis unavailable",
@@ -332,4 +387,7 @@ def build_research_report(state: ResearchState) -> ResearchReport:
         gaps=gaps,
         financial_observations=tuple(financial_observations),
         claims=claims,
+        financial_metrics=metrics,
+        catalyst_interpretations=catalyst_claims,
+        catalyst_limitations=catalyst_limitations,
     )

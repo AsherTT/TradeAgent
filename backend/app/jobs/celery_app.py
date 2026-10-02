@@ -218,6 +218,7 @@ async def execute_research_run(
                 save=save,
                 evidence_provider=evidence_provider,
                 rag_provider=rag_provider,
+                catalysts_enabled=settings.catalysts_enabled,
             )
             return await workflow.run(state)
         except ResearchRunBusyError:
