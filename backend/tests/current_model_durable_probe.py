@@ -1,4 +1,4 @@
-"""Opt-in current KLAC HTTP/queue probe with a maximum of two model nodes.
+"""Opt-in current KLAC HTTP/queue probe with two or three bounded model nodes.
 
 Requires local API, PostgreSQL, Redis and a worker with market/news enabled.
 Financial acquisition remains disabled unless separately configured/qualified.

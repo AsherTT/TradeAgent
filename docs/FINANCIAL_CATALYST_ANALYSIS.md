@@ -24,6 +24,8 @@ This increment adds useful source-bound analysis without qualifying a complete r
   primary synthesis instead of spending it on optional extraction. Current scanner
   version, zero injection risk and exact content hash are required for source selection.
 - Report revalidates catalyst quotes and source eligibility at the frozen cutoff;
+  the five-source input cap does not invalidate an otherwise eligible existing
+  citation when later acquisition adds newer sources.
   any invalid interpretation suppresses the assessment and adds a gap. Valid ones
   have individual citations but remain explicitly model interpretations, not verified
   catalyst analysis. Existing verified-analysis gaps and complete_analysis=false remain.

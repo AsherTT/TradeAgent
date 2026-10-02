@@ -18,7 +18,7 @@ from backend.app.financials.analysis import FinancialMetric, derive_financial_me
 from backend.app.financials.sec import SecFinancialFact
 from backend.app.graph.evidence_gap import qualified_evidence
 from backend.app.graph.synthesis import validate_synthesis_claims
-from backend.app.news.catalysts import catalyst_sources, validate_catalysts
+from backend.app.news.catalysts import eligible_catalyst_sources, validate_catalysts
 
 
 class ReportCitation(ContractModel):
@@ -90,7 +90,7 @@ def build_research_report(state: ResearchState) -> ResearchReport:
     catalyst_limitations: tuple[str, ...] = ()
     if state.catalyst_assessment is not None:
         try:
-            validate_catalysts(state.catalyst_assessment, catalyst_sources(state))
+            validate_catalysts(state.catalyst_assessment, eligible_catalyst_sources(state))
             catalyst_claims = state.catalyst_assessment.claims
             catalyst_limitations = state.catalyst_assessment.limitations
         except ValueError:

@@ -106,6 +106,26 @@ def test_unqualified_catalyst_sources_are_excluded(change: dict[str, object]) ->
     assert catalyst_sources(current.model_copy(update={"evidence": (altered,)})) == ()
 
 
+def test_report_preserves_valid_catalyst_after_newer_sources_are_added() -> None:
+    original = news().model_copy(update={"published_at": NOW-timedelta(days=1)})
+    output = assessment(original)
+    current = incoming().model_copy(update={
+        "evidence": (original, *(news() for _ in range(5))),
+        "catalyst_assessment": output,
+    })
+    assert original.evidence_id not in {item.evidence_id for item in catalyst_sources(current)}
+    report = build_research_report(current)
+    assert report.catalyst_interpretations == output.claims
+    assert report.catalyst_limitations == output.limitations
+    assert any(item.evidence_id == original.evidence_id for item in report.citations)
+    assert "catalyst interpretation attribution is invalid" not in report.gaps
+    unsafe = current.model_copy(update={"evidence": (
+        original.model_copy(update={"injection_risk": 0.1}), *current.evidence[1:],
+    )})
+    assert not build_research_report(unsafe).catalyst_interpretations
+    assert "catalyst interpretation attribution is invalid" in build_research_report(unsafe).gaps
+
+
 def test_quote_rejection_and_report_time_suppression() -> None:
     current = incoming()
     output = assessment(current.evidence[0])

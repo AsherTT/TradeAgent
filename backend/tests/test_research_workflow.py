@@ -780,6 +780,8 @@ def test_replan_budget_exhaustion_stops_without_another_model_or_news_call() -> 
     ("budget", "expected_replans", "expected_news_calls"),
     [
         (ResearchBudget(max_replans=2), 2, 3),
+        (ResearchBudget(max_replans=8, max_iterations=10, max_llm_calls=12,
+                        max_tool_calls=20), 8, 9),
         (ResearchBudget(max_iterations=2), 1, 2),
         (ResearchBudget(max_tool_calls=3), 1, 2),
         (ResearchBudget(max_llm_calls=3), 1, 2),
