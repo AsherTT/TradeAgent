@@ -6,7 +6,7 @@ Current assessment: `docs/DEVELOPMENT_PROGRESS_20261002.md`. The earlier entries
 are chronological qualification records; later live qualification supersedes historical
 statements that no request had yet been made. SEC contact configuration and real current
 financial acquisition/persistence are now qualified. Complete analysis remains blocked
-by market/action completeness, RAG inputs and source-specific analysis.
+by market/action completeness and verified source-specific analysis.
 
 Later 2026-10-02 qualification removed the missing-RAG-input gap using explicit
 lexical-only PostgreSQL retrieval: official SEC excerpt intake, migration 0014 and
@@ -15,6 +15,17 @@ without granting provider qualification. This stage passed Standards and Spec wi
 zero findings; 374 ordinary tests pass, 1 is skipped, coverage is 90.00%.
 See `docs/RAG_ACTION_AUDIT_REVIEW.md` and `docs/RAG_LEXICAL_QUALIFICATION.md`.
 Market/action completeness, verified analysis and full synthesis remain outstanding.
+
+The later partial-analysis increment adds two reproducible annual SEC financial
+fractions and a default-off source-bound catalyst node. Live run
+`78e1521e-38cf-451b-b6a6-2c72fe78b7b5` persisted three model nodes and two metrics;
+the catalyst assessment returned zero interpretations with three limitations. This
+qualifies the empty-output path, not confirmed event extraction. Ordinary checks:
+395 passed, 1 skipped, 90.11% coverage; Ruff and strict mypy (97 files) passed.
+See `docs/FINANCIAL_CATALYST_QUALIFICATION.md` for the bounded qualification.
+Standards reported zero findings; Spec's one P2 was corrected and closed. See
+`docs/FINANCIAL_CATALYST_REVIEW.md` for the pinned review and regression evidence.
+P10 remains unstarted; development must pause before that phase.
 
 The 2026-10-02 source-bound claim increment passed Standards and Spec review with
 zero findings. Ordinary suite: 350 passed, 1 skipped, 90.21% coverage; Ruff and
