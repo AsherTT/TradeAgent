@@ -10,6 +10,14 @@ verified financial/catalyst analysis still prevent a complete report. See
 `docs/DEVELOPMENT_PROGRESS_20261002.md` for the current layer-by-layer assessment.
 The stage descriptions below retain their original implementation context.
 
+Subsequent current-source qualification added explicit lexical-only RAG without
+embeddings. Official SEC filing excerpt intake and PostgreSQL FTS/PIT storage were
+verified through the real research graph, removing its RAG gap. The optional hybrid
+route remains available but has no live embedding qualification. An offline action
+material audit supplies intake diagnostics, never provider qualification. Market/action
+completeness and verified analysis still prevent a complete report. See
+`docs/RAG_LEXICAL_QUALIFICATION.md` and `docs/ACTION_COVERAGE_AUDIT.md`.
+
 This repository has completed Phases 0-4 and implements the first Phase 5 vertical slice. PostgreSQL/pgvector migrations, the API-to-Redis-to-Celery path, point-in-time corporate-action visibility, deterministic price normalization, provider quality gates, and deterministic indicators have passed their local and Docker-backed qualifications. The Phase 5 LangGraph slice adds bounded planning, qualified-evidence collection, durable node transitions, terminal outcomes, failure persistence, durable cancellation, and bounded external-attempt records without changing the frozen provider boundaries.
 
 Phase 5 is in progress rather than complete. Planner, market evidence, deterministic quant,

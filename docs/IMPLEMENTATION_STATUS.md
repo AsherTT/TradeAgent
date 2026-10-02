@@ -8,6 +8,14 @@ statements that no request had yet been made. SEC contact configuration and real
 financial acquisition/persistence are now qualified. Complete analysis remains blocked
 by market/action completeness, RAG inputs and source-specific analysis.
 
+Later 2026-10-02 qualification removed the missing-RAG-input gap using explicit
+lexical-only PostgreSQL retrieval: official SEC excerpt intake, migration 0014 and
+real research queue execution passed. An offline action-material audit is implemented
+without granting provider qualification. This stage passed Standards and Spec with
+zero findings; 374 ordinary tests pass, 1 is skipped, coverage is 90.00%.
+See `docs/RAG_ACTION_AUDIT_REVIEW.md` and `docs/RAG_LEXICAL_QUALIFICATION.md`.
+Market/action completeness, verified analysis and full synthesis remain outstanding.
+
 The 2026-10-02 source-bound claim increment passed Standards and Spec review with
 zero findings. Ordinary suite: 350 passed, 1 skipped, 90.21% coverage; Ruff and
 strict mypy passed. See `docs/SYNTHESIS_CLAIM_REVIEW.md` and
