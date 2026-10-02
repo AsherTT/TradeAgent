@@ -66,6 +66,7 @@ class RagResearchEvidence:
                     "document_id": str(hit.document_id),
                     "chunk_id": str(hit.chunk_id),
                     "heading": hit.heading,
+                    "retrieval_mode": getattr(self._retriever, "mode", "hybrid"),
                 },
                 confidence=0.5,
                 freshness=1.0,

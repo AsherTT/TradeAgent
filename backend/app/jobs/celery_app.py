@@ -210,7 +210,7 @@ async def execute_research_run(
                 state.replay_integrity_level is not ReplayIntegrityLevel.EVIDENCE_CONSTRAINED_REPLAY
             ):
                 rag_embeddings = build_rag_embedding_provider(settings)
-                if rag_embeddings is None:
+                if rag_embeddings is None and settings.rag_retrieval_mode != "lexical_only":
                     raise ValueError("RAG is enabled without an embedding provider")
                 rag_provider = RagResearchEvidence(RagRetriever(session, embeddings=rag_embeddings))
             workflow = ResearchWorkflow(

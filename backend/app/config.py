@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from functools import lru_cache
-from typing import Any
+from typing import Any, Literal
 from urllib.parse import urlsplit
 
 from pydantic import Field, field_validator, model_validator
@@ -45,6 +45,7 @@ class Settings(BaseSettings):
         return self
 
     rag_enabled: bool = False
+    rag_retrieval_mode: Literal["hybrid", "lexical_only"] = "hybrid"
     rag_write_token: str | None = None
     rag_embedding_base_url: str | None = None
     rag_embedding_api_key: str | None = None

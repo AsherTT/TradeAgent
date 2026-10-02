@@ -259,6 +259,16 @@ def _annual_rows(
     return tuple(revisions.values())
 
 
+def validate_sec_user_agent(user_agent: str) -> None:
+    if (
+        not user_agent.strip()
+        or len(user_agent) > 256
+        or "@" not in user_agent
+        or any(not 32 <= ord(char) <= 126 for char in user_agent)
+    ):
+        raise ValueError("SEC requires an identifying User-Agent with contact email")
+
+
 class SecFinancialClient:
     """Single-client five-RPS bound, with an optional shared worker admission gate."""
 
@@ -270,13 +280,7 @@ class SecFinancialClient:
         observed_at: Callable[[], datetime] = utc_now,
         before_request: Callable[[], Awaitable[None]] | None = None,
     ) -> None:
-        if (
-            not user_agent.strip()
-            or len(user_agent) > 256
-            or "@" not in user_agent
-            or any(not 32 <= ord(char) <= 126 for char in user_agent)
-        ):
-            raise ValueError("SEC requires an identifying User-Agent with contact email")
+        validate_sec_user_agent(user_agent)
         self._user_agent = user_agent
         self._client = client
         self._clock = observed_at

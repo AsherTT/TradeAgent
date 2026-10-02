@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import re
 from datetime import UTC, datetime
 from math import isfinite
-from typing import Any, cast
+from typing import Any, Literal, cast
 from uuid import UUID
 
 from sqlalchemy import func, select
@@ -39,9 +40,13 @@ def _as_utc(value: datetime) -> datetime:
 
 
 class RagRetriever:
-    def __init__(self, session: AsyncSession, *, embeddings: EmbeddingProvider) -> None:
+    def __init__(self, session: AsyncSession, *, embeddings: EmbeddingProvider | None) -> None:
         self._session = session
         self._embeddings = embeddings
+
+    @property
+    def mode(self) -> Literal["hybrid", "lexical_only"]:
+        return "lexical_only" if self._embeddings is None else "hybrid"
 
     async def search(self, request: RagSearchRequest) -> tuple[RagHit, ...]:
         cutoff = request.analysis_timestamp
@@ -49,16 +54,18 @@ class RagRetriever:
             raise RagRetrievalError("analysis timestamp must be timezone-aware")
         if self._session.bind is None or self._session.bind.dialect.name != "postgresql":
             raise RagRetrievalError("hybrid retrieval requires PostgreSQL")
-        vectors = await self._embeddings.embed((request.query,))
-        if len(vectors) != 1 or not self._embeddings.model_id:
-            raise RagRetrievalError("query embedding is unavailable")
-        vector = vectors[0]
-        if (
-            len(vector) != EMBEDDING_DIMENSIONS
-            or any(not isfinite(value) for value in vector)
-            or not any(value != 0 for value in vector)
-        ):
-            raise RagRetrievalError("query embedding is invalid")
+        vector = None
+        if self._embeddings is not None:
+            vectors = await self._embeddings.embed((request.query,))
+            if len(vectors) != 1 or not self._embeddings.model_id:
+                raise RagRetrievalError("query embedding is unavailable")
+            vector = vectors[0]
+            if (
+                len(vector) != EMBEDDING_DIMENSIONS
+                or any(not isfinite(value) for value in vector)
+                or not any(value != 0 for value in vector)
+            ):
+                raise RagRetrievalError("query embedding is invalid")
         cutoff = cutoff.astimezone(UTC)
         predicates: list[Any] = [
             RagDocumentRow.instrument_id == request.instrument_id,
@@ -77,14 +84,21 @@ class RagRetriever:
             RagDocumentRow.observed_at <= cutoff,
             RagDocumentRow.available_at <= cutoff,
             (RagDocumentRow.published_at.is_(None) | (RagDocumentRow.published_at <= cutoff)),
-            RagChunkRow.embedding_model == self._embeddings.model_id,
         ]
+        if self._embeddings is not None:
+            predicates.extend([
+                RagChunkRow.embedding_model == self._embeddings.model_id,
+                RagChunkRow.embedding.is_not(None),
+            ])
         if request.source_types:
             predicates.append(
                 RagDocumentRow.source_type.in_([source.value for source in request.source_types])
             )
         candidate_limit = min(50, max(12, request.top_k * 4))
         query = func.plainto_tsquery("english", request.query)
+        if self._embeddings is None:
+            terms = tuple(dict.fromkeys(re.findall(r"[A-Za-z0-9]{2,40}", request.query)))[:12]
+            query = func.websearch_to_tsquery("english", " OR ".join(terms))
         search_vector = func.to_tsvector("english", RagChunkRow.content)
         common = (
             select(RagChunkRow.chunk_id)
@@ -100,14 +114,16 @@ class RagRetriever:
                 )
             ).all()
         )
-        distance = cast(Any, RagChunkRow.embedding).cosine_distance(list(vector))
-        semantic = tuple(
+        semantic: tuple[UUID, ...] = ()
+        if vector is not None:
+            distance = cast(Any, RagChunkRow.embedding).cosine_distance(list(vector))
+            semantic = tuple(
             (
                 await self._session.scalars(
                     common.order_by(distance, RagChunkRow.chunk_id).limit(candidate_limit)
                 )
             ).all()
-        )
+            )
         ranking = reciprocal_rank_fusion(lexical, semantic)[: request.top_k]
         if not ranking:
             return ()

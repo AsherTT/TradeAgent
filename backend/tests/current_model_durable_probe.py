@@ -76,7 +76,9 @@ async def main() -> None:
                     "collection_only": False,
                     "budget": {
                         "max_llm_calls": 2,
-                        "max_tool_calls": 4,
+                        "max_tool_calls": (
+                            6 if os.environ.get("KLAC_PROBE_RAG_LEXICAL") == "true" else 4
+                        ),
                         "max_replans": 0,
                         "max_news_documents": 8,
                         "max_wall_time_seconds": 90,
@@ -116,6 +118,11 @@ async def main() -> None:
             "financial_count": sum(
                 item["evidence_type"] == "financial_fact" for item in state["evidence"]
             ),
+            "rag_count": sum(item["evidence_type"] == "rag_document" for item in state["evidence"]),
+            "rag_modes": sorted({
+                item["structured_data"].get("retrieval_mode", "unknown")
+                for item in state["evidence"] if item["evidence_type"] == "rag_document"
+            }),
             "report_citations": len(report["citations"]),
             "complete_analysis": report["complete_analysis"],
             "gaps": report["gaps"],

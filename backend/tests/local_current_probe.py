@@ -15,7 +15,7 @@ from pathlib import Path
 import httpx
 
 
-async def main(*, financials: bool) -> None:
+async def main(*, financials: bool, rag_lexical: bool = False) -> None:
     env = os.environ.copy()
     env.update(
         DATABASE_URL="postgresql+asyncpg://tradeagent:tradeagent-local-only@127.0.0.1:5432/tradeagent",
@@ -24,6 +24,9 @@ async def main(*, financials: bool) -> None:
         MARKET_DATA_ENABLED="true",
         NEWS_ENABLED="true",
         FINANCIALS_ENABLED=str(financials).lower(),
+        RAG_ENABLED=str(rag_lexical).lower(),
+        RAG_RETRIEVAL_MODE="lexical_only" if rag_lexical else "hybrid",
+        KLAC_PROBE_RAG_LEXICAL=str(rag_lexical).lower(),
         KLAC_PROBE_API_URL="http://127.0.0.1:8002",
     )
     commands = (
@@ -88,4 +91,6 @@ async def main(*, financials: bool) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--financials", action="store_true")
-    asyncio.run(main(financials=parser.parse_args().financials))
+    parser.add_argument("--rag-lexical", action="store_true")
+    args = parser.parse_args()
+    asyncio.run(main(financials=args.financials, rag_lexical=args.rag_lexical))

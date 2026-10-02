@@ -47,3 +47,14 @@ SEC 联系邮箱这一卡点已解除。当前主要外部依赖是公司行动�
 本机临时 API/worker 在验证后关闭，PostgreSQL/Redis 保留运行。可使用
 `python -m backend.tests.local_current_probe --financials` 重跑有界真实验证；它会
 创建研究记录并使用最多两次模型调用，普通测试不会调用外部来源。
+
+## 后续增量：全文检索与覆盖接口
+
+已增加公司行动材料审计接口和离线 CLI，但尚无正式数据包；审计通过也不授予
+来源资格。详见 ACTION_COVERAGE_AUDIT.md。
+
+真实 SEC 申报片段现已入库，PostgreSQL 全文检索及时间过滤验证通过。运行
+`8f880203-4026-4f06-9b29-1fd7c4e1e754` 取得九条明确标记 lexical_only 的 RAG
+证据，原先的 RAG 缺口已消失。本模式无嵌入调用，英文关键词检索不代表语义或
+多语能力。公司行动完整性、完整财务/催化剂分析和综合仍待验证。P10 尚未开始。
+详见 RAG_LEXICAL_QUALIFICATION.md。

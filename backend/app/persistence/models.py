@@ -233,11 +233,17 @@ class RagChunkRow(Base):
     heading: Mapped[str | None] = mapped_column(String(200))
     content: Mapped[str] = mapped_column(Text)
     content_hash: Mapped[str] = mapped_column(String(64))
-    embedding: Mapped[list[float]] = mapped_column(Vector(384).with_variant(JSON(), "sqlite"))
-    embedding_model: Mapped[str] = mapped_column(String(128))
+    embedding: Mapped[list[float] | None] = mapped_column(
+        Vector(384).with_variant(JSON(), "sqlite"), nullable=True
+    )
+    embedding_model: Mapped[str | None] = mapped_column(String(128), nullable=True)
 
     __table_args__ = (
         UniqueConstraint("document_id", "ordinal", name="uq_rag_chunk_document_ordinal"),
+        CheckConstraint(
+            "(embedding IS NULL) = (embedding_model IS NULL)",
+            name="ck_rag_chunk_embedding_pair",
+        ).ddl_if(dialect="postgresql"),
     )
 
 

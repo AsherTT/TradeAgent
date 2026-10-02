@@ -6,7 +6,7 @@ from base64 import b64decode
 from binascii import Error as Base64Error
 from datetime import datetime
 from secrets import compare_digest
-from typing import Annotated
+from typing import Annotated, Literal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Header, HTTPException, status
@@ -73,11 +73,12 @@ class RagSearchSubmission(BaseModel):
 class RagSearchRecorded(ContractModel):
     hits: tuple[RagHit, ...]
     context: RagContext
+    retrieval_mode: Literal["hybrid", "lexical_only"] = "hybrid"
 
 
-def get_rag_embedder() -> EmbeddingProvider:
+def get_rag_embedder() -> EmbeddingProvider | None:
     provider = build_rag_embedding_provider(get_settings())
-    if provider is None:
+    if provider is None and get_settings().rag_retrieval_mode != "lexical_only":
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="RAG embedding provider is not configured",
@@ -100,7 +101,7 @@ def _require_access(token: str | None) -> None:
 async def record_document(
     submission: RagDocumentSubmission,
     session: Annotated[AsyncSession, Depends(get_session)],
-    embeddings: Annotated[EmbeddingProvider, Depends(get_rag_embedder)],
+    embeddings: Annotated[EmbeddingProvider | None, Depends(get_rag_embedder)],
     token: Annotated[str | None, Header(alias="X-RAG-Token")] = None,
 ) -> RagDocumentRecorded:
     _require_access(token)
@@ -145,7 +146,7 @@ async def record_document(
 async def search_documents(
     submission: RagSearchSubmission,
     session: Annotated[AsyncSession, Depends(get_session)],
-    embeddings: Annotated[EmbeddingProvider, Depends(get_rag_embedder)],
+    embeddings: Annotated[EmbeddingProvider | None, Depends(get_rag_embedder)],
     token: Annotated[str | None, Header(alias="X-RAG-Token")] = None,
 ) -> RagSearchRecorded:
     _require_access(token)
@@ -157,7 +158,8 @@ async def search_documents(
         source_types=submission.source_types,
     )
     try:
-        hits = await RagRetriever(session, embeddings=embeddings).search(request)
+        retriever = RagRetriever(session, embeddings=embeddings)
+        hits = await retriever.search(request)
         context = build_rag_context(
             hits,
             instrument_id=request.instrument_id,
@@ -169,4 +171,4 @@ async def search_documents(
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except RagEmbeddingError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
-    return RagSearchRecorded(hits=hits, context=context)
+    return RagSearchRecorded(hits=hits, context=context, retrieval_mode=retriever.mode)

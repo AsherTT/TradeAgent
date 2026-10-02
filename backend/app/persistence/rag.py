@@ -25,7 +25,7 @@ class RagRepository:
         self._session = session
 
     async def store(
-        self, result: RagIngestResult, *, embeddings: EmbeddingProvider
+        self, result: RagIngestResult, *, embeddings: EmbeddingProvider | None
     ) -> RagIngestResult:
         document = result.document
         chunks = result.chunks
@@ -61,8 +61,11 @@ class RagRepository:
             ):
                 raise RagStorageError("document identifier cannot be rewritten")
             return result
-        vectors = await embeddings.embed(tuple(chunk.content for chunk in chunks)) if chunks else ()
-        if len(vectors) != len(chunks) or not embeddings.model_id:
+        vectors = (
+            await embeddings.embed(tuple(chunk.content for chunk in chunks))
+            if chunks and embeddings is not None else ()
+        )
+        if embeddings is not None and (len(vectors) != len(chunks) or not embeddings.model_id):
             raise RagStorageError("embedding provider returned an invalid batch")
         for vector in vectors:
             if (
@@ -93,7 +96,7 @@ class RagRepository:
             )
         )
         await self._session.flush()
-        for chunk, vector in zip(chunks, vectors, strict=True):
+        for index, chunk in enumerate(chunks):
             self._session.add(
                 RagChunkRow(
                     chunk_id=chunk.chunk_id,
@@ -102,8 +105,8 @@ class RagRepository:
                     heading=chunk.heading,
                     content=chunk.content,
                     content_hash=chunk.content_hash,
-                    embedding=list(vector),
-                    embedding_model=embeddings.model_id,
+                    embedding=list(vectors[index]) if embeddings is not None else None,
+                    embedding_model=embeddings.model_id if embeddings is not None else None,
                 )
             )
         await self._session.flush()

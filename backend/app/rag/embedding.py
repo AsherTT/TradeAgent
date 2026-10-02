@@ -74,6 +74,8 @@ class HTTPEmbeddingProvider:
 
 
 def build_rag_embedding_provider(settings: Settings) -> EmbeddingProvider | None:
+    if settings.rag_retrieval_mode == "lexical_only":
+        return None
     if not all(
         (
             settings.rag_embedding_base_url,
