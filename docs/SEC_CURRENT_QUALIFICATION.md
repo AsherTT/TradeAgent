@@ -39,6 +39,11 @@ owned API/worker were stopped after completion; the local datastore services rem
 
 The successful run used the initial owned-process harness; the reusable asynchronous
 version is `backend.tests.local_current_probe`. Ordinary tests never run these probes.
+The asynchronous harness then independently completed run
+`3fedfe95-bf18-4034-8b4a-ba13f2456f24` in 27.36 seconds, with the same four financial
+facts, eight news records, 43 bars and twelve report citations. Both intent and planning
+completed, four source requests were charged, and the same market/quant/RAG gaps kept
+the outcome insufficient. Its owned processes were also stopped after the run.
 Subscription token/cost metadata are unavailable; zero counters do not prove zero usage.
 
 This supersedes earlier records saying SEC current access was pending contact configuration.
