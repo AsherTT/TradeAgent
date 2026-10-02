@@ -10,11 +10,13 @@ from pydantic import Field
 
 from backend.app.contracts.base import ContractModel
 from backend.app.contracts.evaluation import DataQualityStatus, QualityGateDecision
+from backend.app.contracts.evidence import SynthesisClaim
 from backend.app.contracts.market import MarketAcquisitionSummary
 from backend.app.contracts.research import ResearchState, ResearchStatus
 from backend.app.financials.admission import admitted_financial_fact, select_financial_group
 from backend.app.financials.sec import SecFinancialFact
 from backend.app.graph.evidence_gap import qualified_evidence
+from backend.app.graph.synthesis import validate_synthesis_claims
 
 
 class ReportCitation(ContractModel):
@@ -47,6 +49,7 @@ class ResearchReport(ContractModel):
     citations: tuple[ReportCitation, ...] = ()
     gaps: tuple[str, ...] = ()
     financial_observations: tuple[FinancialReportObservation, ...] = Field(default=(), max_length=4)
+    claims: tuple[SynthesisClaim, ...] = Field(default=(), max_length=8)
 
 
 class FinancialReportObservation(ContractModel):
@@ -87,6 +90,14 @@ def build_research_report(state: ResearchState) -> ResearchReport:
         and len(cited_ids) == len(synthesis.evidence_ids)
         and len(set(cited_ids)) == len(cited_ids)
     )
+    attribution_invalid = False
+    if synthesis is not None and synthesis_cited:
+        try:
+            validate_synthesis_claims(synthesis, tuple(eligible.values()))
+        except ValueError:
+            attribution_invalid = True
+            synthesis_cited = False
+    claims = synthesis.claims if synthesis is not None and synthesis_cited else ()
     cited_synthesis = tuple(
         ReportCitation(
             evidence_id=eligible[evidence_id].evidence_id,
@@ -172,6 +183,14 @@ def build_research_report(state: ResearchState) -> ResearchReport:
             title="Business and financials",
             text="No separately verified business or financial analysis is available in this run.",
         )
+    )
+    sections.extend(
+        ReportSection(
+            title=f"Model interpretation: {claim.section}",
+            text=claim.text + " Supporting quote establishes attribution, not verified analysis.",
+            evidence_ids=(claim.evidence_id,),
+        )
+        for claim in claims
     )
     if financial_observations:
         sections.extend(
@@ -279,6 +298,7 @@ def build_research_report(state: ResearchState) -> ResearchReport:
             (
                 *state.evidence_gaps,
                 *citation_gap,
+                *(("synthesis claim attribution is invalid",) if attribution_invalid else ()),
                 *limitations,
                 "separately verified business and financial analysis unavailable",
                 "separately verified catalyst analysis unavailable",
@@ -301,12 +321,15 @@ def build_research_report(state: ResearchState) -> ResearchReport:
         quality_gate_decision=state.quality_gate_decision,
         complete_analysis=False,
         citation_note=(
-            "Synthesis citations support the synthesis as a whole; individual claims have "
-            "not been mapped to individual sources. News observation citations identify "
+            "Summary and bull/bear citations support the synthesis as a whole; "
+            "those paragraphs lack individual attribution. News observation citations identify "
             "source records only, not verified catalyst claims."
+            " Optional model interpretation claims each have their own source citation and "
+            "supporting quote; quote matching does not verify the interpretation."
         ),
         sections=tuple(sections),
         citations=citations,
         gaps=gaps,
         financial_observations=tuple(financial_observations),
+        claims=claims,
     )

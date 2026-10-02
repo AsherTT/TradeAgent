@@ -2,6 +2,14 @@
 
 The source-of-truth architecture is **Agentic Equity Research Workbench v1.1.1 — Quant Integrity + Operational Reliability Hardened** dated 2026-09-16.
 
+Current audit (2026-10-02): Phases 6–9 have their recorded fixture qualifications;
+Phase 5 live completion remains open and Phase 10 has not started. Current model
+intent/planning, news and SEC financial acquisition have passed the real local
+HTTP/Redis/Celery/PostgreSQL path. Corporate-action completeness, live RAG inputs and
+verified financial/catalyst analysis still prevent a complete report. See
+`docs/DEVELOPMENT_PROGRESS_20261002.md` for the current layer-by-layer assessment.
+The stage descriptions below retain their original implementation context.
+
 This repository has completed Phases 0-4 and implements the first Phase 5 vertical slice. PostgreSQL/pgvector migrations, the API-to-Redis-to-Celery path, point-in-time corporate-action visibility, deterministic price normalization, provider quality gates, and deterministic indicators have passed their local and Docker-backed qualifications. The Phase 5 LangGraph slice adds bounded planning, qualified-evidence collection, durable node transitions, terminal outcomes, failure persistence, durable cancellation, and bounded external-attempt records without changing the frozen provider boundaries.
 
 Phase 5 is in progress rather than complete. Planner, market evidence, deterministic quant,
@@ -69,4 +77,6 @@ a configurable bounded LRU; cache contents are expendable and never authoritativ
 - unit and adapter tests
 - documented staged frontend strategy; `apps/web` remains unimplemented
 
-No current component produces investment advice, strategy signals, broker orders, or claims of historical alpha.
+Phase 9 produces restricted deterministic fixture signals and a non-executable
+TradeIntent. No component places broker orders or establishes historical alpha;
+current reports do not establish complete investment analysis.

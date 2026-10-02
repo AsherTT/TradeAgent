@@ -10,9 +10,12 @@ requested.
 The endpoint lists the frozen analysis cutoff, run status, data quality, quality-gate decision,
 recorded gaps, and point-in-time eligible metadata for evidence cited by a completed synthesis.
 It includes the persisted summary and bull/bear cases only when every synthesis citation is
-still eligible at the cutoff. Citation IDs belong to the synthesis as a whole; the current
-contract does not support attribution of individual claims to individual sources. The report
-does not reproduce untrusted evidence text. Eligible news documents receive a metadata-only
+still eligible at the cutoff. Their citation IDs support the synthesis as a whole.
+Optional source-bound model interpretation claims are specified in
+`docs/SYNTHESIS_CLAIM_ATTRIBUTION.md`; each has its own supporting quote and citation.
+Claims establish attribution, not verified analysis. Invalid attribution suppresses the
+entire synthesis and claims. Supporting quotes are bounded excerpts; full untrusted source
+text is not reproduced. Eligible news documents receive a metadata-only
 observation section with at most eight recent source links. Their presence does not verify a
 catalyst. If a synthesis citation is no longer eligible, the
 report suppresses all synthesis text and citations and adds an explicit citation gap.

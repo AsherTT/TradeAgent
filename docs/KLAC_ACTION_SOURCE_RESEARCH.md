@@ -62,3 +62,37 @@
 公开页面与脚本临时归档在 Windows Temp 的 `klac-dividends-page.html`、`klac-qmod-loader.js`、`klac-qmod-dividends.js`。没有股息 JSON capture 或已渲染行，因此**仍无完整历史行，也没有事件级明确 ex-date 的新证据**。这些归档只是调查过程材料，未作为可复现来源 fixture 提交；工具接口与授权规则可能变更，后续应从页面重新追踪。
 
 KLA 的发行人公告可核实分红决定；其嵌入表实际由 QuoteMedia 加载。即使表读取成功，也应标作“发行人网站展示的 QuoteMedia 观察数据”，不能标作交易所独立确认或发行人自建全行动总账，且不能由显示行或未显示行推出窗口内无未报事件。
+
+## 2026-10-02 再核查：可实施路径与硬边界
+
+### 当前窗口和代码契约
+
+本次读过 `SEC_FINANCIAL_SOURCE.md`、`backend/app/market_data/yfinance.py`、`quality.py`、`normalization.py` 与 `backend/app/contracts/evaluation.py`。当前 loader 用采集开始 UTC 时间减 `timedelta(days=lookback_days)`，所以确实是自然日而非交易日。以 **2026-10-02 日期**举例，60/90 日起点为 08-03/07-04；精确资格仍必须采用实际 UTC 时间及交易所日历。两个窗口包含已知 08-17 分红日期，均晚于已知 06-12 拆股交易日；这不证明没有其他行动。
+
+`YFinanceCurrentMarketDataLoader` 明确拒绝非 `unverified` 的 Yahoo action report，并将 bar/action 的最差质量传给规范化价格。`ProviderQualityReport.coverage` 只有一个浮点值，不含标的/时间区间/事件类型/版本修订/空日语义。因此 `coverage=1.0` 和金例全通过不能表达或证明全窗覆盖；新增 qualified 路径必须有单独的范围契约与来源链，不能复用该标量冒充真实完整性。SEC 年度财务的 current 资格也不能延伸为公司行动资格。
+
+### 新找到的正式来源
+
+- [Nasdaq Daily List 产品说明](https://www.nasdaqtrader.com/Trader.aspx?id=DailyListPD) 明确覆盖上市/退市/名称符号变更及现金股息、股票股息、拆股和次日价格调整事件，历史可追溯至 1999。入口仍为 monthly subscription、secured FTP/website。本次未登录或请求受限数据，不引用历史旧价格作为当前费用。
+- [Nasdaq Daily List 正式文件规范](https://nasdaqtrader.com/content/technicalSupport/specifications/dataproducts/dlcompletespec.pdf) 给出 distribution time、X-Date、Cash Amount/Stock Amount、事件类型、Notes for Day。无更新日仍发字段标题和明确无更新备注；这是“缺文件”和“正常无更新”可区分的关键。factor 可与显示 amount 不同，应按文档定义解析，未知类型不能当成现金股息或忽略。
+- [SEC 官方 SR-NASDAQ-2026-062 通知](https://www.sec.gov/files/rules/sro/nasdaq/2026/34-106034.pdf) 说明将更多交易所控制字段免费公开，并使其早于 Daily List 至少 15 分钟。发行人分红/拆股等仍由发行人公开材料获取，不能解读为完整 Daily List 历史总账免费。文件还要求后续 Exchange Notice 宣布实施日期。
+- [Nasdaq 当前 Equity 7 规则](https://listingcenter.nasdaq.com/rulebook/nasdaq/rules/Nasdaq%20Equity%207) 标注该修改 operative 2026-08-28；**规则 operative 不等于已核实数据文件上线**。本次没有找到可验证上线、历史范围与完整空日语义的正式实施通知或全量免费历史文件。
+- [免费 Symbol Lookup](https://www.nasdaqtrader.com/trader.aspx?id=symbollookup) 页面提供当前交易日文件及 adds/deletes、when-issued/distributed 入口；[Security Status Updates](https://www.nasdaqtrader.com/Trader.aspx?id=nasdaq-security-status-updates) 是状态查询入口。[Ex-Date](https://www.nasdaqtrader.com/Trader.aspx?id=nasdaq-ex-date) 仍明确主要发布不同于正常 record date 的例外。这些入口可为窄类型事实取证，但没有核实其全窗现金额、拆股与其他生命周期事件的联合历史覆盖。当前快照不能证明 7 月至今的连续性。
+
+本次未找到 `api.nasdaq.com` 网站展示接口的官方公共 API 契约，说明其事件类别、完整性、分页、历史保留和更正语义。互联网上流传的 URL 或返回 HTTP 200 只能作为发现线索，不能直接授予资格；也不等同于有正式文档的 Nasdaq Data Link API。未使用第三方推测端点或鉴权规避办法。
+
+### 最具体的开发选择（工程建议，不是已通过验收）
+
+**路径 A：导入合法取得的 Nasdaq Daily List 全窗材料，单独资格。** 不依赖自动注册或当前站点的未文档化接口。授权资料可以后续从已有订阅的 secured 下载，或由用户提供允许本地使用的正式导出；当前没有这份材料，故还不能完成 live qualification。
+
+可先设计一个 current-only 导入包，至少包含：
+
+1. 标的身份、来源产品与规范版本、支持事件类型、资格起止时刻、获取/可见时间、明确 current-only 和 non-strict；文件清单、哈希、预期交易日/文件类别、每个文件状态及末次更新覆盖。不能用“没有找到 KLAC 行”代替文件覆盖状态。
+2. 行动公告状态与实际 ex/effective 区间分离。全窗需要起点之前仍未生效的公告、全窗内公告、截至截止的取消/更正和最终状态；仅取窗口内发布的文件会漏掉提前公告但窗口内生效的事件。次日 Ex-Date 文件可交叉核查每天实际价格调整，生命周期 Equity Data 与 dividend 文件都需要覆盖。
+3. 明确空日证明、缺失文件、未关闭当日、分页/截断、发布延迟和修订处理。Notes for Day 仅说明该文件无更新，并不自动证明无此前已公告的事件；必须连同适当基线和次日文件一起使用。来源保证限于该产品记录范围，不能宣称发现所有现实世界事件。
+4. 用 SEC/OCC 正例核对拆股 ratio/date；用正式 Ex-Date 行核对 08-17 分红与金额，并核对修订。再校验 Yahoo 价格单位与独立交易价格金例，Yahoo 事件与正式记录不一致时终止。组合路径的来源和质量版本单列，不能改 Yahoo report 或伪装 Yahoo action provenance。
+5. 覆盖验证、独立金例、实际 KLAC 包审查和 current pipeline 验证通过后才评估 `ACCEPTABLE`。过期范围、范围外标的、未知事件、缺基线或修订链、未证明无事件日仍拒绝。历史 strict 资格另做 PIT 来源研究；当前包 observation time 不回填成旧的可见时间。
+
+**路径 B：免费公开材料组合。** 等正式免费文件上线说明和可验证的历史完整范围，加上发行人完整公告枚举及事件表，再采用同样范围契约。公开来源足以发现正例，但目前尚缺基线、全窗缺失检测/无事件语义与明确 KLAC ex-date 行，不能立即资格。只证明“已扫描所有 SEC filings/IR 页面”仍不等于它们保证披露全部行动。
+
+**本轮可诚实交付的边界：** 可以开发上述导入/覆盖审计接口与失败关闭金例，并继续 SEC 财务/模型主流程验证；当前免费的来源探索仍无法让 KLAC 完整分析通过市场基线。不需要因此停下无关开发，但不可用已知一笔股息、SEC 联系配置完成、空查询结果或 `coverage=1.0` 解除门槛。

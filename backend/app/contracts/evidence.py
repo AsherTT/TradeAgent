@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import StrEnum
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 from uuid import UUID, uuid4
 
 from pydantic import Field, model_validator
@@ -59,6 +59,21 @@ class EvidenceGapResult(ContractModel):
     sufficient: bool
 
 
+class SynthesisClaim(ContractModel):
+    section: Literal[
+        "summary", "bull_case", "bear_case", "business", "financial", "catalyst", "price"
+    ]
+    text: str = Field(min_length=1, max_length=500)
+    evidence_id: UUID
+    supporting_quote: str = Field(min_length=10, max_length=300)
+
+    @model_validator(mode="after")
+    def meaningful_text(self) -> SynthesisClaim:
+        if not self.text.strip() or len(self.supporting_quote.strip()) < 10:
+            raise ValueError("claim text and quote must contain meaningful text")
+        return self
+
+
 class ResearchSynthesis(ContractModel):
     """Evidence-cited research summary, separate from the Phase 6 thesis lifecycle."""
 
@@ -72,6 +87,7 @@ class ResearchSynthesis(ContractModel):
     confidence: float = Field(ge=0, le=1)
     forecast_direction: Direction | None = None
     forecast_probability: float | None = Field(default=None, ge=0, le=1)
+    claims: tuple[SynthesisClaim, ...] = Field(default=(), max_length=8)
 
     @model_validator(mode="after")
     def complete_forecast_pair(self) -> ResearchSynthesis:

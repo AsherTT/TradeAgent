@@ -86,6 +86,7 @@ def synthesis_context(state: ResearchState, selected: tuple[Evidence, ...]) -> d
                 "source_name": item.source_name,
                 "trust_level": item.trust_level.value,
                 "source_type": item.source_type,
+                "evidence_type": item.evidence_type,
                 "content_hash": item.content_hash,
                 "sanitization_status": item.sanitization_status,
                 "content": (
@@ -104,6 +105,7 @@ def validate_synthesis(
     selected: tuple[Evidence, ...],
     required_capabilities: tuple[str, ...],
 ) -> None:
+    validate_synthesis_claims(synthesis, selected)
     allowed_ids = {item.evidence_id for item in selected}
     if len(set(synthesis.evidence_ids)) != len(synthesis.evidence_ids):
         raise ValueError("synthesis contains duplicate evidence citations")
@@ -137,3 +139,28 @@ def validate_synthesis(
         cutoff = max((item.available_at for item in selected), default=None)
         if cutoff is None or not financial_coverage(cited_financials, cutoff=cutoff):
             raise ValueError("synthesis omits required annual financial concepts")
+
+
+def validate_synthesis_claims(synthesis: ResearchSynthesis, selected: tuple[Evidence, ...]) -> None:
+    sources = {item.evidence_id: item for item in selected}
+    seen: set[tuple[str, str, object]] = set()
+    allowed_types = {
+        "financial": {"financial_fact"},
+        "price": {"market_technical_snapshot"},
+        "catalyst": {"news_document", "rag_document"},
+    }
+    for claim in synthesis.claims:
+        source = sources.get(claim.evidence_id)
+        if source is None or claim.evidence_id not in synthesis.evidence_ids:
+            raise ValueError("claim citation must be selected and globally cited")
+        if claim.supporting_quote not in source.content[:1000]:
+            raise ValueError("claim supporting quote is outside selected source excerpt")
+        if (
+            claim.section in allowed_types
+            and source.evidence_type not in allowed_types[claim.section]
+        ):
+            raise ValueError("claim source type does not match its section")
+        identity = (claim.section, claim.text.strip(), claim.evidence_id)
+        if identity in seen:
+            raise ValueError("synthesis contains duplicate claims")
+        seen.add(identity)
