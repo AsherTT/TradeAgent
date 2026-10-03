@@ -40,7 +40,7 @@ the possible stop loss is capped separately from notional. It caps notional by c
 single-position, total-exposure, per-trade allocation, and loss-risk limits. Its only positive output
 is an immutable `TradeIntent` requiring external authorization; there is no
 broker order, credential, or execution call. Offline tests cover allowed,
-blocked, and no-action outcomes. See `docs/GATE_F_QUALIFICATION.md`.
+blocked, and no-action outcomes. See `docs/06_验证与审查/阶段验收/GATE_F_QUALIFICATION.md`.
 
 ## Remaining qualification
 

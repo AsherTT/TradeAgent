@@ -12,7 +12,7 @@ recorded gaps, and point-in-time eligible metadata for evidence cited by a compl
 It includes the persisted summary and bull/bear cases only when every synthesis citation is
 still eligible at the cutoff. Their citation IDs support the synthesis as a whole.
 Optional source-bound model interpretation claims are specified in
-`docs/SYNTHESIS_CLAIM_ATTRIBUTION.md`; each has its own supporting quote and citation.
+`docs/03_研究与分析/SYNTHESIS_CLAIM_ATTRIBUTION.md`; each has its own supporting quote and citation.
 Claims establish attribution, not verified analysis. Invalid attribution suppresses the
 entire synthesis and claims. Supporting quotes are bounded excerpts; full untrusted source
 text is not reproduced. Eligible news documents receive a metadata-only
@@ -35,7 +35,7 @@ financial observations. Each shows its own fact citation, USD value, reporting p
 filing date, form and accession. Admission checks provenance, cutoff, freshness and
 consistent entity/period; duration concepts must share their start date. These are raw
 reported facts and do not establish business analysis or historical point-in-time coverage.
-See `docs/SEC_FINANCIAL_INTEGRATION.md` for the acceptance contract.
+See `docs/03_研究与分析/SEC_FINANCIAL_INTEGRATION.md` for the acceptance contract.
 
 Next work: qualify a source for current corporate actions without promoting Yahoo's
 `UNVERIFIED` action report by fiat; run the live API/worker/Redis/PostgreSQL path with an

@@ -19,7 +19,7 @@ from backend.app.market_data.providers import InMemoryCorporateActionProvider
 from backend.app.market_data.service import MarketDataRequest, MarketDataService
 
 FIXTURES = Path(__file__).parent / "fixtures" / "alpha_vantage"
-QUALITY_REPORTS = Path(__file__).parents[2] / "docs" / "provider_quality"
+QUALITY_REPORTS = Path(__file__).parents[2] / "docs" / "04_数据源与检索" / "提供商资格"
 INSTRUMENT_ID = uuid4()
 OBSERVED_AT = datetime(2024, 1, 11, 12, tzinfo=UTC)
 ACTION_OBSERVED_AT = datetime(2024, 4, 1, 12, tzinfo=UTC)

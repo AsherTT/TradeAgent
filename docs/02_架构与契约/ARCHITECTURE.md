@@ -2,7 +2,7 @@
 
 The source-of-truth architecture is **Agentic Equity Research Workbench v1.1.1 — Quant Integrity + Operational Reliability Hardened** dated 2026-09-16.
 
-Current checkpoint: [2026-10-03 pre-P10 fixes](PRE_P10_CHECKPOINT_20261003.md).
+Current checkpoint: [2026-10-03 pre-P10 fixes](../01_项目总览/PRE_P10_CHECKPOINT_20261003.md).
 Catalyst failure handling and independent imports are fixed; live nonempty source
 interpretations passed citation checks. V1 indicator and strategy statistic calculations
 are implemented with explicit configuration and data gates. Research-memory feedback,
@@ -15,7 +15,7 @@ Phase 5 live completion remains open and Phase 10 has not started. Current model
 intent/planning, news and SEC financial acquisition have passed the real local
 HTTP/Redis/Celery/PostgreSQL path. Corporate-action completeness, live RAG inputs and
 verified financial/catalyst analysis still prevent a complete report. See
-`docs/DEVELOPMENT_PROGRESS_20261002.md` for the current layer-by-layer assessment.
+`docs/01_项目总览/DEVELOPMENT_PROGRESS_20261002.md` for the current layer-by-layer assessment.
 The stage descriptions below retain their original implementation context.
 
 Subsequent current-source qualification added explicit lexical-only RAG without
@@ -24,7 +24,7 @@ verified through the real research graph, removing its RAG gap. The optional hyb
 route remains available but has no live embedding qualification. An offline action
 material audit supplies intake diagnostics, never provider qualification. Market/action
 completeness and verified analysis still prevent a complete report. See
-`docs/RAG_LEXICAL_QUALIFICATION.md` and `docs/ACTION_COVERAGE_AUDIT.md`.
+`docs/06_验证与审查/检索与评估/RAG_LEXICAL_QUALIFICATION.md` and `docs/04_数据源与检索/ACTION_COVERAGE_AUDIT.md`.
 
 This repository has completed Phases 0-4 and implements the first Phase 5 vertical slice. PostgreSQL/pgvector migrations, the API-to-Redis-to-Celery path, point-in-time corporate-action visibility, deterministic price normalization, provider quality gates, and deterministic indicators have passed their local and Docker-backed qualifications. The Phase 5 LangGraph slice adds bounded planning, qualified-evidence collection, durable node transitions, terminal outcomes, failure persistence, durable cancellation, and bounded external-attempt records without changing the frozen provider boundaries.
 

@@ -4,8 +4,8 @@ Qualified artifact version: `alpha-vantage-daily-raw-v1`
 
 Machine-readable reports:
 
-- `docs/provider_quality/alpha_vantage_daily_raw_v1.json`
-- `docs/provider_quality/alpha_vantage_actions_observed_v1.json`
+- `docs/04_数据源与检索/提供商资格/alpha_vantage_daily_raw_v1.json`
+- `docs/04_数据源与检索/提供商资格/alpha_vantage_actions_observed_v1.json`
 
 This qualification covers the adapter contract and saved HTTP response shapes only. It does not
 claim that a live Alpha Vantage account, entitlement, or historical dataset has been qualified.

@@ -2,7 +2,7 @@
 
 Research date: 2026-10-01 (Asia/Shanghai). This document separates verified SEC
 semantics from conservative TradeAgent admission rules. It supports the narrow
-[current financial slice](SEC_FINANCIAL_SLICE.md), not historical backtests or
+[current financial slice](../03_研究与分析/SEC_FINANCIAL_SLICE.md), not historical backtests or
 completed fundamental analysis.
 
 ## Verified official source semantics

@@ -46,8 +46,8 @@
 - Sharpe/Sortino要求频率和无风险利率都明确配置；缺配置、零风险分母或
   样本不足返回null及原因。基准须通过来源、质量、时间对齐检查。
 
-参见[技术指标口径](PRE_P10_QUANT_COMPLETION.md)、
-[策略统计口径](PRE_P10_STRATEGY_METRICS.md)。这些完成的是计算和模拟金例，
+参见[技术指标口径](../05_记忆评估与策略/PRE_P10_QUANT_COMPLETION.md)、
+[策略统计口径](../05_记忆评估与策略/PRE_P10_STRATEGY_METRICS.md)。这些完成的是计算和模拟金例，
 不代表 Yahoo 行情获得资格或真实历史策略收益已经验证。
 
 ## 审查与验证

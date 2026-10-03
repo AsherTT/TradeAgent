@@ -1,12 +1,14 @@
 # Agentic Equity Research Workbench
 
+开发文档入口：[中文分类导航](docs/README.md)。
+
 **Current status (2026-10-03):** catalyst failure handling and independent imports are
 fixed; two live source-reported interpretations passed citation checks. The V1
 technical indicator and strategy statistic calculations are implemented, with
 explicit missing-data/configuration boundaries. Full analysis and real market/strategy
 qualification remain incomplete. Formal P10 is paused for the user's frontend requirements.
-See [the current checkpoint](docs/PRE_P10_CHECKPOINT_20261003.md) and
-[the earlier complete audit](docs/PRE_P10_AUDIT_20261003.md). Earlier milestone wording
+See [the current checkpoint](docs/01_项目总览/PRE_P10_CHECKPOINT_20261003.md) and
+[the earlier complete audit](docs/01_项目总览/PRE_P10_AUDIT_20261003.md). Earlier milestone wording
 below describes its original slice, not completion of the whole product.
 
 Production-minded research and quantitative decision-support workbench. The current implementation contains the completed Phase 0-4 foundation and the first Phase 5 vertical slice:
@@ -29,8 +31,8 @@ this workstation's system proxy; provider quality remains fixture-qualified. Bro
 research/RAG nodes, a backtesting engine, the integrated product UI, and Azure deployment remain
 deferred to later architecture gates. Phase 5 may begin an isolated frontend design clone lab,
 but real API integration is gated by stable backend contracts and does not count as Phase 10.
-See `docs/ALPHA_VANTAGE_QUALIFICATION.md`, `docs/YFINANCE_QUALIFICATION.md`, and
-`docs/FRONTEND_STRATEGY.md`.
+See `docs/06_验证与审查/模型与行情/ALPHA_VANTAGE_QUALIFICATION.md`, `docs/06_验证与审查/模型与行情/YFINANCE_QUALIFICATION.md`, and
+`docs/07_前端与部署/FRONTEND_STRATEGY.md`.
 
 ## Requirements
 
@@ -88,4 +90,4 @@ republication never changes run state; the worker execution lease remains author
 
 Business code submits a typed `ModelRequest` to `ModelGateway`. The gateway validates capabilities, selects an executor according to `TaskPolicy`, applies retry/fallback rules, validates the provider response against the requested Pydantic schema, and records execution metadata. Provider-specific behavior stays inside executor adapters.
 
-See `docs/MODEL_GATEWAY.md`, `docs/DATA_CONTRACT.md`, and `docs/ADR/` for the milestone decisions.
+See `docs/02_架构与契约/MODEL_GATEWAY.md`, `docs/02_架构与契约/DATA_CONTRACT.md`, and `docs/02_架构与契约/架构决策/` for the milestone decisions.

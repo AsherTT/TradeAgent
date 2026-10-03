@@ -3,7 +3,7 @@
 Fixed baseline: `79d570808c832ab2c16ac4f61a843e343f771097`.
 Implementation: `f459553`; report-language polish: `41b0681`.
 Full diff: `git diff 79d570808c832ab2c16ac4f61a843e343f771097...41b0681`.
-Source spec: `docs/FINANCIAL_PARTIAL_ASSESSMENT.md`.
+Source spec: `docs/03_研究与分析/FINANCIAL_PARTIAL_ASSESSMENT.md`.
 The initial nonempty diff and commit list were captured before independent reviews.
 No tracker issue is referenced; review used the direct repository spec. The repository
 has no configured `docs/agents/issue-tracker.md`; tracker setup is outside this increment.

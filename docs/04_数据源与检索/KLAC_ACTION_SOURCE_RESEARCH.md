@@ -4,7 +4,7 @@
 
 免费一手来源能交叉核实 KLAC 的具体拆股与现金股息，但本次没有取得一个能证明 **当前完整价格窗口内全部行动、包括无事件期间均已覆盖** 的完整记录源。因此不能将 `yfinance-actions-observed-v1` 从 `UNVERIFIED` 升为 `ACCEPTABLE`，也不能把 SEC 财务接入完成当作市场质量已经合格。
 
-仓库要求来自 `docs/KLAC_CURRENT_QUALIFICATION.md`、`docs/YFINANCE_QUALIFICATION.md`、`docs/ADR/ADR-0007-security-master-corporate-actions.md` 和 `docs/provider_quality/yfinance_actions_observed_v1.json`：独立金例、行动完整性、身份与期间一致性、`available_at <= analysis_timestamp`、版本化资格及最差质量传播。历史严格回测还要求可证明的历史发布时间。本文仅调研与提出方案，不改变资格报告或实现。
+仓库要求来自 `docs/06_验证与审查/模型与行情/KLAC_CURRENT_QUALIFICATION.md`、`docs/06_验证与审查/模型与行情/YFINANCE_QUALIFICATION.md`、`docs/02_架构与契约/架构决策/ADR-0007-security-master-corporate-actions.md` 和 `docs/04_数据源与检索/提供商资格/yfinance_actions_observed_v1.json`：独立金例、行动完整性、身份与期间一致性、`available_at <= analysis_timestamp`、版本化资格及最差质量传播。历史严格回测还要求可证明的历史发布时间。本文仅调研与提出方案，不改变资格报告或实现。
 
 ## 可核实的事件
 
@@ -67,7 +67,7 @@ KLA 的发行人公告可核实分红决定；其嵌入表实际由 QuoteMedia �
 
 ### 当前窗口和代码契约
 
-本次读过 `SEC_FINANCIAL_SOURCE.md`、`backend/app/market_data/yfinance.py`、`quality.py`、`normalization.py` 与 `backend/app/contracts/evaluation.py`。当前 loader 用采集开始 UTC 时间减 `timedelta(days=lookback_days)`，所以确实是自然日而非交易日。以 **2026-10-02 日期**举例，60/90 日起点为 08-03/07-04；精确资格仍必须采用实际 UTC 时间及交易所日历。两个窗口包含已知 08-17 分红日期，均晚于已知 06-12 拆股交易日；这不证明没有其他行动。
+本次读过 `docs/04_数据源与检索/SEC_FINANCIAL_SOURCE.md`、`backend/app/market_data/yfinance.py`、`quality.py`、`normalization.py` 与 `backend/app/contracts/evaluation.py`。当前 loader 用采集开始 UTC 时间减 `timedelta(days=lookback_days)`，所以确实是自然日而非交易日。以 **2026-10-02 日期**举例，60/90 日起点为 08-03/07-04；精确资格仍必须采用实际 UTC 时间及交易所日历。两个窗口包含已知 08-17 分红日期，均晚于已知 06-12 拆股交易日；这不证明没有其他行动。
 
 `YFinanceCurrentMarketDataLoader` 明确拒绝非 `unverified` 的 Yahoo action report，并将 bar/action 的最差质量传给规范化价格。`ProviderQualityReport.coverage` 只有一个浮点值，不含标的/时间区间/事件类型/版本修订/空日语义。因此 `coverage=1.0` 和金例全通过不能表达或证明全窗覆盖；新增 qualified 路径必须有单独的范围契约与来源链，不能复用该标量冒充真实完整性。SEC 年度财务的 current 资格也不能延伸为公司行动资格。
 

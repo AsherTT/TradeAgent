@@ -59,7 +59,7 @@ model-produced research plan before context selection. A filing requirement acce
 
 ## 5. Gate D — fixture qualified
 
-`docs/GATE_D_QUALIFICATION.md` records the 13/13 malicious-input quarantine result, five
+`docs/06_验证与审查/阶段验收/GATE_D_QUALIFICATION.md` records the 13/13 malicious-input quarantine result, five
 strict-schema policy/trust rejections, one benign control, and PostgreSQL point-in-time,
 isolation, FTS/pgvector, and immutability evidence. Phase 7 implementation is complete within
 this fixture-qualified scope. The application remains default-off until its embedding model,

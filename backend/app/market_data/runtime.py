@@ -51,7 +51,7 @@ from backend.app.market_data.yfinance import (
     YFinanceRequestSession,
 )
 
-_QUALITY_REPORTS = Path(__file__).parents[3] / "docs" / "provider_quality"
+_QUALITY_REPORTS = Path(__file__).parents[3] / "docs" / "04_数据源与检索" / "提供商资格"
 
 
 class InstrumentEpochRepository(Protocol):

@@ -70,7 +70,7 @@ No write token is shipped. A Synthesis without both prediction fields cannot be 
 
 ## Qualification and activation
 
-`docs/PHASE6_QUALIFICATION.md` records the successful rebuilt Docker
+`docs/06_验证与审查/阶段验收/PHASE6_QUALIFICATION.md` records the successful rebuilt Docker
 API/Redis/Celery/PostgreSQL lifecycle and direct UPDATE/DELETE rejection. Phase 6 implementation
 is complete within this fixture-qualified scope. Live forward forecasts start accumulating only
 when the command is explicitly configured and called for real completed research; no provider

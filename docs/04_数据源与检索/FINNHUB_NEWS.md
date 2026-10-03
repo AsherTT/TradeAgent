@@ -22,5 +22,5 @@ be represented without lookahead. Fixed-cutoff historical research never acquire
 historical evidence. This adapter and the cutoff sequence are tested with offline HTTP fixtures.
 A narrow live KLAC request with a locally configured free key succeeded on 2026-09-30; the combined
 current-news and Yahoo acquisition admitted 19 scanned news records but stopped at the market
-quality gate. See `docs/KLAC_CURRENT_QUALIFICATION.md`. News relevance and complete model synthesis
+quality gate. See `docs/06_验证与审查/模型与行情/KLAC_CURRENT_QUALIFICATION.md`. News relevance and complete model synthesis
 are still unqualified.

@@ -180,8 +180,8 @@ The planner prompt now supplies exact capability names as well as requirement va
 unsupported requirements/capabilities still fail closed. The local Codex transport issue
 was resolved with a child-only proxy; two real intent/planning nodes and a live durable
 KLAC collection passed while market quality continued to block synthesis. See
-`docs/SEC_FINANCIAL_INTEGRATION.md`, `docs/CODEX_TRANSPORT_QUALIFICATION.md`, and
-`docs/KLAC_ACTION_SOURCE_RESEARCH.md`. SEC real-client qualification, company-action
+`docs/03_研究与分析/SEC_FINANCIAL_INTEGRATION.md`, `docs/06_验证与审查/模型与行情/CODEX_TRANSPORT_QUALIFICATION.md`, and
+`docs/04_数据源与检索/KLAC_ACTION_SOURCE_RESEARCH.md`. SEC real-client qualification, company-action
 completeness, verified catalyst claims and full report synthesis remain pending.
 
 ### Earlier path record
@@ -191,7 +191,7 @@ completeness, verified catalyst claims and full report synthesis remain pending.
    observability now distinguishes completed, known-failure, and unknown-outcome steps with
    bounded secret-free metadata; pending-run reconciliation is implemented.
 3. Intent, provider-neutral News ingestion, a deterministic Gap Judge, bounded News Replan, and
-   evidence-cited Synthesis are implemented. `docs/GATE_C_QUALIFICATION.md` records offline
+   evidence-cited Synthesis are implemented. `docs/06_验证与审查/阶段验收/GATE_C_QUALIFICATION.md` records offline
    qualification of loop limits, durable outcomes, the mock-provider API/task/SQLite complete
    path, and the rebuilt Docker API/Redis/Celery/PostgreSQL complete path. Gate C passes within
    that recorded fixture scope. Model-based news-event extraction and a live news adapter remain

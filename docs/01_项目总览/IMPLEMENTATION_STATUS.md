@@ -21,12 +21,12 @@ no additional source/model calls. Ordinary checks: 411 passed, 1 skipped, 90.08%
 coverage; Ruff and strict mypy (97 files) passed. Read-only regeneration from a prior
 real PostgreSQL run could not execute because the database refused connections and
 the local Docker engine was not running; no new live qualification is claimed.
-Spec: `docs/FINANCIAL_PARTIAL_ASSESSMENT.md`. Independent Standards/Spec reviews
+Spec: `docs/03_研究与分析/FINANCIAL_PARTIAL_ASSESSMENT.md`. Independent Standards/Spec reviews
 both have zero findings, including final report-language polish; 23 affected report
-tests and final static checks pass. See `docs/FINANCIAL_PARTIAL_ASSESSMENT_REVIEW.md`.
+tests and final static checks pass. See `docs/06_验证与审查/财务与报告/FINANCIAL_PARTIAL_ASSESSMENT_REVIEW.md`.
 P10 remains unstarted.
 
-Earlier assessment: `docs/DEVELOPMENT_PROGRESS_20261002.md`. The earlier entries below
+Earlier assessment: `docs/01_项目总览/DEVELOPMENT_PROGRESS_20261002.md`. The earlier entries below
 are chronological qualification records; later live qualification supersedes historical
 statements that no request had yet been made. SEC contact configuration and real current
 financial acquisition/persistence are now qualified. Complete analysis remains blocked
@@ -37,7 +37,7 @@ lexical-only PostgreSQL retrieval: official SEC excerpt intake, migration 0014 a
 real research queue execution passed. An offline action-material audit is implemented
 without granting provider qualification. This stage passed Standards and Spec with
 zero findings; 374 ordinary tests pass, 1 is skipped, coverage is 90.00%.
-See `docs/RAG_ACTION_AUDIT_REVIEW.md` and `docs/RAG_LEXICAL_QUALIFICATION.md`.
+See `docs/06_验证与审查/检索与评估/RAG_ACTION_AUDIT_REVIEW.md` and `docs/06_验证与审查/检索与评估/RAG_LEXICAL_QUALIFICATION.md`.
 Market/action completeness, verified analysis and full synthesis remain outstanding.
 
 The later partial-analysis increment adds two reproducible annual SEC financial
@@ -46,15 +46,15 @@ fractions and a default-off source-bound catalyst node. Live run
 the catalyst assessment returned zero interpretations with three limitations. This
 qualifies the empty-output path, not confirmed event extraction. Ordinary checks:
 395 passed, 1 skipped, 90.11% coverage; Ruff and strict mypy (97 files) passed.
-See `docs/FINANCIAL_CATALYST_QUALIFICATION.md` for the bounded qualification.
+See `docs/06_验证与审查/财务与报告/FINANCIAL_CATALYST_QUALIFICATION.md` for the bounded qualification.
 Standards reported zero findings; Spec's one P2 was corrected and closed. See
-`docs/FINANCIAL_CATALYST_REVIEW.md` for the pinned review and regression evidence.
+`docs/06_验证与审查/财务与报告/FINANCIAL_CATALYST_REVIEW.md` for the pinned review and regression evidence.
 P10 remains unstarted; development must pause before that phase.
 
 The 2026-10-02 source-bound claim increment passed Standards and Spec review with
 zero findings. Ordinary suite: 350 passed, 1 skipped, 90.21% coverage; Ruff and
-strict mypy passed. See `docs/SYNTHESIS_CLAIM_REVIEW.md` and
-`docs/SEC_CURRENT_QUALIFICATION.md` for the current reviewed and live-qualified scope.
+strict mypy passed. See `docs/06_验证与审查/财务与报告/SYNTHESIS_CLAIM_REVIEW.md` and
+`docs/06_验证与审查/财务与报告/SEC_CURRENT_QUALIFICATION.md` for the current reviewed and live-qualified scope.
 
 ## Implemented
 
@@ -65,16 +65,16 @@ strict mypy passed. See `docs/SYNTHESIS_CLAIM_REVIEW.md` and
   Offline golden cases pass. Shared Redis request admission, actual HTTP-call budgeting,
   freshness/provenance admission, same-period concept coverage, required synthesis citations
   and individually cited report observations are implemented. See
-  `docs/SEC_FINANCIAL_INTEGRATION.md` and `docs/SEC_FINANCIAL_SOURCE.md`. Live client
+  `docs/03_研究与分析/SEC_FINANCIAL_INTEGRATION.md` and `docs/04_数据源与检索/SEC_FINANCIAL_SOURCE.md`. Live client
   qualification remains pending an identifying SEC User-Agent. No complete financial
   research or historical PIT qualification is claimed.
 - Phase 5 local Codex SDK transport recovered using an explicit child-process proxy matching
   the workstation's existing network configuration. Real structured intent/plan and durable
   HTTP/Redis/Celery/PostgreSQL acquisition passed; the KLAC result remains insufficient
-  evidence because Yahoo action quality is UNVERIFIED. See `docs/CODEX_TRANSPORT_QUALIFICATION.md`.
+  evidence because Yahoo action quality is UNVERIFIED. See `docs/06_验证与审查/模型与行情/CODEX_TRANSPORT_QUALIFICATION.md`.
 - This increment passed dual-axis review after three Spec corrections. Ordinary checks:
   339 passed, 1 skipped, 90.14% coverage; Ruff and strict mypy passed. See
-  `docs/FINANCIAL_INTEGRATION_REVIEW.md`. Live SEC access and complete corporate-action
+  `docs/06_验证与审查/财务与报告/FINANCIAL_INTEGRATION_REVIEW.md`. Live SEC access and complete corporate-action
   coverage remain outstanding; P10 has not started.
 
 - Phase 0 repository and Python 3.12 project baseline
@@ -95,7 +95,7 @@ strict mypy passed. See `docs/SYNTHESIS_CLAIM_REVIEW.md` and
 - Phase 6 Evidence Repository slice: append-only relational evidence checkpoints, explicit
   point-in-time reads, immutable UUID/content enforcement, timezone normalization, and Alembic
   migration `0007` with eligible historical backfill. See
-  `docs/PHASE6_WORKFLOW.md` for the remaining Thesis and Forecast work.
+  `docs/05_记忆评估与策略/PHASE6_WORKFLOW.md` for the remaining Thesis and Forecast work.
 - Phase 6 Thesis Lifecycle slice: append-only versions, transitions, evidence links, optimistic
   version checks, point-in-time history, and migration `0008`. Thesis creation requires a
   completed cited research run; direction and probability are supplied explicitly. Migration
@@ -110,10 +110,10 @@ strict mypy passed. See `docs/SYNTHESIS_CLAIM_REVIEW.md` and
 - Phase 6 mock-path qualification: rebuilt API/worker/Beat/migration images, PostgreSQL at
   Alembic `0010`, real Redis/Celery execution, cited Thesis/Forecast persistence, exact model
   output provenance, and direct PostgreSQL UPDATE/DELETE rejection. See
-  `docs/PHASE6_QUALIFICATION.md`.
+  `docs/06_验证与审查/阶段验收/PHASE6_QUALIFICATION.md`.
 - Phase 7 document-intake slice: bounded HTML/Markdown/text/JSON/PDF parsing, Unicode and
   hidden-content cleanup, versioned prompt-injection scanning, trust classification, high-risk
-  quarantine, and structure-aware chunking. See `docs/PHASE7_WORKFLOW.md`.
+  quarantine, and structure-aware chunking. See `docs/04_数据源与检索/PHASE7_WORKFLOW.md`.
 - Phase 7 storage slice: migration `0011` adds append-only RAG documents/chunks, 384-dimensional
   pgvector embeddings, PostgreSQL FTS/HNSW indexes, model provenance, and mutation triggers;
   repository validation and SQLite boundary tests pass. PostgreSQL qualification follows.
@@ -125,17 +125,17 @@ strict mypy passed. See `docs/SYNTHESIS_CLAIM_REVIEW.md` and
   API and graph tests pass; no live embedding provider is configured or qualified.
 - Phase 7 Gate D: 13/13 poisoned fixtures quarantined, 5/5 policy/trust-field injections
   rejected, and PostgreSQL migration `0011` qualified with FTS/pgvector retrieval, PIT exclusion,
-  and immutable document/chunk rows. See `docs/GATE_D_QUALIFICATION.md`.
+  and immutable document/chunk rows. See `docs/06_验证与审查/阶段验收/GATE_D_QUALIFICATION.md`.
 - Phase 8 replay submission slice: research requests explicitly select Research Replay or
   Evidence-Constrained Replay; historical cutoffs retain parametric look-ahead risk metadata,
   and the research workflow rejects strict quant and forward evaluation modes. See
-  `docs/PHASE8_WORKFLOW.md`.
+  `docs/05_记忆评估与策略/PHASE8_WORKFLOW.md`.
 - Phase 8 evidence-constrained replay slice: a separate worker path reads bounded immutable
   evidence at the requested cutoff and avoids live market/RAG calls; PIT fields and embedded
   market snapshots are checked before graph use. Offline tests cover future-evidence exclusion.
 - Phase 8 Gate E is qualified with local contract, SQLite, and worker-composition fixtures:
   explicit modes, historical LLM risk metadata, evidence time filtering, and the strict
-  quant-backtest exclusion. See `docs/GATE_E_QUALIFICATION.md`; no live-source result is claimed.
+  quant-backtest exclusion. See `docs/06_验证与审查/阶段验收/GATE_E_QUALIFICATION.md`; no live-source result is claimed.
 - Phase 8 forward-statistics slice: configurable evaluation maturity and bucket thresholds,
   linked Forecast/Outcome descriptive scores, per-bucket sample counts and Wilson intervals,
   with cold-start and small-sample limits.
@@ -148,7 +148,7 @@ strict mypy passed. See `docs/SYNTHESIS_CLAIM_REVIEW.md` and
   external structural invariants are not inferred from these reports.
 - Phase 8 PostgreSQL `0012` qualification: migration upgrade, Outcome foreign key, and direct
   UPDATE/DELETE rejection passed in the restored local Docker environment using rolled-back
-  synthetic rows. See `docs/PHASE8_POSTGRES_QUALIFICATION.md`.
+  synthetic rows. See `docs/06_验证与审查/检索与评估/PHASE8_POSTGRES_QUALIFICATION.md`.
 - Phase 8 read-only evaluation endpoint: a server-configured universe/horizon/outcome cohort
   exposes policy, maturity, coverage, scores, and all sample-counted buckets. Offline HTTP
   tests cover exploratory low-sample output and unconfigured cohort rejection. PostgreSQL
@@ -170,7 +170,7 @@ strict mypy passed. See `docs/SYNTHESIS_CLAIM_REVIEW.md` and
 - Phase 9 strict PIT feature-input slice: deterministic historical features require
   a timestamped universe, qualified market and action providers, raw execution
   bars, and only point-in-time-visible corporate actions. Unsupported lifecycle
-  changes fail closed. See `docs/PHASE9_WORKFLOW.md`.
+  changes fail closed. See `docs/05_记忆评估与策略/PHASE9_WORKFLOW.md`.
 - Phase 9 deterministic signal/backtest slice: point-in-time moving-average signals
   execute at the following raw open in a bounded long-or-cash simulation with
   split/dividend accounting, costs, NAV, and reproducible metrics. This remains
@@ -178,7 +178,7 @@ strict mypy passed. See `docs/SYNTHESIS_CLAIM_REVIEW.md` and
 - Phase 9 deterministic risk/TradeIntent slice: quality, age, loss, exposure,
   liquidity, price, hours, duplicate, and kill-switch checks produce only a
   non-executable, externally authorized intent. Gate F is fixture-qualified for
-  the restricted deterministic path. See `docs/GATE_F_QUALIFICATION.md`.
+  the restricted deterministic path. See `docs/06_验证与审查/阶段验收/GATE_F_QUALIFICATION.md`.
 - Phase 9 whole-phase review identified and closed historical-universe provenance,
   loss-at-stop sizing, and signal/instrument lineage gaps. The two maintainability
   suggestions were addressed by separating input validation, action accounting,
@@ -276,7 +276,7 @@ strict mypy passed. See `docs/SYNTHESIS_CLAIM_REVIEW.md` and
 - PostgreSQL migration reaches `0004_phase4_constraints`, creates point-in-time lookup indexes,
   and enforces corporate-action value constraints.
 - The rebuilt non-root application image imports pandas, NumPy, and SciPy successfully.
-- Detailed evidence is recorded in `docs/GATE_B_QUALIFICATION.md`.
+- Detailed evidence is recorded in `docs/06_验证与审查/阶段验收/GATE_B_QUALIFICATION.md`.
 
 ## Phase 5 first-slice qualification
 
@@ -366,7 +366,7 @@ strict mypy passed. See `docs/SYNTHESIS_CLAIM_REVIEW.md` and
   submission-to-Celery-task-to-SQLite-to-query path retains Synthesis citations. The rebuilt
   Docker API/Redis/Celery/PostgreSQL path also completed run
   `148af5f8-8d69-4fdd-9e1d-c8c16a1519f3` with persisted citations and idempotent task
-  redelivery. `docs/GATE_C_QUALIFICATION.md` records the outcome matrix and provider limits.
+  redelivery. `docs/06_验证与审查/阶段验收/GATE_C_QUALIFICATION.md` records the outcome matrix and provider limits.
   The ordinary suite has 188 passing tests and one opt-in live-model test skipped, with 94.35%
   combined statement/branch coverage.
 
@@ -393,12 +393,12 @@ strict mypy passed. See `docs/SYNTHESIS_CLAIM_REVIEW.md` and
   metadata, quality state, and explicit missing sections through
   `GET /research/{research_run_id}/report`. It is deliberately marked incomplete while verified
   financial/catalyst evidence and claim-level attribution are unavailable. See
-  `docs/RESEARCH_REPORT.md`.
+  `docs/03_研究与分析/RESEARCH_REPORT.md`.
 - A 2026-09-30 live KLAC provider-composition probe verified Finnhub free-key access and admitted
   19 news items alongside a frozen Yahoo cutoff. Yahoo action quality remained `UNVERIFIED`, so
   the technical and market evidence requirement correctly stayed unsatisfied. This did not
   exercise the durable API/Redis/worker/PostgreSQL/model path. See
-  `docs/KLAC_CURRENT_QUALIFICATION.md`.
+  `docs/06_验证与审查/模型与行情/KLAC_CURRENT_QUALIFICATION.md`.
 - Subsequent Phase 5 work records a typed, bounded market acquisition summary even when returned
   bars fail the technical quality gate. It exposes provider/count/date/quality diagnostics in the
   report without promoting an unqualified price or evidence claim.
@@ -411,7 +411,7 @@ strict mypy passed. See `docs/SYNTHESIS_CLAIM_REVIEW.md` and
 - A separate live API submission was accepted and claimed by a local Celery worker but stopped
   at the first configured Codex subscription intent call after its 120-second limit. It
   persisted a controlled `AllProvidersFailedError` and made no provider call. This leaves
-  unseeded model planning unqualified; see `docs/KLAC_CURRENT_QUALIFICATION.md`.
+  unseeded model planning unqualified; see `docs/06_验证与审查/模型与行情/KLAC_CURRENT_QUALIFICATION.md`.
 - A server-generated `collection_only` submission mode now lets ordinary HTTP requests reach
   provider acquisition with zero model calls while preserving all quality gates. A live KLAC
   request completed the API/Redis/Celery/PostgreSQL/report path with 15 Finnhub news records,
@@ -428,7 +428,7 @@ strict mypy passed. See `docs/SYNTHESIS_CLAIM_REVIEW.md` and
   or live document source is claimed. Phase 8 Gate E and offline Gate G slices are
   fixture-qualified after one whole-phase code review. Production forward-observation
   wiring and live performance qualification remain pending.
-- ADR-0017 and `docs/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
+- ADR-0017 and `docs/07_前端与部署/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
   reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,
   Gate C now permits real Research API integration under that strategy, while the formal frontend
   milestone remains Phase 10.

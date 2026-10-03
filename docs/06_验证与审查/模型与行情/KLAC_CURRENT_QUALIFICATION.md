@@ -85,7 +85,7 @@ model-assisted HTTP submission and durable intent/planning through real Redis/Ce
 PostgreSQL, collecting eight news records and 41 Yahoo bars. It still ended
 `insufficient_evidence` with `UNVERIFIED` action quality and no synthesis. SEC financials
 remained disabled pending an identifying contact User-Agent. See
-`docs/CODEX_TRANSPORT_QUALIFICATION.md`; earlier timeout observations remain historical.
+`docs/06_验证与审查/模型与行情/CODEX_TRANSPORT_QUALIFICATION.md`; earlier timeout observations remain historical.
 
 After supplying the planner's supported capability vocabulary, run
 `6dbc59d4-c8fb-4281-ba43-36fad58c1966` repeated the real path in 21.50 seconds.

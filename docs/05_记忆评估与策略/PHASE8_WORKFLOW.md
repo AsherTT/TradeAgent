@@ -32,7 +32,7 @@ and cannot produce a fully qualified forecast. The current LLM remains subject t
 
 Offline SQLite tests exercise PIT selection and exclusion of a future record, and an
 adapter test rejects future evidence even if its repository violates the query rule.
-The combined offline Gate E acceptance record is in `docs/GATE_E_QUALIFICATION.md`.
+The combined offline Gate E acceptance record is in `docs/06_验证与审查/阶段验收/GATE_E_QUALIFICATION.md`.
 
 ## 3. Forward forecast statistics — implemented offline
 
@@ -70,7 +70,7 @@ idempotence, and immutability.
 
 This storage path does not yet schedule outcome acquisition from a qualified provider.
 PostgreSQL migration, foreign-key, and mutation-trigger qualification is recorded in
-`docs/PHASE8_POSTGRES_QUALIFICATION.md`. Live forward observations remain pending.
+`docs/06_验证与审查/检索与评估/PHASE8_POSTGRES_QUALIFICATION.md`. Live forward observations remain pending.
 
 The bounded `ForwardEvaluationRunner` scans forecasts without Outcomes, checks their
 configured due time, asks an injected observation source for available data, and

@@ -25,7 +25,7 @@
 Local Codex network configuration can explicitly set `CODEX_PROXY_URL` for the SDK child.
 The option defaults empty, does not alter global proxy variables, and rejects embedded
 credentials. Only completed SDK turns with text are admitted. Local transport and real
-intent/plan qualification are recorded in `docs/CODEX_TRANSPORT_QUALIFICATION.md`; this
+intent/plan qualification are recorded in `docs/06_验证与审查/模型与行情/CODEX_TRANSPORT_QUALIFICATION.md`; this
 does not qualify full synthesis, API-provider access or cloud deployment.
 
 Live provider qualification is opt-in: set `RUN_LIVE_MODEL=1` and run the
