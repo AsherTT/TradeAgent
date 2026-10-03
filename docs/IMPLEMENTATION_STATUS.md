@@ -2,6 +2,17 @@
 
 Last updated: 2026-10-03
 
+Latest whole-blueprint assessment: `docs/PRE_P10_AUDIT_20261003.md`. The audited
+backend supports real collection and partial reports; full research, real forward
+performance and the complete V1 indicator/strategy/observability scope remain open.
+The latest live run a307ea35-c1bf-46c8-bc35-efcbf96759a7 collected financial/news/RAG
+and unverified market data but FAILED after catalyst start, without an assessment.
+New audit findings include missing catalyst failure-marker finalization and an
+import-order cycle in news.catalysts. These are recorded, not fixed by this audit.
+Earlier financial partial projection now passed PostgreSQL regeneration and limited
+container HTTP reads. Ordinary suite: 411 passed, 1 skipped, 90.16% coverage.
+Four stored forecasts are all fixtures; no real outcomes exist. P10 is unstarted.
+
 The 2026-10-03 bounded P5 increment adds deterministic source-linked partial financial
 interpretations and per-metric unavailability reasons to reports. It preserves the
 four-concept admission gate, existing metric API and complete_analysis=false, with
@@ -14,7 +25,7 @@ both have zero findings, including final report-language polish; 23 affected rep
 tests and final static checks pass. See `docs/FINANCIAL_PARTIAL_ASSESSMENT_REVIEW.md`.
 P10 remains unstarted.
 
-Current assessment: `docs/DEVELOPMENT_PROGRESS_20261002.md`. The earlier entries below
+Earlier assessment: `docs/DEVELOPMENT_PROGRESS_20261002.md`. The earlier entries below
 are chronological qualification records; later live qualification supersedes historical
 statements that no request had yet been made. SEC contact configuration and real current
 financial acquisition/persistence are now qualified. Complete analysis remains blocked

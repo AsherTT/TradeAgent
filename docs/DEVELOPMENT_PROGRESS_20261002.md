@@ -108,3 +108,16 @@ API/worker 已关闭，PostgreSQL/Redis 保留运行。
 实现 f459553，报告文字修正 41b0681；Standards / Spec 独立审查均零问题，
 原审查代理也核验了最终文字增量。修正后 23 项报告测试及静态检查通过。
 完整验证与双轴审查范围见 FINANCIAL_PARTIAL_ASSESSMENT_REVIEW.md。
+
+## 2026-10-03 P10 前全范围核验
+
+最新实际进度、27 项逐项核验、完整蓝图差异、通俗架构与功能说明见
+PRE_P10_AUDIT_20261003.md。全量 411 passed、1 skipped、90.16% coverage，
+静态检查通过；旧真实报告的新增财务解读已补过 PostgreSQL 和限定容器 HTTP 验证。
+
+最新真实运行 a307ea35-c1bf-46c8-bc35-efcbf96759a7 收集四项财务、八条新闻、
+九条 lexical RAG 和 43 根不合格行情，但催化剂启动后以 ValueError 失败，
+未产生 assessment 或综合。催化剂失败标记未收尾和单独导入循环已记录，未修复。
+现存四条预测全部为测试记录，真实 Outcome 为零；没有可报告的真实预测业绩。
+全部结果评估测试写入回滚，自有 API/worker/临时容器已移除，原 PG/Redis healthy。
+本次仅做核验与文档记录，未进入 P10，未更改业务实现或默认开关。
