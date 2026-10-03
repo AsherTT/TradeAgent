@@ -14,7 +14,11 @@ from backend.app.contracts.evidence import SynthesisClaim
 from backend.app.contracts.market import MarketAcquisitionSummary
 from backend.app.contracts.research import ResearchState, ResearchStatus
 from backend.app.financials.admission import admitted_financial_fact, select_financial_group
-from backend.app.financials.analysis import FinancialMetric, derive_financial_metrics
+from backend.app.financials.analysis import (
+    FinancialMetric,
+    FinancialMetricAssessment,
+    assess_financial_metrics,
+)
 from backend.app.financials.sec import SecFinancialFact
 from backend.app.graph.evidence_gap import qualified_evidence
 from backend.app.graph.synthesis import validate_synthesis_claims
@@ -53,6 +57,9 @@ class ResearchReport(ContractModel):
     financial_observations: tuple[FinancialReportObservation, ...] = Field(default=(), max_length=4)
     claims: tuple[SynthesisClaim, ...] = Field(default=(), max_length=8)
     financial_metrics: tuple[FinancialMetric, ...] = Field(default=(), max_length=2)
+    financial_metric_assessments: tuple[FinancialMetricAssessment, ...] = Field(
+        default=(), max_length=2,
+    )
     catalyst_interpretations: tuple[SynthesisClaim, ...] = Field(default=(), max_length=5)
     catalyst_limitations: tuple[str, ...] = Field(default=(), max_length=3)
 
@@ -95,10 +102,10 @@ def build_research_report(state: ResearchState) -> ResearchReport:
             catalyst_limitations = state.catalyst_assessment.limitations
         except ValueError:
             catalyst_invalid = True
-    metrics = (
-        derive_financial_metrics(tuple(eligible.values()), cutoff=state.analysis_timestamp)
-        if state.analysis_timestamp is not None else ()
+    assessments = assess_financial_metrics(
+        tuple(eligible.values()), cutoff=state.analysis_timestamp,
     )
+    metrics = tuple(result.metric for result in assessments if result.metric is not None)
     cited_ids = (
         tuple(evidence_id for evidence_id in synthesis.evidence_ids if evidence_id in eligible)
         if synthesis is not None
@@ -212,7 +219,12 @@ def build_research_report(state: ResearchState) -> ResearchReport:
     sections.append(
         ReportSection(
             title="Business and financials",
-            text="No separately verified business or financial analysis is available in this run.",
+            text=(
+                "Source-linked deterministic partial financial interpretations are available. "
+                "No separately verified business or complete financial analysis is available."
+                if metrics else
+                "No separately verified business or financial analysis is available in this run."
+            ),
         )
     )
     sections.extend(
@@ -247,6 +259,15 @@ def build_research_report(state: ResearchState) -> ResearchReport:
                   "not a growth, valuation or investment conclusion."),
             evidence_ids=metric.evidence_ids,
         ) for metric in metrics
+    )
+    sections.extend(
+        ReportSection(
+            title=f"Partial financial interpretation: {result.name}",
+            text=(result.interpretation + " Limits: " + "; ".join(result.limitations)
+                  if result.interpretation is not None else
+                  f"Metric unavailable: {result.unavailable_reason}."),
+            evidence_ids=result.metric.evidence_ids if result.metric is not None else (),
+        ) for result in assessments
     )
     sections.extend(
         ReportSection(
@@ -388,6 +409,7 @@ def build_research_report(state: ResearchState) -> ResearchReport:
         financial_observations=tuple(financial_observations),
         claims=claims,
         financial_metrics=metrics,
+        financial_metric_assessments=assessments,
         catalyst_interpretations=catalyst_claims,
         catalyst_limitations=catalyst_limitations,
     )
