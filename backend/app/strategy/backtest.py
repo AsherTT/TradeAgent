@@ -4,14 +4,15 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import StrEnum
-from math import sqrt
+from math import exp, isfinite, log, sqrt
 from uuid import UUID
 
-from pydantic import Field
+from pydantic import ConfigDict, Field, model_validator
 
 from backend.app.contracts.base import ContractModel
-from backend.app.contracts.evaluation import ReplayIntegrityLevel
+from backend.app.contracts.evaluation import ProviderQualityReport, ReplayIntegrityLevel
 from backend.app.contracts.instrument import CorporateAction, CorporateActionType
+from backend.app.market_data.quality import require_strict_backtest_eligible
 from backend.app.strategy.features import StrictBacktestInput, StrictFeature, build_strict_features
 
 
@@ -32,6 +33,7 @@ class StrategySignal(ContractModel):
 
 
 class BacktestRiskPolicy(ContractModel):
+    model_config = ConfigDict(allow_inf_nan=False)
     initial_cash: float = Field(default=100_000, gt=0)
     max_position_fraction: float = Field(default=0.25, gt=0, le=1)
     max_drawdown_fraction: float = Field(default=0.3, gt=0, le=1)
@@ -42,6 +44,7 @@ class BacktestRiskPolicy(ContractModel):
 
 
 class BacktestTrade(ContractModel):
+    model_config = ConfigDict(allow_inf_nan=False)
     executed_at: datetime
     side: SignalSide
     shares: float = Field(gt=0)
@@ -52,6 +55,7 @@ class BacktestTrade(ContractModel):
 
 
 class NavPoint(ContractModel):
+    model_config = ConfigDict(allow_inf_nan=False)
     timestamp: datetime
     cash: float
     shares: float = Field(ge=0)
@@ -59,11 +63,57 @@ class NavPoint(ContractModel):
 
 
 class BacktestMetrics(ContractModel):
+    model_config = ConfigDict(allow_inf_nan=False)
     total_return: float
     max_drawdown: float = Field(ge=0, le=1)
     volatility_per_bar: float | None = None
     trade_count: int = Field(ge=0)
     commission_paid: float = Field(ge=0)
+    cagr: float | None = None
+    sharpe: float | None = None
+    sortino: float | None = None
+    closed_trade_count: int = Field(default=0, ge=0)
+    hit_rate: float | None = Field(default=None, ge=0, le=1)
+    profit_factor: float | None = Field(default=None, ge=0)
+    average_win: float | None = Field(default=None, gt=0)
+    average_loss: float | None = Field(default=None, lt=0)
+    turnover: float = Field(default=0, ge=0)
+    slippage: float = Field(default=0, ge=0)
+    transaction_cost: float = Field(default=0, ge=0)
+    benchmark_total_return: float | None = None
+    benchmark_excess_return: float | None = None
+    exposure: float = Field(default=0, ge=0, le=1)
+    time_in_market: float = Field(default=0, ge=0, le=1)
+    unavailable_reasons: tuple[str, ...] = ()
+
+
+class BacktestMetricPolicy(ContractModel):
+    periods_per_year: int | None = Field(default=None, gt=0)
+    risk_free_annual_return: float = Field(default=0, gt=-1, allow_inf_nan=False)
+
+
+class BenchmarkPoint(ContractModel):
+    timestamp: datetime
+    available_at: datetime
+    total_return_value: float = Field(gt=0, allow_inf_nan=False)
+
+    @model_validator(mode="after")
+    def aware_times(self) -> BenchmarkPoint:
+        if any(t.tzinfo is None or t.utcoffset() is None for t in (
+            self.timestamp, self.available_at,
+        )):
+            raise ValueError("benchmark timestamps must be timezone-aware")
+        if self.available_at < self.timestamp:
+            raise ValueError("benchmark value cannot be available before its timestamp")
+        return self
+
+
+class BacktestBenchmark(ContractModel):
+    benchmark_id: str = Field(min_length=1)
+    source: str = Field(min_length=1)
+    source_version: str = Field(min_length=1)
+    quality: ProviderQualityReport
+    points: tuple[BenchmarkPoint, ...] = Field(min_length=2)
 
 
 class StrictBacktestResult(ContractModel):
@@ -73,6 +123,9 @@ class StrictBacktestResult(ContractModel):
     nav: tuple[NavPoint, ...]
     metrics: BacktestMetrics
     risk_blocked: bool
+    metric_policy: BacktestMetricPolicy = Field(default_factory=BacktestMetricPolicy)
+    benchmark_id: str | None = None
+    closed_trade_pnl: tuple[float, ...] = ()
 
 
 def make_strategy_signals(features: tuple[StrictFeature, ...]) -> tuple[StrategySignal, ...]:
@@ -97,12 +150,17 @@ def run_strict_backtest(
     risk: BacktestRiskPolicy,
     fast_window: int = 2,
     slow_window: int = 3,
+    metric_policy: BacktestMetricPolicy | None = None,
+    benchmark: BacktestBenchmark | None = None,
 ) -> StrictBacktestResult:
     """Trade at the following raw open, after the prior feature became available."""
 
     signals = make_strategy_signals(
         build_strict_features(data, fast_window=fast_window, slow_window=slow_window)
     )
+    if benchmark is not None:
+        _validate_benchmark(benchmark, data)
+    policy = metric_policy or BacktestMetricPolicy()
     by_bar = {signal.bar_timestamp: signal for signal in signals}
     cash = risk.initial_cash
     shares = 0.0
@@ -112,6 +170,8 @@ def run_strict_backtest(
     risk_trigger_at: datetime | None = None
     trades: list[BacktestTrade] = []
     nav: list[NavPoint] = []
+    closed_trade_pnl: list[float] = []
+    position_start_cash: float | None = None
     prior_bar_at: datetime | None = None
     pending: StrategySignal | None = None
     ordered_actions = sorted(
@@ -142,6 +202,7 @@ def run_strict_backtest(
                 allocation = min(cash, (cash + shares * bar.open) * risk.max_position_fraction)
                 bought = allocation / (execution_price * (1 + risk.commission_fraction))
                 if bought > 0:
+                    position_start_cash = cash
                     fee = bought * execution_price * risk.commission_fraction
                     cash -= bought * execution_price + fee
                     shares += bought
@@ -159,6 +220,10 @@ def run_strict_backtest(
                 sold = shares
                 fee = sold * execution_price * risk.commission_fraction
                 cash += sold * execution_price - fee
+                if position_start_cash is None:
+                    raise ValueError("closed position has no entry cash baseline")
+                closed_trade_pnl.append(cash-position_start_cash)
+                position_start_cash = None
                 shares = 0
                 commission_paid += fee
                 trades.append(BacktestTrade(
@@ -183,8 +248,12 @@ def run_strict_backtest(
         signals=signals,
         trades=tuple(trades),
         nav=tuple(nav),
-        metrics=_calculate_metrics(nav, trades, risk.initial_cash, commission_paid),
+        metrics=_calculate_metrics(nav, trades, risk.initial_cash, commission_paid,
+                                   closed_trade_pnl, policy, benchmark),
         risk_blocked=blocked,
+        metric_policy=policy,
+        benchmark_id=benchmark.benchmark_id if benchmark is not None else None,
+        closed_trade_pnl=tuple(closed_trade_pnl),
     )
 
 
@@ -213,23 +282,104 @@ def _settle_actions(
 def _calculate_metrics(
     nav: list[NavPoint], trades: list[BacktestTrade],
     initial_cash: float, commission_paid: float,
+    closed_trade_pnl: list[float], policy: BacktestMetricPolicy,
+    benchmark: BacktestBenchmark | None,
 ) -> BacktestMetrics:
     values = [point.nav for point in nav]
-    returns = [values[index] / values[index - 1] - 1 for index in range(1, len(values))]
+    returns = [values[index] / values[index - 1] - 1 for index in range(1, len(values))
+               if values[index-1] > 0]
     mean = sum(returns) / len(returns) if returns else 0
     volatility = (
         sqrt(sum((item - mean) ** 2 for item in returns) / (len(returns) - 1))
         if len(returns) > 1 else None
     )
-    running_peak = values[0]
+    running_peak = initial_cash
     max_drawdown = 0.0
     for value in values:
         running_peak = max(running_peak, value)
         max_drawdown = max(max_drawdown, 1 - value / running_peak)
+    elapsed_years = (nav[-1].timestamp-nav[0].timestamp).total_seconds()/(365.25*86400)
+    cagr = None
+    if elapsed_years > 0:
+        if values[-1] == 0:
+            cagr = -1.0
+        else:
+            exponent = log(values[-1]/initial_cash)/elapsed_years
+            cagr = exp(exponent)-1 if exponent < 709 else None
+    reasons: list[str] = []
+    if cagr is None:
+        reasons.append("cagr_time_span_or_arithmetic_unavailable")
+    sharpe = sortino = None
+    frequency = policy.periods_per_year
+    if frequency is None:
+        reasons.append("annualization_frequency_not_configured")
+    elif len(returns) < 2 or len(returns) != len(values)-1:
+        reasons.append("risk_adjusted_return_samples_unavailable")
+    else:
+        risk_free = (1+policy.risk_free_annual_return)**(1/frequency)-1
+        excess = [value-risk_free for value in returns]
+        excess_mean = sum(excess)/len(excess)
+        downside = sqrt(sum(min(value, 0)**2 for value in excess)/len(excess))
+        if volatility is not None and volatility > 0:
+            sharpe = excess_mean/volatility*sqrt(frequency)
+        else:
+            reasons.append("sharpe_zero_volatility")
+        if downside > 0:
+            sortino = excess_mean/downside*sqrt(frequency)
+        else:
+            reasons.append("sortino_zero_downside")
+    wins = [pnl for pnl in closed_trade_pnl if pnl > 0]
+    losses = [pnl for pnl in closed_trade_pnl if pnl < 0]
+    if not closed_trade_pnl:
+        reasons.append("no_closed_trades")
+    if not losses:
+        reasons.append("profit_factor_no_realized_losses")
+    slippage = sum(abs(trade.execution_price-trade.raw_price)*trade.shares for trade in trades)
+    benchmark_return = (
+        benchmark.points[-1].total_return_value/benchmark.points[0].total_return_value-1
+        if benchmark is not None else None
+    )
+    if benchmark_return is not None and not isfinite(benchmark_return):
+        raise ValueError("benchmark return arithmetic is unavailable")
+    if any(value is not None and not isfinite(value) for value in (sharpe, sortino)):
+        reasons.append("risk_adjusted_return_arithmetic_unavailable")
+    if benchmark is None:
+        reasons.append("benchmark_not_configured")
+    total_return = values[-1]/initial_cash-1
     return BacktestMetrics(
-        total_return=values[-1] / initial_cash - 1,
+        total_return=total_return,
         max_drawdown=max_drawdown,
         volatility_per_bar=volatility,
         trade_count=len(trades),
         commission_paid=commission_paid,
+        cagr=cagr, sharpe=sharpe if sharpe is None or isfinite(sharpe) else None,
+        sortino=sortino if sortino is None or isfinite(sortino) else None,
+        closed_trade_count=len(closed_trade_pnl),
+        hit_rate=len(wins)/len(closed_trade_pnl) if closed_trade_pnl else None,
+        profit_factor=sum(wins)/abs(sum(losses)) if losses else None,
+        average_win=sum(wins)/len(wins) if wins else None,
+        average_loss=sum(losses)/len(losses) if losses else None,
+        turnover=sum(trade.raw_price*trade.shares for trade in trades)/(sum(values)/len(values)),
+        slippage=slippage, transaction_cost=commission_paid+slippage,
+        benchmark_total_return=benchmark_return,
+        benchmark_excess_return=total_return-benchmark_return
+        if benchmark_return is not None else None,
+        exposure=sum((point.nav-point.cash)/point.nav if point.nav > 0 else 0
+                     for point in nav)/len(nav),
+        time_in_market=sum(point.shares > 0 for point in nav)/len(nav),
+        unavailable_reasons=tuple(reasons),
     )
+
+
+def _validate_benchmark(benchmark: BacktestBenchmark, data: StrictBacktestInput) -> None:
+    require_strict_backtest_eligible(benchmark.quality)
+    if (benchmark.source != benchmark.quality.provider
+            or benchmark.source_version != benchmark.quality.provider_version):
+        raise ValueError("benchmark provenance does not match its qualification")
+    if tuple(point.timestamp for point in benchmark.points) != tuple(
+        bar.timestamp for bar in data.bars
+    ):
+        raise ValueError("benchmark timestamps must exactly align with market bars")
+    if any(point.available_at > bar.available_at
+           for point, bar in zip(benchmark.points, data.bars, strict=True)):
+        raise ValueError("benchmark value was unavailable at the corresponding bar")

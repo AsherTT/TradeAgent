@@ -42,7 +42,7 @@ def test_deterministic_indicators_match_golden_values() -> None:
 
     assert snapshot.instrument_id == bars[0].instrument_id
     assert snapshot.price_adjustment_mode is PriceAdjustmentMode.POINT_IN_TIME_ADJUSTED
-    assert snapshot.feature_version == "phase4-v1"
+    assert snapshot.feature_version == "v1-technical-v2"
     assert snapshot.indicators["close"] == 124
     assert snapshot.indicators["return_1"] == pytest.approx(124 / 123 - 1)
     assert snapshot.indicators["sma_20"] == pytest.approx(114.5)
@@ -97,7 +97,7 @@ def test_short_and_declining_series_have_explicit_indicator_results() -> None:
 
     bars = tuple(reversed(_bars()[:15]))
     declining = tuple(
-        bar.model_copy(update={"close": float(200 - index)})
+        bar.model_copy(update=dict.fromkeys(("open", "high", "low", "close"), float(200-index)))
         for index, bar in enumerate(reversed(bars))
     )
     snapshot = calculate_technical_snapshot(
@@ -111,7 +111,8 @@ def test_short_and_declining_series_have_explicit_indicator_results() -> None:
 
 
 def test_flat_short_series_has_neutral_rsi() -> None:
-    bars = tuple(bar.model_copy(update={"close": 100.0}) for bar in _bars()[:15])
+    bars = tuple(bar.model_copy(update=dict.fromkeys(("open", "high", "low", "close"), 100.0))
+                 for bar in _bars()[:15])
     snapshot = calculate_technical_snapshot(
         bars, analysis_timestamp=bars[-1].available_at
     )
