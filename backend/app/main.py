@@ -20,4 +20,4 @@ app.include_router(evaluation_router)
 
 @app.get("/health", tags=["operations"])
 async def health() -> dict[str, str]:
-    return {"status": "ok", "milestone": "phase-7"}
+    return {"status": "ok", "version": app.version}

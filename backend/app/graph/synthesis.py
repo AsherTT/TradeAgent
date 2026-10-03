@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from typing import Any
+from typing import Any, Literal
 
 from backend.app.contracts.evidence import Evidence, ResearchSynthesis, SynthesisClaim, TrustLevel
 from backend.app.contracts.research import ResearchState
@@ -19,6 +19,17 @@ _EVIDENCE_TYPE_BY_CAPABILITY = {
     "filing": "rag_document",
     "financials": "financial_fact",
 }
+
+
+class SourceClaimValidationError(ValueError):
+    """Controlled attribution rejection with a diagnostic that contains no source text."""
+
+    def __init__(self, code: Literal[
+        "citation_not_selected", "quote_not_in_excerpt", "section_source_mismatch",
+        "duplicate_claim",
+    ]) -> None:
+        self.code = code
+        super().__init__(code)
 
 
 def select_synthesis_evidence(state: ResearchState) -> tuple[Evidence, ...]:
@@ -158,15 +169,15 @@ def validate_source_claims(
     for claim in claims:
         source = sources.get(claim.evidence_id)
         if source is None or claim.evidence_id not in cited_ids:
-            raise ValueError("claim citation must be selected and globally cited")
+            raise SourceClaimValidationError("citation_not_selected")
         if claim.supporting_quote not in source.content[:1000]:
-            raise ValueError("claim supporting quote is outside selected source excerpt")
+            raise SourceClaimValidationError("quote_not_in_excerpt")
         if (
             claim.section in allowed_types
             and source.evidence_type not in allowed_types[claim.section]
         ):
-            raise ValueError("claim source type does not match its section")
+            raise SourceClaimValidationError("section_source_mismatch")
         identity = (claim.section, claim.text.strip(), claim.evidence_id)
         if identity in seen:
-            raise ValueError("synthesis contains duplicate claims")
+            raise SourceClaimValidationError("duplicate_claim")
         seen.add(identity)

@@ -244,6 +244,9 @@ def test_offline_graph_persists_each_transition_and_completes() -> None:
             ResearchStatus.RUNNING,
             ResearchStatus.RUNNING,
             ResearchStatus.RUNNING,
+            ResearchStatus.RUNNING,
+            ResearchStatus.RUNNING,
+            ResearchStatus.RUNNING,
             ResearchStatus.COMPLETE,
         ]
         assert result.runtime_metadata["transitions"] == (
@@ -337,8 +340,9 @@ def test_news_node_checkpoints_budget_and_resume_without_reacquisition() -> None
         assert result.budget_usage.tool_calls == 2
         assert result.budget_usage.news_documents == 1
         assert fixture.calls == 1
-        assert [item.runtime_metadata["transitions"][-1] for item in saved][-6:] == [
-            "news_started", "news", "gap_judge", "synthesis_started", "synthesis", "finish"
+        assert [item.runtime_metadata["transitions"][-1] for item in saved][-7:] == [
+            "news_started", "news", "gap_judge", "synthesis_started", "synthesis_started",
+            "synthesis", "finish"
         ]
         resumed = result.model_copy(update={"status": ResearchStatus.RUNNING})
         await workflow.run(resumed)
@@ -739,9 +743,9 @@ def test_bounded_replan_retries_missing_news_and_preserves_requirements() -> Non
         assert result.evidence_gap_result.missing_capabilities == ()
         assert result.runtime_metadata["external_attempts"]["replan"]["status"] == "completed"
         assert len(result.runtime_metadata["external_attempt_history"]["news"]) == 1
-        assert [item.runtime_metadata["transitions"][-1] for item in saved][-8:] == [
-            "replan_started", "replan", "news_started", "news", "gap_judge",
-            "synthesis_started", "synthesis", "finish"
+        assert [item.runtime_metadata["transitions"][-1] for item in saved][-10:] == [
+            "replan_started", "replan_started", "replan", "news_started", "news", "gap_judge",
+            "synthesis_started", "synthesis_started", "synthesis", "finish"
         ]
 
     asyncio.run(scenario())
@@ -1404,6 +1408,7 @@ def test_intent_checkpoint_consumes_one_model_call_and_stops_before_planning() -
         assert [item.runtime_metadata["transitions"][-1] for item in saved] == [
             "start",
             "intent_started",
+            "intent_started",
             "intent",
             "budget_exhausted",
         ]
@@ -1534,6 +1539,7 @@ def test_legacy_planned_run_resumes_without_new_intent_call() -> None:
             "evidence_started",
             "collect_evidence",
             "gap_judge",
+            "synthesis_started",
             "synthesis_started",
             "synthesis",
             "finish",

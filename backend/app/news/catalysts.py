@@ -23,6 +23,7 @@ def eligible_catalyst_sources(state: ResearchState) -> tuple[Evidence, ...]:
 
 def catalyst_sources(state: ResearchState) -> tuple[Evidence, ...]:
     return tuple(sorted(eligible_catalyst_sources(state), key=lambda item: (
+        item.evidence_type == "news_document",
         item.published_at or item.available_at, str(item.evidence_id),
     ), reverse=True)[:5])
 

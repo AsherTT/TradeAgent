@@ -130,11 +130,14 @@ async def main() -> None:
             "financial_metrics": report.get("financial_metrics", []),
             "catalyst_claim_count": len(report.get("catalyst_interpretations", [])),
             "has_catalyst_assessment": state.get("catalyst_assessment") is not None,
+            "external_attempts": state.get("runtime_metadata", {}).get("external_attempts", {}),
             "gaps": report["gaps"],
         }
         path = Path(tempfile.gettempdir()) / "tradeagent-klac-current-model-durable.json"
         path.write_text(json.dumps(diagnostic, indent=2), encoding="utf-8")
         print(json.dumps(diagnostic))
+        if state["status"] in {"failed", "cancelled"}:
+            raise RuntimeError("Current research did not reach a usable terminal state")
     finally:
         await database.dispose()
 
