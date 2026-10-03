@@ -57,7 +57,8 @@ def test_metric_failure_exposes_reason_without_suppressing_other_metric(
     assert len(report.financial_metrics) == 1
     section = next(s for s in report.sections if s.title ==
                    f"Partial financial interpretation: {result.name}")
-    assert reason in section.text and section.evidence_ids == ()
+    assert "Metric unavailable:" in section.text and section.evidence_ids == ()
+    assert reason not in section.text
 
 
 @pytest.mark.parametrize("case", ["missing", "stale", "future", "tampered", "instrument",

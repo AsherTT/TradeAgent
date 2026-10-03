@@ -24,6 +24,18 @@ from backend.app.graph.evidence_gap import qualified_evidence
 from backend.app.graph.synthesis import validate_synthesis_claims
 from backend.app.news.catalysts import eligible_catalyst_sources, validate_catalysts
 
+_FINANCIAL_UNAVAILABLE_TEXT = {
+    "analysis_cutoff_unavailable": "The analysis cutoff has not been established.",
+    "qualified_financial_group_unavailable": (
+        "A fresh, qualified and consistent four-concept annual financial group is unavailable."
+    ),
+    "nonpositive_denominator": "The reported denominator is zero or negative.",
+    "negative_cash": "The reported cash and cash equivalents value is negative.",
+    "arithmetic_unavailable": (
+        "The ratio could not be computed within the decimal arithmetic limits."
+    ),
+}
+
 
 class ReportCitation(ContractModel):
     evidence_id: UUID
@@ -265,7 +277,8 @@ def build_research_report(state: ResearchState) -> ResearchReport:
             title=f"Partial financial interpretation: {result.name}",
             text=(result.interpretation + " Limits: " + "; ".join(result.limitations)
                   if result.interpretation is not None else
-                  f"Metric unavailable: {result.unavailable_reason}."),
+                  "Metric unavailable: "
+                  + _FINANCIAL_UNAVAILABLE_TEXT[result.unavailable_reason or ""]),
             evidence_ids=result.metric.evidence_ids if result.metric is not None else (),
         ) for result in assessments
     )
