@@ -1,6 +1,18 @@
 # Implementation Status
 
-Last audited: 2026-10-02
+Last updated: 2026-10-03
+
+The 2026-10-03 bounded P5 increment adds deterministic source-linked partial financial
+interpretations and per-metric unavailability reasons to reports. It preserves the
+four-concept admission gate, existing metric API and complete_analysis=false, with
+no additional source/model calls. Ordinary checks: 411 passed, 1 skipped, 90.08%
+coverage; Ruff and strict mypy (97 files) passed. Read-only regeneration from a prior
+real PostgreSQL run could not execute because the database refused connections and
+the local Docker engine was not running; no new live qualification is claimed.
+Spec: `docs/FINANCIAL_PARTIAL_ASSESSMENT.md`. Independent Standards/Spec reviews
+both have zero findings, including final report-language polish; 23 affected report
+tests and final static checks pass. See `docs/FINANCIAL_PARTIAL_ASSESSMENT_REVIEW.md`.
+P10 remains unstarted.
 
 Current assessment: `docs/DEVELOPMENT_PROGRESS_20261002.md`. The earlier entries below
 are chronological qualification records; later live qualification supersedes historical
