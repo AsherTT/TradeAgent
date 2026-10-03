@@ -89,7 +89,7 @@ class BacktestMetrics(ContractModel):
 
 class BacktestMetricPolicy(ContractModel):
     periods_per_year: int | None = Field(default=None, gt=0)
-    risk_free_annual_return: float = Field(default=0, gt=-1, allow_inf_nan=False)
+    risk_free_annual_return: float | None = Field(default=None, gt=-1, allow_inf_nan=False)
 
 
 class BenchmarkPoint(ContractModel):
@@ -313,6 +313,8 @@ def _calculate_metrics(
     frequency = policy.periods_per_year
     if frequency is None:
         reasons.append("annualization_frequency_not_configured")
+    elif policy.risk_free_annual_return is None:
+        reasons.append("risk_free_rate_not_configured")
     elif len(returns) < 2 or len(returns) != len(values)-1:
         reasons.append("risk_adjusted_return_samples_unavailable")
     else:

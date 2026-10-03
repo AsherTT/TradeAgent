@@ -34,7 +34,8 @@ def test_metric_formulas_against_hand_calculated_values() -> None:
                   (SignalSide.BUY, 100.0, 101.0), (SignalSide.SELL, 110.0, 109.0),
               ])]
     result = _calculate_metrics(nav, trades, 1000, 20, [100, -50, 0],
-                                BacktestMetricPolicy(periods_per_year=4), None)
+                                BacktestMetricPolicy(periods_per_year=4,
+                                                     risk_free_annual_return=0), None)
     assert result.total_return == pytest.approx(0.188)
     assert result.cagr == pytest.approx(0.188)
     assert result.max_drawdown == pytest.approx(0.1)
@@ -61,7 +62,8 @@ def benchmark() -> BacktestBenchmark:
 def test_public_backtest_exposes_configured_benchmark_and_open_position_limits() -> None:
     result = run_strict_backtest(_input(), risk=BacktestRiskPolicy(
         initial_cash=1000, commission_fraction=0.01, slippage_bps=100,
-    ), metric_policy=BacktestMetricPolicy(periods_per_year=252), benchmark=benchmark())
+    ), metric_policy=BacktestMetricPolicy(periods_per_year=252, risk_free_annual_return=0),
+        benchmark=benchmark())
     assert result.metric_policy.periods_per_year == 252
     assert result.benchmark_id == "fixture-total-return-index"
     assert result.metrics.benchmark_total_return == pytest.approx(0.04)
@@ -123,9 +125,19 @@ def test_cash_strategy_has_explicit_undefined_statistics() -> None:
     assert result.metrics.benchmark_excess_return is None
     assert "annualization_frequency_not_configured" in result.metrics.unavailable_reasons
     configured = run_strict_backtest(_input(), risk=BacktestRiskPolicy(kill_switch=True),
-                                     metric_policy=BacktestMetricPolicy(periods_per_year=252))
+                                     metric_policy=BacktestMetricPolicy(
+                                         periods_per_year=252, risk_free_annual_return=0,
+                                     ))
     assert "sharpe_zero_volatility" in configured.metrics.unavailable_reasons
     assert "sortino_zero_downside" in configured.metrics.unavailable_reasons
+
+
+def test_annualization_frequency_alone_does_not_assume_zero_risk_free_rate() -> None:
+    result = run_strict_backtest(_input(), risk=BacktestRiskPolicy(),
+                                metric_policy=BacktestMetricPolicy(periods_per_year=252))
+    assert result.metrics.sharpe is None and result.metrics.sortino is None
+    assert result.metric_policy.risk_free_annual_return is None
+    assert "risk_free_rate_not_configured" in result.metrics.unavailable_reasons
 
 
 @pytest.mark.parametrize("change,match", [
