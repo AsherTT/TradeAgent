@@ -564,7 +564,7 @@ class ResearchWorkflow:
             await self._save(self._model_attempt_diagnostics(state, node, request))
             raise
         state = self._with_elapsed_time(state)
-        metadata = response.metadata
+        metadata = response.metadata.model_copy(update={"fallback_reason": None})
         state = self._model_attempt_diagnostics(state, node, request)
         state = _with_attempt_details(state, node, {
             "response_received": True,

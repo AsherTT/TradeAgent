@@ -8,6 +8,7 @@ from uuid import uuid4
 
 import pytest
 
+from backend.app.ai.errors import ModelRuntimeError
 from backend.app.ai.executors.mock import MockExecutor
 from backend.app.ai.gateway import ModelGateway
 from backend.app.contracts.model import ProviderName
@@ -123,3 +124,32 @@ async def test_interruption_after_response_checkpoint_never_reissues_model() -> 
     assert executor.call_count == 1 and result.status is ResearchStatus.FAILED
     assert result.budget_usage.llm_calls == 3
     assert result.runtime_metadata["external_attempts"]["catalysts"]["status"] == "unknown_outcome"
+
+
+@pytest.mark.asyncio
+async def test_successful_model_retry_does_not_persist_private_error_text() -> None:
+    current = incoming()
+    call_count = 0
+
+    def payload(request: object) -> dict[str, object]:
+        nonlocal call_count
+        call_count += 1
+        if call_count == 1:
+            raise ModelRuntimeError("SYNTHETIC_PRIVATE_ERROR_MARKER")
+        return assessment(current.evidence[0]).model_dump()
+
+    saved: list[ResearchState] = []
+
+    async def save(updated: ResearchState) -> None:
+        saved.append(updated)
+
+    workflow = ResearchWorkflow(
+        model_gateway=ModelGateway([MockExecutor(payload)]), save=save,
+        catalysts_enabled=True, provider_order=(ProviderName.MOCK,),
+    )
+    workflow._run_started = perf_counter()
+    result = (await workflow._catalysts({"research": current}))["research"]
+    assert call_count == 2 and result.catalyst_assessment is not None
+    assert result.runtime_metadata["external_attempts"]["catalysts"]["provider_attempt_count"] == 2
+    assert all("SYNTHETIC_PRIVATE_ERROR_MARKER" not in item.model_dump_json() for item in saved)
+    assert result.model_history[-1]["metadata"]["fallback_reason"] is None
