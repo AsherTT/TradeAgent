@@ -26,7 +26,7 @@
 
 - **High-trust only.** 优先使用 primary sources、recognized experts、peer-reviewed work，以及 moderation 强的 communities。如果一个 resource 是披着教育外衣的 marketing，就不要放进来。
 - **Annotate every entry.** 只有裸 link，三个月后毫无用处。加一行说明：它覆盖什么，以及什么时候使用它。
-- **Group by Knowledge / Wisdom.** 与 [SKILL.md](SKILL.md) 中的 philosophy 保持一致。一个 resource 只出现在其中一组也可以。
+- **Group by Knowledge / Wisdom.** 与 [SKILL.md](./SKILL.md) 中的 philosophy 保持一致。一个 resource 只出现在其中一组也可以。
 - **Surface gaps explicitly.** 如果 mission 需要的某个领域没有好 resource，写一个 `## Gaps` section，列出缺失内容。这会推动 future search。
 - **Prune ruthlessly.** 如果一个 resource 后来被证明是错的、浅的或偏离 mission，应移除它，而不是埋在列表里。五个 sharp sources 胜过三十个 mediocre ones。
 - **Record community preferences.** 如果用户已经选择不加入 communities，在这里记录，避免 future sessions 反复建议。

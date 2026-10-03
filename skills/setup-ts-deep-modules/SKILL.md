@@ -52,7 +52,7 @@ Layering（哪些 packages 可以依赖哪些）是另一个 concern，在 confi
 
 ### 3. Write the config
 
-把 [`dependency-cruiser.config.cjs`](dependency-cruiser.config.cjs) 复制到 repo root，命名为 `.dependency-cruiser.cjs`。把 `PACKAGES_ROOT` 设置成 step 1 检测到的 root。Rules 基于 path depth 且与 extension 无关，不需要其他调整。
+把 [`dependency-cruiser.config.cjs`](./dependency-cruiser.config.cjs) 复制到 repo root，命名为 `.dependency-cruiser.cjs`。把 `PACKAGES_ROOT` 设置成 step 1 检测到的 root。Rules 基于 path depth 且与 extension 无关，不需要其他调整。
 
 **Done when:** `.dependency-cruiser.cjs` 存在、`PACKAGES_ROOT` 正确，并包含四条 forbidden rules。
 

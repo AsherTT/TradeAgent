@@ -103,11 +103,11 @@ Block：
 
 然后使用本 skill folder 中的 seed templates 作为起点写 docs files：
 
-- [issue-tracker-github.md](issue-tracker-github.md) - GitHub issue tracker
-- [issue-tracker-gitlab.md](issue-tracker-gitlab.md) - GitLab issue tracker
-- [issue-tracker-local.md](issue-tracker-local.md) - local-markdown issue tracker
-- [triage-labels.md](triage-labels.md) - label mapping（仅当安装了 `triage`）
-- [domain.md](domain.md) - domain doc consumer rules + layout
+- [issue-tracker-github.md](./issue-tracker-github.md) - GitHub issue tracker
+- [issue-tracker-gitlab.md](./issue-tracker-gitlab.md) - GitLab issue tracker
+- [issue-tracker-local.md](./issue-tracker-local.md) - local-markdown issue tracker
+- [triage-labels.md](./triage-labels.md) - label mapping（仅当安装了 `triage`）
+- [domain.md](./domain.md) - domain doc consumer rules + layout
 
 对于 "other" issue trackers，根据用户描述从头写 `docs/agents/issue-tracker.md`。
 

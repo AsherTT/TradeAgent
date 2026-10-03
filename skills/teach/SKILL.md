@@ -11,10 +11,10 @@ argument-hint: "你想学习什么？"
 
 把当前目录视为 teaching workspace。他们的学习状态保存在这个目录中的几个文件里：
 
-- `MISSION.md`：记录用户为什么对这个 topic 感兴趣。所有教学都应以它为 grounding。使用 [MISSION-FORMAT.md](MISSION-FORMAT.md) 中的格式。
+- `MISSION.md`：记录用户为什么对这个 topic 感兴趣。所有教学都应以它为 grounding。使用 [MISSION-FORMAT.md](./MISSION-FORMAT.md) 中的格式。
 - `./reference/*.html`：reference materials 目录。这些是从 lessons 中压缩出的 learnings：cheat sheets、reference algorithms、syntax、yoga poses、glossaries。它们是原始学习单元。它们应该是漂亮的 documents，适合打印，并为 quick reference 设计。
-- `RESOURCES.md`：可探索的 resources 列表，用来把教学建立在 context knowledge 上，或获取 knowledge 和 wisdom。使用 [RESOURCES-FORMAT.md](RESOURCES-FORMAT.md) 中的格式。
-- `./learning-records/*.md`：learning records 目录，记录用户已经学到的东西。它们大致相当于软件开发里的 architectural decision records：捕获非显而易见的 lessons 和 key insights，这些内容可能之后需要修订，或推动未来 sessions。它们应用来计算 zone of proximal development。标题格式为 `0001-<dash-case-name>.md`，数字每次递增。使用 [LEARNING-RECORD-FORMAT.md](LEARNING-RECORD-FORMAT.md) 中的格式。
+- `RESOURCES.md`：可探索的 resources 列表，用来把教学建立在 context knowledge 上，或获取 knowledge 和 wisdom。使用 [RESOURCES-FORMAT.md](./RESOURCES-FORMAT.md) 中的格式。
+- `./learning-records/*.md`：learning records 目录，记录用户已经学到的东西。它们大致相当于软件开发里的 architectural decision records：捕获非显而易见的 lessons 和 key insights，这些内容可能之后需要修订，或推动未来 sessions。它们应用来计算 zone of proximal development。标题格式为 `0001-<dash-case-name>.md`，数字每次递增。使用 [LEARNING-RECORD-FORMAT.md](./LEARNING-RECORD-FORMAT.md) 中的格式。
 - `./lessons/*.html`：lessons 目录。一个 **lesson** 是一个单独、自包含的 HTML output，用来教授一个与 mission 绑定的 tightly-scoped 内容。这是此 workspace 中教学的主要单元。
 - `./assets/*`：跨 lessons 共享的可复用 **components**。见 [Assets](#assets)。
 - `NOTES.md`：scratchpad，用来记下用户偏好或 working notes。

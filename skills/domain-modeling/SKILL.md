@@ -59,7 +59,7 @@ description: 构建并打磨项目的领域模型。适用于用户想明确领�
 
 ### Update CONTEXT.md inline
 
-当一个 term 被解决时，立刻更新 `CONTEXT.md`。不要批量攒到最后；随着概念出现就捕获。使用 [CONTEXT-FORMAT.md](CONTEXT-FORMAT.md) 中的格式。
+当一个 term 被解决时，立刻更新 `CONTEXT.md`。不要批量攒到最后；随着概念出现就捕获。使用 [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md) 中的格式。
 
 `CONTEXT.md` 必须完全不包含 implementation details。不要把 `CONTEXT.md` 当 spec、scratch pad 或 implementation decisions 的仓库。它只是一份 glossary。
 
@@ -71,4 +71,4 @@ description: 构建并打磨项目的领域模型。适用于用户想明确领�
 2. **Surprising without context** - 未来读者会疑惑 "why did they do it this way?"
 3. **The result of a real trade-off** - 确实存在替代方案，而你基于具体理由选择了其中一个
 
-缺少任一项就跳过 ADR。使用 [ADR-FORMAT.md](ADR-FORMAT.md) 中的格式。
+缺少任一项就跳过 ADR。使用 [ADR-FORMAT.md](./ADR-FORMAT.md) 中的格式。
