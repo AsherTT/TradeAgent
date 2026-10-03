@@ -1,10 +1,12 @@
 # Agentic Equity Research Workbench
 
-**Current status (2026-10-03):** real backend collection and partial reports are
-implemented; full analysis and the formal frontend are not complete. The frozen
-blueprint has remaining indicator, strategy, analysis and observability scope.
-See [the complete pre-P10 audit](docs/PRE_P10_AUDIT_20261003.md) for verified status,
-new live-run failures and the plain-language architecture. Earlier milestone wording
+**Current status (2026-10-03):** catalyst failure handling and independent imports are
+fixed; two live source-reported interpretations passed citation checks. The V1
+technical indicator and strategy statistic calculations are implemented, with
+explicit missing-data/configuration boundaries. Full analysis and real market/strategy
+qualification remain incomplete. Formal P10 is paused for the user's frontend requirements.
+See [the current checkpoint](docs/PRE_P10_CHECKPOINT_20261003.md) and
+[the earlier complete audit](docs/PRE_P10_AUDIT_20261003.md). Earlier milestone wording
 below describes its original slice, not completion of the whole product.
 
 Production-minded research and quantitative decision-support workbench. The current implementation contains the completed Phase 0-4 foundation and the first Phase 5 vertical slice:

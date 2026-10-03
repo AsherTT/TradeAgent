@@ -2,16 +2,17 @@
 
 Last updated: 2026-10-03
 
-Latest whole-blueprint assessment: `docs/PRE_P10_AUDIT_20261003.md`. The audited
-backend supports real collection and partial reports; full research, real forward
-performance and the complete V1 indicator/strategy/observability scope remain open.
-The latest live run a307ea35-c1bf-46c8-bc35-efcbf96759a7 collected financial/news/RAG
-and unverified market data but FAILED after catalyst start, without an assessment.
-New audit findings include missing catalyst failure-marker finalization and an
-import-order cycle in news.catalysts. These are recorded, not fixed by this audit.
-Earlier financial partial projection now passed PostgreSQL regeneration and limited
-container HTTP reads. Ordinary suite: 411 passed, 1 skipped, 90.16% coverage.
-Four stored forecasts are all fixtures; no real outcomes exist. P10 is unstarted.
+Latest status: [pre-P10 repair checkpoint](PRE_P10_CHECKPOINT_20261003.md).
+Catalyst failure finalization, source rejection handling, independent module loading
+and health metadata are fixed. Response accounting and sanitized attempt diagnostics
+are durable. Live run 1c29c77d-abc0-4c5c-a524-5954e2266f13 produced two valid
+source-reported interpretations and a partial report; market remains UNVERIFIED,
+with no full synthesis. V1 technical indicators and strategy statistics are implemented.
+Final checks: 439 passed, 1 skipped, 90.29% coverage; Ruff/strict mypy passed.
+Full research, richer financial analysis, memory feedback, real forward/history
+performance and full observability remain open. Four stored forecasts are fixtures;
+no real outcomes exist. P10 is paused pending the user's frontend requirements.
+The complete pre-fix audit and the records below retain their historical context.
 
 The 2026-10-03 bounded P5 increment adds deterministic source-linked partial financial
 interpretations and per-metric unavailability reasons to reports. It preserves the

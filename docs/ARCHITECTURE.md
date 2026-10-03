@@ -2,12 +2,13 @@
 
 The source-of-truth architecture is **Agentic Equity Research Workbench v1.1.1 — Quant Integrity + Operational Reliability Hardened** dated 2026-09-16.
 
-2026-10-03 full-blueprint audit: `docs/PRE_P10_AUDIT_20261003.md` supersedes broad
-completion wording below. Phase 0–4 and Phase 6–9 qualifications cover their recorded
-slices; the complete V1 technical-indicator and strategy-metric lists, research-memory
-feedback, richer analysis and observability are not all implemented. Latest live
-collection succeeded but the run failed after catalyst start. Full research and P10
-remain open. Read-only current-code container HTTP report/evaluation probes passed.
+Current checkpoint: [2026-10-03 pre-P10 fixes](PRE_P10_CHECKPOINT_20261003.md).
+Catalyst failure handling and independent imports are fixed; live nonempty source
+interpretations passed citation checks. V1 indicator and strategy statistic calculations
+are implemented with explicit configuration and data gates. Research-memory feedback,
+richer analysis, full observability and real market/strategy qualification remain open.
+Formal P10 is paused for user requirements. The earlier whole-blueprint audit is a
+pre-fix snapshot; stage descriptions below retain their historical slice context.
 
 Current audit (2026-10-02): Phases 6–9 have their recorded fixture qualifications;
 Phase 5 live completion remains open and Phase 10 has not started. Current model
