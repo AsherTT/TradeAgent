@@ -1,5 +1,7 @@
 """FastAPI entry point for the workbench."""
 
+from collections.abc import Awaitable, Callable
+
 from fastapi import FastAPI
 from fastapi.exception_handlers import request_validation_exception_handler
 from fastapi.exceptions import RequestValidationError
@@ -12,6 +14,7 @@ from backend.app.api.rag import router as rag_router
 from backend.app.api.research import router as research_router
 from backend.app.api.thesis import router as thesis_router
 from backend.app.api.workspace import router as workspace_router
+from backend.app.api.workspace_research import router as workspace_research_router
 
 app = FastAPI(
     title="Agentic Equity Research Workbench",
@@ -24,12 +27,25 @@ app.include_router(rag_router)
 app.include_router(evaluation_router)
 app.include_router(accounts_router)
 app.include_router(workspace_router)
+app.include_router(workspace_research_router)
+
+
+@app.middleware("http")
+async def account_research_cache_control(
+    request: Request, call_next: Callable[[Request], Awaitable[Response]],
+) -> Response:
+    response = await call_next(request)
+    if request.url.path.startswith("/workspace/research"):
+        response.headers["Cache-Control"] = "no-store"
+    return response
 
 
 @app.exception_handler(RequestValidationError)
 async def safe_validation_error(request: Request, exc: RequestValidationError) -> Response:
     if request.url.path.startswith("/auth/"):
         return JSONResponse(status_code=422, content={"detail": "invalid_auth_input"})
+    if request.url.path.startswith("/workspace/research"):
+        return JSONResponse(status_code=422, content={"detail": "invalid_research_input"})
     return await request_validation_exception_handler(request, exc)
 
 

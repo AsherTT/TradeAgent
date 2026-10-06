@@ -51,3 +51,20 @@ class WatchlistRow(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
 
     __table_args__ = (UniqueConstraint("user_id", "instrument_id"),)
+
+
+class UserResearchRow(Base):
+    """Ownership is separate from worker state and unowned historical runs."""
+
+    __tablename__ = "user_research"
+
+    research_run_id: Mapped[UUID] = mapped_column(
+        ForeignKey("research_run.research_run_id", ondelete="CASCADE"), primary_key=True
+    )
+    user_id: Mapped[UUID] = mapped_column(
+        ForeignKey("app_user.user_id", ondelete="RESTRICT"), index=True
+    )
+    request_id: Mapped[UUID] = mapped_column(Uuid)
+    request_digest: Mapped[str] = mapped_column(String(64))
+
+    __table_args__ = (UniqueConstraint("user_id", "request_id"),)

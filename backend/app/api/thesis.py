@@ -10,6 +10,7 @@ from fastapi import APIRouter, Depends, Header, HTTPException, status
 from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.app.api.research import reject_account_research
 from backend.app.config import get_settings
 from backend.app.contracts.base import ContractModel
 from backend.app.contracts.research import ResearchStatus
@@ -67,6 +68,7 @@ async def record_thesis(
     if write_token is None or not compare_digest(write_token, configured):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid write token")
     run = await ResearchRunRepository(session).get(research_run_id)
+    await reject_account_research(research_run_id, session)
     if run is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Research run not found")
     if (

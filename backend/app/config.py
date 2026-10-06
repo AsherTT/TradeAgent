@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     auth_cookie_secure: bool = False
     auth_session_hours: int = Field(default=168, ge=1, le=720)
     auth_attempt_limit: int = Field(default=10, ge=1, le=100)
+    account_research_models_enabled: bool = False
     auth_allowed_origins: tuple[str, ...] = (
         "http://127.0.0.1:3107", "http://localhost:3107",
     )
