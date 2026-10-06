@@ -1,12 +1,14 @@
 """Real local PostgreSQL/BFF qualification; no worker or model calls.
 
-Only this probe's UUID-namespaced accounts/runs are created and cleaned. An optional
+Only this probe's UUID-namespaced accounts are cleaned; cancelled synthetic run
+tombstones remain so queued redeliveries safely terminate. An optional
 preview fixture is explicitly synthetic and cancelled before any worker could execute it.
 """
 
 import argparse
 import asyncio
 import json
+import re
 from datetime import timedelta
 from pathlib import Path
 from secrets import token_urlsafe
@@ -17,13 +19,49 @@ from sqlalchemy import delete, select, text
 
 from backend.app.contracts.base import utc_now
 from backend.app.contracts.evidence import Evidence, TrustLevel
-from backend.app.persistence.accounts import SessionRow, UserRow
+from backend.app.persistence.accounts import SessionRow, UserResearchRow, UserRow
 from backend.app.persistence.models import ResearchRunRow
 from backend.app.persistence.repositories import ResearchRunRepository
 from backend.app.persistence.session import get_database
 
 ORIGIN = "http://127.0.0.1:3107"
 API = ORIGIN + "/api/backend"
+
+
+async def cleanup_probe_accounts(emails: list[str]) -> int:
+    matches = [re.fullmatch(r"research-probe-([0-9a-f]{32})-([ab])@example.test", email)
+               for email in emails]
+    assert len(matches) == 2 and all(matches), "Only namespaced probe accounts may be cleaned"
+    valid = [match for match in matches if match is not None]
+    assert valid[0].group(1) == valid[1].group(1)
+    assert {match.group(2) for match in valid} == {"a", "b"}
+    database = get_database()
+    async with database.sessions() as session, session.begin():
+        user_ids = select(UserRow.user_id).where(UserRow.email.in_(emails))
+        run_ids = list(await session.scalars(select(UserResearchRow.research_run_id).where(
+            UserResearchRow.user_id.in_(user_ids),
+        )))
+        for run_id in run_ids:
+            await ResearchRunRepository(session).cancel(run_id)
+        # Never delete queued runs: workers must see a durable terminal state on redelivery.
+        await session.execute(delete(UserResearchRow).where(UserResearchRow.user_id.in_(user_ids)))
+        await session.execute(delete(SessionRow).where(SessionRow.user_id.in_(user_ids)))
+        await session.execute(delete(UserRow).where(UserRow.email.in_(emails)))
+    return len(run_ids)
+
+
+async def cleanup_preview(identity_path: Path) -> None:
+    module_path = await asyncio.to_thread(Path(__file__).resolve)
+    resolved_identity = await asyncio.to_thread(identity_path.resolve)
+    allowed = module_path.parents[1] / ".test-output"
+    assert resolved_identity.is_relative_to(allowed), "Use the probe's local identity file"
+    identity = json.loads(await asyncio.to_thread(identity_path.read_text, encoding="utf-8"))
+    try:
+        count = await cleanup_probe_accounts(identity["emails"])
+        await asyncio.to_thread(identity_path.unlink)
+        print(json.dumps({"probe_accounts": "removed", "terminal_tombstones": count}))
+    finally:
+        await get_database().dispose()
 
 
 async def qualify(preview: Path | None) -> None:
@@ -37,7 +75,6 @@ async def qualify(preview: Path | None) -> None:
     emails = [f"research-probe-{namespace}-{suffix}@example.test" for suffix in ("a", "b")]
     password = token_urlsafe(24)
     clients = [httpx.AsyncClient(timeout=20, trust_env=False) for _ in emails]
-    run_ids: set[UUID] = set()
     preserve = False
     headers = {"Origin": ORIGIN}
     evidence: dict[str, object] = {"engine": "postgresql", "schema": "0016_account_research"}
@@ -69,7 +106,6 @@ async def qualify(preview: Path | None) -> None:
         ids = {result.json()["research_run_id"] for result in concurrent}
         assert len(ids) == 1
         run_id = ids.pop()
-        run_ids.add(UUID(run_id))
         path = API + "/workspace/research/" + run_id
         try:
             conflict = await first.post(API + "/workspace/research", headers=headers,
@@ -139,24 +175,17 @@ async def qualify(preview: Path | None) -> None:
         for client in clients:
             await client.aclose()
         if not preserve:
-            async with database.sessions() as session, session.begin():
-                # Discover only our accounts' runs even if a response failed before returning IDs.
-                from backend.app.persistence.accounts import UserResearchRow
-                user_ids = select(UserRow.user_id).where(UserRow.email.in_(emails))
-                run_ids.update(await session.scalars(select(UserResearchRow.research_run_id).where(
-                    UserResearchRow.user_id.in_(user_ids),
-                )))
-                if run_ids:
-                    await session.execute(delete(ResearchRunRow).where(
-                        ResearchRunRow.research_run_id.in_(run_ids),
-                    ))
-                await session.execute(delete(SessionRow).where(SessionRow.user_id.in_(user_ids)))
-                await session.execute(delete(UserRow).where(UserRow.email.in_(emails)))
+            await cleanup_probe_accounts(emails)
         await database.dispose()
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--preview-identity", type=Path)
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--preview-identity", type=Path)
+    mode.add_argument("--cleanup-preview", type=Path)
     arguments = parser.parse_args()
-    asyncio.run(qualify(arguments.preview_identity))
+    if arguments.cleanup_preview:
+        asyncio.run(cleanup_preview(arguments.cleanup_preview))
+    else:
+        asyncio.run(qualify(arguments.preview_identity))

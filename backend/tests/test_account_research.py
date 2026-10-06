@@ -1,7 +1,7 @@
 """Account research authorization through the HTTP boundary (offline database/queue)."""
 
 import asyncio
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 import pytest
 from fastapi.testclient import TestClient
@@ -128,8 +128,8 @@ def test_bounded_submission_validates_company_budget_origin_and_active_limit(
                        {"max_estimated_cost_usd": 1.01}, {"max_context_tokens": 100001}):
             body = {**submission(), "budget": change}
             assert client.post("/workspace/research", json=body, headers=ORIGIN).status_code == 422
-        for change in ({"user_id": str(uuid4())}, {"ticker": "FAKE"}, {"query": "  "}):
-            assert client.post("/workspace/research", json={**submission(), **change},
+        for invalid_fields in ({"user_id": str(uuid4())}, {"ticker": "FAKE"}, {"query": "  "}):
+            assert client.post("/workspace/research", json={**submission(), **invalid_fields},
                                headers=ORIGIN).status_code == 422
         full = {**submission(), "collection_only": False, "budget": {
             "max_llm_calls": 4, "max_estimated_cost_usd": 0.1,
@@ -210,5 +210,43 @@ def test_persisted_budget_exhaustion_is_distinct_from_complete_analysis(
         assert report["complete_analysis"] is False
         cancelled = client.post(f"/workspace/research/{run_id}/cancel", headers=ORIGIN).json()
         assert cancelled["research_completion"] == "budget_exhausted"
+    finally:
+        app.dependency_overrides.pop(get_research_enqueuer, None)
+
+
+def test_owned_collection_executes_offline_worker_without_model_calls_and_preserves_owner(
+    account_client: tuple[TestClient, Database], monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import importlib
+
+    from backend.app.ai.executors.mock import MockExecutor
+    from backend.app.ai.gateway import ModelGateway
+    from backend.app.config import Settings
+
+    client, database = account_client
+    worker = importlib.import_module("backend.app.jobs.celery_app")
+
+    def no_models(_: object) -> dict[str, object]:
+        pytest.fail("Collection-only research must not execute a model")
+
+    monkeypatch.setattr(worker, "get_database", lambda: database)
+    monkeypatch.setattr(worker, "get_settings", lambda: Settings(_env_file=None))
+    gateway = ModelGateway([MockExecutor(no_models)])
+    monkeypatch.setattr(worker, "build_model_gateway", lambda _: gateway)
+    app.dependency_overrides[get_research_enqueuer] = lambda: lambda _: "offline-task"
+    try:
+        client.post("/auth/register", json=ACCOUNT, headers=ORIGIN)
+        run_id = client.post("/workspace/research", json=submission(),
+                             headers=ORIGIN).json()["research_run_id"]
+        asyncio.run(worker.execute_research_run(UUID(run_id)))
+        detail = client.get(f"/workspace/research/{run_id}")
+        assert detail.status_code == 200
+        assert detail.json()["status"] == "insufficient_evidence"
+        assert detail.json()["budget_usage"]["llm_calls"] == 0
+        assert "gap_judge" in detail.json()["progress_steps"]
+        report = client.get(f"/workspace/research/{run_id}/report")
+        assert report.json()["complete_analysis"] is False
+        assert report.json()["status"] == "insufficient_evidence"
+        assert client.get("/workspace/research").json()[0]["research_run_id"] == run_id
     finally:
         app.dependency_overrides.pop(get_research_enqueuer, None)
