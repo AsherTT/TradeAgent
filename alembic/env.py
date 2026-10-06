@@ -10,7 +10,10 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 from backend.app.config import get_settings
-from backend.app.persistence import models  # noqa: F401
+from backend.app.persistence import (
+    accounts,  # noqa: F401
+    models,  # noqa: F401
+)
 from backend.app.persistence.base import Base
 
 config = context.config
@@ -44,6 +47,7 @@ async def run_async_migrations() -> None:
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
+        connect_args={"ssl": True} if get_settings().database_ssl else {},
     )
     async with connectable.connect() as connection:
         await connection.run_sync(run_sync_migrations)
