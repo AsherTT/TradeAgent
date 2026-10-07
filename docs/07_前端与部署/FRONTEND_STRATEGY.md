@@ -61,7 +61,12 @@ workflow reference, not a dependency that may overwrite this repository.
 
 ### After Gate C
 
-- Integrate `POST /research` and `GET /research/{research_run_id}`.
+- Integrate authenticated `POST /workspace/research`, `GET /workspace/research`,
+  `GET /workspace/research/options`, `GET /workspace/research/{run_id}`,
+  `POST /workspace/research/{run_id}/cancel` and
+  `GET /workspace/research/{run_id}/report` through the exact account BFF allowlist.
+- Legacy `/research` paths remain internal-development interfaces; they are not exposed
+  by the account BFF and cannot read or cancel account-owned runs.
 - Represent pending, running, complete, insufficient-evidence, budget-exhausted, and failed states.
 - Surface research budgets, evidence availability, quality-gate decisions, and durable progress.
 
