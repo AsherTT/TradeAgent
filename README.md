@@ -2,7 +2,17 @@
 
 开发文档入口：[中文分类导航](docs/README.md)。
 
-**Current status (2026-10-03):** catalyst failure handling and independent imports are
+**Current direction (2026-10-08, Asia/Shanghai):** the user confirmed the V2-B research
+platform first; real portfolio/return/dividend tracking and screening follow later.
+Own accounts/watchlists and bounded account-owned research work in the sibling frontend.
+The homepage remains a source prototype with external feature links; Fiscal financial
+depth and Quartr source verification are not completed. Continue the bounded frontend/backend
+[development plan and backlog](docs/01_项目总览/DEVELOPMENT_PLAN.md) under the
+[frontend architecture](docs/07_前端与部署/FRONTEND_ARCHITECTURE.md).
+The earlier wait for frontend scope is resolved; full analysis, P10 acceptance and P11
+deployment remain outstanding. This is a planning update, not new runtime qualification.
+
+**Historical checkpoint (2026-10-03):** catalyst failure handling and independent imports are
 fixed; two live source-reported interpretations passed citation checks. The V1
 technical indicator and strategy statistic calculations are implemented, with
 explicit missing-data/configuration boundaries. Full analysis and real market/strategy

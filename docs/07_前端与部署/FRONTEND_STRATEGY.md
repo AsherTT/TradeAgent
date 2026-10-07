@@ -1,5 +1,27 @@
 # Frontend Strategy
 
+## Confirmed product scope (2026-10-08, Asia/Shanghai)
+
+Continue V2-B as a unified research platform. Simply Wall St supplies portal/company
+organization, Fiscal supplies multi-period financial layout and Quartr supplies
+report/source-verification interaction; these must become functional TradeAgent modules.
+The user deferred real portfolio/return/dividend tracking and screening until later.
+The source homepage is still a prototype with original-site feature links, not a
+completed three-source product. Accounts and bounded account-owned research exist;
+financial depth, evidence source reading and thesis product integration remain open.
+
+Implementation order and maintained task IDs: [development plan](../01_项目总览/DEVELOPMENT_PLAN.md).
+Routes, shared modules, source isolation, API ownership and acceptance:
+[frontend architecture](FRONTEND_ARCHITECTURE.md). Start with the own-product homepage,
+portal and company-object queries; preserve source reproduction separately. Unimplemented
+product buttons must not redirect to a reference site's product as if they were implemented.
+Explicit external evidence-source links remain allowed.
+
+This resolves the earlier wait for user frontend scope without marking full P10 complete
+or waiving data/provider, asset-rights, migration or release gates. Keep the source observation,
+emulation and original adaptation records distinct; unobserved Fiscal/Quartr states
+cannot be claimed as faithful reproductions. The workflow below remains the design method.
+
 ## Objective
 
 Use a high-fidelity reference implementation to establish TradeAgent's visual language and

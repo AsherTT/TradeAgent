@@ -1,6 +1,23 @@
 # Implementation Status
 
-Last updated: 2026-10-03
+Last updated: 2026-10-08 (Asia/Shanghai)
+
+Current plan: [research-platform development plan and backlog](DEVELOPMENT_PLAN.md).
+The user confirmed the V2-B research platform first, with real portfolio/return/dividend
+tracking and screening deferred. Own accounts/watchlists and bounded account-owned
+research/status/cancellation/partial reports are implemented in the independent frontend.
+The source homepage still contains original-site product links; Fiscal multi-period
+financial views and Quartr source-reading interaction remain unfinished. These are explicit
+frontend/backend development tasks, not completed integration.
+
+Continue bounded product increments under the [frontend architecture](../07_前端与部署/FRONTEND_ARCHITECTURE.md).
+The previous requirement to wait for user frontend scope is resolved; full P5/P10,
+real provider qualification, consolidated-push gates and P11 deployment are not completed
+or waived. Recorded 2026-10-07 account-research checks: 452 passed/1 skipped, frontend
+13 tests plus lint/types/build. See [qualification](../07_前端与部署/ACCOUNT_RESEARCH_VALIDATION_20261007.md).
+This planning update reruns no runtime tests and makes no new live-qualification claim.
+
+## Historical checkpoint (2026-10-03)
 
 Latest status: [pre-P10 repair checkpoint](PRE_P10_CHECKPOINT_20261003.md).
 Catalyst failure finalization, source rejection handling, independent module loading

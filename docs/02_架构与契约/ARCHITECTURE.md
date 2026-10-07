@@ -1,5 +1,23 @@
 # Architecture Baseline
 
+## Current product direction (2026-10-08, Asia/Shanghai)
+
+The confirmed V2-B scope is a unified research platform: Simply Wall St portal/company
+organization, Fiscal multi-period financial views and Quartr report/source verification,
+using TradeAgent contracts and account ownership. Real portfolio/return/dividend tracking
+and screening follow later. See the [development plan and backlog](../01_项目总览/DEVELOPMENT_PLAN.md)
+and [frontend architecture](../07_前端与部署/FRONTEND_ARCHITECTURE.md) for route/module/API dependencies.
+
+Accounts/watchlists and bounded account-owned research are implemented in the sibling
+frontend; the homepage is still a source prototype and the Fiscal/Quartr product work
+is incomplete. The earlier pause awaiting user frontend requirements is resolved by
+the confirmed scope. Bounded development may continue; complete P5/P10 qualification,
+reviewed migration into apps/web, real-provider gates and P11 remain outstanding.
+The dated observations below are historical slices; their pause/implementation statements
+do not override this current direction or imply that full integration is complete.
+
+## Frozen baseline and historical checkpoints
+
 The source-of-truth architecture is **Agentic Equity Research Workbench v1.1.1 — Quant Integrity + Operational Reliability Hardened** dated 2026-09-16.
 
 Current checkpoint: [2026-10-03 pre-P10 fixes](../01_项目总览/PRE_P10_CHECKPOINT_20261003.md).
