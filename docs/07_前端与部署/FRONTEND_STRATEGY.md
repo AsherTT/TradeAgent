@@ -2,7 +2,12 @@
 
 ## Confirmed product scope (2026-10-08, Asia/Shanghai)
 
-Continue V2-B as a unified research platform. Simply Wall St supplies portal/company
+Adopt the approved [enhanced-A design](FRONTEND_DESIGN_ENHANCED_A_20261008.md).
+It supersedes V2-B visual unification: preserve observed source pages/internal navigation,
+regional typography, controls, density and interaction; unify product identity, account,
+company context and cross-region operations. Shared navigation placement, themes, concrete
+menu destinations and Agent extension layout still require page observation/confirmation.
+Simply Wall St supplies portal/company
 organization, Fiscal supplies multi-period financial layout and Quartr supplies
 report/source-verification interaction; these must become functional TradeAgent modules.
 The user deferred real portfolio/return/dividend tracking and screening until later.
@@ -44,12 +49,28 @@ workflow reference, not a dependency that may overwrite this repository.
 4. Run the upstream lint, typecheck, and production build checks.
 5. Perform a separate TradeAgent adaptation pass:
    - replace target branding, copy, and assets that are not owned or licensed;
-   - map the visual system to original TradeAgent navigation and domain language;
+   - retain regional source design and internal navigation; add a lightweight product entrance
+     and use TradeAgent domain language without silently removing source controls;
    - preserve explicit insufficient-evidence, data-quality, maturity, integrity, and confidence
      states rather than hiding them for visual simplicity;
    - meet accessibility, performance, responsive, and frontend testing requirements.
-6. Move only reviewed code and assets into `apps/web`, convert package management to the root pnpm
-   workspace, and add typed clients for stable backend contracts.
+6. Integrate existing account contracts and implement missing first-release capabilities in
+   bounded increments within the sibling frontend. First confirm representative company,
+   financial and reading pages; compare reference and adapted states separately. Move only
+   reviewed code/assets into `apps/web` after product acceptance, then convert to root pnpm.
+
+## Backend gap-filling authorization
+
+The user authorized borrowing publicly observable workflow logic to complete own backend
+capabilities, not assuming access to third-party private services or subscribing to their APIs.
+Map each page/control/state to its local destination, existing contract, missing data/API/
+qualification and acceptance evidence. Fill gaps rather than treating hidden controls or demo
+data as completed functionality. Portal/company projections, versioned multi-period financials
+and source locations, account-authorized material/snippet lookup and bounded search, and account
+thesis/forecast commands follow the [overall architecture](../02_架构与契约/ARCHITECTURE.md)
+and existing R1-R6 task IDs. Frontend period choices must be explicitly supported by the submission
+contract before they can affect research inputs; never change the persisted cutoff through a
+display parameter. Source company scores are not evidence-quality scores.
 
 ## Integration gates
 

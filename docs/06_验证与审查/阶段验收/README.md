@@ -8,6 +8,7 @@
 
 | 阅读内容 | 文件 |
 | --- | --- |
+| 增强 A 文档阶段：验证与双轴审查 | [ENHANCED_A_DOCUMENTATION_REVIEW_20261008.md](ENHANCED_A_DOCUMENTATION_REVIEW_20261008.md) |
 | Gate B：存储与队列（验证记录） | [GATE_B_QUALIFICATION.md](GATE_B_QUALIFICATION.md) |
 | Gate C：研究闭环（验证记录） | [GATE_C_QUALIFICATION.md](GATE_C_QUALIFICATION.md) |
 | Gate D：安全检索（验证记录） | [GATE_D_QUALIFICATION.md](GATE_D_QUALIFICATION.md) |

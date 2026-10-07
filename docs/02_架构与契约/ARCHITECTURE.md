@@ -2,7 +2,7 @@
 
 ## Current product direction (2026-10-08, Asia/Shanghai)
 
-The confirmed V2-B scope is a unified research platform: Simply Wall St portal/company
+The confirmed enhanced-A direction keeps the research-platform scope: Simply Wall St portal/company
 organization, Fiscal multi-period financial views and Quartr report/source verification,
 using TradeAgent contracts and account ownership. Real portfolio/return/dividend tracking
 and screening follow later. See the [development plan and backlog](../01_项目总览/DEVELOPMENT_PLAN.md)
@@ -15,6 +15,57 @@ the confirmed scope. Bounded development may continue; complete P5/P10 qualifica
 reviewed migration into apps/web, real-provider gates and P11 remain outstanding.
 The dated observations below are historical slices; their pause/implementation statements
 do not override this current direction or imply that full integration is complete.
+
+## 增强 A 的产品查询与后端补齐（2026-10-08，待实现）
+
+用户已认可保留来源核心页面与内部导航、统一产品身份和操作上下文，并授权依据
+公开可观察的功能逻辑补齐研究平台后端。最新[增强 A 设计](../07_前端与部署/FRONTEND_DESIGN_ENHANCED_A_20261008.md)
+替代旧 V2-B 的跨来源视觉统一规则；冻结 v1.1.1 的身份、时间、预算与不可变性规则不变。
+本节是应用能力扩展方案，不表示已修改数据库、接口或研究图，也不推断第三方私有实现。
+
+### 能力分工与复用边界
+
+| 借鉴行为 | 自有应用能力与拟定职责 | 当前缺口/计划 |
+| --- | --- | --- |
+| Simply 公司章节、关注与门户 | 账户范围门户查询、公司详情、本人最近研究及历史变化投影；公司公开事实与私有研究分开授权 | 已有目录/关注/研究列表；聚合与详情待补，BE-01 / R1 |
+| Fiscal 多期表格、趋势、来源与分部/KPI | 财务事实序列与申报版本存储，单位/期间/口径对齐，确定性指标服务，分部/KPI身份及原始申报定位 | 当前仅年度切片；BE-02～03 / R2 |
+| Quartr 材料检索、引用与原文阅读 | 以本人授权研究为入口的材料/片段查询，文档/内容版本/位置映射，有界检索和安全投影 | 复用证据与RAG持久化；账户阅读接口待补，BE-04 / R3 |
+| TradeAgent 论点与预测 | 账户论点历史/受控写命令、不可变版本与乐观并发，研究记忆回流、Critic与冻结准入 | 内部基础不是公开账户能力；BE-05～08 / R4 |
+
+### 服务、存储与契约边界
+
+- Next 展示来源界面并维护可恢复状态；同源BFF只代理精确路径/方法和服务器会话。
+  FastAPI应用层负责账户授权、有界查询/命令与DTO；领域服务负责财务计算、时间可见性、
+  质量、研究完整性和冻结资格；SQLAlchemy/PostgreSQL负责事实/版本/归属持久化。
+  外部采集和模型执行沿用来源适配器、预算与Redis/Celery研究图，不进入浏览器。
+- 复用既有 `/workspace/companies`、`/workspace/watchlist` 与精确账户研究
+  `/workspace/research` 的提交、列表、options、详情、cancel和report能力。新增URI、DTO和
+  迁移在各增量规格冻结，不能把拟定职责写成现有接口；不扩开旧内部research/RAG/thesis。
+- 财务序列至少区分instrument、概念/分部/KPI身份、单位/币种、期间类型及起止日期、
+  申报版本、来源定位和信息可用时间。财年/日历年、年度/季度/TTM、原始/标准化口径
+  不静默混合；重述版本保留，按Analysis Timestamp选取当时可知记录。
+  分部/KPI不可随显示名称改变身份；业务划分变化、口径不兼容与缺值有显式状态。
+  正式schema/迁移和公式在BE-02/03规格中确定，不凭页面需要前端重算。
+- 已有证据/RAG文档和chunk优先复用；材料查询返回安全的来源、内容范围、版本与位置。
+  必须先验证本人研究归属及证据关联，不能通过全局evidence/document UUID读他人材料。
+  页长、文本长度、过滤条件、查询次数与检索范围有界；上传材料不提升来源信任，片段不冒充全文。
+- 论点/预测读取和写入重新执行账户与引用授权；冻结仍依赖合格完整综合和不可变执行来源。
+  公共事实可按许可共享，账户研究/笔记/论点不可共享。变化投影需真实历史版本与明确比较时间，
+  不将首次研究或fixture显示为改善、收益或成熟结果。
+- 前端期间/阅读状态不改变持久Analysis Timestamp；把财务选择转成研究输入时，必须由
+  提交契约显式支持和后端校验，不能新增查询参数便声称研究实际使用了该期间。
+  对未知成本、缺项、质量未验证和部分报告保留明确状态；来源评分不映射为SystemConfidence。
+
+### 增量准入与验证
+
+来源页面/交互清单 → 现有契约映射 → 缺口与数据资格 → 增量spec → 前后端实现 →
+代表页面效果确认与行为验收。只借鉴首版对应功能；直播音频、全市场覆盖、估值共识、
+组合与筛选等不因参考网站提供便自动纳入首版或授予来源资格。
+
+复用账户HTTP/BFF、财务确定性行为、证据存储/报告和论点版本等已有测试边界。
+新增权限/数据行为按TDD覆盖本人/他人/历史未归属、非法ID、分页上限、期间切换、
+申报修订/截止时间、原文定位与版本、并发及冻结拒绝；本地真实PG/BFF和产品UI逐增量验收。
+后端行为、视觉还原、离线金例、真实来源资格分别记录。具体任务仍以开发计划为唯一清单。
 
 ## Frozen baseline and historical checkpoints
 

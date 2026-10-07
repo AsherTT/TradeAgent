@@ -2,8 +2,11 @@
 
 开发文档入口：[中文分类导航](docs/README.md)。
 
-**Current direction (2026-10-08, Asia/Shanghai):** the user confirmed the V2-B research
-platform first; real portfolio/return/dividend tracking and screening follow later.
+**Current direction (2026-10-08, Asia/Shanghai):** the user approved
+[enhanced A](docs/07_前端与部署/FRONTEND_DESIGN_ENHANCED_A_20261008.md): preserve source core pages/internal
+navigation and unify product identity/account/company context. The research platform comes first;
+real portfolio/return/dividend tracking and screening follow later. Latest
+[project progress](docs/01_项目总览/DEVELOPMENT_PROGRESS_20261008.md) records the backend gap-filling direction.
 Own accounts/watchlists and bounded account-owned research work in the sibling frontend.
 The homepage remains a source prototype with external feature links; Fiscal financial
 depth and Quartr source verification are not completed. Continue the bounded frontend/backend

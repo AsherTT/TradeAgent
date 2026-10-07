@@ -3,8 +3,13 @@
 Last updated: 2026-10-08 (Asia/Shanghai)
 
 Current plan: [research-platform development plan and backlog](DEVELOPMENT_PLAN.md).
-The user confirmed the V2-B research platform first, with real portfolio/return/dividend
-tracking and screening deferred. Own accounts/watchlists and bounded account-owned
+The user confirmed the enhanced-A design: retain observed source pages/internal navigation
+and unify product identity, account and research context. Real portfolio/return/dividend
+tracking and screening remain deferred. Latest [project progress](DEVELOPMENT_PROGRESS_20261008.md)
+and [approved design](../07_前端与部署/FRONTEND_DESIGN_ENHANCED_A_20261008.md) record backend gap-filling
+authorization and page details still awaiting observation/confirmation. This replaces the
+old V2-B visual-unification rule, not existing qualification gates.
+Own accounts/watchlists and bounded account-owned
 research/status/cancellation/partial reports are implemented in the independent frontend.
 The source homepage still contains original-site product links; Fiscal multi-period
 financial views and Quartr source-reading interaction remain unfinished. These are explicit
