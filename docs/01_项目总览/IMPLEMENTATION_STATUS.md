@@ -2,6 +2,10 @@
 
 Last updated: 2026-10-09 (Asia/Shanghai)
 
+R1 record-change follow-up (backend 02801e8/802db09, frontend 523a4f3) adds account/company-owned finished-record comparisons within a disclosed 50-record window. Matching conditions and strictly earlier aware analysis cutoffs are required; unknown deltas stay null. Safe snapshots, quality, admitted-evidence/gap counts and local report links are available. This is record coverage, not financial/thesis/market performance; portal-wide change aggregation remains pending. Ordinary tests: 474 passed, 1 live-model test deselected, 89.70% coverage; Ruff and strict mypy (106 app files) pass. Frontend: 31 behavior/SSR checks plus lint/types/build pass; actual local PG/BFF and Chinese 1440/768/390 / English mobile empty-history UI checked. Same R1 review agents inspected only the new diff: Standards 0, Spec 1 fixed and closed. See [record-change validation](../07_前端与部署/R1_RESEARCH_CHANGE_VALIDATION_20261009.md).
+
+Portal source access now yields Holdings default-content DOM/styles, but screenshots are truncated and observed widths disagree with requested dimensions. Complete interaction/responsive sampling and company source reproduction remain unqualified; builders are not dispatched. P10 stays at R1 function completion/source inspection, before R2 multi-period financials. Older historical-change statements below are superseded only for this bounded record comparison.
+
 2026-10-09 R1 delta: company/research session races, late 401 handling in parallel reads,
 and the application data-scope link repaired (frontend 94be555/f2ef46a). Final frontend
 27 behavior/SSR checks and lint/types/build pass; synthetic local PG/BFF and responsive
