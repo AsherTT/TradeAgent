@@ -13,6 +13,11 @@ frontend. The R1 entry increment adds portal/company read projections and compan
 The generic homepage was rejected and corrected in ai-website-cloner-template using the captured
 source DOM, fonts, styles and breakpoints. Company/portal skeletons are integration output, not
 approved source reproductions. Representative source sampling and user visual approval remain pending.
+The latest user correction selects the complete cloner reference homepage as the root
+preview, restoring all 11 body sections with own header/footer logos. It supersedes the
+reduced six-area homepage, not account/data contracts. Original media, reviews and external
+feature links are disclosed as reference material, not evidence of implemented business
+capability. Portfolio/screening backends remain deferred; own account/research flows stay local.
 Fiscal/Quartr product work is incomplete. The earlier pause awaiting user frontend requirements is resolved by
 the confirmed scope. Bounded development may continue; complete P5/P10 qualification,
 reviewed migration into apps/web, real-provider gates and P11 remain outstanding.

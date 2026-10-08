@@ -11,10 +11,14 @@ Simply Wall St supplies portal/company
 organization, Fiscal supplies multi-period financial layout and Quartr supplies
 report/source-verification interaction; these must become functional TradeAgent modules.
 The user deferred real portfolio/return/dividend tracking and screening until later.
-The product homepage now reuses cloner source DOM/fonts/styles with local destinations
-and an explicitly fictional interactive demo. The original full homepage and its external
-links remain isolated under /references/simply-wall-st; the rejected generic integration
-homepage remains under /labs/function-integration. Source sampling and user effect confirmation
+The latest user choice restores the complete cloner reference homepage at /, including
+all 11 body sections and source media/controls, replacing only header/footer branding
+and their home links. Source reviews, feature claims and external links remain explicitly
+reference material during preview; existing local registration/login/workspace links remain.
+The original branding is preserved under /references/simply-wall-st; reduced enhanced-A
+components remain in source history and the rejected generic integration homepage remains
+under /labs/function-integration. This overrides the fictional-demo/reduced-home assembly.
+Source sampling and user effect confirmation
 are still gates, and the three-source product is incomplete. Accounts and bounded account-owned research exist;
 financial depth, evidence source reading and thesis product integration remain open.
 

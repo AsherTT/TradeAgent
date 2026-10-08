@@ -14,7 +14,10 @@ research/status/cancellation/partial reports are implemented in the independent 
 The R1 entry increment (backend 909ab54, initial frontend d59aea4) connects portal/company
 read projections and company-selected research. The user rejected the generic homepage;
 frontend 1de6187 and its preceding commits correct it using cloner source DOM, fonts,
-styles and breakpoints, and fix session invalidation. Product links stay local;
+styles and breakpoints, and fix session invalidation. The latest user correction restores
+the full reference homepage at / with all 11 body sections and own header/footer logos,
+replacing the reduced homepage and fictional demo. Source media, reviews and external
+feature links are disclosed as reference material; own account/workspace links stay local;
 the source homepage is preserved under /references/simply-wall-st and the old functional
 homepage is explicitly unapproved under /labs/function-integration. See the
 [increment record](../07_前端与部署/R1_PRODUCT_ENTRY_VALIDATION_20261008.md).
