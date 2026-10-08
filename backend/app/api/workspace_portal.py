@@ -11,6 +11,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.api.accounts import AuthenticatedUser, BrowserSession
 from backend.app.api.workspace import Company
+from backend.app.api.workspace_changes import (
+    RESEARCH_CHANGE_WINDOW,
+    ResearchChange,
+    research_change,
+)
 from backend.app.api.workspace_research import ResearchSummary, summary
 from backend.app.contracts.research import ResearchState, ResearchStatus
 from backend.app.persistence.accounts import UserResearchRow, WatchlistRow
@@ -37,6 +42,7 @@ class CompanyDetail(BaseModel):
     is_followed: bool
     directory_scope: Literal["local_directory"] = "local_directory"
     research: WorkspacePage[ResearchSummary]
+    research_change: ResearchChange
 
 
 class PortalSummary(BaseModel):
@@ -103,9 +109,19 @@ async def company_detail(
     followed = await session.scalar(select(WatchlistRow.watchlist_id).where(
         WatchlistRow.user_id == user.user_id, WatchlistRow.instrument_id == instrument_id,
     ))
+    owned = select(ResearchRunRow).join(UserResearchRow).where(
+        UserResearchRow.user_id == user.user_id, ResearchRunRow.instrument_id == instrument_id,
+    )
+    finished = list(await session.scalars(owned.where(ResearchRunRow.status.in_(
+        (ResearchStatus.COMPLETE.value, ResearchStatus.INSUFFICIENT_EVIDENCE.value),
+    )).order_by(
+        ResearchRunRow.created_at.desc(), ResearchRunRow.research_run_id.desc(),
+    ).limit(RESEARCH_CHANGE_WINDOW + 1)))
     return CompanyDetail(
         company=Company.model_validate(company), is_followed=followed is not None,
-        research=await research_page(session, select(ResearchRunRow).join(UserResearchRow).where(
-            UserResearchRow.user_id == user.user_id, ResearchRunRow.instrument_id == instrument_id,
-        ), limit, research_offset),
+        research=await research_page(session, owned, limit, research_offset),
+        research_change=research_change([
+            ResearchState.model_validate_json(json.dumps(row.state_json))
+            for row in finished[:RESEARCH_CHANGE_WINDOW]
+        ], has_more=len(finished) > RESEARCH_CHANGE_WINDOW),
     )
