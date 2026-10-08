@@ -9,25 +9,28 @@ and screening follow later. See the [development plan and backlog](../01_项目�
 and [frontend architecture](../07_前端与部署/FRONTEND_ARCHITECTURE.md) for route/module/API dependencies.
 
 Accounts/watchlists and bounded account-owned research are implemented in the sibling
-frontend; the homepage is still a source prototype and the Fiscal/Quartr product work
-is incomplete. The earlier pause awaiting user frontend requirements is resolved by
+frontend. The R1 entry increment adds portal/company read projections and company-linked research.
+The generic homepage was rejected and corrected in ai-website-cloner-template using the captured
+source DOM, fonts, styles and breakpoints. Company/portal skeletons are integration output, not
+approved source reproductions. Representative source sampling and user visual approval remain pending.
+Fiscal/Quartr product work is incomplete. The earlier pause awaiting user frontend requirements is resolved by
 the confirmed scope. Bounded development may continue; complete P5/P10 qualification,
 reviewed migration into apps/web, real-provider gates and P11 remain outstanding.
 The dated observations below are historical slices; their pause/implementation statements
 do not override this current direction or imply that full integration is complete.
 
-## 增强 A 的产品查询与后端补齐（2026-10-08，待实现）
+## 增强 A 的产品查询与后端补齐（2026-10-08，逐项实施）
 
 用户已认可保留来源核心页面与内部导航、统一产品身份和操作上下文，并授权依据
 公开可观察的功能逻辑补齐研究平台后端。最新[增强 A 设计](../07_前端与部署/FRONTEND_DESIGN_ENHANCED_A_20261008.md)
 替代旧 V2-B 的跨来源视觉统一规则；冻结 v1.1.1 的身份、时间、预算与不可变性规则不变。
-本节是应用能力扩展方案，不表示已修改数据库、接口或研究图，也不推断第三方私有实现。
+本节区分已实现的R1查询与后续能力方案，不推断第三方私有实现。
 
 ### 能力分工与复用边界
 
 | 借鉴行为 | 自有应用能力与拟定职责 | 当前缺口/计划 |
 | --- | --- | --- |
-| Simply 公司章节、关注与门户 | 账户范围门户查询、公司详情、本人最近研究及历史变化投影；公司公开事实与私有研究分开授权 | 已有目录/关注/研究列表；聚合与详情待补，BE-01 / R1 |
+| Simply 公司章节、关注与门户 | 账户范围门户查询、公司详情、本人最近研究及历史变化投影；公司公开事实与私有研究分开授权 | 门户/公司只读分页投影已接通；真实历史变化和来源视觉待补，BE-01 / R1 |
 | Fiscal 多期表格、趋势、来源与分部/KPI | 财务事实序列与申报版本存储，单位/期间/口径对齐，确定性指标服务，分部/KPI身份及原始申报定位 | 当前仅年度切片；BE-02～03 / R2 |
 | Quartr 材料检索、引用与原文阅读 | 以本人授权研究为入口的材料/片段查询，文档/内容版本/位置映射，有界检索和安全投影 | 复用证据与RAG持久化；账户阅读接口待补，BE-04 / R3 |
 | TradeAgent 论点与预测 | 账户论点历史/受控写命令、不可变版本与乐观并发，研究记忆回流、Critic与冻结准入 | 内部基础不是公开账户能力；BE-05～08 / R4 |
@@ -41,6 +44,12 @@ do not override this current direction or imply that full integration is complet
 - 复用既有 `/workspace/companies`、`/workspace/watchlist` 与精确账户研究
   `/workspace/research` 的提交、列表、options、详情、cancel和report能力。新增URI、DTO和
   迁移在各增量规格冻结，不能把拟定职责写成现有接口；不扩开旧内部research/RAG/thesis。
+- R1已新增 `GET /workspace/portal` 和 `GET /workspace/companies/{instrument_id}`：
+  逐请求验证会话，研究只按本人归属查询；复用安全摘要，拒绝未知/退市对象，响应no-store。
+  分页包含items/total/offset/limit，limit为1～20，offset为0～10000；门户活动列表最多3项，
+  总数单独返回；可用关注列表排除退市对象。无schema迁移、无来源/模型调用。
+  接口实现主仓 `909ab54`、前端联调 `d59aea4`；首页来源纠偏与会话竞态修复为前端 `1de6187`及其前置提交，见[R1规格](../07_前端与部署/R1_PRODUCT_ENTRY_SPEC_20261008.md)
+  与[增量验证](../07_前端与部署/R1_PRODUCT_ENTRY_VALIDATION_20261008.md)。
 - 财务序列至少区分instrument、概念/分部/KPI身份、单位/币种、期间类型及起止日期、
   申报版本、来源定位和信息可用时间。财年/日历年、年度/季度/TTM、原始/标准化口径
   不静默混合；重述版本保留，按Analysis Timestamp选取当时可知记录。

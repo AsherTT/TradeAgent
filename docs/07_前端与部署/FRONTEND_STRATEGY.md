@@ -11,8 +11,11 @@ Simply Wall St supplies portal/company
 organization, Fiscal supplies multi-period financial layout and Quartr supplies
 report/source-verification interaction; these must become functional TradeAgent modules.
 The user deferred real portfolio/return/dividend tracking and screening until later.
-The source homepage is still a prototype with original-site feature links, not a
-completed three-source product. Accounts and bounded account-owned research exist;
+The product homepage now reuses cloner source DOM/fonts/styles with local destinations
+and an explicitly fictional interactive demo. The original full homepage and its external
+links remain isolated under /references/simply-wall-st; the rejected generic integration
+homepage remains under /labs/function-integration. Source sampling and user effect confirmation
+are still gates, and the three-source product is incomplete. Accounts and bounded account-owned research exist;
 financial depth, evidence source reading and thesis product integration remain open.
 
 Implementation order and maintained task IDs: [development plan](../01_项目总览/DEVELOPMENT_PLAN.md).

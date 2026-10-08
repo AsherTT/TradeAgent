@@ -11,16 +11,25 @@ authorization and page details still awaiting observation/confirmation. This rep
 old V2-B visual-unification rule, not existing qualification gates.
 Own accounts/watchlists and bounded account-owned
 research/status/cancellation/partial reports are implemented in the independent frontend.
-The source homepage still contains original-site product links; Fiscal multi-period
-financial views and Quartr source-reading interaction remain unfinished. These are explicit
-frontend/backend development tasks, not completed integration.
+The R1 entry increment (backend 909ab54, initial frontend d59aea4) connects portal/company
+read projections and company-selected research. The user rejected the generic homepage;
+frontend 1de6187 and its preceding commits correct it using cloner source DOM, fonts,
+styles and breakpoints, and fix session invalidation. Product links stay local;
+the source homepage is preserved under /references/simply-wall-st and the old functional
+homepage is explicitly unapproved under /labs/function-integration. See the
+[increment record](../07_前端与部署/R1_PRODUCT_ENTRY_VALIDATION_20261008.md).
+Company/portal layouts are functional adaptation skeletons awaiting source observation and
+visual approval. Historical-change projections, Fiscal multi-period views and Quartr
+source reading remain unfinished; full R1/P10 integration is not claimed.
 
 Continue bounded product increments under the [frontend architecture](../07_前端与部署/FRONTEND_ARCHITECTURE.md).
 The previous requirement to wait for user frontend scope is resolved; full P5/P10,
 real provider qualification, consolidated-push gates and P11 deployment are not completed
 or waived. Recorded 2026-10-07 account-research checks: 452 passed/1 skipped, frontend
 13 tests plus lint/types/build. See [qualification](../07_前端与部署/ACCOUNT_RESEARCH_VALIDATION_20261007.md).
-This planning update reruns no runtime tests and makes no new live-qualification claim.
+2026-10-08 bounded checks: 456 passed/1 skipped, 89.66% coverage; new owned projections
+and local PG/BFF integration verified without a model worker. Same-phase Standards/Spec
+review findings were fixed and closed. Homepage effect confirmation and full R1 remain pending.
 
 ## Historical checkpoint (2026-10-03)
 
