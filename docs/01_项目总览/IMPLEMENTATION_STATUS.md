@@ -21,6 +21,11 @@ feature links are disclosed as reference material; own account/workspace links s
 the source homepage is preserved under /references/simply-wall-st and the old functional
 homepage is explicitly unapproved under /labs/function-integration. See the
 [increment record](../07_前端与部署/R1_PRODUCT_ENTRY_VALIDATION_20261008.md).
+The user now accepts the basic homepage reproduction. Other pages remain unverified:
+the next session must audit and repair them through the sibling cloner skill's full
+sampling/spec/implementation/responsive comparison workflow, prioritizing existing backend
+contracts and architecture. Appropriate observable source behavior may be integrated via
+documented contract extensions. See the maintained backlog for exact next actions.
 Company/portal layouts are functional adaptation skeletons awaiting source observation and
 visual approval. Historical-change projections, Fiscal multi-period views and Quartr
 source reading remain unfinished; full R1/P10 integration is not claimed.
@@ -32,7 +37,8 @@ or waived. Recorded 2026-10-07 account-research checks: 452 passed/1 skipped, fr
 13 tests plus lint/types/build. See [qualification](../07_前端与部署/ACCOUNT_RESEARCH_VALIDATION_20261007.md).
 2026-10-08 bounded checks: 456 passed/1 skipped, 89.66% coverage; new owned projections
 and local PG/BFF integration verified without a model worker. Same-phase Standards/Spec
-review findings were fixed and closed. Homepage effect confirmation and full R1 remain pending.
+review findings were fixed and closed. Basic homepage approval is now recorded;
+other-page effect confirmation and full R1 remain pending.
 
 ## Historical checkpoint (2026-10-03)
 
