@@ -1,6 +1,13 @@
 # Implementation Status
 
-Last updated: 2026-10-08 (Asia/Shanghai)
+Last updated: 2026-10-09 (Asia/Shanghai)
+
+2026-10-09 R1 delta: company/research session races, late 401 handling in parallel reads,
+and the application data-scope link repaired (frontend 94be555/f2ef46a). Final frontend
+27 behavior/SSR checks and lint/types/build pass; synthetic local PG/BFF and responsive
+UI checked. Delta Standards/Spec findings 1/1 fixed and closed in targeted follow-up,
+without repeating old R1 review. Source company page remains verification/timeout blocked;
+complete source visuals and R1/P10 remain unfinished. See [page audit](../07_前端与部署/R1_PAGE_AUDIT_20261009.md).
 
 Current plan: [research-platform development plan and backlog](DEVELOPMENT_PLAN.md).
 The user confirmed the enhanced-A design: retain observed source pages/internal navigation
