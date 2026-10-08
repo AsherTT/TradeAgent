@@ -14,6 +14,7 @@ from backend.app.api.workspace import Company
 from backend.app.api.workspace_changes import (
     RESEARCH_CHANGE_WINDOW,
     ResearchChange,
+    read_change_state,
     research_change,
 )
 from backend.app.api.workspace_research import ResearchSummary, summary
@@ -121,7 +122,7 @@ async def company_detail(
         company=Company.model_validate(company), is_followed=followed is not None,
         research=await research_page(session, owned, limit, research_offset),
         research_change=research_change([
-            ResearchState.model_validate_json(json.dumps(row.state_json))
-            for row in finished[:RESEARCH_CHANGE_WINDOW]
+            state for row in finished[:RESEARCH_CHANGE_WINDOW]
+            if (state := read_change_state(row.state_json)) is not None
         ], has_more=len(finished) > RESEARCH_CHANGE_WINDOW),
     )

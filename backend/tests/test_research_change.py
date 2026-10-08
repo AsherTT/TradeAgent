@@ -181,6 +181,28 @@ def test_empty_and_cross_account_histories_remain_unknown(
         app.dependency_overrides.pop(get_research_enqueuer, None)
 
 
+def test_naive_legacy_cutoff_outside_current_page_cannot_break_company_comparison(
+    account_client: tuple[TestClient, Database],
+) -> None:
+    client, database = account_client
+    client.post("/auth/register", json=ACCOUNT, headers=ORIGIN)
+    app.dependency_overrides[get_research_enqueuer] = lambda: lambda _: "offline-task"
+    try:
+        prior = finished_run(client, database, day=-2)
+        latest = finished_run(client, database, day=-1)
+        amend_run(database, prior, analysis_timestamp="2026-10-07T00:00:00")
+        response = client.get(PATH, params={"limit": 1})
+        assert response.status_code == 200
+        assert response.json()["research"]["items"][0]["research_run_id"] == latest
+        change = response.json()["research_change"]
+        assert change["availability"] == "no_comparable_previous"
+        assert change["latest"]["research_run_id"] == latest
+        assert change["previous"] is None
+        assert change["qualified_evidence_count_delta"] is None
+    finally:
+        app.dependency_overrides.pop(get_research_enqueuer, None)
+
+
 def test_history_window_discloses_older_records_and_cannot_use_a_match_outside_it(
     account_client: tuple[TestClient, Database],
 ) -> None:

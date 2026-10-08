@@ -1,5 +1,7 @@
 """Bounded record coverage comparisons; never a market or investment score."""
 
+import json
+from collections.abc import Mapping
 from datetime import datetime
 from typing import Literal
 
@@ -12,6 +14,25 @@ from backend.app.contracts.research import ResearchState
 from backend.app.graph.evidence_gap import qualified_evidence
 
 RESEARCH_CHANGE_WINDOW = 50
+
+
+def _aware_timestamp(value: object) -> bool:
+    if not isinstance(value, str):
+        return False
+    try:
+        return datetime.fromisoformat(value).utcoffset() is not None
+    except ValueError:
+        return False
+
+
+def read_change_state(raw: Mapping[str, object]) -> ResearchState | None:
+    # Reject undated legacy records before the domain validator compares timestamps.
+    # Never guess a timezone or relax validation of the remaining stored contract.
+    if not all(_aware_timestamp(raw.get(field)) for field in (
+        "analysis_timestamp", "requested_at",
+    )):
+        return None
+    return ResearchState.model_validate_json(json.dumps(raw))
 
 
 class ResearchChangeSnapshot(ResearchSummary):
