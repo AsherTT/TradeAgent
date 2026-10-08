@@ -14,6 +14,7 @@ from backend.app.api.rag import router as rag_router
 from backend.app.api.research import router as research_router
 from backend.app.api.thesis import router as thesis_router
 from backend.app.api.workspace import router as workspace_router
+from backend.app.api.workspace_portal import router as workspace_portal_router
 from backend.app.api.workspace_research import router as workspace_research_router
 
 app = FastAPI(
@@ -27,6 +28,7 @@ app.include_router(rag_router)
 app.include_router(evaluation_router)
 app.include_router(accounts_router)
 app.include_router(workspace_router)
+app.include_router(workspace_portal_router)
 app.include_router(workspace_research_router)
 
 
@@ -35,7 +37,7 @@ async def account_research_cache_control(
     request: Request, call_next: Callable[[Request], Awaitable[Response]],
 ) -> Response:
     response = await call_next(request)
-    if request.url.path.startswith("/workspace/research"):
+    if request.url.path.startswith("/workspace/"):
         response.headers["Cache-Control"] = "no-store"
     return response
 
