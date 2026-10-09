@@ -7,7 +7,7 @@
 navigation and unify product identity/account/company context. The research platform comes first;
 real portfolio/return/dividend tracking and screening follow later. Latest
 [project progress](docs/01_项目总览/DEVELOPMENT_PROGRESS_20261008.md) records the backend gap-filling direction.
-Own accounts/watchlists and bounded account-owned research work in the sibling frontend.
+Own accounts/watchlists and bounded account-owned research work in [apps/web](apps/web/README.md).
 The homepage remains a source prototype with external feature links; Fiscal financial
 depth and Quartr source verification are not completed. Continue the bounded frontend/backend
 [development plan and backlog](docs/01_项目总览/DEVELOPMENT_PLAN.md) under the
@@ -55,6 +55,8 @@ See `docs/06_验证与审查/模型与行情/ALPHA_VANTAGE_QUALIFICATION.md`, `d
 - Provider credentials only for explicitly selected live-model tests
 
 ## Local setup
+
+当前前端源码已纳入本仓库 `apps/web`，后续开发及GitHub提交统一在本项目完成。运行与验证方式见 [前端说明](apps/web/README.md)。Docker API使用本地源码构建的快照，修改后端后需要重新构建才能刷新容器；运行缓存与数据卷不属于源码。
 
 ```powershell
 py -3.12 -m venv .venv

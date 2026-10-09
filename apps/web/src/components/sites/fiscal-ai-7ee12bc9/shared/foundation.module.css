@@ -1,0 +1,13 @@
+.scope {
+  --fiscal-background: rgb(28 28 33);
+  --fiscal-input-background: rgb(44 44 53);
+  --fiscal-navigation-selected: rgb(64 64 79);
+  --fiscal-button-green: rgb(34 149 73);
+  --fiscal-text: rgb(255 255 255);
+  --fiscal-help-text: rgb(249 248 246);
+  --fiscal-header-height: 64px;
+  --fiscal-desktop-sidebar-width: 80px;
+  color: var(--fiscal-text);
+  background-color: var(--fiscal-background);
+  font-family: var(--font-fiscal-jakarta), sans-serif;
+}

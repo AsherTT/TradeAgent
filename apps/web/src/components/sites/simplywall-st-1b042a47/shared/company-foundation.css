@@ -1,0 +1,9 @@
+.sws-company-source {
+  --sws-company-surface: #212121;
+  --sws-company-table-header: #1a1a1a;
+  --sws-company-border: rgb(238 236 226 / 10%);
+  --sws-company-border-faint: rgb(255 255 255 / 5%);
+  color: #fff;
+  font-family: var(--font-sws-bureau-sans), -apple-system, system-ui,
+    BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}

@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-09",
+  "timezone": "Asia/Shanghai",
+  "status": "three_width_default_overview_captured_full_interactions_pending",
+  "appRoot": "D:/桌面/Trade/TradeAgent/apps/web",
+  "siteKey": "simplywall-st-1b042a47",
+  "pageKey": "stocks--us--tech--nasdaq-aapl--apple-eed85140",
+  "sourceUrl": "https://simplywall.st/stocks/us/tech/nasdaq-aapl/apple",
+  "destinationRoute": "/stocks/us/tech/nasdaq-aapl/apple",
+  "destinationFile": "src/app/stocks/us/tech/nasdaq-aapl/apple/page.tsx",
+  "artifacts": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140",
+  "screenshots": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140",
+  "components": "src/components/sites/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140",
+  "assets": "public/sites/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140",
+  "sharedFoundation": "Reuse existing Bureau fonts; no global or existing route edits authorized by this plan",
+  "pageBuildersReady": false,
+  "limitations": [
+    "Viewport and screenshot coordinates require measured calibration; reset after sampling",
+    "Full scroll/click/hover/state sweep pending",
+    "Whole-page assembly and own API adaptation pending"
+  ],
+  "preserved": "All existing routes, homepage, account, portal/company/research contracts and source namespaces",
+  "verificationRoute": "/labs/r1-company-data-status",
+  "verificationFile": "src/app/labs/r1-company-data-status/page.tsx",
+  "componentBuildersReady": [
+    "CompanyDataStatusTable",
+    "CompanyDataSources",
+    "CompanyAnalysisModel",
+    "CompanyAnalystSources"
+  ]
+}

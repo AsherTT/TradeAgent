@@ -1,0 +1,8 @@
+/* 隔离组件对照时保留完整视口宽度，避免系统滚动条改变来源换行。 */
+html:has(.sws-company-preview) {
+  scrollbar-width: none;
+}
+
+html:has(.sws-company-preview)::-webkit-scrollbar {
+  display: none;
+}

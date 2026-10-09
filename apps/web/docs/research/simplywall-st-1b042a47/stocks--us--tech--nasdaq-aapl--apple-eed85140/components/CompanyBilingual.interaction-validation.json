@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-09",
+  "reloadEnglish": {
+    "lang": "en",
+    "title": "Company source component preview | TradeAgent",
+    "pressed": "EN"
+  },
+  "crossPage": {
+    "registerRedirectedToAuthenticatedPortal": true,
+    "portalEnglishPressed": true,
+    "functionIntegrationEnglishNotice": true,
+    "functionIntegrationChineseNotice": true,
+    "returnToCompanyChinese": true
+  },
+  "finalReloadChinese": {
+    "lang": "zh-CN",
+    "title": "公司来源组件验证 | TradeAgent",
+    "pressed": "中文"
+  },
+  "mobileEnglishTable": {
+    "clientWidth": 358,
+    "scrollWidth": 429,
+    "scrollLeftAfterArrowRight": 40,
+    "focused": true
+  },
+  "modelDesktop": {
+    "width": 800,
+    "height": 276.0000991821289
+  },
+  "modelLinkFocus": {
+    "decoration": "underline",
+    "color": "rgb(253, 203, 104)",
+    "target": "_blank",
+    "rel": "noopener noreferrer nofollow"
+  },
+  "viewportReset": true
+}

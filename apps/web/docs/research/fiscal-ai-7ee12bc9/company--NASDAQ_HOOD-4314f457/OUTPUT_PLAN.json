@@ -1,0 +1,37 @@
+{
+  "target_url": "https://fiscal.ai/company/NASDAQ_HOOD/",
+  "app_root": "D:/桌面/Trade/TradeAgent/apps/web",
+  "site_key": "fiscal-ai-7ee12bc9",
+  "page_key": "company--NASDAQ_HOOD-4314f457",
+  "route": "/company/NASDAQ_HOOD/",
+  "route_file": "src/app/company/NASDAQ_HOOD/page.tsx",
+  "artifacts": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457",
+  "screenshots": "docs/design-references/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457",
+  "components": "src/components/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457",
+  "shared": "src/components/sites/fiscal-ai-7ee12bc9/shared",
+  "assets": "public/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457",
+  "shared_assets": "public/sites/fiscal-ai-7ee12bc9/shared",
+  "downloader": "scripts/download-assets-fiscal-ai-7ee12bc9-company--NASDAQ_HOOD-4314f457.mjs",
+  "existing_routes": [
+    "src/app/page.tsx",
+    "src/app/app/page.tsx",
+    "src/app/login/page.tsx",
+    "src/app/register/page.tsx",
+    "src/app/app/research/page.tsx",
+    "src/app/app/companies/[instrumentId]/page.tsx",
+    "src/app/app/research/[runId]/page.tsx",
+    "src/app/labs/function-integration/page.tsx",
+    "src/app/labs/r1-company-data-status/page.tsx",
+    "src/app/references/simply-wall-st/page.tsx"
+  ],
+  "authorization": "用户已确定方案B与跨来源组合应用，继续门户重构；保留已认可首页，允许实测后适配/app，现有账户/研究契约保持。",
+  "foundation": "Fiscal独立作用域CSS/字体，不修改全局Simply基础。",
+  "state_policy": "本轮先完成可充分采样的小组件；完整来源页未完成不装配或宣布源页面完成。源路径保留；完整功能接入/app需参考和接入后对照。",
+  "foundation_files": [
+    "src/components/sites/fiscal-ai-7ee12bc9/shared/fonts.ts",
+    "src/components/sites/fiscal-ai-7ee12bc9/shared/foundation.module.css",
+    "src/components/sites/fiscal-ai-7ee12bc9/shared/types.ts",
+    "src/components/sites/fiscal-ai-7ee12bc9/shared/icons.tsx"
+  ],
+  "foundation_status": "本地字体、默认实测作用域tokens、已采SVG和参考类型已实现；未接产品路由，未派发交互组件，不声明Phase1全状态完成。"
+}

@@ -1,0 +1,17 @@
+{
+  "gold": {
+    "background": "rgb(253, 204, 106) none repeat scroll 0% 0% / auto padding-box border-box",
+    "color": "rgb(0, 0, 0)",
+    "filter": "none",
+    "hover": false,
+    "transition": "filter 0.15s, opacity 0.15s"
+  },
+  "menuExpanded": "true",
+  "video": {
+    "autoplay": true,
+    "loop": true,
+    "muted": true,
+    "paused": false,
+    "readyState": 4
+  }
+}

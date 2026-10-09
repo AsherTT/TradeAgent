@@ -1,0 +1,16 @@
+{
+  "sourceUrl": "https://simplywall.st/stocks/us/tech/nasdaq-aapl/apple",
+  "summary": {
+    "downloadedCount": 178,
+    "elapsedMs": 821.3855999999796,
+    "failedCount": 7,
+    "requestedCount": 185
+  },
+  "retainedFileIds": [
+    "c2de04186fd0bfa3",
+    "b5aca7f75337a672",
+    "34d74af8afd105ce"
+  ],
+  "inlineSvgCount": 173,
+  "excluded": "Telemetry downloads are not copied into the project; failure query strings excluded"
+}

@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-09",
+  "status": "source_sampling_in_progress",
+  "appRoot": "D:/桌面/Trade/TradeAgent/apps/web",
+  "siteKey": "simplywall-st-1b042a47",
+  "pageKey": "portfolio--demo-128b5e04",
+  "sourceUrl": "https://simplywall.st/portfolio/demo",
+  "destinationRoute": "/portfolio/demo",
+  "destinationFile": "src/app/portfolio/demo/page.tsx",
+  "artifacts": "docs/research/simplywall-st-1b042a47/portfolio--demo-128b5e04",
+  "screenshots": "docs/design-references/simplywall-st-1b042a47/portfolio--demo-128b5e04",
+  "components": "src/components/sites/simplywall-st-1b042a47/portfolio--demo-128b5e04",
+  "assets": "public/sites/simplywall-st-1b042a47/portfolio--demo-128b5e04",
+  "qualification": "Source demo numbers stay isolated reference; no self-owned portfolio/returns qualification",
+  "preserved": "All existing pages, reference homepage and business DTOs",
+  "buildersReady": false
+}

@@ -1,0 +1,122 @@
+{
+  "clip": {
+    "height": 252.95154571533203,
+    "width": 638.1675415039062,
+    "x": 15.99476432800293,
+    "y": 7333.363830566406
+  },
+  "nodes": [
+    {
+      "html": "<h3 class=\"mt-x4 text-lg font-strong text-solid print:text-p-black\">Analysis Model and Snowflake</h3>",
+      "styles": {
+        "color": "rgb(255, 255, 255)",
+        "fontSize": "18px",
+        "lineHeight": "27px",
+        "margin": "32px 0px 16px",
+        "weight": "500"
+      },
+      "tag": "H3",
+      "text": "Analysis Model and Snowflake"
+    },
+    {
+      "html": "<p class=\"text-soft print:text-p-black\">Details of the analysis model used to generate this report is available on our <a class=\"no-underline hocus:underline\" href=\"https://support.simplywall.st/hc/en-us/categories/360000146555\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">Github page</a>, we also have <a class=\"no-underline hocus:underline\" href=\"https://support.simplywall.st/hc/en-us/categories/360000146555\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">guides</a> on how to use our reports and <a class=\"no-underline hocus:underline\" href=\"https://support.simplywall.st/hc/en-us/categories/360000146555\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">tutorials on Youtube</a>.</p>",
+      "styles": {
+        "color": "rgba(255, 255, 255, 0.7)",
+        "fontSize": "14px",
+        "lineHeight": "23.8px",
+        "margin": "0px 0px 16px",
+        "weight": "400"
+      },
+      "tag": "P",
+      "text": "Details of the analysis model used to generate this report is available on our Github page, we also have guides on how to use our reports and tutorials on Youtube."
+    },
+    {
+      "html": "<a class=\"no-underline hocus:underline\" href=\"https://support.simplywall.st/hc/en-us/categories/360000146555\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">Github page</a>",
+      "styles": {
+        "color": "rgb(253, 203, 104)",
+        "fontSize": "14px",
+        "lineHeight": "23.8px",
+        "margin": "0px",
+        "weight": "400"
+      },
+      "tag": "A",
+      "text": "Github page"
+    },
+    {
+      "html": "<a class=\"no-underline hocus:underline\" href=\"https://support.simplywall.st/hc/en-us/categories/360000146555\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">guides</a>",
+      "styles": {
+        "color": "rgb(253, 203, 104)",
+        "fontSize": "14px",
+        "lineHeight": "23.8px",
+        "margin": "0px",
+        "weight": "400"
+      },
+      "tag": "A",
+      "text": "guides"
+    },
+    {
+      "html": "<a class=\"no-underline hocus:underline\" href=\"https://support.simplywall.st/hc/en-us/categories/360000146555\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">tutorials on Youtube</a>",
+      "styles": {
+        "color": "rgb(253, 203, 104)",
+        "fontSize": "14px",
+        "lineHeight": "23.8px",
+        "margin": "0px",
+        "weight": "400"
+      },
+      "tag": "A",
+      "text": "tutorials on Youtube"
+    },
+    {
+      "html": "<p class=\"text-soft print:text-p-black\">Learn about the   who designed and built the Simply Wall St analysis model.</p>",
+      "styles": {
+        "color": "rgba(255, 255, 255, 0.7)",
+        "fontSize": "14px",
+        "lineHeight": "23.8px",
+        "margin": "0px 0px 16px",
+        "weight": "400"
+      },
+      "tag": "P",
+      "text": "Learn about the   who designed and built the Simply Wall St analysis model."
+    },
+    {
+      "html": "<h3 class=\"mt-x4 text-lg font-strong text-solid print:text-p-black\">Industry and Sector Metrics</h3>",
+      "styles": {
+        "color": "rgb(255, 255, 255)",
+        "fontSize": "18px",
+        "lineHeight": "27px",
+        "margin": "32px 0px 16px",
+        "weight": "500"
+      },
+      "tag": "H3",
+      "text": "Industry and Sector Metrics"
+    },
+    {
+      "html": "<p class=\"text-soft print:text-p-black\">Our industry and section metrics are calculated every 6 hours by Simply Wall St, details of our process are available on <a class=\"no-underline hocus:underline\" href=\"https://github.com/SimplyWallSt/Company-Analysis-Model/blob/master/industry_averages.markdown\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">Github</a>.</p>",
+      "styles": {
+        "color": "rgba(255, 255, 255, 0.7)",
+        "fontSize": "14px",
+        "lineHeight": "23.8px",
+        "margin": "0px 0px 16px",
+        "weight": "400"
+      },
+      "tag": "P",
+      "text": "Our industry and section metrics are calculated every 6 hours by Simply Wall St, details of our process are available on Github."
+    },
+    {
+      "html": "<a class=\"no-underline hocus:underline\" href=\"https://github.com/SimplyWallSt/Company-Analysis-Model/blob/master/industry_averages.markdown\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">Github</a>",
+      "styles": {
+        "color": "rgb(253, 203, 104)",
+        "fontSize": "14px",
+        "lineHeight": "23.8px",
+        "margin": "0px",
+        "weight": "400"
+      },
+      "tag": "A",
+      "text": "Github"
+    }
+  ],
+  "viewport": {
+    "height": 377,
+    "width": 670
+  }
+}

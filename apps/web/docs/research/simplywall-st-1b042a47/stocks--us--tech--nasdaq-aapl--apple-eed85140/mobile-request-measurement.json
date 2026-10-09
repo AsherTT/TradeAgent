@@ -1,0 +1,49 @@
+{
+  "requested": {
+    "width": 390,
+    "height": 844
+  },
+  "actual": {
+    "bodyWidth": 204.3979034423828,
+    "headings": [
+      {
+        "size": "28px",
+        "text": "Apple Inc.NasdaqGS:AAPL Stock Report"
+      },
+      {
+        "size": "14px",
+        "text": "Apple (AAPL) Stock Overview"
+      },
+      {
+        "size": "18px",
+        "text": "Last Earnings Call"
+      },
+      {
+        "size": "18px",
+        "text": "AAPL Community Fair Values"
+      },
+      {
+        "size": "18px",
+        "text": "Apple Inc. Competitors"
+      },
+      {
+        "size": "18px",
+        "text": "Price History & Performance"
+      },
+      {
+        "size": "16px",
+        "text": "About the Company"
+      },
+      {
+        "size": "18px",
+        "text": "Apple Inc. Fundamentals Summary"
+      },
+      {
+        "size": "24px",
+        "text": "Company Analysis and Financial Data Status"
+      }
+    ],
+    "height": 442,
+    "width": 204
+  }
+}

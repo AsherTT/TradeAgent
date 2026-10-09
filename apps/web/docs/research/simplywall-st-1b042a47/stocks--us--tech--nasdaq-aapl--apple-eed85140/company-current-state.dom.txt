@@ -1,0 +1,805 @@
+- banner:
+  - link "Simply Wall St Homepage":
+    - /url: /dashboard
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+    - link "Portfolios":
+      - /url: /portfolio
+    - link "Watchlist":
+      - /url: /watchlist
+    - link "Community":
+      - /url: /community/narratives
+    - link "Discover":
+      - /url: /discover/investing-ideas
+    - link "Screener":
+      - /url: /screener/create
+      - generic: Screener
+  - button "Search":
+    - generic: Search
+    - generic: Ctrl K
+  - button "Sign up"
+  - button "Guest user menu":
+    - img "User avatar placeholder":
+- img "Apple Inc. logo"
+- list:
+  - link "Stocks":
+    - /url: /stocks/us
+  - listitem: /
+  - link "Tech":
+    - /url: /stocks/us/tech
+- img "AAPL logo"
+- heading "Apple Inc. NasdaqGS:AAPL Stock Report" [level=1]:
+  - generic: Apple Inc.
+  - generic: NasdaqGS:AAPL Stock Report
+- generic "Market Cap US$4.9t":
+  - generic: Market Cap
+  - text: US$4.9t
+- button "Add to Portfolio":
+  - generic: Add to Portfolio
+- button "Watch":
+  - text: Watch
+- button "More actions":
+  - generic: More actions
+  - generic: …
+- time: Updated 2d ago
+- button "Data from Company Financials & 40 Analysts":
+  - generic: Data from
+  - text: Company Financials
+  - text: "& 40 Analysts"
+- generic: Share Price
+- generic: US$340.42
+- button "US Market Closed"
+- button "Open community profile details":
+  - generic: AnalystConsensusTarget
+- button "Edit Fair Value":
+  - generic: Edit Fair Value
+- button "Open community profile details":
+  - img "AnalystConsensusTarget"
+- generic: US$328.09
+- generic: 3.8% overvalued
+- generic: intrinsic discount
+- img "Narrative marker":
+  - img "Narrative valuation line"
+  - img "Narrative latest valuation line"
+  - img "Narrative price marker"
+  - img "Narrative fair value marker"
+  - img "Narrative rectangle marker"
+- img "Mini price chart":
+- text: 1Y
+- generic: 38.8%
+- text: 7D
+- generic: 2.0%
+- text: 1D
+- generic: 1.1%
+- text: Portfolio Value
+- generic: US$293,484
+- generic: ↑ 133.1%
+- mark: Demo
+- link "View":
+  - /url: /portfolio/demo
+  - text: View
+- 'img "Snowflake: Value 0/6, Future 2/6, Past 5/6, Health 5/6, Dividend 0/6"'
+- paragraph:
+  - text: Apple Inc.
+- paragraph: NasdaqGS:AAPL Stock Report
+- paragraph: "Market Cap: US$4.9t"
+- button "Portfolio":
+  - generic: Portfolio
+- button:
+- button "More actions":
+  - generic: More actions
+  - generic: …
+- navigation:
+  - list:
+    - link "Company Overview":
+      - /url: /stocks/us/tech/nasdaq-aapl/apple
+    - link "1Valuation":
+      - /url: /stocks/us/tech/nasdaq-aapl/apple/valuation
+    - link "2Future Growth":
+      - /url: /stocks/us/tech/nasdaq-aapl/apple/future
+    - link "3Past Performance":
+      - /url: /stocks/us/tech/nasdaq-aapl/apple/past
+    - link "4Financial Health":
+      - /url: /stocks/us/tech/nasdaq-aapl/apple/health
+    - link "5Dividend":
+      - /url: /stocks/us/tech/nasdaq-aapl/apple/dividend
+    - link "6Management":
+      - /url: /stocks/us/tech/nasdaq-aapl/apple/management
+    - link "7Ownership":
+      - /url: /stocks/us/tech/nasdaq-aapl/apple/ownership
+    - link "Other Information":
+      - /url: /stocks/us/tech/nasdaq-aapl/apple/information
+    - link "Stock Community":
+      - /url: /stock/nasdaqgs/aapl
+- article:
+  - heading "Apple (AAPL) Stock Overview" [level=2]
+  - paragraph:
+    - text: Designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide.
+    - link "More details":
+      - /url: "#about"
+      - text: More details
+  - figure "Snowflake chart":
+  - paragraph: Snowflake Analysis
+  - paragraph: Solid track record with excellent balance sheet.
+  - button "Data":
+    - generic: Data
+  - button "Learn":
+    - generic: Learn
+  - button:
+  - heading "Rewards" [level=3]
+  - blockquote:
+    - paragraph:
+      - link "Earnings are forecast to grow 7.09% per year":
+        - /url: /stocks/us/tech/nasdaq-aapl/apple/future
+        - text: Earnings are forecast to grow 7.09% per
+        - text: year
+  - blockquote:
+    - paragraph:
+      - link "Earnings have grown 4.5% per year over the past 5 years":
+        - /url: /stocks/us/tech/nasdaq-aapl/apple/past
+        - text: Earnings have grown 4.5% per year over the past 5
+        - text: years
+  - heading "Risk Analysis" [level=3]
+  - paragraph: No risks detected for AAPL from our risk checks.
+  - button "See All Risk Checks"
+  - heading "Last Earnings Call" [level=2]
+  - generic: Q3 2026 · 31 Jul 2026
+  - link "Full Transcript":
+    - /url: /stocks/us/tech/nasdaq-aapl/apple/transcript/2026q3
+  - paragraph: Apple Inc. reported record Q3 2026 results with revenue of $109.4 billion, a 16% year-over-year increase, driven by strong iPhone (up 22%) and Mac (up 29%) sales. Diluted EPS reached $2.02, representing 29% growth. Both metrics surpassed analyst consensus estimates of $107.5 billion in revenue and $1.94 EPS. Services revenue also hit a record $30.7 billion, up 12%.
+  - paragraph: Management attributed performance to high demand despite significant supply chain constraints and foreign exchange headwinds. Looking ahead, Apple projects September quarter revenue growth between 9% and 11%, noting that supply constraints—particularly regarding advanced nodes for SoCs—will intensify significantly. Additionally, CEO Tim Cook announced this as his final earnings call, confirming incoming CEO John Ternus will lead future sessions.
+  - heading "Market Reaction" [level=3]
+  - paragraph: Apple shares fell approximately 3% in after-hours trading. Analysts primarily cited the company's cautious outlook regarding intensified supply chain constraints and persistent memory cost inflation as the main drivers for the sell-off, despite the strong earnings beat.
+  - button "Read more"
+  - button "Ask anything":
+    - text: Ask anything
+  - button:
+    - generic: What did analysts push back on?
+  - button:
+    - generic: What would need to be true to justify the price?
+  - button "What risks came up in the Q&A?":
+    - generic: What risks came up in the Q&A?
+  - heading "AAPL Community Fair Values" [level=2]
+  - link "Create Narrative":
+    - /url: /narratives/new?company=743F0744-8987-4339-B565-DEE3A93E9934&returnPath=%2Fstocks%2Fus%2Ftech%2Fnasdaq-aapl%2Fapple%3Fcompany%3D743f0744-8987-4339-b565-dee3a93e9934
+    - text: Create Narrative
+  - paragraph: See what 2279 others think this stock is worth. Follow their fair value or set your own to get alerts.
+  - img "Fair Value Histogram":
+    - tooltip "Valuation Range US$271.71 - US$293.93, Fair Values Set 1075, Last Price US$340.42":
+  - heading "Top Community Narratives" [level=3]
+  - heading "Top Analyst Narratives" [level=3]
+  - link "Open community profile details 34.3% overvalued intrinsic discount Open community profile details 15d ago Buy now, I don't see this stock going much lower-too many improvements making quiet waves... 1.4k 0 177":
+    - /url: /community/narratives/us/tech/nasdaq-aapl/apple/7pmyicck-buy-now-i-dont-see-this-stock-going-much-lower-too-many-improvements-making-quiet-waves-1im1
+    - button "Open community profile details":
+      - img "Bob_B"
+    - generic: 34.3% overvalued
+    - generic: intrinsic discount
+    - button "Open community profile details":
+      - generic: Bob_B
+    - generic: •
+    - generic: 15d ago
+    - heading "Buy now, I don't see this stock going much lower-too many improvements making quiet waves..." [level=4]
+    - generic: 1.4k
+    - generic: "0"
+    - generic: "177"
+  - link "Open community profile details 3.8% overvalued intrinsic discount Open community profile details 4d ago AI Ecosystem And Services Expansion Will Support Long-Term Hardware And Platform Demand 7.8k 7 713":
+    - /url: /community/narratives/us/tech/nasdaq-aapl/apple/9gy4am0w-aapl-momentum-in-product-cycle-and-services-will-offset-regulatory-headwinds-going-forward
+    - button "Open community profile details":
+      - img "AnalystConsensusTarget"
+    - generic: 3.8% overvalued
+    - generic: intrinsic discount
+    - button "Open community profile details":
+      - generic: AnalystConsensusTarget
+    - generic: •
+    - generic: 4d ago
+    - heading "AI Ecosystem And Services Expansion Will Support Long-Term Hardware And Platform Demand" [level=4]
+    - generic: 7.8k
+    - generic: "7"
+    - generic: "713"
+  - link "Open community profile details 21.6% overvalued intrinsic discount Open community profile details 2mo ago Strip Out The Refunds And The Quarter Was In Line 212 0 27":
+    - /url: /community/narratives/us/tech/nasdaq-aapl/apple/mmc0635e-strip-out-the-refunds-and-the-quarter-was-in-line
+    - button "Open community profile details":
+      - generic: RC
+      - img "Emerging Author"
+    - generic: 21.6% overvalued
+    - generic: intrinsic discount
+    - button "Open community profile details":
+      - generic: rcb9
+    - generic: •
+    - generic: 2mo ago
+    - heading "Strip Out The Refunds And The Quarter Was In Line" [level=4]
+    - generic: "212"
+    - generic: "0"
+    - generic: "27"
+  - link "Open community profile details 15.9% undervalued intrinsic discount Open community profile details 13d ago Global AI Integration And Privacy-First Trends Will Reshape Digital Ecosystems 899 1 78":
+    - /url: /community/narratives/us/tech/nasdaq-aapl/apple/bumecn2y-global-ai-integration-and-privacy-first-trends-will-reshape-digital-ecosystems
+    - button "Open community profile details":
+      - img "AnalystHighTarget"
+    - generic: 15.9% undervalued
+    - generic: intrinsic discount
+    - button "Open community profile details":
+      - generic: AnalystHighTarget
+    - generic: •
+    - generic: 13d ago
+    - heading "Global AI Integration And Privacy-First Trends Will Reshape Digital Ecosystems" [level=4]
+    - generic: "899"
+    - generic: "1"
+    - generic: "78"
+  - 'link "Open community profile details 240.4% overvalued intrinsic discount Open community profile details 2mo ago Perfect Hardware, Dated Software: Why I See Apple at $100 in 3 Years 814 4 24"':
+    - /url: /community/narratives/us/tech/nasdaq-aapl/apple/5oa2769l-update-for-apple
+    - button "Open community profile details":
+      - generic: BI
+    - generic: 240.4% overvalued
+    - generic: intrinsic discount
+    - button "Open community profile details":
+      - generic: bip59
+    - generic: •
+    - generic: 2mo ago
+    - 'heading "Perfect Hardware, Dated Software: Why I See Apple at $100 in 3 Years" [level=4]'
+    - generic: "814"
+    - generic: "4"
+    - generic: "24"
+  - link "Open community profile details 46.5% overvalued intrinsic discount Open community profile details 4d ago AI And Legal Headwinds Will Pressure Margins And Weaken Long-Term Earnings Quality 906 1 52":
+    - /url: /community/narratives/us/tech/nasdaq-aapl/apple/5b9syeif-rising-trade-tensions-and-regulatory-woes-will-impair-margins
+    - button "Open community profile details":
+      - img "AnalystLowTarget"
+    - generic: 46.5% overvalued
+    - generic: intrinsic discount
+    - button "Open community profile details":
+      - generic: AnalystLowTarget
+    - generic: •
+    - generic: 4d ago
+    - heading "AI And Legal Headwinds Will Pressure Margins And Weaken Long-Term Earnings Quality" [level=4]
+    - generic: "906"
+    - generic: "1"
+    - generic: "52"
+  - link "View all narratives":
+    - /url: /stock/nasdaqgs/aapl
+  - heading "Apple Inc. Competitors" [level=2]
+  - article:
+    - 'link "Snowflake: Value 5/6, Future 2/6, Past 5/6, Health 5/6, Dividend 0/6 Alphabet Symbol: NasdaqGS:GOOGL Market cap: US$4.2t"':
+      - /url: /stocks/us/media/nasdaq-googl/alphabet
+      - 'img "Snowflake: Value 5/6, Future 2/6, Past 5/6, Health 5/6, Dividend 0/6"'
+      - heading "Alphabet" [level=3]
+      - generic: "Symbol:"
+      - text: NasdaqGS:GOOGL
+      - generic: "Market cap:"
+      - text: US$4.2t
+  - article:
+    - 'link "Snowflake: Value 3/6, Future 3/6, Past 3/6, Health 4/6, Dividend 0/6 Meta Platforms Symbol: NasdaqGS:META Market cap: US$1.9t"':
+      - /url: /stocks/us/media/nasdaq-meta/meta-platforms
+      - 'img "Snowflake: Value 3/6, Future 3/6, Past 3/6, Health 4/6, Dividend 0/6"'
+      - heading "Meta Platforms" [level=3]
+      - generic: "Symbol:"
+      - text: NasdaqGS:META
+      - generic: "Market cap:"
+      - text: US$1.9t
+  - article:
+    - 'link "Snowflake: Value 2/6, Future 3/6, Past 6/6, Health 6/6, Dividend 0/6 Microsoft Symbol: NasdaqGS:MSFT Market cap: US$3.9t"':
+      - /url: /stocks/us/software/nasdaq-msft/microsoft
+      - 'img "Snowflake: Value 2/6, Future 3/6, Past 6/6, Health 6/6, Dividend 0/6"'
+      - heading "Microsoft" [level=3]
+      - generic: "Symbol:"
+      - text: NasdaqGS:MSFT
+      - generic: "Market cap:"
+      - text: US$3.9t
+  - article:
+    - 'link "Snowflake: Value 4/6, Future 2/6, Past 5/6, Health 5/6, Dividend 0/6 Netflix Symbol: NasdaqGS:NFLX Market cap: US$286.0b"':
+      - /url: /stocks/us/media/nasdaq-nflx/netflix
+      - 'img "Snowflake: Value 4/6, Future 2/6, Past 5/6, Health 5/6, Dividend 0/6"'
+      - heading "Netflix" [level=3]
+      - generic: "Symbol:"
+      - text: NasdaqGS:NFLX
+      - generic: "Market cap:"
+      - text: US$286.0b
+  - heading "Price History & Performance" [level=2]
+  - tablist:
+    - tab "1M"
+    - tab "3M"
+    - tab "1Y" [disabled] [selected]
+    - tab "3Y"
+    - tab "5Y"
+    - tab "Max"
+  - paragraph: Thu, 08 Oct 2026
+  - paragraph:
+    - strong: US$340.42
+  - button "Dividend":
+    - text: Dividend
+  - button "Financial":
+    - text: Financial
+  - button "Management":
+    - text: Management
+  - button "Strategy":
+    - text: Strategy
+  - button "Other":
+    - text: Other
+  - button "Data":
+    - generic: Data
+  - button:
+  - heading "Recent News & Updates" [level=3]
+  - link:
+    - /url: /stocks/us/tech/nasdaq-aapl/apple/updates/brief/743f0744-8987-4339-b565-dee3a93e9934:0bf47e0529079860
+    - article:
+      - img "AAPL logo"
+      - generic: Live News • 12h
+      - heading "Apple Ordered to Pay Over $818 Million to Masimo in Patent Dispute" [level=4]
+      - generic: A U.S. district court ordered Apple to pay Masimo an additional $184.2m in interest on top of $634m in previously awarded patent damages tied to the Apple Watch, taking the total above $818m, with postjudgment interest of 4% accruing from 20 July until the judgment is fully paid. The ruling increases Apple’s legal bill on this single case to well over three quarters of a billion dollars and highlights that patent disputes around health and sensor technology in wearables can carry sizeable financial consequences. Apple shares trade at $336.67, with the stock up 24.2% year to date. This indicates the market is currently absorbing this legal outcome within a broader positive view on the business. The key read-through is legal risk. Large, cash-rich groups like Apple can absorb judgments of this scale, but repeated or escalating IP disputes around core products can become a persistent cost and a distraction for management.
+  - link:
+    - /url: /stocks/de/tech/etr-apc/apple-shares/updates/event/2025131726
+    - article:
+      - generic: Earnings Release Date • Oct 07
+      - heading "Apple Inc. to Report Q4, 2026 Results on Nov 02, 2026" [level=4]
+      - generic: Apple Inc. announced that they will report Q4, 2026 results on Nov 02, 2026
+  - link:
+    - /url: /stocks/us/tech/nasdaq-aapl/apple/updates/brief/743f0744-8987-4339-b565-dee3a93e9934:b5c1ad0c26cf1ced
+    - article:
+      - img "AAPL logo"
+      - generic: Live News • Oct 07
+      - heading "Apple Partners With LG Electronics to Launch New Range of Smart Home Devices" [level=4]
+      - generic: Apple has reportedly teamed up with LG Electronics to build a new range of smart home hardware, including a video doorbell, smart lock and security cameras that could launch under LG’s branding while tying into Apple’s upcoming home ecosystem. The push takes aim at Amazon’s Ring and Google’s Nest lines and expands Apple’s hardware footprint beyond existing HomeKit-compatible gear into first-party style devices developed with a large consumer electronics partner. Apple shares trade at $333.63, with the stock up 23.1% year to date, keeping the company firmly in the group of large tech names that have been driving major US indices. A deeper move into smart home gear gives Apple another way to embed its services, Siri and Apple Intelligence inside the household, while also tying iPhone owners more tightly into its ecosystem at the device level.
+  - link:
+    - /url: /community/narratives/us/tech/nasdaq-aapl/apple/9gy4am0w-aapl-momentum-in-product-cycle-and-services-will-offset-regulatory-headwinds-going-forward/updates/27-the-apple-thesis-has-been-reviewed-and-reaffirmed-with-the
+    - article:
+      - button "Open community profile details":
+        - img "User avatar"
+      - generic: Narrative Update • Oct 05
+      - 'heading "AAPL: AI And Silicon Are The Upside, Memory Costs And Execution Are The Test" [level=4]'
+      - generic: The Apple thesis has been reviewed and reaffirmed, with the narrative now shifting its focus from broad geographic expansion and services growth toward the role of Apple Intelligence, custom silicon, and organisational changes in shaping future revenue mix, margins, and ecosystem depth. What’s Changed Earlier, growth expectations leaned heavily on emerging market expansion and broader retail rollout as the key driver of revenue and Services.
+  - link:
+    - /url: /community/narratives/us/tech/nasdaq-aapl/apple/5b9syeif-rising-trade-tensions-and-regulatory-woes-will-impair-margins/updates/7-the-apple-thesis-has-been-reviewed-and-reaffirmed-with-the
+    - article:
+      - button "Open community profile details":
+        - img "User avatar"
+      - generic: Narrative Update • Oct 05
+      - 'heading "AAPL: Demand Is Holding Up, Memory Costs And Legal Risks Threaten Margins" [level=4]'
+      - generic: The Apple thesis has been reviewed and reaffirmed, with the focus now shifting more explicitly to how rising memory and component costs, legal outcomes, and the pace of Services growth shape the balance between strong hardware demand and long term pressure on margins and cash generation. What's Changed Previously, slower smartphone growth and regulatory pressure were the main concerns for Apple earnings.
+  - link:
+    - /url: /stocks/us/tech/nasdaq-aapl/apple/updates/brief/2317633556
+    - article:
+      - generic: Recent Insider Transactions Derivative • Oct 04
+      - heading "Insider notifies of intention to sell stock" [level=4]
+      - generic: Deirdre O’Brien intends to sell 46k shares in the next 90 days after lodging an Intent To Sell Form on the 2nd of October. If the sale is conducted around the recent share price of US$333, it would amount to US$15m. Deirdre currently holds less than 1% of total shares outstanding. Company insiders have collectively sold US$170m more than they bought, via options and on-market transactions in the last 12 months.
+  - button "See more updates"
+  - heading "Shareholder Returns" [level=3]
+  - table:
+    - rowgroup:
+      - row "AAPL US Tech US Market":
+        - columnheader
+        - columnheader "AAPL"
+        - columnheader "US Tech"
+        - columnheader "US Market"
+    - rowgroup:
+      - row "7D 1.1% 0.5% 2.0%":
+        - cell "7D"
+        - cell "1.1%"
+        - cell "0.5%"
+        - cell "2.0%"
+      - row "1Y 30.5% 42.2% 12.3%":
+        - cell "1Y"
+        - cell "30.5%"
+        - cell "42.2%"
+        - cell "12.3%"
+  - button "See full shareholder returns"
+  - blockquote:
+    - paragraph:
+      - generic: "Return vs Industry:"
+      - text: AAPL underperformed the
+      - link "US Tech industry":
+        - /url: /markets/us/tech/tech-hardware/tech-hardware-storage-peripherals
+      - text: which returned 42.2% over the past year.
+  - blockquote:
+    - paragraph:
+      - generic: "Return vs Market:"
+      - text: AAPL exceeded the
+      - link "US Market":
+        - /url: /markets/us
+      - text: which returned 12.3% over the past year.
+  - heading "Price Volatility" [level=3]
+  - button "Data":
+    - generic: Data
+  - button:
+  - blockquote:
+    - paragraph:
+      - generic: "Stable Share Price:"
+      - text: AAPL has not had significant price volatility in the past 3 months compared to the US market.
+  - blockquote:
+    - paragraph:
+      - generic: "Volatility Over Time:"
+      - text: AAPL's
+      - generic: weekly volatility
+      - text: (4%) has been stable over the past year.
+  - heading "About the Company" [level=2]
+  - table:
+    - rowgroup:
+      - row "Founded Employees CEO Website":
+        - columnheader "Founded"
+        - columnheader "Employees"
+        - columnheader "CEO"
+        - columnheader "Website"
+    - rowgroup:
+      - row "1976 166,000 John Ternus www.apple.com":
+        - cell "1976"
+        - cell "166,000"
+        - cell "John Ternus"
+        - cell "www.apple.com":
+          - link "www.apple.com":
+            - /url: https://www.apple.com
+            - text: www.apple.com
+  - paragraph: Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide. The company offers iPhone, a line of smartphones; Mac, a line of personal computers; iPad, a line of multi-purpose tablets; and wearables, home, and accessories comprising AirPods, Apple Vision Pro, Apple TV, Apple Watch, Beats products, and HomePod, as well as Apple branded and third-party accessories. It also provides AppleCare support and cloud services; and operates various platforms, including the App Store that allows customers to discover and download applications and digital content, such as books, music, video, games, and podcasts, as well as advertising services include third-party licensing arrangements and its own advertising platforms.
+  - paragraph: In addition, the company offers various subscription-based services, such as Apple Arcade, a game subscription service; Apple Fitness+, a personalized fitness service; Apple Music, which offers users a curated listening experience with on-demand radio stations; Apple News+, a subscription news and magazine service; Apple TV, which offers original content and live sports; Apple Card, a co-branded credit card; and Apple Pay, a cashless payment service, as well as licenses its intellectual property. The company serves consumers, and small and mid-sized businesses; and the education, enterprise, and government markets. It distributes third-party applications for its products through the App Store. The company also sells its products through its retail and online stores, and direct sales force; and third-party cellular network carriers and resellers.
+  - paragraph: The company was formerly known as Apple Computer, Inc. and changed its name to Apple Inc. in January 2007. Apple Inc. was founded in 1976 and is headquartered in Cupertino, California.
+  - button "Show less"
+  - heading "Apple Inc. Fundamentals Summary" [level=2]
+  - button "Data":
+    - generic: Data
+  - button:
+  - generic: 38.1x
+  - text: P/E Ratio
+  - generic: 10.5x
+  - text: P/S Ratio
+  - paragraph: Is AAPL overvalued?
+  - link "See Fair Value and valuation analysis":
+    - /url: /stocks/us/tech/nasdaq-aapl/apple/valuation
+    - text: See Fair Value and valuation analysis
+  - separator
+  - heading "Earnings & Revenue" [level=3]
+  - button "Data":
+    - generic: Data
+  - button:
+  - paragraph: Last Reported Earnings
+  - paragraph: Jun 27, 2026
+  - paragraph: Next Earnings Date
+  - paragraph: Nov 03, 2026
+  - table:
+    - rowgroup:
+      - row "Earnings per share (EPS) 8.83":
+        - cell "Earnings per share (EPS)":
+          - generic: Earnings per share (EPS)
+        - cell "8.83"
+      - row "Gross Margin 48.65%":
+        - cell "Gross Margin":
+          - generic: Gross Margin
+        - cell "48.65%"
+      - row "Net Profit Margin 27.62%":
+        - cell "Net Profit Margin":
+          - generic: Net Profit Margin
+        - cell "27.62%"
+      - row "Debt/Equity Ratio 78.4%":
+        - cell "Debt/Equity Ratio":
+          - generic: Debt/Equity Ratio
+        - cell "78.4%"
+  - paragraph: How did AAPL perform over the long term?
+  - link "See historical performance and comparison":
+    - /url: /stocks/us/tech/nasdaq-aapl/apple/past
+    - text: See historical performance and comparison
+  - separator
+  - heading "Dividends" [level=3]
+  - generic: 0.3%
+  - text: Current Dividend Yield
+  - generic: 12%
+  - text: Payout Ratio
+  - paragraph: Does AAPL pay a reliable dividends?
+  - link "See AAPL dividend history and benchmarks":
+    - /url: /stocks/us/tech/nasdaq-aapl/apple/dividend
+    - text: See AAPL dividend history and benchmarks
+  - button "View Valuation":
+    - text: View Valuation
+  - heading "Company Analysis and Financial Data Status" [level=2]
+  - table:
+    - rowgroup:
+      - row "Data Last Updated (UTC time)":
+        - columnheader "Data"
+        - columnheader "Last Updated (UTC time)"
+    - rowgroup:
+      - row "Company Analysis 2026/10/07 18:18":
+        - cell "Company Analysis"
+        - cell "2026/10/07 18:18"
+      - row "End of Day Share Price 2026/10/07 08:00":
+        - cell "End of Day Share Price"
+        - cell "2026/10/07 08:00"
+      - row "Earnings 2026/06/27":
+        - cell "Earnings"
+        - cell "2026/06/27"
+      - row "Annual Earnings 2025/09/27":
+        - cell "Annual Earnings"
+        - cell "2025/09/27"
+  - heading "Data Sources" [level=3]
+  - paragraph:
+    - text: The data used in our company analysis is from
+    - link "S&P Global Market Intelligence LLC":
+      - /url: https://www.spglobal.com/market-intelligence/en
+    - text: . The following data is used in our analysis model to generate this report. Data is normalised which can introduce a delay from the source being available.
+  - table:
+    - rowgroup:
+      - row "Package Data Timeframe Example US Source *":
+        - columnheader "Package"
+        - columnheader "Data"
+        - columnheader "Timeframe"
+        - columnheader "Example US Source *":
+          - text: Example US Source
+          - superscript: "*"
+    - rowgroup:
+      - row "Company Financials 10 years Income statement Cash flow statement Balance sheet SEC Form 10-K SEC Form 10-Q":
+        - cell "Company Financials"
+        - cell "10 years"
+        - cell "Income statement Cash flow statement Balance sheet":
+          - list:
+            - listitem: Income statement
+            - listitem: Cash flow statement
+            - listitem: Balance sheet
+        - cell "SEC Form 10-K SEC Form 10-Q":
+          - list:
+            - link "SEC Form 10-K":
+              - /url: https://www.sec.gov/cgi-bin/browse-edgar?company=&CIK=&type=10-K&owner=include&count=40&action=getcurrent
+            - link "SEC Form 10-Q":
+              - /url: https://www.sec.gov/cgi-bin/browse-edgar?company=&CIK=&type=10-Q&owner=include&count=40&action=getcurrent
+      - row "Analyst Consensus Estimates +3 years Forecast financials Analyst price targets Analyst Research Reports Blue Matrix":
+        - cell "Analyst Consensus Estimates"
+        - cell "+3 years"
+        - cell "Forecast financials Analyst price targets":
+          - list:
+            - listitem: Forecast financials
+            - listitem: Analyst price targets
+        - cell "Analyst Research Reports Blue Matrix":
+          - list:
+            - listitem: Analyst Research Reports
+            - link "Blue Matrix":
+              - /url: https://bluematrix.com/www3/Home.action
+      - row "Market Prices 30 years Stock prices Dividends, Splits and Actions ICE Market Data SEC Form S-1":
+        - cell "Market Prices"
+        - cell "30 years"
+        - cell "Stock prices Dividends, Splits and Actions":
+          - list:
+            - listitem: Stock prices
+            - listitem: Dividends, Splits and Actions
+        - cell "ICE Market Data SEC Form S-1":
+          - list:
+            - link "ICE Market Data":
+              - /url: https://www.ice.com/fixed-income-data-services/data-and-analytics/exchange-data
+            - link "SEC Form S-1":
+              - /url: https://www.sec.gov/cgi-bin/browse-edgar?company=&CIK=&type=S-1&owner=include&count=40&action=getcurrent
+      - row "Ownership 10 years Top shareholders Insider trading SEC Form 4 SEC Form 13D":
+        - cell "Ownership"
+        - cell "10 years"
+        - cell "Top shareholders Insider trading":
+          - list:
+            - listitem: Top shareholders
+            - listitem: Insider trading
+        - cell "SEC Form 4 SEC Form 13D":
+          - list:
+            - link "SEC Form 4":
+              - /url: https://www.sec.gov/cgi-bin/browse-edgar?company=&CIK=&type=4&owner=include&count=40&action=getcurrent
+            - link "SEC Form 13D":
+              - /url: https://www.sec.gov/cgi-bin/browse-edgar?company=&CIK=&type=SC+13D&owner=include&count=40&action=getcurrent
+      - row "Management 10 years Leadership team Board of directors SEC Form 10-K SEC Form DEF 14A":
+        - cell "Management"
+        - cell "10 years"
+        - cell "Leadership team Board of directors":
+          - list:
+            - listitem: Leadership team
+            - listitem: Board of directors
+        - cell "SEC Form 10-K SEC Form DEF 14A":
+          - list:
+            - link "SEC Form 10-K":
+              - /url: https://www.sec.gov/cgi-bin/browse-edgar?company=&CIK=&type=10-K&owner=include&count=40&action=getcurrent
+            - link "SEC Form DEF 14A":
+              - /url: https://www.sec.gov/cgi-bin/browse-edgar?company=&CIK=&type=DEF+14A&owner=include&count=40&action=getcurrent
+      - row "Key Developments 10 years Company announcements SEC Form 8-K":
+        - cell "Key Developments"
+        - cell "10 years"
+        - cell "Company announcements":
+          - list:
+            - listitem: Company announcements
+        - cell "SEC Form 8-K":
+          - list:
+            - link "SEC Form 8-K":
+              - /url: https://www.sec.gov/cgi-bin/browse-edgar?company=&CIK=&type=8-K&owner=include&count=40&action=getcurrent
+  - paragraph:
+    - superscript: "*"
+    - text: Example for US securities, for non-US equivalent regulatory forms and sources are used.
+  - paragraph:
+    - text: Unless specified all financial data is based on a yearly period but updated quarterly. This is known as Trailing Twelve Month (TTM) or Last Twelve Month (LTM) Data.
+    - link "Learn more":
+      - /url: https://support.simplywall.st/hc/en-us/articles/115006170908-Your-data-is-different-from-other-reports-and-websites-why-is-that
+    - text: .
+  - heading "Analysis Model and Snowflake" [level=3]
+  - paragraph:
+    - text: Details of the analysis model used to generate this report is available on our
+    - link "Github page":
+      - /url: https://support.simplywall.st/hc/en-us/categories/360000146555
+    - text: ", we also have"
+    - link "guides":
+      - /url: https://support.simplywall.st/hc/en-us/categories/360000146555
+    - text: on how to use our reports and
+    - link "tutorials on Youtube":
+      - /url: https://support.simplywall.st/hc/en-us/categories/360000146555
+    - text: .
+  - paragraph: Learn about the who designed and built the Simply Wall St analysis model.
+  - heading "Industry and Sector Metrics" [level=3]
+  - paragraph:
+    - text: Our industry and section metrics are calculated every 6 hours by Simply Wall St, details of our process are available on
+    - link "Github":
+      - /url: https://github.com/SimplyWallSt/Company-Analysis-Model/blob/master/industry_averages.markdown
+    - text: .
+  - heading "Analyst Sources" [level=3]
+  - paragraph: Apple Inc. is covered by 88 analysts. 40 of those analysts submitted the estimates of revenue or earnings used as inputs to our report. Analysts submissions are updated throughout the day.
+  - table:
+    - rowgroup:
+      - row "Analyst Institution":
+        - columnheader "Analyst"
+        - columnheader "Institution"
+    - rowgroup:
+      - row "Amman Saeed Accountability Research Corporation":
+        - cell "Amman Saeed"
+        - cell "Accountability Research Corporation"
+      - row "Warren Lau Aletheia Analyst Network Limited":
+        - cell "Warren Lau"
+        - cell "Aletheia Analyst Network Limited"
+      - row "Richard Kramer Arete Research Services LLP":
+        - cell "Richard Kramer"
+        - cell "Arete Research Services LLP"
+  - button "Show 85 more analysts"
+- heading "Make Better Investing Decisions Anywhere" [level=3]
+- generic: Scan to download
+- link "Open AppStore":
+  - /url: https://apps.apple.com/app/apple-store/id1075614972?pt=117976858&ct=website-footer&mt=8
+  - generic: Open AppStore
+- link "Open Google Play":
+  - /url: https://play.google.com/store/apps/details?id=com.simplywallst.app&referrer=utm_source%3Dwebsite%26utm_medium%3Dfooter%26utm_content%3Dgoogle-play-logo
+  - generic: Open Google Play
+- link "Chrome Web Store":
+  - /url: https://chromewebstore.google.com/detail/stock-analysis-overlay-si/fogdlgjnkolhbefbbpghbafdkhcdgdnk
+  - generic: Chrome Web Store
+- link:
+  - /url: /dashboard
+- generic: Level 5, 320 Pitt Street, Sydney
+- list:
+  - link "LinkedIn":
+    - /url: https://www.linkedin.com/company/simply-wall-st
+    - img "LinkedIn"
+  - link "Twitter":
+    - /url: https://twitter.com/simplywallst
+    - img "Twitter"
+  - link "YouTube":
+    - /url: https://www.youtube.com/c/Simplywallst
+    - img "YouTube"
+  - link "Spotify Podcast":
+    - /url: https://open.spotify.com/show/76l4P66AfdiOqFmJ5II2AO
+    - img "Spotify Podcast"
+  - link "Apple Podcast":
+    - /url: https://podcasts.apple.com/au/podcast/simply-wall-st/id1695670179
+    - img "Apple Podcast"
+- link "S&P Global Market Intelligence":
+  - /url: https://spglobal.com/market-intelligence/en
+- generic: Financial Data provided by S&P Global Market Intelligence LLC, analysis provided by Simply Wall Street Pty Ltd. Copyright © 2026, S&P Global Market Intelligence LLC. All rights reserved.
+- link "View Data Sources":
+  - /url: https://simplywall.st/analysis-and-financial-data-sources
+- heading "Markets" [level=5]
+- list:
+  - 'link "US: NYSE & NASDAQ"':
+    - /url: /markets/us
+  - 'link "UK: FTSE"':
+    - /url: /markets/gb
+  - 'link "Australia: ASX"':
+    - /url: /markets/au
+  - 'link "India: NIFTY"':
+    - /url: /markets/in
+  - 'link "Canada: TSX"':
+    - /url: /markets/ca
+  - 'link "South Africa: JSE"':
+    - /url: /markets/za
+  - 'link "Japan: NIKKEI"':
+    - /url: /markets/jp
+  - 'link "South Korea: KOSPI"':
+    - /url: /markets/kr
+  - 'link "Germany: DAX"':
+    - /url: /markets/de
+- heading "Investing Ideas" [level=5]
+- list:
+  - link "Undervalued Companies":
+    - /url: /discover/investing-ideas/168/undervalued-stocks-based-on-cash-flows
+  - link "Dividend Powerhouses":
+    - /url: /discover/investing-ideas/146/dividend-powerhouses-3-yield
+  - link "Insider Buying":
+    - /url: /discover/investing-ideas/171/insider-trading
+  - link "Nuclear Energy":
+    - /url: /discover/investing-ideas/215173/nuclear-energy-stocks
+  - link "Autonomous Vehicles":
+    - /url: /discover/investing-ideas/5620/electric-autonomous-vehicle-stocks
+  - link "Artificial Intelligence":
+    - /url: /discover/investing-ideas/215169/artificial-intelligence-ai-stocks
+  - link "Crypto and Blockchain":
+    - /url: /discover/investing-ideas/16734/cryptocurrency-and-blockchain-stocks
+  - link "Cybersecurity":
+    - /url: /discover/investing-ideas/10184/cybersecurity
+  - link "More ideas":
+    - /url: /discover/investing-ideas
+- heading "Stock Communities" [level=5]
+- list:
+  - link "AstraZeneca":
+    - /url: /stock/lse/azn
+  - link "HSBC Holdings":
+    - /url: /stock/lse/hsba
+  - link "Shell":
+    - /url: /stock/lse/shel
+  - link "Unilever":
+    - /url: /stock/lse/ulvr
+  - link "Diageo":
+    - /url: /stock/lse/dge
+  - link "Rio Tinto Group":
+    - /url: /stock/lse/rio
+  - link "RELX":
+    - /url: /stock/lse/rel
+  - link "BP":
+    - /url: /stock/lse/bp.
+  - link "Barclays":
+    - /url: /stock/lse/barc
+- heading "Features & Tools" [level=5]
+- list:
+  - link "Portfolio Tracker":
+    - /url: /features/portfolio
+  - link "Stock Screener & Alerts":
+    - /url: /screener/create
+  - link "Narratives & Fair Values":
+    - /url: /community/narratives
+  - link "Dividend Calculator":
+    - /url: https://simplywall.st/tools/dividend-calculator
+- heading "News & Discovery" [level=5]
+- list:
+  - link "Latest Stock News":
+    - /url: https://simplywall.st/news
+  - link "Global Market Insights":
+    - /url: /markets/insights
+  - link "The Foxhole":
+    - /url: /community/discussions/foxhole
+  - link "Investing Ideas":
+    - /url: /discover/investing-ideas
+  - link "Community Narratives":
+    - /url: /community/narratives
+  - link "What's New":
+    - /url: https://support.simplywall.st/hc/en-us/articles/7894830045199-Changelog
+- heading "Simply Wall St" [level=5]
+- list:
+  - link "Plans & Pricing":
+    - /url: /plans
+  - link "Advertising":
+    - /url: /advertising
+  - link "About Us":
+    - /url: /about
+  - link "Contact Us":
+    - /url: https://simplywall.st/help/articles/hc/en-us/requests/new
+  - link "Careers":
+    - /url: /careers
+- list:
+  - link "Help Center":
+    - /url: https://simplywall.st/help
+  - link "Learn Stock Investing":
+    - /url: https://learn.simplywall.st
+  - link "Affiliate Program":
+    - /url: /affiliate-program
+  - link "Business & Enterprise":
+    - /url: /business-plans
+  - link "Charlie AI":
+    - /url: https://charlieinvest.ai
+- generic: "Simply Wall Street Pty Ltd (ACN 600 056 611), is a Corporate Authorised Representative (Authorised Representative Number: 467183) of Sanlam Private Wealth Pty Ltd (AFSL No. 337927). Any advice contained in this website is general advice only and has been prepared without considering your objectives, financial situation or needs. You should not rely on any advice and/or information contained in this website and before making any investment decision we recommend that you consider whether it is appropriate for your situation and seek appropriate financial, taxation and legal advice. Please read our Financial Services Guide before deciding whether to obtain financial services from us."
+- generic: "© 2026 Simply Wall Street Pty Ltd, US Design Patent #29/544/281, Community and European Design Registration #2845206"
+- list:
+  - link "Terms and Conditions":
+    - /url: /terms-and-conditions
+  - link "Privacy Policy":
+    - /url: /privacy-policy
+  - link "AI Terms":
+    - /url: /ai-terms
+  - link "Financial Services Guide":
+    - /url: https://media.simplywall.st/site/financials/Financial_Services_Guide_-_Simply_Wall_St_V2.0_dated_20_Jan_23.pdf
+- generic: $128.9b
+- generic: Add to portfolio
+- button:
+- generic: Add Note
+- button:
+- generic: Notes
+- button [disabled]:
+- button "More Actions":
+  - img "More Actions"
+- iframe

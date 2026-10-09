@@ -1,0 +1,25 @@
+{
+  "keyboardBefore": {
+    "focused": true,
+    "left": 0,
+    "total": 429,
+    "width": 358
+  },
+  "keyboardAfter": {
+    "focused": true,
+    "left": 4,
+    "total": 429,
+    "width": 358
+  },
+  "localFocus": {
+    "color": "rgb(253, 203, 104)",
+    "decoration": "underline",
+    "focused": true,
+    "transition": "none"
+  },
+  "finalScroll": {
+    "left": 8,
+    "total": 429,
+    "width": 358
+  }
+}

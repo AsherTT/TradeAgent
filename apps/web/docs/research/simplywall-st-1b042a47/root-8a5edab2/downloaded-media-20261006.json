@@ -1,0 +1,374 @@
+{
+  "sourceInventory": [
+    "page-assets-20261006-current.json",
+    "computed-full-20261006-1440.json"
+  ],
+  "method": "public asset HTTP download after normal source access succeeded",
+  "excluded": "Third-party analytics/tracking image requests are not website media and are excluded.",
+  "assets": [
+    {
+      "url": "https://marketing.simplywall.st/assets/activity-1.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/c948ba9477d9423c.svg",
+      "bytes": 300,
+      "contentType": "image/svg+xml",
+      "sha256": "1c5795aeaebce01067c2215d30421e1d0c9357659140371cce1e38ca6a24d9ff"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/activity-2.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/d99ab4b6eb18fb63.svg",
+      "bytes": 298,
+      "contentType": "image/svg+xml",
+      "sha256": "3bfa2e1756ed1b26c57ddf0676f154cb5a528ebf31d570f30c584e15923879f2"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/bar-chart-1.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/f4864708385b3460.svg",
+      "bytes": 498,
+      "contentType": "image/svg+xml",
+      "sha256": "521545c3d8afb7faee5af9b1e21a80908263ec349a33f1d4d66ff03db57868bb"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/bar-chartforecast-2.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/95512965a47f28a5.svg",
+      "bytes": 529,
+      "contentType": "image/svg+xml",
+      "sha256": "6f032b7d4cff4718b2c95a42c7c47a1637645b842d30e39b495c4ead273df00c"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/check-1-.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/a7a9a7ba53603e88.svg",
+      "bytes": 385,
+      "contentType": "image/svg+xml",
+      "sha256": "9e043ce9a902bfe1456086d6040705d33de156b9fa72900b96506601ce49ed5b"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/check.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/0562300fc9147943.svg",
+      "bytes": 262,
+      "contentType": "image/svg+xml",
+      "sha256": "2365fb3bc9fa566945a647f69580bd92d7fd25920b0e14114d8593edff66363a"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/chrome-webstore-1.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/c37c60cbfaf851d9.svg",
+      "bytes": 34913,
+      "contentType": "image/svg+xml",
+      "sha256": "25ebdce2777bd95c4c6dc32aedbade331dba5d04a79528cb889579824fb1e684"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/dollar-sign-1.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/3aca078ccaf0c755.svg",
+      "bytes": 722,
+      "contentType": "image/svg+xml",
+      "sha256": "79039319977b48fc563500c770b7fbc89dd79ac665e352366650819c07521c32"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/eye-1.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/dfefbfd25925aadf.svg",
+      "bytes": 630,
+      "contentType": "image/svg+xml",
+      "sha256": "05be9b328dc930f0ab304f30518ab57886bb4f213175421e5359adfae9078e48"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/Group-1171.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/57ca5070980cde17.svg",
+      "bytes": 1075,
+      "contentType": "image/svg+xml",
+      "sha256": "4bc3860278fde398a0e545a62d3dee88cb5f881193d7f2c370befd0b0cffc3ee"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/LinkedIn.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/f2722e959f261e5e.svg",
+      "bytes": 1607,
+      "contentType": "image/svg+xml",
+      "sha256": "a98e4dd93e35b005e8d2e3508e57d79cf88b0063d645be1fd2fc4abff30aa6c4"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/reviews.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/2c8353a5feaadf91.svg",
+      "bytes": 41959,
+      "contentType": "image/svg+xml",
+      "sha256": "e23b9876e0391fcf92d91aebdbda6bc27d2448eb080266508aa049047c667994"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/search-3.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/84e36655c16232dd.svg",
+      "bytes": 534,
+      "contentType": "image/svg+xml",
+      "sha256": "05798bb7372a74e72fd534c94c8daa8f84724e5fce086535b6b3301a041a68e6"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/Simply-Wall-St-Logo-FT.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/1807de39bdbfee0d.svg",
+      "bytes": 7006,
+      "contentType": "image/svg+xml",
+      "sha256": "3a486e2f5dad765d2f79bc8708b91e980b22271889dac0ce8e37a2efed50c41d"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/Simply-Wall-St-Logo-HD.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/ad4997bab3155971.svg",
+      "bytes": 6975,
+      "contentType": "image/svg+xml",
+      "sha256": "d0e30a23d780feae84a24216db01e20bbc767b2e9bfe8c17d6cc90dc6f92e7d2"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/snowflake-animation.webp",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/fdf2f3c0b30c927d.webp",
+      "bytes": 539788,
+      "contentType": "image/webp",
+      "sha256": "da73ab2c26c25a12214041c0b9ed0f99f7c9f36d486f2e2508fba2f2c13fd43d"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/stars.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/ae250c3fe94833fa.svg",
+      "bytes": 2215,
+      "contentType": "image/svg+xml",
+      "sha256": "e42cb056819ff1a68e703a937f9a8ec78040fc72ab8c204f22cab030f26efbd2"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/trending-up-2.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/8df417a40ff9c6cb.svg",
+      "bytes": 412,
+      "contentType": "image/svg+xml",
+      "sha256": "aa2cb7edc37f3f9448b2bffce3372d651fea16c46f4860337219b9334c14b430"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/Twitter.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/918f67c3737bf78e.svg",
+      "bytes": 419,
+      "contentType": "image/svg+xml",
+      "sha256": "5af64435be601faa51972e88e39571ae06f3e65a088508ae19601a1d0d6bab23"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/user-2.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/487f0e8e2733c620.svg",
+      "bytes": 737,
+      "contentType": "image/svg+xml",
+      "sha256": "a148b71aa5fc9f49e26bc09e4d334bd509ef501441d9f189099f93be1d243e09"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/users-2.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/13fd7fbd3ba2b021.svg",
+      "bytes": 1258,
+      "contentType": "image/svg+xml",
+      "sha256": "6ba678570fe91a18777c7476ccdddc6c697b3f9cd2a42ddc0b301f33ac680768"
+    },
+    {
+      "url": "https://marketing.simplywall.st/assets/YouTube.svg",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/a15d4bcd239ca4ab.svg",
+      "bytes": 637,
+      "contentType": "image/svg+xml",
+      "sha256": "487a0ed722c926fb9419b6330a865bd548431296c9ff5add8ceba3a6e4065880"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/1.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/fe05b7f802fe9341.png",
+      "bytes": 77823,
+      "contentType": "image/png",
+      "sha256": "ff3ac40dc43d5cb119d7c78ddc08f10a117efe1b9b6f1aea98fd79e1da6b1c00"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/2.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/f4246680af07fe01.png",
+      "bytes": 71259,
+      "contentType": "image/png",
+      "sha256": "1d2f93ba7f8f16dc9fa39761515417411526ca75f066aeae707c7ca0cf3c2483"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/3.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/6619f7394339ee4f.png",
+      "bytes": 73484,
+      "contentType": "image/png",
+      "sha256": "6d3daa148f546fd9027a8a044ff86bcec373bfc75d80e7ba34fc8252ca29e56d"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/4.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/2924e6f1315dab37.png",
+      "bytes": 82013,
+      "contentType": "image/png",
+      "sha256": "d21c7b6ee1d9a932d9558adf3cf2d564ba74e245f6d0bc8fce015068992ab021"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/Community_3.1-p-500.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/f75950992bbd2635.png",
+      "bytes": 68494,
+      "contentType": "image/png",
+      "sha256": "bf1624a139c1252b984dee92d1ce7c936ba3f08ce98a8b1d91e793d4459ea414"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/Community_3.22-p-500.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/fcc94e06156077fc.png",
+      "bytes": 71529,
+      "contentType": "image/png",
+      "sha256": "10f922cafb0c12905a122f8dc1310d025767d9e45341f1931ae90bcbc1c87c0e"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/Community_3.33-p-500.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/a86a719c0f9ab692.png",
+      "bytes": 47612,
+      "contentType": "image/png",
+      "sha256": "1c8839526b81d79f3612500ec8ac96d62521490f4a499b2287db6817d94450dc"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/Dividend-2.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/0c0fc09f1c93814d.png",
+      "bytes": 24501,
+      "contentType": "image/png",
+      "sha256": "2046f4e32008119307d0d7e95e3df4a56b3093b3f13ef17daf98080f3c4adf78"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/Exclude.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/a232290ec090632e.png",
+      "bytes": 4630,
+      "contentType": "image/png",
+      "sha256": "c276fc3a2854b9cd7deab5c8e960325eb12df619dfbecf8ae0810a20c84061c5"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/Frame-101406.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/bef3fd7167f67c52.png",
+      "bytes": 30033,
+      "contentType": "image/png",
+      "sha256": "74e1253b9f59ebd1ddc923c9025d6b362d539c6556af553cc723f5fad52b975c"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/googleplay.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/fe43572cdd463759.png",
+      "bytes": 5599,
+      "contentType": "image/png",
+      "sha256": "dc836e3a13b1eb223c26a0ba76f72cd12a63574b44ac39733e1e8cd1edbc5ff3"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/Graphic-1.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/4d3b065940851ab7.png",
+      "bytes": 25633,
+      "contentType": "image/png",
+      "sha256": "b140a4de00b44b1432de393096d8cebbeba6ca68399dd4966142080c42312a55"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/Graphic-2.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/980871711a2db304.png",
+      "bytes": 27817,
+      "contentType": "image/png",
+      "sha256": "c12405bd97c5344993874c6c1e8b907a3043d039f5ac4840833351a097fd03d1"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/Graphic-4.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/35c118d4b040dd5a.png",
+      "bytes": 165406,
+      "contentType": "image/png",
+      "sha256": "7d0a107b741ecfeff96d3234a0230173ca7c8f6f2bcc543ccb3f1b1b16a6a60c"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/Group-1872.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/7e3106a6d3c76ddf.png",
+      "bytes": 5085,
+      "contentType": "image/png",
+      "sha256": "5914cd0597b84e559d7c02d7b63d657b31929bf03b02813bbd9f2898baf53296"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/Header_7.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/c7e6aa1211314770.png",
+      "bytes": 22050,
+      "contentType": "image/png",
+      "sha256": "9d5807852afae42ae183b80b492ad6100c0d01446cb74d1b1a7458a9aa09c98a"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/image_273-1.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/8c25161be907adb8.png",
+      "bytes": 53375,
+      "contentType": "image/png",
+      "sha256": "222e6d643fea097d50d097889a6b0612a5de2e5b97fd42bfa0c68c2678b9e04e"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/itunesbadge.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/4f0a13efb34f7bc7.png",
+      "bytes": 5687,
+      "contentType": "image/png",
+      "sha256": "b4e2bfe1b7dcc22e79b6111d1a195b380cb849923ceddb6c26c975fc230c6441"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/Microsoft-Sankey.gif",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/46a3481ec585272d.gif",
+      "bytes": 476406,
+      "contentType": "image/gif",
+      "sha256": "0f2d406bd355f89596a23090bbd8dfa0c524b336c96b524e291e49593f451160"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/recent-updates.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/1c06752df8267042.png",
+      "bytes": 117048,
+      "contentType": "image/png",
+      "sha256": "db6acaf4dfc7b55dc1bee3c0c66bdfe1fca9507bb88c81a3d9eb357490865b76"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/shield.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/bda200956972c4dd.png",
+      "bytes": 6857,
+      "contentType": "image/png",
+      "sha256": "3723ae83224cab38722c20f0507ce02ab80e1e197a7ec144ca74922b3a87de71"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/sp-global-logo.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/9961a1dac7d45f85.png",
+      "bytes": 6612,
+      "contentType": "image/png",
+      "sha256": "7ef0d6b2ce31fe79e346fec33ea10ac390c137d0a629f11c43abb5cb3ba51685"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/visual-report-dividend.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/eba44cbf17a3b859.png",
+      "bytes": 63195,
+      "contentType": "image/png",
+      "sha256": "29029f36729b06d6d906dfb59dffe0a2202173cf63f491b6fe9b1d38bf5980cf"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/visual-report-financial-health.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/e0ac0b71f85a2dd9.png",
+      "bytes": 23634,
+      "contentType": "image/png",
+      "sha256": "145dec1d8e6d46646e9b96de1e2921b6b9d73c2c55d57708b9cdad24121f1ca7"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/visual-report-growth-forecast.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/a06f1e71bc5faaa3.png",
+      "bytes": 110630,
+      "contentType": "image/png",
+      "sha256": "e87a8d210815421f73a2cda9b27bb96f0410187672233affa0234b088a091b9a"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/visual-report-insider-transactions.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/658a658d38cbb40f.png",
+      "bytes": 39335,
+      "contentType": "image/png",
+      "sha256": "9a230c4b4c5234b7caa83c633ee43781e72ccbe84467ca85499b2ef8c7deff99"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/visual-report-management.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/e17e54078157ed61.png",
+      "bytes": 48070,
+      "contentType": "image/png",
+      "sha256": "d5d673a216c5ede6f2599bfaa5543df6e07cc3544d871882a8012132bdc8b381"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/visual-report-rewards-risks.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/2cc57e962c4c4570.png",
+      "bytes": 58078,
+      "contentType": "image/png",
+      "sha256": "11581bde0c1ebc3700f234fbe9461389defbf62eb96004c89a04055711c5ba5d"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/visual-report-valuation.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/13d634fcef72b4db.png",
+      "bytes": 56225,
+      "contentType": "image/png",
+      "sha256": "8863f75edbd510e041621f0894b206ebea9ea1555f8ad9d7bc31e2c2cb57c737"
+    },
+    {
+      "url": "https://simplywall.st/cdn-cgi/image/format=png,width=1920,quality=80/https://marketing.simplywall.st/assets/SWS-Favicon_gold.png",
+      "localPath": "/sites/simplywall-st-1b042a47/root-8a5edab2/media/8ab7ce228edc9ef6.png",
+      "bytes": 1270,
+      "contentType": "image/png",
+      "sha256": "a395ce09b11a02faa86b3550b8ad68477ec074edd8346889b9d403bfcd5b63d1"
+    }
+  ]
+}

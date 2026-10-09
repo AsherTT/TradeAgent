@@ -1,0 +1,146 @@
+[
+  {
+    "page": "portal",
+    "locale": "zh",
+    "alerts": [],
+    "clientWidth": 1425,
+    "scrollWidth": 1425,
+    "title": "公司、研究与下一步。",
+    "viewport": 1440
+  },
+  {
+    "page": "company",
+    "locale": "zh",
+    "alerts": [],
+    "clientWidth": 1425,
+    "scrollWidth": 1425,
+    "title": "Offline Docker Qualification",
+    "viewport": 1440
+  },
+  {
+    "page": "research",
+    "locale": "zh",
+    "alerts": [],
+    "clientWidth": 1425,
+    "scrollWidth": 1425,
+    "title": "我的研究",
+    "viewport": 1440
+  },
+  {
+    "page": "report",
+    "locale": "zh",
+    "alerts": [],
+    "clientWidth": 1425,
+    "scrollWidth": 1425,
+    "title": "DOCKERQUAL · 研究进度",
+    "viewport": 1440
+  },
+  {
+    "page": "portal",
+    "locale": "zh",
+    "alerts": [],
+    "clientWidth": 753,
+    "scrollWidth": 753,
+    "title": "公司、研究与下一步。",
+    "viewport": 768
+  },
+  {
+    "page": "company",
+    "locale": "zh",
+    "alerts": [],
+    "clientWidth": 753,
+    "scrollWidth": 753,
+    "title": "Offline Docker Qualification",
+    "viewport": 768
+  },
+  {
+    "page": "research",
+    "locale": "zh",
+    "alerts": [],
+    "clientWidth": 753,
+    "scrollWidth": 753,
+    "title": "我的研究",
+    "viewport": 768
+  },
+  {
+    "page": "report",
+    "locale": "zh",
+    "alerts": [],
+    "clientWidth": 753,
+    "scrollWidth": 753,
+    "title": "DOCKERQUAL · 研究进度",
+    "viewport": 768
+  },
+  {
+    "page": "portal",
+    "locale": "zh",
+    "alerts": [],
+    "clientWidth": 375,
+    "scrollWidth": 375,
+    "title": "公司、研究与下一步。",
+    "viewport": 390
+  },
+  {
+    "page": "company",
+    "locale": "zh",
+    "alerts": [],
+    "clientWidth": 375,
+    "scrollWidth": 375,
+    "title": "Offline Docker Qualification",
+    "viewport": 390
+  },
+  {
+    "page": "research",
+    "locale": "zh",
+    "alerts": [],
+    "clientWidth": 375,
+    "scrollWidth": 375,
+    "title": "我的研究",
+    "viewport": 390
+  },
+  {
+    "page": "report",
+    "locale": "zh",
+    "alerts": [],
+    "clientWidth": 375,
+    "scrollWidth": 375,
+    "title": "DOCKERQUAL · 研究进度",
+    "viewport": 390
+  },
+  {
+    "page": "portal",
+    "locale": "en",
+    "alerts": [],
+    "clientWidth": 375,
+    "scrollWidth": 375,
+    "title": "Companies, research, next steps.",
+    "viewport": 390
+  },
+  {
+    "page": "company",
+    "locale": "en",
+    "alerts": [],
+    "clientWidth": 375,
+    "scrollWidth": 375,
+    "title": "Offline Docker Qualification",
+    "viewport": 390
+  },
+  {
+    "page": "research",
+    "locale": "en",
+    "alerts": [],
+    "clientWidth": 375,
+    "scrollWidth": 375,
+    "title": "My research",
+    "viewport": 390
+  },
+  {
+    "page": "report",
+    "locale": "en",
+    "alerts": [],
+    "clientWidth": 375,
+    "scrollWidth": 375,
+    "title": "DOCKERQUAL · Research progress",
+    "viewport": 390
+  }
+]

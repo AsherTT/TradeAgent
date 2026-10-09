@@ -1,0 +1,47 @@
+{
+  "mobileMenuOpen": true,
+  "englishLocale": true,
+  "escapeClosed": true,
+  "researchTabs": [
+    {
+      "image": "Past performance income statement flow",
+      "label": "Past Performance",
+      "pressed": "true"
+    },
+    {
+      "image": "Warning signs, risks and rewards",
+      "label": "Risks & Rewards",
+      "pressed": "true"
+    },
+    {
+      "image": "Valuation compared with fair value",
+      "label": "Valuation & Comparison",
+      "pressed": "true"
+    },
+    {
+      "image": "Future earnings and revenue forecasts",
+      "label": "Growth Forecast",
+      "pressed": "true"
+    },
+    {
+      "image": "Financial health: assets versus liabilities",
+      "label": "Financial Health",
+      "pressed": "true"
+    },
+    {
+      "image": "Dividend history, quality and benchmark",
+      "label": "Dividend Quality",
+      "pressed": "true"
+    },
+    {
+      "image": "Management profile",
+      "label": "Management Profile",
+      "pressed": "true"
+    },
+    {
+      "image": "Insider transactions",
+      "label": "Insider Transactions",
+      "pressed": "true"
+    }
+  ]
+}

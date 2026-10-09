@@ -1,0 +1,446 @@
+{
+  "elements": [
+    {
+      "rect": {
+        "height": 309.5,
+        "width": 390.3999938964844,
+        "x": 0,
+        "y": 172
+      },
+      "styles": {
+        "background-color": "rgb(33, 33, 33)",
+        "border-color": "lab(90.952 -0.0000596046 0)",
+        "border-radius": "12px",
+        "border-width": "0px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "line-height": "24px",
+        "padding": "16px",
+        "text-align": "start"
+      },
+      "tag": "SECTION",
+      "text": "Company Analysis and Financial Data StatusDataLast Updated (UTC time)Company Analysis2026/10/07 18:18End of Day Share Price2026/10/07 08:00Earnings2026/06/27Annual Earnings2025/09/27"
+    },
+    {
+      "rect": {
+        "height": 64,
+        "width": 358.3999938964844,
+        "x": 16,
+        "y": 188
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "lab(90.952 -0.0000596046 0)",
+        "border-radius": "0px",
+        "border-width": "0px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSerif",
+        "font-size": "24px",
+        "font-weight": "500",
+        "line-height": "32px",
+        "padding": "0px",
+        "text-align": "start"
+      },
+      "tag": "H2",
+      "text": "Company Analysis and Financial Data Status"
+    },
+    {
+      "rect": {
+        "height": 181.5,
+        "width": 358.3999938964844,
+        "x": 16,
+        "y": 284
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "rgba(238, 236, 226, 0.1)",
+        "border-radius": "0px",
+        "border-width": "0.8px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "line-height": "19.5px",
+        "padding": "0px",
+        "text-align": "start"
+      },
+      "tag": "TABLE",
+      "text": "DataLast Updated (UTC time)Company Analysis2026/10/07 18:18End of Day Share Price2026/10/07 08:00Earnings2026/06/27Annual Earnings2025/09/27"
+    },
+    {
+      "rect": {
+        "height": 35.900001525878906,
+        "width": 357.6000061035156,
+        "x": 16.399999618530273,
+        "y": 284.3999938964844
+      },
+      "styles": {
+        "background-color": "rgb(26, 26, 26)",
+        "border-color": "lab(90.952 -0.0000596046 0)",
+        "border-radius": "0px",
+        "border-width": "0px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "line-height": "19.5px",
+        "padding": "0px",
+        "text-align": "start"
+      },
+      "tag": "THEAD",
+      "text": "DataLast Updated (UTC time)"
+    },
+    {
+      "rect": {
+        "height": 35.900001525878906,
+        "width": 357.6000061035156,
+        "x": 16.399999618530273,
+        "y": 284.3999938964844
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "lab(90.952 -0.0000596046 0)",
+        "border-radius": "0px",
+        "border-width": "0px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "line-height": "19.5px",
+        "padding": "0px",
+        "text-align": "start"
+      },
+      "tag": "TR",
+      "text": "DataLast Updated (UTC time)"
+    },
+    {
+      "rect": {
+        "height": 35.900001525878906,
+        "width": 171.1999969482422,
+        "x": 16.399999618530273,
+        "y": 284.3999938964844
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "lab(90.952 -0.0000596046 0)",
+        "border-radius": "0px",
+        "border-width": "0px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "700",
+        "line-height": "19.5px",
+        "padding": "8px 16px",
+        "text-align": "left"
+      },
+      "tag": "TH",
+      "text": "Data"
+    },
+    {
+      "rect": {
+        "height": 35.900001525878906,
+        "width": 186.40000915527344,
+        "x": 187.6000061035156,
+        "y": 284.3999938964844
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "lab(90.952 -0.0000596046 0)",
+        "border-radius": "0px",
+        "border-width": "0px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "700",
+        "line-height": "19.5px",
+        "padding": "8px 16px",
+        "text-align": "right"
+      },
+      "tag": "TH",
+      "text": "Last Updated (UTC time)"
+    },
+    {
+      "rect": {
+        "height": 35.900001525878906,
+        "width": 357.6000061035156,
+        "x": 16.399999618530273,
+        "y": 320.3000183105469
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "rgba(238, 236, 226, 0.1)",
+        "border-radius": "0px",
+        "border-width": "0px 0px 0.8px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "line-height": "19.5px",
+        "padding": "0px",
+        "text-align": "start"
+      },
+      "tag": "TR",
+      "text": "Company Analysis2026/10/07 18:18"
+    },
+    {
+      "rect": {
+        "height": 35.900001525878906,
+        "width": 171.1999969482422,
+        "x": 16.399999618530273,
+        "y": 320.3000183105469
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "lab(90.952 -0.0000596046 0)",
+        "border-radius": "0px",
+        "border-width": "0px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "line-height": "19.5px",
+        "padding": "8px 16px",
+        "text-align": "left"
+      },
+      "tag": "TD",
+      "text": "Company Analysis"
+    },
+    {
+      "rect": {
+        "height": 35.900001525878906,
+        "width": 186.40000915527344,
+        "x": 187.6000061035156,
+        "y": 320.3000183105469
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "lab(90.952 -0.0000596046 0)",
+        "border-radius": "0px",
+        "border-width": "0px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "line-height": "19.5px",
+        "padding": "8px 16px",
+        "text-align": "right"
+      },
+      "tag": "TD",
+      "text": "2026/10/07 18:18"
+    },
+    {
+      "rect": {
+        "height": 36.29999923706055,
+        "width": 357.6000061035156,
+        "x": 16.399999618530273,
+        "y": 356.20001220703125
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "rgba(238, 236, 226, 0.1)",
+        "border-radius": "0px",
+        "border-width": "0px 0px 0.8px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "line-height": "19.5px",
+        "padding": "0px",
+        "text-align": "start"
+      },
+      "tag": "TR",
+      "text": "End of Day Share Price2026/10/07 08:00"
+    },
+    {
+      "rect": {
+        "height": 36.29999923706055,
+        "width": 171.1999969482422,
+        "x": 16.399999618530273,
+        "y": 356.20001220703125
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "lab(90.952 -0.0000596046 0)",
+        "border-radius": "0px",
+        "border-width": "0px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "line-height": "19.5px",
+        "padding": "8px 16px",
+        "text-align": "left"
+      },
+      "tag": "TD",
+      "text": "End of Day Share Price"
+    },
+    {
+      "rect": {
+        "height": 36.29999923706055,
+        "width": 186.40000915527344,
+        "x": 187.6000061035156,
+        "y": 356.20001220703125
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "lab(90.952 -0.0000596046 0)",
+        "border-radius": "0px",
+        "border-width": "0px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "line-height": "19.5px",
+        "padding": "8px 16px",
+        "text-align": "right"
+      },
+      "tag": "TD",
+      "text": "2026/10/07 08:00"
+    },
+    {
+      "rect": {
+        "height": 36.29999923706055,
+        "width": 357.6000061035156,
+        "x": 16.399999618530273,
+        "y": 392.5
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "rgba(238, 236, 226, 0.1)",
+        "border-radius": "0px",
+        "border-width": "0px 0px 0.8px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "line-height": "19.5px",
+        "padding": "0px",
+        "text-align": "start"
+      },
+      "tag": "TR",
+      "text": "Earnings2026/06/27"
+    },
+    {
+      "rect": {
+        "height": 36.29999923706055,
+        "width": 171.1999969482422,
+        "x": 16.399999618530273,
+        "y": 392.5
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "lab(90.952 -0.0000596046 0)",
+        "border-radius": "0px",
+        "border-width": "0px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "line-height": "19.5px",
+        "padding": "8px 16px",
+        "text-align": "left"
+      },
+      "tag": "TD",
+      "text": "Earnings"
+    },
+    {
+      "rect": {
+        "height": 36.29999923706055,
+        "width": 186.40000915527344,
+        "x": 187.6000061035156,
+        "y": 392.5
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "lab(90.952 -0.0000596046 0)",
+        "border-radius": "0px",
+        "border-width": "0px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "line-height": "19.5px",
+        "padding": "8px 16px",
+        "text-align": "right"
+      },
+      "tag": "TD",
+      "text": "2026/06/27"
+    },
+    {
+      "rect": {
+        "height": 36.29999923706055,
+        "width": 357.6000061035156,
+        "x": 16.399999618530273,
+        "y": 428.8000183105469
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "rgba(255, 255, 255, 0.05)",
+        "border-radius": "0px",
+        "border-width": "0px 0px 0.8px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "line-height": "19.5px",
+        "padding": "0px",
+        "text-align": "start"
+      },
+      "tag": "TR",
+      "text": "Annual Earnings2025/09/27"
+    },
+    {
+      "rect": {
+        "height": 36.29999923706055,
+        "width": 171.1999969482422,
+        "x": 16.399999618530273,
+        "y": 428.8000183105469
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "lab(90.952 -0.0000596046 0)",
+        "border-radius": "0px",
+        "border-width": "0px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "line-height": "19.5px",
+        "padding": "8px 16px",
+        "text-align": "left"
+      },
+      "tag": "TD",
+      "text": "Annual Earnings"
+    },
+    {
+      "rect": {
+        "height": 36.29999923706055,
+        "width": 186.40000915527344,
+        "x": 187.6000061035156,
+        "y": 428.8000183105469
+      },
+      "styles": {
+        "background-color": "rgba(0, 0, 0, 0)",
+        "border-color": "lab(90.952 -0.0000596046 0)",
+        "border-radius": "0px",
+        "border-width": "0px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "sourceBureauSans, -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "line-height": "19.5px",
+        "padding": "8px 16px",
+        "text-align": "right"
+      },
+      "tag": "TD",
+      "text": "2025/09/27"
+    }
+  ],
+  "scrollWidth": 390,
+  "viewport": {
+    "height": 844,
+    "width": 390
+  }
+}

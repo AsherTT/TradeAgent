@@ -1,0 +1,103 @@
+{
+  "figures": [
+    {
+      "class": "",
+      "img": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/Microsoft-Sankey.gif",
+      "opacity": "0",
+      "transition": "opacity 0.3s ease-in-out"
+    },
+    {
+      "class": "is-active",
+      "img": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/visual-report-rewards-risks.png",
+      "opacity": "1",
+      "transition": "opacity 0.3s ease-in-out"
+    },
+    {
+      "class": "",
+      "img": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/visual-report-valuation.png",
+      "opacity": "0",
+      "transition": "opacity 0.3s ease-in-out"
+    },
+    {
+      "class": "",
+      "img": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/visual-report-growth-forecast.png",
+      "opacity": "0",
+      "transition": "opacity 0.3s ease-in-out"
+    },
+    {
+      "class": "",
+      "img": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/visual-report-financial-health.png",
+      "opacity": "0",
+      "transition": "opacity 0.3s ease-in-out"
+    },
+    {
+      "class": "",
+      "img": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/visual-report-dividend.png",
+      "opacity": "0",
+      "transition": "opacity 0.3s ease-in-out"
+    },
+    {
+      "class": "",
+      "img": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/visual-report-management.png",
+      "opacity": "0",
+      "transition": "opacity 0.3s ease-in-out"
+    },
+    {
+      "class": "",
+      "img": "https://simplywall.st/cdn-cgi/image/format=auto,width=1920,quality=80/https://marketing.simplywall.st/assets/visual-report-insider-transactions.png",
+      "opacity": "0",
+      "transition": "opacity 0.3s ease-in-out"
+    }
+  ],
+  "scrollY": 3940.800048828125,
+  "tabs": [
+    {
+      "class": "tab",
+      "descDisplay": "none",
+      "pressed": "false",
+      "text": "Past PerformanceKey benchmarks of the company's profitability or revenue over the years"
+    },
+    {
+      "class": "tab is-active",
+      "descDisplay": "block",
+      "pressed": "true",
+      "text": "Risks & RewardsA snapshot of critical red-flags and opportunities with key insights extracted daily"
+    },
+    {
+      "class": "tab",
+      "descDisplay": "none",
+      "pressed": "false",
+      "text": "Valuation & ComparisonEstimated stock fair value based on future expected cash flows"
+    },
+    {
+      "class": "tab",
+      "descDisplay": "none",
+      "pressed": "false",
+      "text": "Growth ForecastForecast growth of a company based on the consensus of professional analysts"
+    },
+    {
+      "class": "tab",
+      "descDisplay": "none",
+      "pressed": "false",
+      "text": "Financial HealthUnderstand the balance sheet. From assets and liabilities to debt, equity and current cash runway"
+    },
+    {
+      "class": "tab",
+      "descDisplay": "none",
+      "pressed": "false",
+      "text": "Dividend QualityHistorical, current and projected shareholder payments and how it compares to the market and industry"
+    },
+    {
+      "class": "tab",
+      "descDisplay": "none",
+      "pressed": "false",
+      "text": "Management ProfileAssess if the right people are steering the ship with management and board profiles and analysis"
+    },
+    {
+      "class": "tab",
+      "descDisplay": "none",
+      "pressed": "false",
+      "text": "Insider TransactionsWhich individuals or institutions have been backing the company with their financial decisions?"
+    }
+  ]
+}

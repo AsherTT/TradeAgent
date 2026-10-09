@@ -1,0 +1,267 @@
+{
+  "published_ancestor": "913bb0224c2db9e34a7d885320f3192be4905352",
+  "old_head": "556daa10c3de078246df21c00fba64e06dfc8150",
+  "new_head": "693c29a5e33becd9080552ed9908b325c184a443",
+  "tree_unchanged": true,
+  "translated_messages": 7,
+  "commits": [
+    {
+      "old": "cff2211f7f57e054fdfffb7e0c7be2c8e0d3f05c",
+      "new": "cff2211f7f57e054fdfffb7e0c7be2c8e0d3f05c",
+      "subject": "docs: 核验P10前真实进度与完整蓝图差距",
+      "message_translated": false
+    },
+    {
+      "old": "725478af9078453bbc43369756c58df397902f77",
+      "new": "725478af9078453bbc43369756c58df397902f77",
+      "subject": "docs: 记录P10前核验文档双轴审查",
+      "message_translated": false
+    },
+    {
+      "old": "1d4db494f20e5f45d6206954906c15eecab0cef0",
+      "new": "1d4db494f20e5f45d6206954906c15eecab0cef0",
+      "subject": "fix: 保留催化剂拒绝诊断并安全生成部分报告",
+      "message_translated": false
+    },
+    {
+      "old": "748c793208677b65d29f8057fa07055463062aee",
+      "new": "748c793208677b65d29f8057fa07055463062aee",
+      "subject": "fix: 清理成功回退模型历史中的错误原文",
+      "message_translated": false
+    },
+    {
+      "old": "5bca83734edb0da53139823512a199a563f613d9",
+      "new": "5bca83734edb0da53139823512a199a563f613d9",
+      "subject": "feat: 补齐V1技术指标与策略绩效统计",
+      "message_translated": false
+    },
+    {
+      "old": "e09a69c92fe96f9a359bac4ac155e02433eb15db",
+      "new": "e09a69c92fe96f9a359bac4ac155e02433eb15db",
+      "subject": "fix: 风险调整收益要求显式无风险利率",
+      "message_translated": false
+    },
+    {
+      "old": "bbebbc26128f11b010b234d72ce71cd251c01eb7",
+      "new": "bbebbc26128f11b010b234d72ce71cd251c01eb7",
+      "subject": "docs: 记录P10前修复检查点与联调边界",
+      "message_translated": false
+    },
+    {
+      "old": "f1708aae220e0f201f899747dd739cbff6995f2e",
+      "new": "f1708aae220e0f201f899747dd739cbff6995f2e",
+      "subject": "docs: 确认P10前检查点独立审查通过",
+      "message_translated": false
+    },
+    {
+      "old": "963042aba0b9ca3e29f4f906134384490c5ceaef",
+      "new": "963042aba0b9ca3e29f4f906134384490c5ceaef",
+      "subject": "docs: 按架构主题整理中文目录并更新引用",
+      "message_translated": false
+    },
+    {
+      "old": "fd73110a6a8ea7e2e9e7baaba39be7ffc6725cec",
+      "new": "fd73110a6a8ea7e2e9e7baaba39be7ffc6725cec",
+      "subject": "docs: 保持通用技能模板原有引用",
+      "message_translated": false
+    },
+    {
+      "old": "f568b37b0fd957d8ac19402a7138d948b8f69f88",
+      "new": "f568b37b0fd957d8ac19402a7138d948b8f69f88",
+      "subject": "docs: 记录目录整理验收与独立审查结果",
+      "message_translated": false
+    },
+    {
+      "old": "8b590f7d6120f5dd1fc4429a52baf1b1e9a78972",
+      "new": "5abe92fe6fd52f08030bc2ad0ead91af7d155bd5",
+      "subject": "feat: 增加PostgreSQL本地账户与个人关注列表",
+      "message_translated": true
+    },
+    {
+      "old": "de911878207c6e2a5003dba5918a33c9d72f3095",
+      "new": "95ef4a823e478a5b127bcd539baa89567fe20081",
+      "subject": "docs: 记录PostgreSQL账户验收与审查闭环",
+      "message_translated": true
+    },
+    {
+      "old": "eb22b5e772ab08886549f9e555a89c2a1e2c3262",
+      "new": "d048f816839cba591f9d98f12a043d6a31d17859",
+      "subject": "feat: 增加有界的本人研究接口",
+      "message_translated": true
+    },
+    {
+      "old": "18290536803c1d22eb0f5a9a0f3ce7c315f926dc",
+      "new": "7fbfb0d34817afa31990d4905df84133d522d8d4",
+      "subject": "fix: 保留取消验收记录以支持队列重投递",
+      "message_translated": true
+    },
+    {
+      "old": "d74b63f2ef29c6a8cf17a55ea64bd7c8ca192ddf",
+      "new": "3a01210e0d2fa279927da744f3441a0afdbed642",
+      "subject": "docs: 记录账户研究验收与双语预览",
+      "message_translated": true
+    },
+    {
+      "old": "a39892f959a04eb23dac4afbde964922d14258fd",
+      "new": "1243c54d8fa9a70a200b851dfb2c5ea83f9e9a36",
+      "subject": "docs: 对齐研究平台计划与三来源前端架构",
+      "message_translated": true
+    },
+    {
+      "old": "bc0bd878084456134d31f2a91ec2e0013508a450",
+      "new": "a02b649dcf7dc58bf3861964718c9383ee6807ee",
+      "subject": "docs: 澄清当前导航与受保护研究联调",
+      "message_translated": true
+    },
+    {
+      "old": "97a022f65fc04018c0e2c158ee0ccd2609d5ce0e",
+      "new": "64befeb4db1ef4243106feeee87234f78f4c3db6",
+      "subject": "docs: 更新增强A前端方案与后端补齐架构",
+      "message_translated": false
+    },
+    {
+      "old": "b242d0b6738dc55092e892df851deec4ecfdfe21",
+      "new": "b38b9bd6a6e9bb765543e6737c42262930b17c3d",
+      "subject": "docs: 记录增强A文档双轴审查与验证结果",
+      "message_translated": false
+    },
+    {
+      "old": "909ab54fa043214a0e042c713cc26818395603ed",
+      "new": "9923dd21948e978da68035238fc4adcd0cad11cc",
+      "subject": "feat: 增加账户门户与公司研究入口接口",
+      "message_translated": false
+    },
+    {
+      "old": "879c3139dba9c027e866d459958b48c0c4023995",
+      "new": "a24d5d072a87598cc8d56b6f089a8ec0247f60b4",
+      "subject": "docs: 纠正增强A来源还原要求与视觉验收边界",
+      "message_translated": false
+    },
+    {
+      "old": "1dbebe886b69a2e3514d85cf4d69ac3cf50506c9",
+      "new": "01f16738f7b7360caf4247e97d997cebc65f29b7",
+      "subject": "docs: 更新来源还原纠偏进展与R1验证审查记录",
+      "message_translated": false
+    },
+    {
+      "old": "329a2c014fb541f4fb0757cdb30b724593c842d7",
+      "new": "85cf9841e152aa3e73b81ee7f1903326b2f9d0f6",
+      "subject": "docs: 确认完整来源基底并同步前后端开发实情",
+      "message_translated": false
+    },
+    {
+      "old": "b1d814205879b78ea6235cbb8347c06f5cc36a44",
+      "new": "fdcf7a74c88b3308216500bf87d477acf79a35ee",
+      "subject": "docs: 记录完整首页恢复验证与当前阶段审查结果",
+      "message_translated": false
+    },
+    {
+      "old": "fed57476c4054fe5dc1179f08776dda37a1a4a99",
+      "new": "ae12c7533e1850ad238ff58b27b0473b014fc4de",
+      "subject": "docs: 记录首页认可与其他页面复刻复查交接待办",
+      "message_translated": false
+    },
+    {
+      "old": "da962561f9789ea52a71e327243b92c9e274098d",
+      "new": "dd335e34a086fa9ba321bb55cc70f0f54745a935",
+      "subject": "docs: 同步首页外页面复查与会话修复验收记录",
+      "message_translated": false
+    },
+    {
+      "old": "02801e886478574a18a42ac1260c1ae9240c56e9",
+      "new": "a77ccfdbe1a388166b80484c0f129c7ed4b896a8",
+      "subject": "feat: 增加本人研究记录的有界历史变化投影",
+      "message_translated": false
+    },
+    {
+      "old": "802db09524e1f679d1c973f4389fe019f75105a0",
+      "new": "42585e79ed59300d0e4c41c501701875c7405399",
+      "subject": "fix: 在历史比较解析前排除缺少时区的旧记录",
+      "message_translated": false
+    },
+    {
+      "old": "ef120ae45f6f6065163fdb55ebf249d1071de23a",
+      "new": "424bc13c4ed36752329bcea94f8af44e8a2a36cc",
+      "subject": "docs: 更新研究变化验收与产品入口阶段进度",
+      "message_translated": false
+    },
+    {
+      "old": "106a64caeed2bf45ad7839c1325436a8d3a8da96",
+      "new": "c1f89bb5193bda7b96047441d770a1cac976c390",
+      "subject": "docs: 更新公司来源采样与静态组件验证进度",
+      "message_translated": false
+    },
+    {
+      "old": "9f58a06e426be1fa870a270be3ca044d7e3549b5",
+      "new": "61693cf0c86744495ff7217637580251dbb497a4",
+      "subject": "docs: 更新公司数据来源开发进度与本地服务验证",
+      "message_translated": false
+    },
+    {
+      "old": "8f6d598fa6c2346291beddf30766932c53ef1702",
+      "new": "3788bb5e6bc71ab30499789dcfbf66d4cb00c48a",
+      "subject": "docs: 更新R1双语页面与分析说明开发进度",
+      "message_translated": false
+    },
+    {
+      "old": "9266b82d89fc6c0c07f870bb03d99d865a03945c",
+      "new": "b6684a6ef5fd4c9c4a4d20e2e0ad2f48d5965eee",
+      "subject": "docs: 登记分析师来源验证与研究工作台三个重构方案",
+      "message_translated": false
+    },
+    {
+      "old": "2956d49d1cb6c8b1c566bce211ec1c4f0d4f1dd7",
+      "new": "bb6c4da2d24dbdde806b1e636eca25e7feda058f",
+      "subject": "docs: 补齐方案B股票投研后端架构与阶段待办",
+      "message_translated": false
+    },
+    {
+      "old": "0416ff143a0e598bf42d1035a3239f8458ad74a3",
+      "new": "3a5297e62a81424b0876e40f1233d9e889c7fd16",
+      "subject": "feat: 汇总当前关注分页的本人研究记录变化",
+      "message_translated": false
+    },
+    {
+      "old": "44b5793fe0b1ee974b4698f3268f3f769d1e40a8",
+      "new": "f2bb101f2ce5e30c9ae6a0a2798e106e9b353c82",
+      "subject": "test: 补齐门户满页证券与历史窗口验收",
+      "message_translated": false
+    },
+    {
+      "old": "a59c3b59b76c4780972fde0ecc8eb47aa94f118a",
+      "new": "55a1d14fb7ba63314b83f0120b418d3a76bad176",
+      "subject": "docs: 登记门户变化验收与方案B来源采样缺口",
+      "message_translated": false
+    },
+    {
+      "old": "93b144c180bf669cb002dbe27912b9f16c7a8c06",
+      "new": "0c2bbe3fef06acd997f0da6db47ff52c6c418c99",
+      "subject": "docs: 更新Fiscal门户采样进度与严格复刻续接门槛",
+      "message_translated": false
+    },
+    {
+      "old": "6cbabc5d046d6cd8f18041a9a5e4425f223af099",
+      "new": "5ac9b86abd57e751408e0d583ad639a523af41e6",
+      "subject": "docs: 更新Fiscal基础实现与浏览器恢复待办",
+      "message_translated": false
+    },
+    {
+      "old": "fc5e6746e80acea8f1f63a08650a644505f64edb",
+      "new": "5cbd8195750e923606e244d7bd970450e9814571",
+      "subject": "docs: 更新Fiscal基础增量及来源页面阻塞对照",
+      "message_translated": false
+    },
+    {
+      "old": "4f918eb40fdaebe227fc25ad04ec6eb240f68ed0",
+      "new": "c35f4bb180ca5dbfdb53450153afad252d066fb0",
+      "subject": "docs: 更新Fiscal菜单采样恢复与后续开发门槛",
+      "message_translated": false
+    },
+    {
+      "old": "556daa10c3de078246df21c00fba64e06dfc8150",
+      "new": "693c29a5e33becd9080552ed9908b325c184a443",
+      "subject": "docs: 更新搜索恢复与首个Fiscal组件开发进度",
+      "message_translated": false
+    }
+  ]
+}

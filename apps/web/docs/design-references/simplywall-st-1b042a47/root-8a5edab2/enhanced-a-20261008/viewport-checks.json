@@ -1,0 +1,56 @@
+[
+  {
+    "requestedWidth": 1440,
+    "locale": "en",
+    "actualWidth": 1440,
+    "clientWidth": 1425,
+    "hero": "Welcome to your Company Research Center.",
+    "heroFont": "52px",
+    "scrollWidth": 1425
+  },
+  {
+    "requestedWidth": 1440,
+    "locale": "zh",
+    "actualWidth": 1440,
+    "clientWidth": 1425,
+    "hero": "欢迎来到你的 公司研究中心。",
+    "heroFont": "52px",
+    "scrollWidth": 1425
+  },
+  {
+    "requestedWidth": 768,
+    "locale": "en",
+    "actualWidth": 768,
+    "clientWidth": 753,
+    "hero": "Welcome to your Company Research Center.",
+    "heroFont": "52px",
+    "scrollWidth": 753
+  },
+  {
+    "requestedWidth": 768,
+    "locale": "zh",
+    "actualWidth": 768,
+    "clientWidth": 753,
+    "hero": "欢迎来到你的 公司研究中心。",
+    "heroFont": "52px",
+    "scrollWidth": 753
+  },
+  {
+    "requestedWidth": 390,
+    "locale": "en",
+    "actualWidth": 390,
+    "clientWidth": 375,
+    "hero": "Welcome to your Company Research Center.",
+    "heroFont": "36px",
+    "scrollWidth": 375
+  },
+  {
+    "requestedWidth": 390,
+    "locale": "zh",
+    "actualWidth": 390,
+    "clientWidth": 375,
+    "hero": "欢迎来到你的 公司研究中心。",
+    "heroFont": "36px",
+    "scrollWidth": 375
+  }
+]

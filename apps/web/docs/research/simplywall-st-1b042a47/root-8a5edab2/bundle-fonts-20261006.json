@@ -1,0 +1,34 @@
+{
+  "assets": [],
+  "directoryPath": "C:\\Users\\ADMINI~1\\AppData\\Local\\Temp/browser-use/assets/b77a8e13-8cc2-46a5-8631-3ab1a8292615",
+  "failures": [
+    {
+      "contentType": null,
+      "id": "120815e82bd221ed",
+      "name": "BureauSans.woff2",
+      "reason": "Loaded resource fetch failed: Asset bundling failed; page fetch failed: Browser Use encountered an error interacting with this webpage: TypeError: Failed to fetch (marketing.simplywall.st)\n    at https://marketing.simplywall.st/_next/static/chunks/470-ed7dd11637d5ee60.js:1:30182\n    at ZZ (<anonymous>:1:41)\n    at <anonymous>:1:354",
+      "url": "https://marketing.simplywall.st/assets/BureauSans.woff2"
+    },
+    {
+      "contentType": null,
+      "id": "8834389cbb2d1fa5",
+      "name": "BureauSerif.woff2",
+      "reason": "Loaded resource fetch failed: Asset bundling failed; page fetch failed: Browser Use encountered an error interacting with this webpage: TypeError: Failed to fetch (marketing.simplywall.st)\n    at https://marketing.simplywall.st/_next/static/chunks/470-ed7dd11637d5ee60.js:1:30182\n    at ZZ (<anonymous>:1:41)\n    at <anonymous>:1:354",
+      "url": "https://marketing.simplywall.st/assets/BureauSerif.woff2"
+    },
+    {
+      "contentType": null,
+      "id": "e3237528af752eed",
+      "name": "UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+      "reason": "Loaded resource fetch failed: Asset bundling failed; page fetch failed: Browser Use encountered an error interacting with this webpage: TypeError: Failed to fetch (fonts.gstatic.com)\n    at https://marketing.simplywall.st/_next/static/chunks/470-ed7dd11637d5ee60.js:1:30182\n    at ZZ (<anonymous>:1:41)\n    at <anonymous>:1:354",
+      "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2"
+    }
+  ],
+  "manifestPath": "C:\\Users\\ADMINI~1\\AppData\\Local\\Temp/browser-use/assets/b77a8e13-8cc2-46a5-8631-3ab1a8292615/manifest.json",
+  "summary": {
+    "downloadedCount": 0,
+    "elapsedMs": 23.890399999989313,
+    "failedCount": 3,
+    "requestedCount": 3
+  }
+}

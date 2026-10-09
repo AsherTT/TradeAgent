@@ -14,5 +14,14 @@ steps:
     displayName: Ruff
   - script: python -m mypy backend/app
     displayName: Mypy
-  - script: python -m pytest
+  - script: python -m pytest -m "not live_model"
     displayName: Tests
+  - task: NodeTool@0
+    inputs:
+      versionSpec: "24.21.0"
+  - script: npm ci --no-audit --no-fund
+    workingDirectory: apps/web
+    displayName: Install frontend dependencies
+  - script: npm run check && npm test
+    workingDirectory: apps/web
+    displayName: Check frontend

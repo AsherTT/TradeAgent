@@ -1,0 +1,55 @@
+/* Source: root-8a5edab2/source-css/72584aff0dd8d4f5.css. */
+.sws-source {
+  --cream: #edebe1;
+  --ink: #191816;
+  --gold: #fdcc6a;
+  --bronze: #986e2e;
+  --tan: #d9b97a;
+  --slate: #262e3a;
+  --grey: #8c929b;
+  --sans: var(--font-sws-bureau-sans), var(--font-sws-inter), sans-serif;
+  --serif: var(--font-sws-bureau-serif), Georgia, serif;
+  --ui: var(--font-sws-inter), sans-serif;
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.sws-source *,
+.sws-source ::before,
+.sws-source ::after {
+  box-sizing: border-box;
+}
+
+.sws-source .sws-wrap {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.sws-source .sws-serif {
+  font-family: var(--serif);
+  font-weight: 300;
+}
+
+.sws-source .sws-nav-search-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--bronze);
+}
+
+.sws-source .sws-solid-search-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  fill: #9e7333;
+}
+
+@media (max-width: 640px) {
+  .sws-source .sws-wrap {
+    padding: 0 20px;
+  }
+}

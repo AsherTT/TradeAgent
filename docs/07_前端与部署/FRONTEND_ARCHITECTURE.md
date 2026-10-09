@@ -42,7 +42,7 @@
 
 ## 技术模块与数据流
 
-当前Next16/React19/strict TypeScript/Tailwind，运行仓库是`D:/桌面/ai-website-cloner-template`。`TradeAgent/apps/web`目前只有README。审查通过且素材/适配/产品验证具备后迁入pnpm工作区，不能把占位目录写成已运行应用。
+当前Next16/React19/strict TypeScript/Tailwind前端已根据用户2026-10-10源码同步指令迁入`TradeAgent/apps/web`，完整快照来自原模板60e6316。保留npm锁文件，前端源码、来源证据及skill统一随主仓提交；原模板目录留作历史。迁入位置不授予来源整页/产品验收资格，Fiscal门户装配与/app改造仍待。见SOURCE_SYNC_SPEC_20261010.md及apps/web/README.md。
 
 ```mermaid
 flowchart LR

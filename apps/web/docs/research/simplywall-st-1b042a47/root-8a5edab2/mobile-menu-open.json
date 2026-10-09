@@ -1,0 +1,548 @@
+{
+  "nodes": [
+    {
+      "attrs": {
+        "class": "top-nav-links link-only-on-mobile w-nav-link",
+        "href": "https://simplywall.st/plans"
+      },
+      "className": "top-nav-links link-only-on-mobile w-nav-link",
+      "rect": {
+        "bottom": 0,
+        "height": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "styles": {
+        "alignItems": "normal",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "display": "none",
+        "flexDirection": "row",
+        "height": "auto",
+        "left": "auto",
+        "margin": "0px 8px 0px 0px",
+        "overflow": "visible",
+        "padding": "16px 12px",
+        "position": "relative",
+        "right": "auto",
+        "top": "auto",
+        "transform": "none",
+        "transition": "all",
+        "width": "auto",
+        "zIndex": "auto"
+      },
+      "tag": "A"
+    },
+    {
+      "attrs": {
+        "aria-expanded": "true",
+        "aria-haspopup": "menu",
+        "aria-label": "menu",
+        "class": "menu-button w-nav-button w--open",
+        "role": "button",
+        "tabindex": "0"
+      },
+      "className": "menu-button w-nav-button w--open",
+      "rect": {
+        "bottom": 60,
+        "height": 48,
+        "left": 323.20001220703125,
+        "right": 371.2000122070313,
+        "top": 12,
+        "width": 48,
+        "x": 323.20001220703125,
+        "y": 12
+      },
+      "styles": {
+        "alignItems": "normal",
+        "backgroundColor": "rgb(58, 50, 38)",
+        "display": "block",
+        "flexDirection": "row",
+        "height": "48px",
+        "left": "0px",
+        "margin": "0px",
+        "overflow": "visible",
+        "padding": "12px",
+        "position": "relative",
+        "right": "0px",
+        "top": "0px",
+        "transform": "none",
+        "transition": "all",
+        "width": "48px",
+        "zIndex": "auto"
+      },
+      "tag": "DIV"
+    },
+    {
+      "attrs": {
+        "class": "w-nav-overlay",
+        "style": "display: block; height: 611.2px;"
+      },
+      "className": "w-nav-overlay",
+      "rect": {
+        "bottom": 683.2000122070312,
+        "height": 611.2000122070312,
+        "left": 0,
+        "right": 375.2000122070313,
+        "top": 72,
+        "width": 375.2000122070313,
+        "x": 0,
+        "y": 72
+      },
+      "styles": {
+        "alignItems": "normal",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "display": "block",
+        "flexDirection": "row",
+        "height": "611.2px",
+        "left": "0px",
+        "margin": "0px",
+        "overflow": "hidden",
+        "padding": "0px",
+        "position": "absolute",
+        "right": "0px",
+        "top": "72px",
+        "transform": "none",
+        "transition": "all",
+        "width": "375.2px",
+        "zIndex": "auto"
+      },
+      "tag": "DIV"
+    },
+    {
+      "attrs": {
+        "class": "nav-menu w-nav-menu",
+        "data-nav-menu-open": "",
+        "role": "navigation"
+      },
+      "className": "nav-menu w-nav-menu",
+      "rect": {
+        "bottom": 683.2000122070312,
+        "height": 611.2000122070312,
+        "left": 12,
+        "right": 363.2000122070313,
+        "top": 72,
+        "width": 351.20001220703125,
+        "x": 12,
+        "y": 72
+      },
+      "styles": {
+        "alignItems": "center",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "display": "block",
+        "flexDirection": "column",
+        "height": "611.2px",
+        "left": "0px",
+        "margin": "0px 12px",
+        "overflow": "visible",
+        "padding": "0px 24px",
+        "position": "absolute",
+        "right": "0px",
+        "top": "0px",
+        "transform": "none",
+        "transition": "all",
+        "width": "351.2px",
+        "zIndex": "auto"
+      },
+      "tag": "NAV"
+    },
+    {
+      "attrs": {
+        "class": "main-links"
+      },
+      "className": "main-links",
+      "rect": {
+        "bottom": 504.8000030517578,
+        "height": 416,
+        "left": 36.79999923706055,
+        "right": 338.4000053405762,
+        "top": 88.80000305175781,
+        "width": 301.6000061035156,
+        "x": 36.79999923706055,
+        "y": 88.80000305175781
+      },
+      "styles": {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "display": "block",
+        "flexDirection": "column",
+        "height": "416px",
+        "left": "auto",
+        "margin": "16px 0px 0px",
+        "overflow": "visible",
+        "padding": "0px",
+        "position": "static",
+        "right": "auto",
+        "top": "auto",
+        "transform": "none",
+        "transition": "all",
+        "width": "301.6px",
+        "zIndex": "auto"
+      },
+      "tag": "DIV"
+    },
+    {
+      "attrs": {
+        "class": "top-nav-links dropdown-only w-nav-link",
+        "href": "/features/portfolio"
+      },
+      "className": "top-nav-links dropdown-only w-nav-link",
+      "rect": {
+        "bottom": 140.8000030517578,
+        "height": 52,
+        "left": 36.79999923706055,
+        "right": 338.4000053405762,
+        "top": 88.80000305175781,
+        "width": 301.6000061035156,
+        "x": 36.79999923706055,
+        "y": 88.80000305175781
+      },
+      "styles": {
+        "alignItems": "normal",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "display": "block",
+        "flexDirection": "row",
+        "height": "52px",
+        "left": "0px",
+        "margin": "0px",
+        "overflow": "visible",
+        "padding": "16px",
+        "position": "relative",
+        "right": "0px",
+        "top": "0px",
+        "transform": "none",
+        "transition": "all",
+        "width": "301.6px",
+        "zIndex": "auto"
+      },
+      "tag": "A"
+    },
+    {
+      "attrs": {
+        "class": "top-nav-links dropdown-only w-nav-link",
+        "href": "/feature/dividend-tracker"
+      },
+      "className": "top-nav-links dropdown-only w-nav-link",
+      "rect": {
+        "bottom": 192.8000030517578,
+        "height": 52,
+        "left": 36.79999923706055,
+        "right": 338.4000053405762,
+        "top": 140.8000030517578,
+        "width": 301.6000061035156,
+        "x": 36.79999923706055,
+        "y": 140.8000030517578
+      },
+      "styles": {
+        "alignItems": "normal",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "display": "block",
+        "flexDirection": "row",
+        "height": "52px",
+        "left": "0px",
+        "margin": "0px",
+        "overflow": "visible",
+        "padding": "16px",
+        "position": "relative",
+        "right": "0px",
+        "top": "0px",
+        "transform": "none",
+        "transition": "all",
+        "width": "301.6px",
+        "zIndex": "auto"
+      },
+      "tag": "A"
+    },
+    {
+      "attrs": {
+        "class": "top-nav-links dropdown-only w-nav-link",
+        "href": "/features/stock-screener"
+      },
+      "className": "top-nav-links dropdown-only w-nav-link",
+      "rect": {
+        "bottom": 244.8000030517578,
+        "height": 52,
+        "left": 36.79999923706055,
+        "right": 338.4000053405762,
+        "top": 192.8000030517578,
+        "width": 301.6000061035156,
+        "x": 36.79999923706055,
+        "y": 192.8000030517578
+      },
+      "styles": {
+        "alignItems": "normal",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "display": "block",
+        "flexDirection": "row",
+        "height": "52px",
+        "left": "0px",
+        "margin": "0px",
+        "overflow": "visible",
+        "padding": "16px",
+        "position": "relative",
+        "right": "0px",
+        "top": "0px",
+        "transform": "none",
+        "transition": "all",
+        "width": "301.6px",
+        "zIndex": "auto"
+      },
+      "tag": "A"
+    },
+    {
+      "attrs": {
+        "class": "top-nav-links dropdown-only w-nav-link",
+        "href": "/features/community-narratives"
+      },
+      "className": "top-nav-links dropdown-only w-nav-link",
+      "rect": {
+        "bottom": 296.8000030517578,
+        "height": 52,
+        "left": 36.79999923706055,
+        "right": 338.4000053405762,
+        "top": 244.8000030517578,
+        "width": 301.6000061035156,
+        "x": 36.79999923706055,
+        "y": 244.8000030517578
+      },
+      "styles": {
+        "alignItems": "normal",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "display": "block",
+        "flexDirection": "row",
+        "height": "52px",
+        "left": "0px",
+        "margin": "0px",
+        "overflow": "visible",
+        "padding": "16px",
+        "position": "relative",
+        "right": "0px",
+        "top": "0px",
+        "transform": "none",
+        "transition": "all",
+        "width": "301.6px",
+        "zIndex": "auto"
+      },
+      "tag": "A"
+    },
+    {
+      "attrs": {
+        "class": "top-nav-links dropdown-only w-nav-link",
+        "href": "/features/ask-charlie"
+      },
+      "className": "top-nav-links dropdown-only w-nav-link",
+      "rect": {
+        "bottom": 348.8000183105469,
+        "height": 52,
+        "left": 36.79999923706055,
+        "right": 338.4000053405762,
+        "top": 296.8000183105469,
+        "width": 301.6000061035156,
+        "x": 36.79999923706055,
+        "y": 296.8000183105469
+      },
+      "styles": {
+        "alignItems": "normal",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "display": "block",
+        "flexDirection": "row",
+        "height": "52px",
+        "left": "0px",
+        "margin": "0px",
+        "overflow": "visible",
+        "padding": "16px",
+        "position": "relative",
+        "right": "0px",
+        "top": "0px",
+        "transform": "none",
+        "transition": "all",
+        "width": "301.6px",
+        "zIndex": "auto"
+      },
+      "tag": "A"
+    },
+    {
+      "attrs": {
+        "class": "top-nav-links w-nav-link",
+        "href": "https://simplywall.st/plans"
+      },
+      "className": "top-nav-links w-nav-link",
+      "rect": {
+        "bottom": 400.8000183105469,
+        "height": 52,
+        "left": 36.79999923706055,
+        "right": 338.4000053405762,
+        "top": 348.8000183105469,
+        "width": 301.6000061035156,
+        "x": 36.79999923706055,
+        "y": 348.8000183105469
+      },
+      "styles": {
+        "alignItems": "normal",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "display": "block",
+        "flexDirection": "row",
+        "height": "52px",
+        "left": "0px",
+        "margin": "0px",
+        "overflow": "visible",
+        "padding": "16px",
+        "position": "relative",
+        "right": "0px",
+        "top": "0px",
+        "transform": "none",
+        "transition": "all",
+        "width": "301.6px",
+        "zIndex": "auto"
+      },
+      "tag": "A"
+    },
+    {
+      "attrs": {
+        "class": "top-nav-links w-nav-link",
+        "href": "/about"
+      },
+      "className": "top-nav-links w-nav-link",
+      "rect": {
+        "bottom": 452.8000183105469,
+        "height": 52,
+        "left": 36.79999923706055,
+        "right": 338.4000053405762,
+        "top": 400.8000183105469,
+        "width": 301.6000061035156,
+        "x": 36.79999923706055,
+        "y": 400.8000183105469
+      },
+      "styles": {
+        "alignItems": "normal",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "display": "block",
+        "flexDirection": "row",
+        "height": "52px",
+        "left": "0px",
+        "margin": "0px",
+        "overflow": "visible",
+        "padding": "16px",
+        "position": "relative",
+        "right": "0px",
+        "top": "0px",
+        "transform": "none",
+        "transition": "all",
+        "width": "301.6px",
+        "zIndex": "auto"
+      },
+      "tag": "A"
+    },
+    {
+      "attrs": {
+        "class": "top-nav-links w-nav-link",
+        "href": "https://simplywall.st/advertising"
+      },
+      "className": "top-nav-links w-nav-link",
+      "rect": {
+        "bottom": 504.8000183105469,
+        "height": 52,
+        "left": 36.79999923706055,
+        "right": 338.4000053405762,
+        "top": 452.8000183105469,
+        "width": 301.6000061035156,
+        "x": 36.79999923706055,
+        "y": 452.8000183105469
+      },
+      "styles": {
+        "alignItems": "normal",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "display": "block",
+        "flexDirection": "row",
+        "height": "52px",
+        "left": "0px",
+        "margin": "0px",
+        "overflow": "visible",
+        "padding": "16px",
+        "position": "relative",
+        "right": "0px",
+        "top": "0px",
+        "transform": "none",
+        "transition": "all",
+        "width": "301.6px",
+        "zIndex": "auto"
+      },
+      "tag": "A"
+    },
+    {
+      "attrs": {
+        "class": "search"
+      },
+      "className": "search",
+      "rect": {
+        "bottom": 0,
+        "height": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "styles": {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "display": "none",
+        "flexDirection": "row",
+        "height": "38px",
+        "left": "auto",
+        "margin": "0px",
+        "overflow": "hidden",
+        "padding": "0px",
+        "position": "static",
+        "right": "auto",
+        "top": "auto",
+        "transform": "none",
+        "transition": "all",
+        "width": "auto",
+        "zIndex": "auto"
+      },
+      "tag": "DIV"
+    },
+    {
+      "attrs": {
+        "class": "authentication"
+      },
+      "className": "authentication",
+      "rect": {
+        "bottom": 650.3999938964844,
+        "height": 129.60000610351562,
+        "left": 36.79999923706055,
+        "right": 338.4000053405762,
+        "top": 520.7999877929688,
+        "width": 301.6000061035156,
+        "x": 36.79999923706055,
+        "y": 520.7999877929688
+      },
+      "styles": {
+        "alignItems": "stretch",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "display": "flex",
+        "flexDirection": "column",
+        "height": "129.6px",
+        "left": "auto",
+        "margin": "16px 0px 32px",
+        "overflow": "visible",
+        "padding": "12px 16px 24px",
+        "position": "static",
+        "right": "auto",
+        "top": "auto",
+        "transform": "none",
+        "transition": "all",
+        "width": "301.6px",
+        "zIndex": "auto"
+      },
+      "tag": "DIV"
+    }
+  ],
+  "scrollY": 0,
+  "width": 390
+}

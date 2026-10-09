@@ -1,0 +1,369 @@
+- banner:
+  - link:
+    - /url: /?r=0
+  - navigation:
+    - button " Features" [active]:
+      - generic: 
+      - generic: Features
+    - link "Plans":
+      - /url: https://simplywall.st/plans
+    - link "About":
+      - /url: /about
+    - link "Advertising":
+      - /url: https://simplywall.st/advertising
+    - searchbox "Research 120k Stocks"
+    - link "Create free account":
+      - /url: https://simplywall.st/register
+    - link "Log in":
+      - /url: https://simplywall.st/dashboard
+  - text: 
+- heading "Welcome to your Portfolio Command Center." [level=1]
+- paragraph: Stop wasting hours in spreadsheets and start growing your wealth with portfolio analysis, discovery tools and market alerts — all in one place.
+- link "View Portfolio demo":
+  - /url: https://simplywall.st/portfolio/demo
+- link "Try Simply Wall St free":
+  - /url: https://simplywall.st/register?r=%2Fportfolio%2Fnew
+- paragraph: No credit card required.
+- 'img "Trustpilot review: Epic product"'
+- img "4.6 App Store, 4.3 Trustpilot, 4.6 Google Play"
+- heading "One platform. Better decision making." [level=2]
+- paragraph: Stop reacting and start growing with data and insights the pros use.
+- heading "Master your portfolio." [level=3]
+- paragraph: A high-fidelity view and analysis of your portfolio, bringing together performance, risk, and opportunities into one centralized location.
+- heading "Find your next hidden gem." [level=3]
+- paragraph: Filter and research 120,000 global stocks using deep-dive fundamentals and unbiased valuations to find your next winning move.
+- heading "Keep your finger on the pulse." [level=3]
+- paragraph: Stay informed with daily alerts on earnings, dividends, valuation changes and insider trading - so you can act decisively when it counts.
+- link "View Portfolio demo":
+  - /url: https://simplywall.st/portfolio/demo
+- link "Try Simply Wall St free":
+  - /url: https://simplywall.st/register?r=%2Fportfolio%2Fnew
+- heading "Portfolio Tracking & Analysis" [level=2]
+- heading "Build a life-changing portfolio driven by logic, not luck." [level=2]
+- paragraph: Gain confidence with portfolio insights that give you a competitive edge.
+- heading "All of your portfolios in one place." [level=3]
+- paragraph: Track multiple accounts and brokers with ease.
+- heading "Import your portfolio data in minutes." [level=3]
+- paragraph: Sync with 2000+ brokers or import your trade history quickly.
+- heading "Your portfolio, stored securely." [level=3]
+- paragraph: Rest easy knowing your portfolio data is encrypted end to end.
+- link "View Portfolio demo":
+  - /url: https://simplywall.st/portfolio/demo
+- link "Try Simply Wall St free":
+  - /url: https://simplywall.st/register?r=%2Fportfolio%2Fnew
+- heading "Finally see your portfolio's true performance" [level=3]
+- list:
+  - listitem: Realized & Unrealized Gains & Losses
+  - listitem: Dividend Payments
+  - listitem: Currency Gains & Losses
+  - listitem: Annualized Return (IRR)
+- paragraph: Stop wondering how you're actually doing. We calculate your real returns so you know exactly where you stand.
+- img "Portfolio return breakdown waterfall chart"
+- heading "Portfolio Snowflake" [level=3]
+- paragraph: Your portfolio’s profile and health at a glance.
+- paragraph: Our visual analysis instantly flags where you’re winning and where you’re exposed. It’s the ultimate pulse check for the disciplined investor.
+- img "Portfolio Snowflake visual analysis"
+- heading "Dividend quality & forecasting" [level=3]:
+  - text: Dividend quality
+  - text: "& forecasting"
+- paragraph: We stress-test dividend quality and project your future income, flagging fragile payouts before they’re cut so you can pivot with conviction.
+- img "Dividend quality and forecast chart"
+- img "Portfolio value versus US Market chart"
+- heading "Portfolio valuation" [level=3]
+- paragraph: Know what your portfolio is actually worth.
+- paragraph: We aggregate the intrinsic value of every stock you own. See the difference between the market's price and your portfolio's true value.
+- heading "Discovery & Research" [level=2]
+- heading "The full story, backed by data." [level=3]
+- paragraph: We condense thousands of data points into one visual report. From debt to growth, get the institutional-grade clarity you need in minutes, not hours.
+- generic: Institutional Quality Data from
+- img "S&P Global Market Intelligence"
+- generic: 120k
+- generic: Stocks worldwide
+- generic: "90"
+- generic: Global markets
+- generic: 10 yrs +
+- generic: Historical Data
+- button "Past Performance Key benchmarks of the company's profitability or revenue over the years" [pressed]:
+  - heading "Past Performance" [level=4]
+  - paragraph: Key benchmarks of the company's profitability or revenue over the years
+- button "Risks & Rewards":
+  - heading "Risks & Rewards" [level=4]
+- button "Valuation & Comparison":
+  - heading "Valuation & Comparison" [level=4]
+- button "Growth Forecast":
+  - heading "Growth Forecast" [level=4]
+- button "Financial Health":
+  - heading "Financial Health" [level=4]
+- button "Dividend Quality":
+  - heading "Dividend Quality" [level=4]
+- button "Management Profile":
+  - heading "Management Profile" [level=4]
+- button "Insider Transactions":
+  - heading "Insider Transactions" [level=4]
+- figure:
+  - img "Past performance income statement flow"
+- figure:
+  - img "Warning signs, risks and rewards"
+- figure:
+  - img "Valuation compared with fair value"
+- figure:
+  - img "Future earnings and revenue forecasts"
+- figure:
+  - 'img "Financial health: assets versus liabilities"'
+- figure:
+  - img "Dividend history, quality and benchmark"
+- figure:
+  - img "Management profile"
+- figure:
+  - img "Insider transactions"
+- heading "Which stocks are you currently weighing up?" [level=2]
+- paragraph: Search from 120,000 global stocks to see thousands of data points condensed into one visual report.
+- link "Search any stock to research for free":
+  - /url: https://simplywall.st/stocks
+- generic: Popular stocks
+- list:
+  - link "Apple":
+    - /url: https://simplywall.st/stocks/us/tech/nasdaq-aapl/apple
+  - link "Amazon":
+    - /url: https://simplywall.st/stocks/us/retail/nasdaq-amzn/amazoncom
+  - link "Alphabet":
+    - /url: https://simplywall.st/stocks/us/media/nasdaq-googl/alphabet
+  - link "NVIDIA":
+    - /url: https://simplywall.st/stocks/us/semiconductors/nasdaq-nvda/nvidia
+  - link "Tesla":
+    - /url: https://simplywall.st/stocks/us/automobiles/nasdaq-tsla/tesla
+- heading "Find your next hidden gem." [level=2]
+- paragraph:
+  - text: Stop the countless hours of research.
+  - text: Discovery tools you can use to customize and surface the data points that matter across 120,000 global stocks.
+- link "Forecast High Growth":
+  - /url: https://simplywall.st/discover/investing-ideas/153/top-growth-stocks
+  - img "Forecast High Growth"
+- link "Buy the Dip":
+  - /url: https://simplywall.st/discover/investing-ideas/5620/buy-the-dip/
+  - img "Buy the Dip"
+- link "Potentially Undervalued":
+  - /url: https://simplywall.st/discover/investing-ideas/10184/undervalued-tech-stocks/
+  - img "Potentially Undervalued"
+- link "Insider Trading":
+  - /url: https://simplywall.st/discover/investing-ideas/171/insider-trading
+  - img "Insider Trading"
+- heading "Discovery Hub" [level=2]
+- heading "Your shortcut to high-quality stocks." [level=3]
+- paragraph: You don't have to scan every stock from scratch. We’ve organized the market into curated themes - from dividend powerhouses to high insider buying - so you can spend less time searching and more time growing.
+- generic: Trending investing ideas
+- list:
+  - link "Artificial intelligence (AI) stocks":
+    - /url: https://simplywall.st/discover/investing-ideas/215169/artificial-intelligence-ai-stocks/global
+  - link "Global electric and autonomous vehicle stocks":
+    - /url: https://simplywall.st/discover/investing-ideas/5620/electric-autonomous-vehicle-stocks/global
+  - link "Nuclear energy stocks":
+    - /url: https://simplywall.st/discover/investing-ideas/215173/nuclear-energy-stocks/global
+- link "More investing ideas":
+  - /url: https://simplywall.st/discover/investing-ideas
+- img "Snowflake screener"
+- heading "Snowflake Screener" [level=2]
+- heading "Let the winners come to you." [level=3]
+- paragraph: Use our visual analysis to filter the global market by your exact criteria for growth, value, or dividends. We’ll then scan and notify you the moment a new stock fits your specific profile.
+- link "Try Snowflake Screener for free":
+  - /url: https://simplywall.st/screener/create
+- heading "Smart Updates" [level=2]
+- heading "Never miss your moment again." [level=3]
+- paragraph: Stay informed with daily alerts on earnings, dividends, valuation changes, and key events - so you can act decisively when it counts.
+- link "Start your watchlist":
+  - /url: https://simplywall.st/watchlist
+- link "Set up a portfolio in minutes":
+  - /url: https://simplywall.st/portfolio/demo
+- img "Recent updates timeline"
+- heading "Community Narratives" [level=2]
+- heading "Gain insights from like-minded investors" [level=3]
+- generic: Value any stock for free in seconds
+- generic: Participate in discussions
+- generic: Get alerts & valuation updates
+- link "Explore Community":
+  - /url: https://simplywall.st/community/narratives/
+- link "Try Simply Wall St free":
+  - /url: https://simplywall.st/register?r=%2Fportfolio%2Fnew
+- img "4.6 App Store, 4.3 Trustpilot, 4.6 Google Play"
+- heading "Trusted by 7M+ investors worldwide" [level=2]
+- article:
+  - generic: Stuart Aberdein
+  - generic: Portugal
+  - img "5 stars"
+  - strong: Brilliant site. Highly recommended
+  - paragraph: It's an excellent site. Very well laid out and easy to use. It's great for quickly screening shares that fit a set of requirements. It saves huge amounts of research time. They are also very ethical and reasonable.
+  - paragraph: I hadn't used the site for a while because I had built my portfolio and didn't want to make changes. I had forgotten to cancel my auto-renewing membership and only realised when the invoice was processed. Although it was entirely my fault, they processed a refund for me. Nice people.
+- article:
+  - generic: Nuno
+  - generic: Spain
+  - img "5 stars"
+  - strong: Super useful
+  - paragraph: Overall great experience. Excited for adding more features to the new portfolio and rolling out the stock validator tool.
+- article:
+  - generic: Ryan
+  - generic: Canada
+  - img "5 stars"
+  - paragraph: The app is fantastically well designed, able to get a lot of information visually on whatever aspect of investing is needed, whether it's stock analysis, portfolio analysis, etc. This allows for ease in navigating between various aspects of a stock and a much shorter time spent analyzing it. Love it.
+- article:
+  - generic: Pamela
+  - generic: United States
+  - img "5 stars"
+  - paragraph: I took several years off from investing and now I renewed my membership, I was very happy before and looking for to even tools to work with research, and keeping up with my portfolio. Thank you Simply Wall ST. Pam from SC
+- article:
+  - generic: Anonymous Customer
+  - generic: United Kingdom
+  - img "5 stars"
+  - strong: Best informative site for Value based investing
+  - paragraph: Fantastic coverage of global stocks. Their layout is super user friendly, simple yet effective enough to give you all the right info needed for value investing. Portfolio and watchlist features are excellent. Best feature is the snowflake analysis with screener.
+  - paragraph: They also send the articles and timely updates that cut through any jargon and provide very insightful information that layman like me can understand. Very happy to have found Simply Wall St.
+- article:
+  - generic: Ricci Johannessen
+  - generic: South Africa
+  - img "5 stars"
+  - paragraph: Simply Wall St is packed with loads of tools and info. As a beginner I am extremely excited to get stuck in. I know Simply Wall St will help me manage and improve the quality of my portfolio and watchlist.
+- article:
+  - generic: Rajan
+  - generic: Australia
+  - img "5 stars"
+  - paragraph: Glad to be able to subscribe to your premium plan. It’s a useful product particularly for the novice trader to get a good heads up on building up an investment portfolio. Pleasure dealing with the staff as well. Excellent value
+- article:
+  - generic: Gary
+  - generic: United Kingdom
+  - img "5 stars"
+  - paragraph: Seems to have a multitude of info, but broken down and explained simply enough for the amateur investor, yet intuitive enough for the more seasoned investor.
+  - paragraph: Very easy to keep track of your portfolio, and keeps providing important updates when there's a significant alert on stocks... Only downside, no info on funds, that I can find.
+- article:
+  - generic: Georgy
+  - generic: India
+  - img "5 stars"
+  - strong: The top one in the stock tools i have ever used
+  - paragraph: I loved your teame for the regular email updates you used to send me on my watchlisted indian stockmarket companies. That made me go ahead and take a plan to get the portfolio experience also. Seamless plan purchase process too. Way to go!!!
+- heading "Build your case. Own the story." [level=2]
+- paragraph: Stop reacting to market mood swings. Use our Narratives framework to build, track, and evolve a thesis for every stock you own.
+- heading "Successful investors follow these 3 key principles" [level=3]
+- list:
+  - generic: "1"
+  - generic: Identify a stock
+  - generic: "2"
+  - generic: Form your thesis
+  - generic: "3"
+  - generic: Set your fair value
+- link "Start free":
+  - /url: https://simplywall.st/register
+- paragraph: No credit card required. Free forever.
+- link:
+  - /url: /
+- paragraph: Level 5, 320 Pitt Street, Sydney
+- link:
+  - /url: https://www.linkedin.com/company/simply-wall-st/
+- link:
+  - /url: https://www.youtube.com/c/simplywallst
+- link:
+  - /url: https://twitter.com/simplywallst
+- link "Download on the App Store":
+  - /url: https://apps.apple.com/us/app/simply-wall-st-stock-analysis/id1075614972
+  - img "Download on the App Store"
+- link "Get it on Google Play":
+  - /url: https://play.google.com/store/apps/details?id=com.simplywallst.app&hl=en_AU&gl=US&pli=1
+  - img "Get it on Google Play"
+- link "Available in the Chrome Web Store":
+  - /url: https://chromewebstore.google.com/detail/stock-analysis-overlay-si/fogdlgjnkolhbefbbpghbafdkhcdgdnk
+  - img "Available in the Chrome Web Store"
+- link "Standard and Poor Global Market Intelligence Logo":
+  - /url: https://www.spglobal.com/market-intelligence
+  - img "Standard and Poor Global Market Intelligence Logo"
+- paragraph:
+  - text: Financial Data provided by S&P Global Market Intelligence LLC, analysis provided by Simply
+  - code: Wall
+  - text: Street Pty Ltd. Copyright © 2026, S&P Global Market Intelligence LLC. All rights reserved.
+- link "View Data Sources":
+  - /url: https://simplywall.st/analysis-and-financial-data-sources
+- paragraph: Popular Markets
+- 'link "US: NYSE & NASDAQ"':
+  - /url: https://simplywall.st/markets/us
+- 'link "UK: FTSE"':
+  - /url: https://simplywall.st/markets/gb
+- 'link "Australia: ASX"':
+  - /url: https://simplywall.st/markets/au
+- 'link "India: NIFTY"':
+  - /url: https://simplywall.st/markets/in
+- 'link "Canada: TSX"':
+  - /url: https://simplywall.st/markets/ca
+- 'link "South Africa: JSE"':
+  - /url: https://simplywall.st/markets/za
+- 'link "Japan: NIKKEI"':
+  - /url: https://simplywall.st/markets/jp
+- 'link "South Korea: KOSPI"':
+  - /url: https://simplywall.st/markets/kr
+- 'link "Germany: DAX"':
+  - /url: https://simplywall.st/markets/de
+- paragraph: Investing Ideas
+- link "Undervalued Companies":
+  - /url: https://simplywall.st/discover/investing-ideas/168/undervalued-stocks-based-on-cash-flows
+- link "Dividend Powerhouses":
+  - /url: https://simplywall.st/discover/investing-ideas/146/dividend-powerhouses-3-yield
+- link "Recent Insider Buying":
+  - /url: https://simplywall.st/discover/investing-ideas/171/insider-trading
+- link "Nuclear Energy":
+  - /url: https://simplywall.st/discover/investing-ideas/215173/nuclear-energy-stocks
+- link "Autonomous Vehicles":
+  - /url: https://simplywall.st/discover/investing-ideas/5620/electric-autonomous-vehicle-stocks
+- link "Artificial Intelligence":
+  - /url: https://simplywall.st/discover/investing-ideas/215169/artificial-intelligence-ai-stocks
+- link "Crypto and Blockchain":
+  - /url: https://simplywall.st/discover/investing-ideas/16734/cryptocurrency-and-blockchain-stocks
+- link "Cybersecurity":
+  - /url: https://simplywall.st/discover/investing-ideas/10184/cybersecurity
+- link "All Investing Ideas":
+  - /url: https://simplywall.st/discover/investing-ideas
+- paragraph: Features & Tools
+- link "Portfolio Tracker":
+  - /url: /features/portfolio
+- link "Screener & Alerts":
+  - /url: /features/stock-screener
+- link "Investing Ideas":
+  - /url: https://simplywall.st/discover/investing-ideas
+- link "Community Narratives":
+  - /url: https://simplywall.st/community/narratives
+- link "Market Insights":
+  - /url: https://simplywall.st/markets/insights
+- link "What's New":
+  - /url: https://support.simplywall.st/hc/en-us/articles/7894830045199-Changelog
+- link "Dividend Calculator":
+  - /url: https://simplywall.st/tools/dividend-calculator
+- link "Compare vs Morningstar":
+  - /url: https://simplywall.st/vs/simply-wall-street-vs-morningstar
+- link "Compare vs Seeking Alpha":
+  - /url: https://simplywall.st/vs/simply-wall-street-vs-seeking-alpha
+- link "Compare vs Investing.com":
+  - /url: https://simplywall.st/vs/simply-wall-street-vs-investing-com-pro
+- paragraph: Simply Wall St
+- link "Plans & Pricing":
+  - /url: https://simplywall.st/plans
+- link "Advertising":
+  - /url: https://simplywall.st/advertising
+- link "About Us":
+  - /url: /about
+- link "Contact Us":
+  - /url: https://support.simplywall.st/hc/en-us/requests/new
+- link "Careers":
+  - /url: /careers
+- link "Help Center":
+  - /url: https://support.simplywall.st/hc/en-us
+- link "Learn Stock Investing":
+  - /url: https://learn.simplywall.st/
+- link "Affiliate Program":
+  - /url: https://simplywall.st/affiliate-program
+- link "Business & Enterprise":
+  - /url: https://simplywall.st/business-plans
+- link "Charlie AI":
+  - /url: https://charlieinvest.ai
+- paragraph: "Simply Wall Street Pty Ltd (ACN 600 056 611), is a Corporate Authorised Representative (Authorised Representative Number: 467183) of Sanlam Private Wealth Pty Ltd (AFSL No. 337927). Any advice contained in this website is general advice only and has been prepared without considering your objectives, financial situation or needs. You should not rely on any advice and/or information contained in this website and before making any investment decision we recommend that you consider whether it is appropriate for your situation and seek appropriate financial, taxation and legal advice. Please read our Financial Services Guide before deciding whether to obtain financial services from us."
+- paragraph: "© 2026 Simply Wall Street Pty Ltd, US Design Patent #29/544/281, Community and European Design Registration #2845206."
+- link "Financial Services Guide":
+  - /url: https://media.simplywall.st/site/financials/Financial_Services_Guide_-_Simply_Wall_St_V2.0_dated_20_Jan_23.pdf
+- link "Terms and Conditions":
+  - /url: https://simplywall.st/terms-and-conditions
+- link "Privacy Policy":
+  - /url: https://simplywall.st/privacy-policy
+- alert

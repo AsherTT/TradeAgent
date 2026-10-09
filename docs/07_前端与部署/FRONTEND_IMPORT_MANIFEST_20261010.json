@@ -1,0 +1,2722 @@
+{
+  "source_commit": "60e631648cb165ebacc4a4c69801c22a6a663f61",
+  "source_upstream": "https://github.com/JCodesMore/ai-website-cloner-template",
+  "source_template_commit": "f50066df3f4bdca057d3b239be6f49f17724bb13",
+  "imported_files": 531,
+  "entries": [
+    {
+      "path": ".agents/skills/clone-website/SKILL.md",
+      "bytes": 36831,
+      "sha256": "ccf32d71a5265ad47808d2515e292b67ba8304e216a7188138ccfc89fe7d435a"
+    },
+    {
+      "path": ".agents/skills/clone-website/references/inspection-guide.md",
+      "bytes": 3804,
+      "sha256": "13ab0697ad5cd6ace1c4510d3913045570a703229bbc533100b4acc4b1dd0268"
+    },
+    {
+      "path": ".claude/commands/clone-website.md",
+      "bytes": 448,
+      "sha256": "8a798d8480cb1ae7084be796f9137f9036cb3199cca36f88b37f8ef09123eade"
+    },
+    {
+      "path": ".dockerignore",
+      "bytes": 701,
+      "sha256": "2a32af30ef7385552161682b365e9cec2f9c4080d437638db2189e0bd30942de"
+    },
+    {
+      "path": ".env.example",
+      "bytes": 253,
+      "sha256": "e3d1f3c0a78e8b3215fa83ad6730bd31c34eb06ba8a9de522b68ec117e02acdc"
+    },
+    {
+      "path": ".gitattributes",
+      "bytes": 174,
+      "sha256": "0d130de3e496da91b875a83cdb976195a6c6948753263cd6f3899b2287fcc67e"
+    },
+    {
+      "path": ".github/FUNDING.yml",
+      "bytes": 214,
+      "sha256": "443b7999c3eaff984c0d184ff246134fa33b2bfe2d3755c12302b4e51596b15c"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/bug_report.yml",
+      "bytes": 2186,
+      "sha256": "9960fc04d63cd6a68f7d99e50cfc6b28e11a27b4c35d1cffdb938061c63688d6"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/config.yml",
+      "bytes": 184,
+      "sha256": "52b9d75ff1cdbd86a8ff59696263c1a30d991a39ccbe019109745a783e2dda1d"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/feature_request.yml",
+      "bytes": 1303,
+      "sha256": "110c058b71c7b7de9807440007df644b7e0dcb6c9ab90c7d311f91f74e6053f6"
+    },
+    {
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "bytes": 332,
+      "sha256": "5a19d23deae2118b5e0a2c8453c5062e3cc019ab86a5e0cca7486394e20d4b82"
+    },
+    {
+      "path": ".github/copilot-setup-steps.yml",
+      "bytes": 57,
+      "sha256": "b6270e20778afe3eb8217a718ecf32c5ed5c7a2aaff8eda90cd4dcba057041cc"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "bytes": 604,
+      "sha256": "58c89aca9418f095401289fa68e5151d8981f48809fe203f2ffe0f796a7726aa"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 588,
+      "sha256": "72ddbde774eebabd2a91393f68623d93e87b572dbb614beb3b9889638b88745a"
+    },
+    {
+      "path": ".nvmrc",
+      "bytes": 4,
+      "sha256": "f6bca0e7f46a94bd3349fdb86511cbec4a9091e409b62dd2d6b8c1fdb9a3ce00"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 3272,
+      "sha256": "0926a56f127acbbbd6b8845a76aa8b4d73a8aa5d0af26bc4cb4c577176de4f9d"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 7508,
+      "sha256": "a1b03b3d0554de16bc788e8d8c8ea3d3dadfca214a13e3e7a423ab048f6e4175"
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 12,
+      "sha256": "d631d88045f74623d568adfb4783b72e3d1b732330d749bc6c72e6648d4581d3"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "bytes": 2611,
+      "sha256": "bb06668fe5c70bf0bb8fe3cda47da92db054929734fc0db078438cc97a924ff1"
+    },
+    {
+      "path": "Dockerfile",
+      "bytes": 4098,
+      "sha256": "bfb2e9078c3b49c22ec19bad51aada2c9a13e5e718f5e2a4fa80f7d6d7fd9e31"
+    },
+    {
+      "path": "Dockerfile.dev",
+      "bytes": 267,
+      "sha256": "26642fca5c9ba0306797ba1c677e695044f3cd6bb7f7da3bd2e3fc9393a55e55"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1088,
+      "sha256": "0f10e1da67c105e6f02e831688607f0b7a276b965d3a6397217bdbdef0527e9d"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7849,
+      "sha256": "f4cf5ce58281a6c6beffdc2c557c10a9a8cf35848d70e28c4344dab4fd10594c"
+    },
+    {
+      "path": "SECURITY.md",
+      "bytes": 2050,
+      "sha256": "b574ea979e8c1ae7c66614731efe64f4169bd888e9a4c94b7b9a3974bafad9fe"
+    },
+    {
+      "path": "SETUP_CONTEXT.md",
+      "bytes": 2480,
+      "sha256": "c5c6be752e4368d40200b6ba79f726cc90e5026fd4efb37be059cec0d0d360f7"
+    },
+    {
+      "path": "components.json",
+      "bytes": 545,
+      "sha256": "55f98c0800df5dbb7a1215f94711437651394ccacdd809dc4f71c3efe926dfc9"
+    },
+    {
+      "path": "docker-compose.yml",
+      "bytes": 1288,
+      "sha256": "03419c552dd3366d21d4f950c26164039ddd4bedc8328a728dcf8a8c85abf86f"
+    },
+    {
+      "path": "docs/RESEARCH_WORKSPACE_20261007.md",
+      "bytes": 1685,
+      "sha256": "3988f41619a027df6ac50d6549458d6e30f38c145e18ee4296d8483e25379e98"
+    },
+    {
+      "path": "docs/assets/star-history.png",
+      "bytes": 83493,
+      "sha256": "1e1aad0dd8af33407fac50a23cbac865d7c991b37923a1be18940fdb9d188ae3"
+    },
+    {
+      "path": "docs/design-references/.gitkeep",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/design-references/comparison.png",
+      "bytes": 741380,
+      "sha256": "80b58f8986578903a018818caf329eb8193c1bfdbeab957560d48bcbb549ea30"
+    },
+    {
+      "path": "docs/design-references/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/source-desktop-analysis-open.jpg",
+      "bytes": 100624,
+      "sha256": "21a0cbfe8064d84450a8db5426b6beb53e9340e4ac93bc152458d52eb9cc7102"
+    },
+    {
+      "path": "docs/design-references/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/source-desktop-full.jpg",
+      "bytes": 149429,
+      "sha256": "76f6178a1c6f3e03116924f242a616628bffa76c31a0776d44c572304eb8ab53"
+    },
+    {
+      "path": "docs/design-references/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/source-mobile-full.jpg",
+      "bytes": 269404,
+      "sha256": "cb07f46fd6e3bf1d1d525ce939db30bf39157c0c728939952ad1bd457431e12c"
+    },
+    {
+      "path": "docs/design-references/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/source-mobile-navigation-open.jpg",
+      "bytes": 24484,
+      "sha256": "d6e416b8c6bddb9a0731834926c1707f044cf11357ceae8a7cb90625dadb6e86"
+    },
+    {
+      "path": "docs/design-references/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/source-tablet-full.jpg",
+      "bytes": 371998,
+      "sha256": "ce4a966f0c88e1a1ccf988ebf03fd839cc8605ac2638b5fce1cf35341ba3a5d6"
+    },
+    {
+      "path": "docs/design-references/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/source-v602-desktop-search-no-results.jpg",
+      "bytes": 68872,
+      "sha256": "b59155290295e3d7c51ae1e669f00c2a0f87165335395e024fc21ce6cac138c5"
+    },
+    {
+      "path": "docs/design-references/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/source-v602-mobile-search-no-results.jpg",
+      "bytes": 22704,
+      "sha256": "7f04240f80f0a2644232fa5233c747dcde13f921542966928e301b29c70f2ef1"
+    },
+    {
+      "path": "docs/design-references/r1-change-20261009/README.md",
+      "bytes": 1484,
+      "sha256": "c98d67a450d4fb1972f456da34f433dd8b6aad62a2fb9830949b9daacb3158c7"
+    },
+    {
+      "path": "docs/design-references/r1-change-20261009/company-empty-en-390.png",
+      "bytes": 82465,
+      "sha256": "a727c4af9e835b1d19f01915e3226401593856e1ad3bfa203044eb922c15190f"
+    },
+    {
+      "path": "docs/design-references/r1-change-20261009/company-empty-zh-1440.png",
+      "bytes": 88814,
+      "sha256": "9a549eab12ebe17fd33876d8184d5fc849ca882612b327f89346c12bd73247df"
+    },
+    {
+      "path": "docs/design-references/r1-change-20261009/company-empty-zh-390.png",
+      "bytes": 72522,
+      "sha256": "6b724125a90e97fb97b1e156aea4bef3847df087b615eb71c6f08c07bc4f2086"
+    },
+    {
+      "path": "docs/design-references/r1-change-20261009/company-empty-zh-768.png",
+      "bytes": 81006,
+      "sha256": "24094f020f322c2e82fff8dfd46a84b3a1468f0ac7827595dbdbd3acbbec8053"
+    },
+    {
+      "path": "docs/design-references/r1-change-20261009/measurements.json",
+      "bytes": 1328,
+      "sha256": "70a4503369d138849a3ee2c2ae9d052dfdf7d73c5496bbb4194c5ace10f314d1"
+    },
+    {
+      "path": "docs/design-references/r1-portal-change-20261009/README.md",
+      "bytes": 2187,
+      "sha256": "474b30c3d49eb1c472fc9cf661d953a8a2cd7840c0919a539675ea8071875fc0"
+    },
+    {
+      "path": "docs/design-references/r1-portal-change-20261009/en-1440.jpg",
+      "bytes": 157412,
+      "sha256": "a0018497c50c5822110e7b66de45efea6b04e3b6ef2972b43738f2ac51c45b9c"
+    },
+    {
+      "path": "docs/design-references/r1-portal-change-20261009/en-390.jpg",
+      "bytes": 127570,
+      "sha256": "9b6ba77205dd79584a1cf38fbeea96c4924d906658add72772e9e0c866dd8f22"
+    },
+    {
+      "path": "docs/design-references/r1-portal-change-20261009/en-768.jpg",
+      "bytes": 141843,
+      "sha256": "152d3244d01a4272a1bb18828f4d19ad0b47ee772bbd4f669e0393cdfc243f97"
+    },
+    {
+      "path": "docs/design-references/r1-portal-change-20261009/measurements.json",
+      "bytes": 638,
+      "sha256": "1406048876b4071b1679c625da8fc2b151fdb8b7dfe2263778e9683028c30e99"
+    },
+    {
+      "path": "docs/design-references/r1-portal-change-20261009/zh-1440-preview.jpg",
+      "bytes": 65314,
+      "sha256": "fa4bc8ca81297ccb81616c2f1cb22911014d86fe405152271a45d8025211bd10"
+    },
+    {
+      "path": "docs/design-references/r1-portal-change-20261009/zh-1440.jpg",
+      "bytes": 141996,
+      "sha256": "533c7cf437eff17020f20cfcbdab7ddda8b8c4c6e4de9267fb10d361108463fc"
+    },
+    {
+      "path": "docs/design-references/r1-portal-change-20261009/zh-390.jpg",
+      "bytes": 112183,
+      "sha256": "fd7eb47330c9d25bc1a899a7af3e49d7f1931106bf4971c85ab74f8673dd36a3"
+    },
+    {
+      "path": "docs/design-references/r1-portal-change-20261009/zh-768.jpg",
+      "bytes": 130387,
+      "sha256": "d9f51b7a055d3b3715421100a9856e4f0e8da441f25952d7470aa8492ff189b0"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/README.md",
+      "bytes": 1227,
+      "sha256": "0737e001764d3793514b0ad020d9408b34eabb6d062ed134b661afb8d8f1c07b"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/company-en-390.png",
+      "bytes": 67590,
+      "sha256": "abc10306a4ab37008e75ec250ecb464c7f2102189588f9b66548ed902801c23e"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/company-final-1440.png",
+      "bytes": 68674,
+      "sha256": "13f93668e1c2940aabe927123b81e2ca2fede6ae8ab271dadea1cfe280016bf7"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/company-zh-1440.png",
+      "bytes": 73197,
+      "sha256": "3b09d5fdadf88bf57bccaa516b468ccbdcac4b2a460b86fb34c4504a031ca6e9"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/company-zh-390.png",
+      "bytes": 60618,
+      "sha256": "9c399349f37be623137a6f144fb49cb9f0879c7adf1a347d87b263ec9780586a"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/company-zh-768.png",
+      "bytes": 68951,
+      "sha256": "102bb46e77c962028c92b5ab8d08535d71ed4ef5d7dc67d63df75c2e244ee1f3"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/measurements.json",
+      "bytes": 2880,
+      "sha256": "d8f2bd32ec6131af1744ae3877363a347ece564c24a1876cbca1fb565143e307"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/portal-en-390.png",
+      "bytes": 121258,
+      "sha256": "2731dfb64b2397ea0e5cc115391f8f79d4b7a177519ad8c950e23b208dbe0f4d"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/portal-zh-1440.png",
+      "bytes": 139494,
+      "sha256": "e303cffe4e0a773e43b172f5fa4ef70fd8ccc325acac0138c508d261e7c5ea89"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/portal-zh-390.png",
+      "bytes": 111064,
+      "sha256": "0eab974a3a785738b76a72d41c9b9ba7676a5d0fc21eb3652acbfa73eae1f75b"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/portal-zh-768.png",
+      "bytes": 127763,
+      "sha256": "83fa51979ea3b5437192328728e25a2c61dc858cecf4bc442ec6890b37469062"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/report-en-390.png",
+      "bytes": 181009,
+      "sha256": "786f5827f4dd070b2c99f6554d011f857279f3af485e8f93192ce63fb49faf32"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/report-zh-1440.png",
+      "bytes": 192770,
+      "sha256": "6b2868fd207061814438ecb04aa9b37b2b1176a10a1d86cf18e692192b652a55"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/report-zh-390.png",
+      "bytes": 163652,
+      "sha256": "78d5a173219cd6c45da221e3c0a939809212b15aea9ff11fb6b4f8c32082b050"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/report-zh-768.png",
+      "bytes": 175919,
+      "sha256": "2b32ff3118503a7873145d64c3ec407a1bbb873396455fbbc158af9a96978a04"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/research-en-390.png",
+      "bytes": 81763,
+      "sha256": "051878c5de1c1829efcb7edbb615d114d187e807f7bed11db8de61e338c4e65d"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/research-zh-1440.png",
+      "bytes": 93099,
+      "sha256": "9bef981ab23e093ca5cbbf0bc72b2c3f1b17800eb2d90b5efda32e520471ffdd"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/research-zh-390.png",
+      "bytes": 70337,
+      "sha256": "550d9face2e938de40299e954d53a614d3c77a2e2aea01ce263ddd45796361bf"
+    },
+    {
+      "path": "docs/design-references/r1-session-20261009/research-zh-768.png",
+      "bytes": 86677,
+      "sha256": "bbb4d7dce51625a77b761d44b7c7f74579ac65738e11b78c743c4107766dea73"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/portfolio--demo-128b5e04/analysis-signup-gate-diagnostic.jpg",
+      "bytes": 46721,
+      "sha256": "5fecbcf7a33488dc70cae545e7d64335d398ae0f79eb72bd9d1367b7405b2c6f"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/portfolio--demo-128b5e04/holdings-first-capture.png",
+      "bytes": 97652,
+      "sha256": "02a1c5bb7b4b11eaa86306d39dcc74246247554e5dc8eb809dc7fc2390a8652f"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/diagnostic-after-media-back-blank.png",
+      "bytes": 8789,
+      "sha256": "1b3c03f9762a989853fe607ff54c609dbbba02d9db0a02df5b1ef0c107c15eb4"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/enhanced-a-20261008/README.md",
+      "bytes": 684,
+      "sha256": "b5ebc9113266f55a34c76b819bc206adf74951dc6481b12cc5ef1428e797fadc"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/enhanced-a-20261008/product-en-1440.png",
+      "bytes": 80442,
+      "sha256": "312a879ffdc0117be0139b123840baaa2da85bc193be498f886dc3a040854cfc"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/enhanced-a-20261008/product-zh-1440.png",
+      "bytes": 69095,
+      "sha256": "1740c3baa9eab5552918ad0e8ca5d3b48ade01a0c666c952650a9f3a31ebca57"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/enhanced-a-20261008/product-zh-full.png",
+      "bytes": 222453,
+      "sha256": "1377560b9e8f9476c15fd4ff9894cdbec25c56c6ba8eb717d299812769f17b90"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/enhanced-a-20261008/source-1440.png",
+      "bytes": 110428,
+      "sha256": "b44cae6f184408de1ad0369516bc5aa5bd9cd3d07136019b1232ea9756d00a12"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/enhanced-a-20261008/viewport-checks.json",
+      "bytes": 1252,
+      "sha256": "b3eef8d8794feae8897efe8125e859fe96926db72775c0f322d128f92f8818cb"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/full-source-20261008/README.md",
+      "bytes": 1374,
+      "sha256": "63f3d80183d2d08d44f8b4d8d8aae9fea927fb6ffa830eb05838736b8f41cb6a"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/full-source-20261008/home-1440-clipped.png",
+      "bytes": 127773,
+      "sha256": "26661ddb98b7b8fa432cdd201e569fc74493a88a281fc042ee27dc2ac0a7bad9"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/full-source-20261008/home-1440-full.png",
+      "bytes": 1252734,
+      "sha256": "476030137c2f66d3cdeddc573211bc234a0ee04773d51b997c5c19e1ce9264d9"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/full-source-20261008/home-1440-hero.png",
+      "bytes": 95939,
+      "sha256": "1ff97053b10ed82d4de796ab6ac0da7ae41d4287433849c2d13d6ab05ba33d6c"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/full-source-20261008/home-1440-zh-full.png",
+      "bytes": 1114709,
+      "sha256": "b065989f08581c49a2250b1f51543a91c82541853f417feeb526a25ee3ed56ba"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/full-source-20261008/home-1440-zh.png",
+      "bytes": 124111,
+      "sha256": "1cae4e7da07b63f200010d62ec63bcfc98093736ce7c272bfd04a4a59f371f6e"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/full-source-20261008/home-1440.png",
+      "bytes": 1088194,
+      "sha256": "fbb08e3f53405e23c82c932c2081364aead812ce93015b40d8a811a812c0752d"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/full-source-20261008/home-390-hero.png",
+      "bytes": 52190,
+      "sha256": "4cfb5521992bb3df543c8226b5d1d55629a1aef651c308f703e77e1c548ffd8b"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/full-source-20261008/home-390.png",
+      "bytes": 65455,
+      "sha256": "c910f1883b1b853d253515eeffbb886b656d479cb355ec5ba065b666917d883b"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/full-source-20261008/home-768.png",
+      "bytes": 93607,
+      "sha256": "2961c0d7a0c61859542ce19f794640bb8944e289bcc7ebc4940a4da6ce00287d"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/full-source-20261008/interaction-checks.json",
+      "bytes": 1101,
+      "sha256": "212f0cdbc7a6800ace769a05f4f0beb9869ed77f3d27f889a91884e8d5a96bd4"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/full-source-20261008/reference-1440-full.png",
+      "bytes": 1252563,
+      "sha256": "ba80a9e019aed7484884926bbe2790b1b21d9d64cc30e77ad7297a14370883c7"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/full-source-20261008/reference-390.png",
+      "bytes": 64705,
+      "sha256": "de2f56b0385fdce781b5006dd90a1e6c1c8185a16d736a863afcd89792c5a15c"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/full-source-20261008/reference-768.png",
+      "bytes": 91802,
+      "sha256": "6dbd972a8ee0eb448d4b4e89399a15bda77764ec9e5279a23595e5e1a0a9f0bb"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/full-source-20261008/viewport-parity.json",
+      "bytes": 15518,
+      "sha256": "b43eed00b0f0d76a0a302f712634b72a13642066fc62b258f7c016b96702c046"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/local-preview-1440.png",
+      "bytes": 107301,
+      "sha256": "e87dfb6d56a97a91642496af89997f08ab83fe21244e317d90c8d019bcb4b406"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/local-preview-390.png",
+      "bytes": 45591,
+      "sha256": "161f9dc600c9bed1f18404323c10a93bb9fe9d451f83c1035967b272c9983a1b"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/local-preview-768.png",
+      "bytes": 82328,
+      "sha256": "e23c203e2ab8067973585bf4531f94426e24f9241b18b30efc6aef033bc0c404"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/local-preview-en-1440.png",
+      "bytes": 1215541,
+      "sha256": "0fd748fbf131f0a7ba3862cacfe4d5ff6127e4574fdb8d6adffcf43498cbfdad"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/local-preview-en-390.png",
+      "bytes": 852037,
+      "sha256": "79196d89fe3dfecfde37d0c465cbcfdaff91b0fbf54fc52ae324fa7ca8741082"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/local-preview-en-768.png",
+      "bytes": 1097642,
+      "sha256": "07d5788b6a1ca57daf125eb1e88149c4733785ebf85d73729fd1349bed54e355"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/local-preview-final.png",
+      "bytes": 74747,
+      "sha256": "3e43ba574a813e4d87bd15525c5196ff961f319d2ddd4b029aa6fa23b3c4a613"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/local-preview-zh-1440.png",
+      "bytes": 1074917,
+      "sha256": "67d31acff0cf609695953919e9b4f86f3022891ecd4a0906c6c4f3cc60d9a5ee"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/local-preview-zh-390.png",
+      "bytes": 718407,
+      "sha256": "81b1c86ae65748d8efbf2cb9fa8918468a4ab2af2fc92681edc02a20645a9a28"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/local-preview-zh-768.png",
+      "bytes": 938812,
+      "sha256": "7b33f325cf7446f263effdd4d0fb1a44fe775b54a367c902654cb7b05722ad75"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/local-preview-zh-final.png",
+      "bytes": 70940,
+      "sha256": "5bc320f094c2b6216a622e8783cbf4819246c3b61009074a0d2df408cad3da35"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/local-preview-zh-menu-390.png",
+      "bytes": 19557,
+      "sha256": "e810eef5c752c5a5ff36762bafa194bb0d03f339a06de28a65a24128ba16827d"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/source-desktop-1440-20261006.png",
+      "bytes": 1212585,
+      "sha256": "511bf929ed7f7ba99b7ab86d5f0d26a895dd30f55447980e0de20174553fb12e"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/source-desktop-1440.jpg",
+      "bytes": 1202301,
+      "sha256": "fb99ace1a5939d75617b4e21b8eea95e3b2bf668cce372064585017ad1044fc9"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/source-menu-open-390-comparison.png",
+      "bytes": 24105,
+      "sha256": "68149c7de2c620fe2bad1604f9874429cfb83353de0e8de196e124d5f5ff7a3b"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/source-mobile-390-20261006.png",
+      "bytes": 834615,
+      "sha256": "98986f45c4b6873f7c30145071820bf6e42b1d033c124a7202e7b4e1660ca679"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/root-8a5edab2/source-tablet-768-20261006.png",
+      "bytes": 1076485,
+      "sha256": "f09b0074c69d5c1627ca2b97cdb93edd94b5b5b2510a5837d9b0e0afbfa7bd2f"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/analysis-model-source-desktop.jpg",
+      "bytes": 27518,
+      "sha256": "a7151c7aaab27d0045eeee7d15a69f4a666341c04442a46e1fa5eda3f07363ac"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/analyst-sources-local-en-desktop.jpg",
+      "bytes": 37847,
+      "sha256": "ffa42fdf8f5756a197a69527affdf59f328e94930e27fb0357d5fd4f9b1732ab"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/analyst-sources-local-en-mobile.jpg",
+      "bytes": 31432,
+      "sha256": "4f6099ee0d28fbd25330f81c79bced94733eb914c5e367fb33d92dbac32c593f"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/analyst-sources-local-en-tablet.jpg",
+      "bytes": 33167,
+      "sha256": "db4b0bcd34e613f563b12126d06d6d0815105e37c955c4e6720038b5f0e30e5b"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/analyst-sources-local-zh-desktop.jpg",
+      "bytes": 32950,
+      "sha256": "d307c46b1c47d4e2077576abe2c4193dae9a4f89c96080f7b3049b93ad880b74"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/analyst-sources-local-zh-mobile.jpg",
+      "bytes": 26456,
+      "sha256": "f20d0a6f8f794251c1a7cf993e1a6e29629f88465c764936e85097904761868b"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/analyst-sources-local-zh-tablet.jpg",
+      "bytes": 29167,
+      "sha256": "b01d326fd7d63eaf53fc60305b3ce0df79667a182721e4e221292d4ef3f3845f"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/company-bilingual-en-desktop.jpg",
+      "bytes": 158596,
+      "sha256": "f03a936833cf9c61746bed00dde35b36d83dcd84a8be574e5ff14ed44cb53967"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/company-bilingual-en-mobile.jpg",
+      "bytes": 116038,
+      "sha256": "d939574bcf5d659d03afe8335f877a737f9e773e94a5cb2f93ec500033f625c9"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/company-bilingual-en-tablet.jpg",
+      "bytes": 131300,
+      "sha256": "0db3b64f4b1c770e7e7a9f959c6b485bb87f0cfc18122925fb6bae60ed3f8c61"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/company-bilingual-zh-desktop.jpg",
+      "bytes": 129442,
+      "sha256": "b34cd668882cc1f8e4d61c753cca0278e8b0355452a5f61ba1ccfdfe66de2910"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/company-bilingual-zh-mobile.jpg",
+      "bytes": 101743,
+      "sha256": "f2e82ed8f210db345d4d4802a4e2560e2ebf119c64c55ddc01f27ca0937888ac"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/company-bilingual-zh-tablet.jpg",
+      "bytes": 108025,
+      "sha256": "9c0e861fcff5bc347b679b3a813960ff45556d839ec3e8f976afafd39e3a1ed6"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/data-sources-local-desktop-region.jpg",
+      "bytes": 79047,
+      "sha256": "0e14acab842de6c891b05a77e5efdf452fe405ef01d3c729a25842f82bd1fe4d"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/data-sources-local-desktop.jpg",
+      "bytes": 124501,
+      "sha256": "2547c01d808944b7ad1f990dff89b54c7faf333ca1f7ffefa830ea16990c524e"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/data-sources-local-mobile-scrolled.jpg",
+      "bytes": 41573,
+      "sha256": "179e734e15c3fdbfc0e688013cc46f4f8187e2c6c4747a484943df8fe60f0f70"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/data-sources-local-mobile.jpg",
+      "bytes": 90238,
+      "sha256": "b0aa739628623712c1d3a003de94a713a30063b0f16c8134492c34e86ea1c80b"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/data-sources-local-tablet.jpg",
+      "bytes": 103429,
+      "sha256": "119a6bd1602bf682a32d6b9c214e4d39b43f7a921b9cdb07a0f155e739b06444"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/data-sources-source-desktop.jpg",
+      "bytes": 71456,
+      "sha256": "84d3d450405b4f8650bb2751512c99c97c8891c41895f71c4c78ad12adab19ce"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/data-status-local-desktop.jpg",
+      "bytes": 38776,
+      "sha256": "c752e9d542f0f42feb2586fe4c9321aaeae4980a3d186221a278072777eefa4c"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/data-status-local-mobile.jpg",
+      "bytes": 30864,
+      "sha256": "2b854fe8da2724dc7e890d9a5a397e77d53630259b3cd139eb1b2e06756b906c"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/data-status-local-tablet.jpg",
+      "bytes": 33654,
+      "sha256": "1fde041bae4ce6ecb42abc77d378876400c9416d421cb78f8c0c4707b57d26c4"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/data-status-table-desktop.jpg",
+      "bytes": 20329,
+      "sha256": "14c343816e37f50dcfb86d7ac1b63123a02b7b13c0d3cf11561c128a5d850f7e"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/overview-desktop-calibrated.jpg",
+      "bytes": 207415,
+      "sha256": "3dd33414d61f5a63b69f1ba2d114f892e3021dca1d9ce5af764ed6141bfc6a67"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/overview-desktop-explicit-clip.jpg",
+      "bytes": 38273,
+      "sha256": "048bbca4db700894e372986236d162144f7b886b48a671443a1a8e924bd960e0"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/overview-desktop-full-calibrated.jpg",
+      "bytes": 790702,
+      "sha256": "91048b958a97d9e3284b3a44c7ae4c83327fec04996dbe44aa4fff5247211dbc"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/overview-mobile-calibrated.jpg",
+      "bytes": 48346,
+      "sha256": "584821a2a520783f66ec1e1a5086b0fb04dfb82b86e8aa1e2002d0fbe39c7d11"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/overview-mobile-full-calibrated.jpg",
+      "bytes": 557646,
+      "sha256": "4f958e5e0dc12c610062fc7e3cd48d30f77b6d6ae9881aa869f7c7ff030c19e5"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/overview-observed.jpg",
+      "bytes": 252654,
+      "sha256": "b7c9230cd6df005cf16093bb1dddda112a286e51da71628a8449b0b68608343f"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/overview-tablet-full-signup-gate-diagnostic.jpg",
+      "bytes": 283943,
+      "sha256": "d7d96978507e44e65879df9435d3b2d70d927d90d7edfefaed3efcc36a197c79"
+    },
+    {
+      "path": "docs/design-references/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/risk-checks-desktop.jpg",
+      "bytes": 97190,
+      "sha256": "809f31176c4ca980cbb748f636dbed3408a130352d50da57195b7adb63477800"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/BEHAVIORS.md",
+      "bytes": 2192,
+      "sha256": "0db3c936774047398e3103cd0865d255fb858637c61c633a5b2dac6a35fef819"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/COMPONENT_INVENTORY.md",
+      "bytes": 1703,
+      "sha256": "91d94fb6e78c919f0ea3a34e28532b792581f8579071a064d7057d701496eb40"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/DESIGN_TOKENS.md",
+      "bytes": 1997,
+      "sha256": "79f9f8370b51172b54ac35dffc71019f90f3c704c938c7cfc14d94bfa00e188e"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/FOUNDATION.md",
+      "bytes": 6495,
+      "sha256": "e83e2988297ba6bff7f32541f05ec390fb020ff1cb31b5f28a194441f6937c2e"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/LAYOUT_ARCHITECTURE.md",
+      "bytes": 2229,
+      "sha256": "18d012d6236492b8cac9034d1c31e7c31c95a45be65b27339f98604ada0d8091"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/OUTPUT_PLAN.json",
+      "bytes": 2256,
+      "sha256": "c407a5c7a16a6488e52cc1a1492cb6982b8bfa7844ee551450b4363dc319af12"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/PAGE_TOPOLOGY.md",
+      "bytes": 2365,
+      "sha256": "9c6042da80a8de6dfffb6ffc9fbe574d487735cdbaa9894a8339031e374d0882"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/README.md",
+      "bytes": 7586,
+      "sha256": "826c84b803ade53a22cb222e7fc90036c94dbd5f88247d9403651bb02708ed28"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/RECOVERY_20261010.md",
+      "bytes": 3763,
+      "sha256": "9aa1b0d73030ff336f60275e3ddd7d5d7ec0f728fd7bd22a3db734c5a95e67a2"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SEARCH_RECOVERY_20261010.md",
+      "bytes": 5272,
+      "sha256": "39f817b25866467aafe5d54555e4a9b21253c03d36b5d365e7621b52ab904370"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/TECH_STACK_ANALYSIS.md",
+      "bytes": 580,
+      "sha256": "3b13ffc9c4990ee898423dac2ac34cc54ff4cef4119abf44494fba5f70db26b0"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/asset-inventory.json.gz",
+      "bytes": 76518,
+      "sha256": "8b65ae81f7482997331b8811867554fef294d41c2ec7fc5d4bea4edced245a10"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/components/SearchGuidance.spec.md",
+      "bytes": 4798,
+      "sha256": "e9d9ff6228ceb773c4ab56b7693554b22dea09f389a8508a5fbe71873cb4b28f"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/desktop-analysis-open-complete.json.gz",
+      "bytes": 16048,
+      "sha256": "f54ebb41fa7d17e3992ef1fca735ffdf2c2d28f4c47626c9ed56ada980e2a01d"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/desktop-analysis-open.partial.json.gz",
+      "bytes": 3188,
+      "sha256": "b24610c3c6c41b1a4e975e57738ed76df91af5092d5dcf320f591e9745448e78"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/desktop-chrome.json.gz",
+      "bytes": 34777,
+      "sha256": "115ee0af9f0d4b92815429627067ca7b93ce607dc04d930f1518fcc8681c8778"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/desktop-extraction.json.gz",
+      "bytes": 14757,
+      "sha256": "4e7e5df65a22a5da2bfd5194b591aefae69e234e724159fff73a1a2963033979"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/desktop-navigation-closed-complete.json.gz",
+      "bytes": 7777,
+      "sha256": "12c8315293c5d6e82838a3777de0765261f2ef796d39806f43ec60290acf64f2"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/desktop-navigation-closed.partial.json.gz",
+      "bytes": 2556,
+      "sha256": "bed62c78e10119b5653f5af055b5a162cbf0ea5ef45d2c4c68cff9d7eebc7340"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/desktop-resources-open-complete.json.gz",
+      "bytes": 13352,
+      "sha256": "e6629662d8bf2bd7d1be5f647e592944f54d1529017a5c30f68904e3dd595028"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/desktop-resources-open.partial.json.gz",
+      "bytes": 4646,
+      "sha256": "3f2ec39657b303260cb90c5cdf0821e457b09dfdfe4f1ea17250667a92a8761a"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/desktop-settings-open.json.gz",
+      "bytes": 12048,
+      "sha256": "ff011c9f39ac9b0220b7b9a4bc37b0026f5a0daa35ab8089da9f47e4df7e6a25"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/desktop-updates-after-click.json.gz",
+      "bytes": 7789,
+      "sha256": "d37ef9f1a94505c02048e7ea8ae7f55dacd5d5246e78ebee64b5f7bad1252ca4"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/download-manifest.json",
+      "bytes": 10459,
+      "sha256": "660c6d914c43ec8e6042940416d7138325344e87595d0c507b9d0b0bd5679792"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/mobile-closed-chrome.json.gz",
+      "bytes": 36565,
+      "sha256": "78b81f0ce246341a699b7173cbbd585ed47391efad7d160c568002051888cb30"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/mobile-navigation-open.dom.txt",
+      "bytes": 14382,
+      "sha256": "9fdc5a22e1f8a4a692c5c6146681b41ae9f87b5a00f3c0807d26193152eaeb05"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/mobile-open-chrome.json.gz",
+      "bytes": 36320,
+      "sha256": "029ff63f372077c69c8e2fb957d7de6d30226868f45663a827d4e9d2b8f3311d"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/shell-assets-and-css.json.gz",
+      "bytes": 78539,
+      "sha256": "520cf06240be470b4fb9d633d4db38ea6d1bfa3150354eb7e83466b7a921d85b"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/source-desktop.dom.txt",
+      "bytes": 14347,
+      "sha256": "a6f23fc03d16f2645874326012eee49a73245ecdd30252d418fb9108c5d3b9cb"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/source-mobile.dom.txt",
+      "bytes": 14362,
+      "sha256": "7ef90a094e111d5de7f583cb40cbb9de827467e83a730aba3da5e7c014fbd69f"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/tablet-closed-chrome.json.gz",
+      "bytes": 37144,
+      "sha256": "3d62b3621a3fc2dc28046e79a7ee5ec7858ab1d92ae4476d80174b3eec6dcee1"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-desktop-search-empty-part-000.json.gz",
+      "bytes": 7566,
+      "sha256": "b7fa2090a83b97be09649d0ea425216d3be9b5c9e5c8c734a9e91d31ced432b7"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-desktop-search-empty-part-100.json.gz",
+      "bytes": 5569,
+      "sha256": "3d775776078720183b268eca327482e741e2275ef585aeb974230ca409a7c8f0"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-desktop-search-empty-part-200.json.gz",
+      "bytes": 5582,
+      "sha256": "05fd6cb73b56df415f36f38187cd8a33dc89f5c3254efe93e423dda8da72f6d8"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-desktop-search-empty-part-300.json.gz",
+      "bytes": 5043,
+      "sha256": "3d527a1472d845032651ff8938ee3efa4be69524ecc0bd8dc71ccdc03876c8d2"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-desktop-search-empty-part-400.json.gz",
+      "bytes": 5146,
+      "sha256": "71f76ef912869a2d04a755ada720b71672dde924365a69ae7d205ab20e1b01f8"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-desktop-search-empty-part-500.json.gz",
+      "bytes": 4659,
+      "sha256": "d66a3e5cf54507af4d51a74a021abebbb084e6c2ba4f3b3c895965b85dc5dbc1"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-desktop-search-empty-part-600.json.gz",
+      "bytes": 2543,
+      "sha256": "c2602a7723a34e8f22493e7c6e9f1a643f583ed0515b74c5e949e87dc9cf6bae"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-desktop-search-empty-shell.json.gz",
+      "bytes": 4812,
+      "sha256": "2de4d54ca937d0b2b66c447970f41dad699044e64435bf17ff938045f860b91f"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-desktop-search-hood-arrowdown.json.gz",
+      "bytes": 7707,
+      "sha256": "58a9f2acd5535cce349d97d0354cdb933d2fff777dc4dd5c750976400982d68b"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-desktop-search-hood-content.json.gz",
+      "bytes": 2385,
+      "sha256": "89b5fd7793bdc1ebcf3e13c006be366f0a3167bcd5a1847f566822f02c364ca2"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-desktop-search-hood-part-000.json.gz",
+      "bytes": 7706,
+      "sha256": "ed6697d3ee53903db0df11fd7536ad7e1bb357e1638d4c749dfa12151db72da6"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-desktop-search-hood-shell.json.gz",
+      "bytes": 4862,
+      "sha256": "85b5d3d5af7e15f4eedb5c19a81d35c9de6ea65520beb66e7234b8125c074864"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-desktop-search-no-results.json.gz",
+      "bytes": 4714,
+      "sha256": "1bf304d491acc762554fd9378a63e644023805c62ca4b72413a0294ab15abfa2"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-desktop-search-tip.json.gz",
+      "bytes": 36502,
+      "sha256": "871e164f2f2490e794557d900c2b66f290d475bf18bfc489527e2c46404d7e19"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-mobile-search-cleared.json.gz",
+      "bytes": 4287,
+      "sha256": "f14f818467e8fcace8a178740d395458270f591b7b3381d2680236ecc3b973da"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-mobile-search-companies.json.gz",
+      "bytes": 2361,
+      "sha256": "54b39511430904d30a895787e884fec21aaf31d3e561ac3553839c14975d3269"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-mobile-search-escape-closed.json.gz",
+      "bytes": 682,
+      "sha256": "73e03ec09db482fc23f3b655ceb76e0a93c3f0aa8b6d55c0a017add632cb2329"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-mobile-search-etfs.json.gz",
+      "bytes": 2366,
+      "sha256": "987c09de2aeaa21bec74f37c2ccb94b3fe47bad00de6c27c3ea8d4d9220eaa73"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-mobile-search-investors-arrowdown.json.gz",
+      "bytes": 2534,
+      "sha256": "df3b8f4700ae6da551f9562456bf8748d3ab19a7267c65931b78c345ff2a70b0"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-mobile-search-investors-arrowup.json.gz",
+      "bytes": 2530,
+      "sha256": "4bb311872f9c87836a70737b92b8cf945936a2b81fc39b8ff2af3f3d1ad3ee8c"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-mobile-search-investors.json.gz",
+      "bytes": 2534,
+      "sha256": "00d3099b881758e49608dd1ccc001da6fab148d3c8ea9ca6a87bdafcfe3a1fb4"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-mobile-search-tip-pointer.json.gz",
+      "bytes": 36682,
+      "sha256": "641b89c9bed7cf9a98f0329f8a9496eaa65ff9538ba6c9ea35f98439844c24df"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-mobile-search-tip.json.gz",
+      "bytes": 36682,
+      "sha256": "641b89c9bed7cf9a98f0329f8a9496eaa65ff9538ba6c9ea35f98439844c24df"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-search-final-closed-restored.json.gz",
+      "bytes": 250,
+      "sha256": "4437371f11e3216e6a83dae9ade2110720343efde409fd0613c0e752121eb72f"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/v602-tablet-search-tip.json.gz",
+      "bytes": 36701,
+      "sha256": "fd5a26ffeccf0afb4ede43c61666ef322484961fd9b8d1404bbe8b42b4406411"
+    },
+    {
+      "path": "docs/research/r1-session-20261009/SPEC.md",
+      "bytes": 2966,
+      "sha256": "e1800a859e904516cfa9343060ec50953a4d5715fb39731bd6e26ea9b1c6733c"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/portfolio--demo-128b5e04/OUTPUT_PLAN.json",
+      "bytes": 921,
+      "sha256": "7fa4b62703512033b433cbb47aa562c8fd5e29d8d1680efc756757a82f4ae3f8"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/portfolio--demo-128b5e04/README.md",
+      "bytes": 3493,
+      "sha256": "862fdd41bde7a5e4b326fc060f0d6fdcc4aef6d30b3ed1ab416d34c98a499a51"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/portfolio--demo-128b5e04/analysis-gate-observed.dom.txt",
+      "bytes": 37507,
+      "sha256": "dea154514e9b96399934d3ee2e69641f148902a0db55dd93a2c5ad2f9ac91a81"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/portfolio--demo-128b5e04/holdings-after-analysis-before-gate.dom.txt",
+      "bytes": 37507,
+      "sha256": "dea154514e9b96399934d3ee2e69641f148902a0db55dd93a2c5ad2f9ac91a81"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/portfolio--demo-128b5e04/holdings-observed-754.json.gz",
+      "bytes": 389520,
+      "sha256": "41011a98ad2a44a0d13066b6d7f6e4ad2dbfca4af9da9f25667f501e4c6f5cd9"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/ENHANCED_A_OUTPUT_PLAN_20261008.md",
+      "bytes": 3132,
+      "sha256": "134cce3d0169ea54c7d7a6fdf33219740e61eb8f9d81cb637eefb05a194f3ed6"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/FULL_SOURCE_BASELINE_20261008.md",
+      "bytes": 3611,
+      "sha256": "9ae4f474a09ca83c417e7fbd45d6e93f0dc917457f9eee9ad553fed32f5ac251"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/LOCALIZATION_20261006.md",
+      "bytes": 3731,
+      "sha256": "15e86da1166f9645fe26805a4cdb8ecd7d0e40904eeb7f3abc8aa867d99a83e1"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/OUTPUT_PLAN.json",
+      "bytes": 3633,
+      "sha256": "791e9b1c48627eaf1317d79533f0d518ab23dc09f0b4c16a183fa84ac65f8e19"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/PREVIEW_20261006.md",
+      "bytes": 7618,
+      "sha256": "2865c32520c718074453a7ab15a65e7ac65ef9d31386988e330fb23b7fad29e0"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/PROGRESS_20261006.md",
+      "bytes": 6668,
+      "sha256": "ebeece721058b6e0bb50d8ae71d59b9c3d1395242df07345affe9fb444501fe2"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/REVIEW_20261006.md",
+      "bytes": 2682,
+      "sha256": "3a2397446823ffa89bcbf3c0c8d72423724f7ed4235139e5ad24d58cd3413fec"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/SourceFoundation.spec.md",
+      "bytes": 4209,
+      "sha256": "0c179316bf1cb3ebfdd7fbbd238b6dfe805b3ec1d703fab2164ce5bb6e036b75"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/assets-inventory.json",
+      "bytes": 75470,
+      "sha256": "d08e319042ff5187e5970268545008368b3b579bbf6b6712b750dec5b9c75fdb"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/audit-desktop.json",
+      "bytes": 238020,
+      "sha256": "f358632e39bea294cccd40482b39e237ce705c1dda61fc776c85b0002e834afe"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/bundle-fonts-20261006.json",
+      "bytes": 2066,
+      "sha256": "411203c577136f1cd8e2a3de89131f73365627a1deeb2aede6e17977a48f857c"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/capture-readonly.js.txt",
+      "bytes": 1427,
+      "sha256": "e3f55821b44db4e663e0366128aead5e06875f4b9a3348a031a9209bc59aa1c6"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/CommunitySection.spec.md",
+      "bytes": 2722,
+      "sha256": "41f7bf196504e39e0049cd674fdc06113b50dff8226eb14f43e4a14e945d21c3"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/DiscoverySection.spec.md",
+      "bytes": 2759,
+      "sha256": "0700d0055951b727ed5650ce71cb47cc4b9c3e209980d94d9b775cf4e782bfe3"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/EnhancedAContent.spec.md",
+      "bytes": 2290,
+      "sha256": "3efa3462e9211a31501fa9a2a70ed5c11b27d83ad5e3d57fa378c07954e962d7"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/EnhancedAHero.spec.md",
+      "bytes": 2474,
+      "sha256": "86ad33df8dcd792ceb17724eda91ac61c88cd93b4836f65b777df0fdd3a9bdff"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/EnhancedANavigation.spec.md",
+      "bytes": 2545,
+      "sha256": "6c068fe5f20a4ec179ce105246cb79a226dc18f5b50a1eaf3d6e37176829bc42"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/FinalCtaSection.spec.md",
+      "bytes": 2739,
+      "sha256": "d12a5199f74ccef1e45801a8317e8d40ee724930644c90a62a9a10d2dee7de2f"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/FullSourceHome.spec.md",
+      "bytes": 1585,
+      "sha256": "dfe4d781167fa0d9d45475ba4f69f081be1a29c227b9b8f145ea2e331bb247c9"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/HeroMedia.spec.md",
+      "bytes": 2262,
+      "sha256": "be6c64fbe84218a4f2b176667ceb0822b8f59d672045de314be95ed158ec3552"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/HeroReviews.spec.md",
+      "bytes": 2053,
+      "sha256": "4325bde6de989d2dac4be06fce00edfc96c819fc4c65b5f26aa6601cbdb17f00"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/HeroSection.spec.md",
+      "bytes": 2726,
+      "sha256": "b1e66df42f260d810837aa6a3c39bf7c85f3a8dbcf74eb3d916cab3618c2392b"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/Localization.spec.md",
+      "bytes": 2321,
+      "sha256": "1ab5e0141ffc51d81e737f173b1ea330b46b52277f68f9a5e9bff7b6427a4016"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/PlatformSection.spec.md",
+      "bytes": 2739,
+      "sha256": "f1c38cb1aa257a2ff05682b064e3f797333f5f9b31b8d1d7b60cc3d6e3226466"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/PortfolioAnalysisSection.spec.md",
+      "bytes": 2845,
+      "sha256": "1d731ac27266a622dd9c038c5fa05d27f1d426661bb523440f22f11ba15eccf3"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/ResearchSection.spec.md",
+      "bytes": 2809,
+      "sha256": "49ab1ce62d1e592be983f8c4cab67c8ca63cba94114663de452a192dc0108a3c"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/SmartUpdatesSection.spec.md",
+      "bytes": 2756,
+      "sha256": "cca0735cebb31c547b16fdd3467061d85db1214adc9660fb3623a01e583f38e4"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/SourceFooter.spec.md",
+      "bytes": 2773,
+      "sha256": "fcf6de2e5c3f13b20c6035169809e04482bbf4a69a420c208db327afffa7ec14"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/SourceNavigation.spec.md",
+      "bytes": 2928,
+      "sha256": "820f796f175adc1abdf2afe67fc94c5630d029b6b829c7a21da6fcf956dc8fe9"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/SourceStockSearch.spec.md",
+      "bytes": 1238,
+      "sha256": "afe83368fa7043c5ff4c3b864009341d16967ef993002c8a12b14cb9a04f118f"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/StockSearchSection.spec.md",
+      "bytes": 2746,
+      "sha256": "41d2548af0991a931869bfccf27e0a273b6991d47373718c3da04dc9ded0f143"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/TestimonialsSection.spec.md",
+      "bytes": 2809,
+      "sha256": "3f2498bcf6601eca7f444c95417d970c792ca8f7fe26c8760ee1aca3d247b415"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/TrackingSection.spec.md",
+      "bytes": 2742,
+      "sha256": "81a6239bc5c29b1c805f763284a4052db7695857b9caad99a21bc93d5fcc2426"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/components/TradeAgentLogo.spec.md",
+      "bytes": 1642,
+      "sha256": "bdb88d78b0cf9a670b1b8413986cb1884aa58c5693564355dedfaa01b8ea07f1"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/computed-full-20261006-1440.json",
+      "bytes": 1681054,
+      "sha256": "82a2ceca4527f5486a0282e96befe1c40f204754c300ea7b333bf0ab229e5ae6"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/computed-full-20261006-390.json",
+      "bytes": 1682310,
+      "sha256": "6f075c3e7b39d9c1d70bb9838328509ce5f2ce46fb46b4a7d3d3ce017f1c1c88"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/computed-full-20261006-768.json",
+      "bytes": 1682127,
+      "sha256": "2b2684dc185b424538fda6381955b96e0775e45aeef40e112d9861db374eac11"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/desktop-features-click-20261006.txt",
+      "bytes": 19429,
+      "sha256": "6fa56bb1f452f8c0c02893f43c2f66210bd0df2ca2cc0be4b63616ca12629f14"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/desktop-features-hover-open.json",
+      "bytes": 2714,
+      "sha256": "c6c6b8e00398ee4d023fec545aee269b720a70f597cc8bff2bdc12130eee7338"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/desktop-features-state-20261006.json",
+      "bytes": 2267,
+      "sha256": "0e8a1770ccef2f04a91960020717e730b126f1f348c4ae62f88ef8220fd09c9f"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/downloaded-media-20261006.json",
+      "bytes": 18986,
+      "sha256": "f8b6c1fc4959c931f10f04cad86f4105bd5e99cedeb625df2e27614d2bef4547"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/foundation-bundle.json",
+      "bytes": 3261,
+      "sha256": "c1dc28c1e6441753c5bd667a708b0156a2553a1c73321c03fd65f321c35c688b"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/hero-hover-and-video.json",
+      "bytes": 377,
+      "sha256": "5ffb368967174804beb516e87cb0b3a607b549e468df3dede8ba3e00122b106d"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/hero-image-downloads-20261006.json",
+      "bytes": 106,
+      "sha256": "80c7f3c1ebb361d005cf5f683997d455a4d2321900cc4ea4f565846de41bf279"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/local-final-header-1440.json",
+      "bytes": 1393,
+      "sha256": "75abb35bc7b1647f68f08b2767e131d087e4095932c8861d16979cfd3a17a2e6"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/local-final-interaction-checks.json",
+      "bytes": 509,
+      "sha256": "2712a715c69b6e1c2deb0afb7d89337ecd8e595bf160dcc953c913926fda79b2"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/local-metrics-1440.json",
+      "bytes": 5803,
+      "sha256": "44480af3e2b66e1c2d442fe3075034df52ea247c3347339be991ec8e7aa0c953"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/local-metrics-390.json",
+      "bytes": 3680,
+      "sha256": "cefef33a9f4975d8f9f5dc1b3538d9b09c3d464207f86109352b3b7965be9c48"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/local-metrics-768.json",
+      "bytes": 3418,
+      "sha256": "0ef249961c7175a3a926dbf018fc719b16e93b94cfe5a394dbd0dbb471259597"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/local-mobile-menu-open.json",
+      "bytes": 266,
+      "sha256": "cee0e34aa694e4ea8e806fac1a94c0439affec09bc605a8de4e4d4eda1ce9803"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/local-tab-click-checks.json",
+      "bytes": 2090,
+      "sha256": "a2668394825251656d4596167fcff1339d8c943fa0c49848740dceba86bc3798"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/locale-source-text.json",
+      "bytes": 12079,
+      "sha256": "e8f9d52772640cc73e45ec222235113c906f8c3cc13faba4753be8f0860d988f"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/mobile-menu-open.json",
+      "bytes": 14337,
+      "sha256": "6f3259613bf274567350fc8ff53377711de2c1ae747e3c2104cfba8dfa509f97"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/overview-20261006-1440.json",
+      "bytes": 5644,
+      "sha256": "f1be34b429299edf99a58cf089ae0e5afce1ae13855474d142f7249adb90d326"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/page-assets-20261006-current.json",
+      "bytes": 75106,
+      "sha256": "f0bdf3751b1667dcd81e3f6462f991ab52d30e697a965f58150577f908ad9fd6"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/page-assets-20261006.json",
+      "bytes": 73135,
+      "sha256": "40010774ded57bfcd1370df57d20d8837d49c7b5fb36b638859e8052cb1d61d5"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/research-risks-active.json",
+      "bytes": 3818,
+      "sha256": "d378b80751668ee7be4e3ea8ee8967b00abfe9e8df0a9ed18a6388ea6cab39df"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/scroll-first-page.json",
+      "bytes": 345,
+      "sha256": "c82b0426168fc3824bf2ea07c258f820133ada6dcc8b59798b544a1f40f51de5"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/source-css/3d8ac1cfee66430f.css",
+      "bytes": 50621,
+      "sha256": "9d0d123aa6d2e91e9fe72abbf4f10253e19466990d05dfef7733eaed0ab3ddcf"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/source-css/3fcb31c082795008.css",
+      "bytes": 140227,
+      "sha256": "b20d30b1800d65f7c6cdbbcca107278fb9013ff513eb647594345f93aad981ae"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/source-css/5f8932b378b8f11b.css",
+      "bytes": 76625,
+      "sha256": "4fc9eabb5cbb9eedf0b4f8f7566abc33e9199ffaadcb14bd0c73311eeba2ae4b"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/source-css/72584aff0dd8d4f5.css",
+      "bytes": 4576,
+      "sha256": "ea4fe6a3b464996a954a049b15711f74c90fb719d4c3224f5292a0c5f4766d99"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/source-css/75da1eeb5f512dde.css",
+      "bytes": 2098,
+      "sha256": "7d68453bcd7750464935b61e3100cfd2a60504fe0ff6ab8e1aa04bb2ce317eeb"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/source-css/f0616db2b848d61e",
+      "bytes": 40280,
+      "sha256": "6aa654d8bba876acf2e824115879fcf03e543a24268436edad7c19ec18ed99dc"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/source-css/manifest.json",
+      "bytes": 2880,
+      "sha256": "3b2ccbcb1ddb713c5c2ea0418aeb5239b680e1016b615d86a20ce7ae1486df6e"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/source-metrics-1440-comparison.json",
+      "bytes": 4776,
+      "sha256": "7ba5462692314527f04f641ba53bb0dc5f24659c9e42bb3984b433a7bd9e92c1"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/source-metrics-390-comparison.json",
+      "bytes": 4973,
+      "sha256": "bff5cd12b5e32c3abec6dc5c0d1cdb164bf1162de5343c1baeb493884d109eea"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/svg-computed-20261006.json",
+      "bytes": 328,
+      "sha256": "eb7c7ea2a63e52f73ece97ad684201388c77bf02e9a1fe8182252843ac70d26b"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/tree-desktop.json",
+      "bytes": 120879,
+      "sha256": "a131bdb5bdef422272cca704dc16d58003257aec83fdc954f8a95f17a0741a3a"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/ASSETS.json",
+      "bytes": 1160,
+      "sha256": "3519b814f1c3e784448b440897e591f22ee8df1afc28005ba5ce483815426056"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/BEHAVIORS.md",
+      "bytes": 3535,
+      "sha256": "e53c2a672708b778a7b79c81da9bfc30cbee40debd270163ed5a21c118316a8d"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/OUTPUT_PLAN.json",
+      "bytes": 1670,
+      "sha256": "e45f8c479072533c209dcbd320395afe7f94aeb9b4c563ec798adaec59d4784b"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/PAGE_TOPOLOGY.md",
+      "bytes": 1586,
+      "sha256": "6cace7da8c096f6d120ac68d69c29a656ffb0f9af66336a242daa9356a7d173c"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/README.md",
+      "bytes": 4464,
+      "sha256": "36d0d13762770e75f51e5fae946726580f061eef1189eb498d1bc527f182781c"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/analyst-expand-signup-gate.dom.txt",
+      "bytes": 41247,
+      "sha256": "43eb68dcfe3a4615ac263f5693f83d71a35b8317ab5396dbda61d38b18ba16bc"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/asset-bundle.json",
+      "bytes": 432,
+      "sha256": "50712c79804bd151ce77d3892fe36fbb964126a11631eef2b764de1dee29faee"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/asset-inventory.json",
+      "bytes": 534877,
+      "sha256": "0883a4f1d0744c31eef5dddad4e3c5b94934efe5c9ef785bd60d26f9d5d4e4d0"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/company-current-state.dom.txt",
+      "bytes": 38681,
+      "sha256": "e085043dfa7612c6f1a50a7fe0f44c0f98960a7a9cdafa053bb2ae9e4f91850d"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/company-signup-gate.dom.txt",
+      "bytes": 39144,
+      "sha256": "1cf35c9118c310606276a7696c77044f10f5b86b3de8d957f70500f88494dd77"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/BilingualCompanyPreview.spec.md",
+      "bytes": 1999,
+      "sha256": "b5e0feef2f4072d31004f93842adb8327ea5840eb00002527d2178e2cc41689e"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyAnalysisModel.source-desktop.json.gz",
+      "bytes": 1542,
+      "sha256": "59da80ef70722b2a65380502df270f48e0e4f1a7eaf85d8f1f02ebc31f99f6be"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyAnalysisModel.source-fresh.json",
+      "bytes": 5108,
+      "sha256": "e8dc2552c11ca1d7e4444d99b3bd43c9a364ecdb410618cdb4fee7e2d5b4763e"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyAnalysisModel.source-mobile.json.gz",
+      "bytes": 1550,
+      "sha256": "2031923eb394ac19943d5d90b86872cef39d4236a97939fc80e7fee345ff692c"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyAnalysisModel.source-tablet.json.gz",
+      "bytes": 1548,
+      "sha256": "4e003ce56e40cd53628a2a4b1237f0ec52bb5bbb2d9f6dda5ffe5c54d704656e"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyAnalysisModel.spec.md",
+      "bytes": 3748,
+      "sha256": "f6442aaac41e686a7ef578fc3681b5d2f2e48d9dd3a144ec8487e22546348f56"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyAnalystSources.local-validation.json",
+      "bytes": 42597,
+      "sha256": "f2d5eefe9700cf9cdba8f5c51230eef3ab09d28429fa33f7b4caa5d02533ec91"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyAnalystSources.source-desktop.json.gz",
+      "bytes": 1734,
+      "sha256": "75f40d3a2afc54edd62fd1cfba2b4b89dc362a760a964eb593471812a8c3eed2"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyAnalystSources.source-mobile.json.gz",
+      "bytes": 1768,
+      "sha256": "409545c8523051ea39dacec2332760c26ba33f9ac69ff0e207bcbddcaad21d24"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyAnalystSources.source-tablet.json.gz",
+      "bytes": 1730,
+      "sha256": "eeee0eb68a9ad5c97db189cc6a807b557b71aca655b7f239ca738510d91cc8f6"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyAnalystSources.spec.md",
+      "bytes": 4322,
+      "sha256": "51ee064ab3f635f76ceda8fc31586bf0dacd3f5adc32512a694a480067f1520d"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyAnalystSources.validation.md",
+      "bytes": 3065,
+      "sha256": "a1f365bba8fa8a6a4a86c0b91532e2b5777b67efff5523033adfdabf25363de2"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyBilingual.interaction-validation.json",
+      "bytes": 913,
+      "sha256": "2235bd94034a004cbecdb109a8e2785bdb1cdc208c9adb7ca6ffceb4d6891cd4"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyBilingual.local-validation.json",
+      "bytes": 74783,
+      "sha256": "27cdbddaabda773cb100bca24cb6470e19dd200c7d1781053023a15711332d10"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyBilingual.validation.md",
+      "bytes": 4170,
+      "sha256": "2b0116af1970eff593ec1afe55b5b509f9f34ff900f8c9398fe5d1473ff220ea"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataSources.keyboard-validation.json",
+      "bytes": 406,
+      "sha256": "c7cb17eb319594f8cf8709bdae3649a1293660c681328924b2b91c722ff61456"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataSources.local-validation.json.gz",
+      "bytes": 14424,
+      "sha256": "1b193a03af611165fdba539149286a55b431c53e9b02681d6ba117e0ac8f0914"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataSources.source-desktop.json.gz",
+      "bytes": 5744,
+      "sha256": "0bfb119ab97ac9a207468f2f3f41398d65e5a330be02108c700037edfbc438b5"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataSources.source-extra.json",
+      "bytes": 72182,
+      "sha256": "cfb1b73bac9401c5d313f42a2ccd350a2baacbef06f0b33f3d505108618c0ffb"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataSources.source-focus.json",
+      "bytes": 358,
+      "sha256": "8557d410ba761630a9782fe08bfb11dd7c155512d24b44884f92250b622fb735"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataSources.source-mobile.json.gz",
+      "bytes": 6000,
+      "sha256": "ae80a9115a152289429326c832cba3a3129ad39bf6a1a8511bcac1de6fd600d0"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataSources.source-scroll-ancestors.json",
+      "bytes": 3639,
+      "sha256": "d6da5fc63f18ce498c1678ffb482a021d02d009f4965c9520f59e02f073faa70"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataSources.source-scrollbar.json",
+      "bytes": 266,
+      "sha256": "3b160cfb6020aedd6453f8ae3976c83679d2145e23ae78de78857a530814cc7a"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataSources.source-tablet.json.gz",
+      "bytes": 5783,
+      "sha256": "9fc9ef568858c5004bbc4aaea49acde6c3f14c7bfd5feac26cf8494e871b6f8c"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataSources.spec.md",
+      "bytes": 6370,
+      "sha256": "9b280961024a707a50d5ac466464e18617a322d0c458b7a16d0d36b3b11056c4"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataSources.validation.md",
+      "bytes": 3956,
+      "sha256": "694717f02f19eec69fffceed76d91402cb283753293af1eac305404b47d678ce"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataStatusTable.local-desktop.json",
+      "bytes": 14434,
+      "sha256": "bb9f178f383d67a0249ffdb85ab498ec4ba6136e51c790fa022e38313d85887f"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataStatusTable.local-mobile.json",
+      "bytes": 14525,
+      "sha256": "3010de847648a172faf513ff32fa747565c8e9811ac04dbf1f4485b0bb701705"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataStatusTable.local-tablet.json",
+      "bytes": 14483,
+      "sha256": "492a159dbc00da413688d886886ac0029ee17f8a57c40506bac1921d7aad61bd"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataStatusTable.spec.md",
+      "bytes": 3368,
+      "sha256": "74c095eef5c1c2aa742605469381c2c25758332c7d767b7a842b8c71ca5d17c8"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/components/CompanyDataStatusTable.validation.md",
+      "bytes": 3009,
+      "sha256": "a1ea58fc5d9518c791748d296bf4db25b89ba7651ecce3f4ceedf9eb46fb732d"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/desktop-calibration-measurement.json",
+      "bytes": 1069,
+      "sha256": "a7b15477b34cf9f12cafde6c762683ae8f821eedfd8b8c0f8b889b9e5c0860e4"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/mobile-request-measurement.json",
+      "bytes": 961,
+      "sha256": "f7fbb22f84adeda2a259dd105809db61c944bf1c3a22aee60cdaea407bbea42e"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/more-details-about.dom.txt",
+      "bytes": 39145,
+      "sha256": "11ee2cbab8e5c87483afa4b7df5084d74d674c7f5f35f00411931630d574c1c4"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/overview-desktop-bounded.json.gz",
+      "bytes": 312354,
+      "sha256": "37c95b1d2a3f9861a0f6b559bf287490d8626e7bb1eb4b8db6c7d91df1fda81c"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/overview-mobile-bounded.json.gz",
+      "bytes": 301148,
+      "sha256": "21e18feb7ff7b66433c6ff5510b0d5d696cda482575a911e1b12e36a78364947"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/overview-observed.dom.txt",
+      "bytes": 40793,
+      "sha256": "b3a627c027910751258fd43cbeb2f9079eb621a274029d91dcfa9bdcd9da0d2e"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/overview-observed.json.gz",
+      "bytes": 42453,
+      "sha256": "8178aba4effd51859901e505858c8e3ce8859244e42750c8312d9ec8e1facd0c"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/overview-styles-observed.json.gz",
+      "bytes": 75983,
+      "sha256": "2526cb97f2b4ef4619acac3918db7b60cf66801bb50a0a7757ae2af77d30e0b9"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/overview-tablet-bounded.json.gz",
+      "bytes": 307661,
+      "sha256": "8a0ba67a182092310304f85aa961ff7ff36778f4d01734b3af8c99d186403e20"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/responsive-rules-observed.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/risk-checks-desktop-bounded.json.gz",
+      "bytes": 323404,
+      "sha256": "9bfddfa2a86c04976e4c4ff4274dfd752b7e29b13808bfb64784690cc8aa5979"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/risk-checks-desktop.dom.txt",
+      "bytes": 46997,
+      "sha256": "31ea35df14b60ce6c467c73239143586ad15cc62dbc2d7c095e5f88f6e736da7"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/source-css/PROVENANCE.json",
+      "bytes": 701,
+      "sha256": "0e79df3c9a847be03374fbba79c672fa0c508caf10905dd82dc6eff263c8309a"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/source-css/base.b3ff7a10.css",
+      "bytes": 29449,
+      "sha256": "da200b9fd93bf8b5589d61ad9e78fba917bf33f2b235db8199e26822fcd1f1c4"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/source-css/main.41545de5.css",
+      "bytes": 382986,
+      "sha256": "61c88dadcd57201b3184e88d540beda348eab8d19898f80f31256a46db913f3a"
+    },
+    {
+      "path": "eslint.config.mjs",
+      "bytes": 483,
+      "sha256": "275a07c13fc7c83a652efcfa9fb6a207c451a2f5088e6793415ce44281285720"
+    },
+    {
+      "path": "next.config.ts",
+      "bytes": 160,
+      "sha256": "259f79f7dbdc49d474d704db41eacbfb94dc7a75edbb64127464675b10f88af2"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 379087,
+      "sha256": "60049dadc459193621e03514e0df43fc0358b1f734e31bb742897950620b708f"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1576,
+      "sha256": "2ec388524c86e05aff2252a33bea648d1b449ecfa118d265d3921ccc552fcbd8"
+    },
+    {
+      "path": "postcss.config.mjs",
+      "bytes": 101,
+      "sha256": "7b299d3d3b16699ddda397c0b2373b3af4f25f8fc9ccc9b3d9e64ef083bc1c21"
+    },
+    {
+      "path": "public/images/.gitkeep",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "public/seo/.gitkeep",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "public/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/7b58b71d7d62.css",
+      "bytes": 1391,
+      "sha256": "b08722785deb1b9e63e4da3591a9e52c366a39a0fd02284ed11ce4faee35a90d"
+    },
+    {
+      "path": "public/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/92d40a411d31.jpg",
+      "bytes": 132408,
+      "sha256": "ecb2101d5002f778c2392504f09c4d75f99989ac3c5a44a910bd58794901001d"
+    },
+    {
+      "path": "public/sites/fiscal-ai-7ee12bc9/shared/fonts/0ee86126fb55.ttf",
+      "bytes": 63412,
+      "sha256": "50357df108c5d297ec4ece76aeddf49561f3794f67af077cfc2c711b7a75b439"
+    },
+    {
+      "path": "public/sites/fiscal-ai-7ee12bc9/shared/fonts/38f8abefb8f8.ttf",
+      "bytes": 44784,
+      "sha256": "c97fcd822f825e9e731867b650a39ee678b609bead29385e320171b573ec0910"
+    },
+    {
+      "path": "public/sites/fiscal-ai-7ee12bc9/shared/fonts/43adbc7c773e.ttf",
+      "bytes": 63336,
+      "sha256": "076831b98043f50f829b6c91db3be4a844641f1c95bccff5c886ed87c661a852"
+    },
+    {
+      "path": "public/sites/fiscal-ai-7ee12bc9/shared/fonts/4da63a1b968e.ttf",
+      "bytes": 45308,
+      "sha256": "dd60d0861a3efd540efc3f2f85e7a7fd69a7ece7eadf44aaffa5fc5c86adda0e"
+    },
+    {
+      "path": "public/sites/fiscal-ai-7ee12bc9/shared/fonts/56632cca6632.ttf",
+      "bytes": 69416,
+      "sha256": "3e699ead1876244fa392243054ddefe7cf631b488438828a8a100731a22ab995"
+    },
+    {
+      "path": "public/sites/fiscal-ai-7ee12bc9/shared/fonts/f2374e6da2f0.ttf",
+      "bytes": 63404,
+      "sha256": "b4fc14ec283d54236fd302cdb92546f98ae0ff061ca5ee23453a02bdf4628791"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/images/epic-product.png",
+      "bytes": 30033,
+      "sha256": "74e1253b9f59ebd1ddc923c9025d6b362d539c6556af553cc723f5fad52b975c"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/images/reviews.svg",
+      "bytes": 41959,
+      "sha256": "e23b9876e0391fcf92d91aebdbda6bc27d2448eb080266508aa049047c667994"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/0562300fc9147943.svg",
+      "bytes": 262,
+      "sha256": "2365fb3bc9fa566945a647f69580bd92d7fd25920b0e14114d8593edff66363a"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/0c0fc09f1c93814d.png",
+      "bytes": 24501,
+      "sha256": "2046f4e32008119307d0d7e95e3df4a56b3093b3f13ef17daf98080f3c4adf78"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/13d634fcef72b4db.png",
+      "bytes": 56225,
+      "sha256": "8863f75edbd510e041621f0894b206ebea9ea1555f8ad9d7bc31e2c2cb57c737"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/13fd7fbd3ba2b021.svg",
+      "bytes": 1258,
+      "sha256": "6ba678570fe91a18777c7476ccdddc6c697b3f9cd2a42ddc0b301f33ac680768"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/1807de39bdbfee0d.svg",
+      "bytes": 7006,
+      "sha256": "3a486e2f5dad765d2f79bc8708b91e980b22271889dac0ce8e37a2efed50c41d"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/1c06752df8267042.png",
+      "bytes": 117048,
+      "sha256": "db6acaf4dfc7b55dc1bee3c0c66bdfe1fca9507bb88c81a3d9eb357490865b76"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/2924e6f1315dab37.png",
+      "bytes": 82013,
+      "sha256": "d21c7b6ee1d9a932d9558adf3cf2d564ba74e245f6d0bc8fce015068992ab021"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/2c8353a5feaadf91.svg",
+      "bytes": 41959,
+      "sha256": "e23b9876e0391fcf92d91aebdbda6bc27d2448eb080266508aa049047c667994"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/2cc57e962c4c4570.png",
+      "bytes": 58078,
+      "sha256": "11581bde0c1ebc3700f234fbe9461389defbf62eb96004c89a04055711c5ba5d"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/35c118d4b040dd5a.png",
+      "bytes": 165406,
+      "sha256": "7d0a107b741ecfeff96d3234a0230173ca7c8f6f2bcc543ccb3f1b1b16a6a60c"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/3aca078ccaf0c755.svg",
+      "bytes": 722,
+      "sha256": "79039319977b48fc563500c770b7fbc89dd79ac665e352366650819c07521c32"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/46a3481ec585272d.gif",
+      "bytes": 476406,
+      "sha256": "0f2d406bd355f89596a23090bbd8dfa0c524b336c96b524e291e49593f451160"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/487f0e8e2733c620.svg",
+      "bytes": 737,
+      "sha256": "a148b71aa5fc9f49e26bc09e4d334bd509ef501441d9f189099f93be1d243e09"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/4d3b065940851ab7.png",
+      "bytes": 25633,
+      "sha256": "b140a4de00b44b1432de393096d8cebbeba6ca68399dd4966142080c42312a55"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/4f0a13efb34f7bc7.png",
+      "bytes": 5687,
+      "sha256": "b4e2bfe1b7dcc22e79b6111d1a195b380cb849923ceddb6c26c975fc230c6441"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/57ca5070980cde17.svg",
+      "bytes": 1075,
+      "sha256": "4bc3860278fde398a0e545a62d3dee88cb5f881193d7f2c370befd0b0cffc3ee"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/658a658d38cbb40f.png",
+      "bytes": 39335,
+      "sha256": "9a230c4b4c5234b7caa83c633ee43781e72ccbe84467ca85499b2ef8c7deff99"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/6619f7394339ee4f.png",
+      "bytes": 73484,
+      "sha256": "6d3daa148f546fd9027a8a044ff86bcec373bfc75d80e7ba34fc8252ca29e56d"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/7e3106a6d3c76ddf.png",
+      "bytes": 5085,
+      "sha256": "5914cd0597b84e559d7c02d7b63d657b31929bf03b02813bbd9f2898baf53296"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/84e36655c16232dd.svg",
+      "bytes": 534,
+      "sha256": "05798bb7372a74e72fd534c94c8daa8f84724e5fce086535b6b3301a041a68e6"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/8ab7ce228edc9ef6.png",
+      "bytes": 1270,
+      "sha256": "a395ce09b11a02faa86b3550b8ad68477ec074edd8346889b9d403bfcd5b63d1"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/8c25161be907adb8.png",
+      "bytes": 53375,
+      "sha256": "222e6d643fea097d50d097889a6b0612a5de2e5b97fd42bfa0c68c2678b9e04e"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/8df417a40ff9c6cb.svg",
+      "bytes": 412,
+      "sha256": "aa2cb7edc37f3f9448b2bffce3372d651fea16c46f4860337219b9334c14b430"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/918f67c3737bf78e.svg",
+      "bytes": 419,
+      "sha256": "5af64435be601faa51972e88e39571ae06f3e65a088508ae19601a1d0d6bab23"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/95512965a47f28a5.svg",
+      "bytes": 529,
+      "sha256": "6f032b7d4cff4718b2c95a42c7c47a1637645b842d30e39b495c4ead273df00c"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/980871711a2db304.png",
+      "bytes": 27817,
+      "sha256": "c12405bd97c5344993874c6c1e8b907a3043d039f5ac4840833351a097fd03d1"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/9961a1dac7d45f85.png",
+      "bytes": 6612,
+      "sha256": "7ef0d6b2ce31fe79e346fec33ea10ac390c137d0a629f11c43abb5cb3ba51685"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/a06f1e71bc5faaa3.png",
+      "bytes": 110630,
+      "sha256": "e87a8d210815421f73a2cda9b27bb96f0410187672233affa0234b088a091b9a"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/a15d4bcd239ca4ab.svg",
+      "bytes": 637,
+      "sha256": "487a0ed722c926fb9419b6330a865bd548431296c9ff5add8ceba3a6e4065880"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/a232290ec090632e.png",
+      "bytes": 4630,
+      "sha256": "c276fc3a2854b9cd7deab5c8e960325eb12df619dfbecf8ae0810a20c84061c5"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/a7a9a7ba53603e88.svg",
+      "bytes": 385,
+      "sha256": "9e043ce9a902bfe1456086d6040705d33de156b9fa72900b96506601ce49ed5b"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/a86a719c0f9ab692.png",
+      "bytes": 47612,
+      "sha256": "1c8839526b81d79f3612500ec8ac96d62521490f4a499b2287db6817d94450dc"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/ad4997bab3155971.svg",
+      "bytes": 6975,
+      "sha256": "d0e30a23d780feae84a24216db01e20bbc767b2e9bfe8c17d6cc90dc6f92e7d2"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/ae250c3fe94833fa.svg",
+      "bytes": 2215,
+      "sha256": "e42cb056819ff1a68e703a937f9a8ec78040fc72ab8c204f22cab030f26efbd2"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/bda200956972c4dd.png",
+      "bytes": 6857,
+      "sha256": "3723ae83224cab38722c20f0507ce02ab80e1e197a7ec144ca74922b3a87de71"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/bef3fd7167f67c52.png",
+      "bytes": 30033,
+      "sha256": "74e1253b9f59ebd1ddc923c9025d6b362d539c6556af553cc723f5fad52b975c"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/c37c60cbfaf851d9.svg",
+      "bytes": 34913,
+      "sha256": "25ebdce2777bd95c4c6dc32aedbade331dba5d04a79528cb889579824fb1e684"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/c7e6aa1211314770.png",
+      "bytes": 22050,
+      "sha256": "9d5807852afae42ae183b80b492ad6100c0d01446cb74d1b1a7458a9aa09c98a"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/c948ba9477d9423c.svg",
+      "bytes": 300,
+      "sha256": "1c5795aeaebce01067c2215d30421e1d0c9357659140371cce1e38ca6a24d9ff"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/d99ab4b6eb18fb63.svg",
+      "bytes": 298,
+      "sha256": "3bfa2e1756ed1b26c57ddf0676f154cb5a528ebf31d570f30c584e15923879f2"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/dfefbfd25925aadf.svg",
+      "bytes": 630,
+      "sha256": "05be9b328dc930f0ab304f30518ab57886bb4f213175421e5359adfae9078e48"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/e0ac0b71f85a2dd9.png",
+      "bytes": 23634,
+      "sha256": "145dec1d8e6d46646e9b96de1e2921b6b9d73c2c55d57708b9cdad24121f1ca7"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/e17e54078157ed61.png",
+      "bytes": 48070,
+      "sha256": "d5d673a216c5ede6f2599bfaa5543df6e07cc3544d871882a8012132bdc8b381"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/eba44cbf17a3b859.png",
+      "bytes": 63195,
+      "sha256": "29029f36729b06d6d906dfb59dffe0a2202173cf63f491b6fe9b1d38bf5980cf"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/f2722e959f261e5e.svg",
+      "bytes": 1607,
+      "sha256": "a98e4dd93e35b005e8d2e3508e57d79cf88b0063d645be1fd2fc4abff30aa6c4"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/f4246680af07fe01.png",
+      "bytes": 71259,
+      "sha256": "1d2f93ba7f8f16dc9fa39761515417411526ca75f066aeae707c7ca0cf3c2483"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/f4864708385b3460.svg",
+      "bytes": 498,
+      "sha256": "521545c3d8afb7faee5af9b1e21a80908263ec349a33f1d4d66ff03db57868bb"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/f75950992bbd2635.png",
+      "bytes": 68494,
+      "sha256": "bf1624a139c1252b984dee92d1ce7c936ba3f08ce98a8b1d91e793d4459ea414"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/fcc94e06156077fc.png",
+      "bytes": 71529,
+      "sha256": "10f922cafb0c12905a122f8dc1310d025767d9e45341f1931ae90bcbc1c87c0e"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/fdf2f3c0b30c927d.webp",
+      "bytes": 539788,
+      "sha256": "da73ab2c26c25a12214041c0b9ed0f99f7c9f36d486f2e2508fba2f2c13fd43d"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/fe05b7f802fe9341.png",
+      "bytes": 77823,
+      "sha256": "ff3ac40dc43d5cb119d7c78ddc08f10a117efe1b9b6f1aea98fd79e1da6b1c00"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/media/fe43572cdd463759.png",
+      "bytes": 5599,
+      "sha256": "dc836e3a13b1eb223c26a0ba76f72cd12a63574b44ac39733e1e8cd1edbc5ff3"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/root-8a5edab2/videos/simplywall-portfolio-feature.mp4",
+      "bytes": 2070322,
+      "sha256": "3f522a1e851c5ab338b2e2902d595e2fca7c97c670ac4ee8c2ad3eda195c7ae2"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/shared/fonts/BureauSans.woff2",
+      "bytes": 115984,
+      "sha256": "29540ab2ddf3a15d0656302e328c6a336c3b73a061ab8e90bf152e6fca76a5f9"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/shared/fonts/BureauSerif.woff2",
+      "bytes": 123096,
+      "sha256": "27e022518ba243789ffab6922c02989c34fbd12904d65b954735db035df36048"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/shared/fonts/InterLatin.woff2",
+      "bytes": 48256,
+      "sha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/shared/fonts/PROVENANCE.md",
+      "bytes": 855,
+      "sha256": "87c659658edccc8f642de9d2cac88c89f9ce71de016952a02f3100742bb1097b"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/images/34d74af8afd105ce.ico",
+      "bytes": 841,
+      "sha256": "3bb20eaca43382a77c84517e5e26b0844872e6147727b22901afd280a6daabba"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/images/b5aca7f75337a672.avif",
+      "bytes": 499,
+      "sha256": "126b83ea4014e3eb68904211f2b0c0755864537c723f6628ec66fbec97383cfb"
+    },
+    {
+      "path": "public/sites/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/images/c2de04186fd0bfa3.avif",
+      "bytes": 6018,
+      "sha256": "d01047ea5f9d9d66413132f6a018a5de8a93875c84fc9d04db5eec339c6ba2a3"
+    },
+    {
+      "path": "public/tradeagent-footer.svg",
+      "bytes": 390,
+      "sha256": "73c3cb78a8d709c9b84397acb10584f7e4b77390471afd6c984073393d57b208"
+    },
+    {
+      "path": "public/tradeagent-header.svg",
+      "bytes": 390,
+      "sha256": "edaa1648771359b4ee489391eb1943cb2193f1d7268b8e79c663cfcdb7f95bde"
+    },
+    {
+      "path": "public/tradeagent.svg",
+      "bytes": 197,
+      "sha256": "de90d9087a269ed42a103d66c526fbfa5a2b82014d971e73c2da6f3baa103f9e"
+    },
+    {
+      "path": "public/videos/.gitkeep",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "scripts/.gitkeep",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "scripts/account-proxy.test.mjs",
+      "bytes": 8134,
+      "sha256": "833eaace72dc760681472ab82aa66fb3d2f456e3d2c94ff0c61343db31df871e"
+    },
+    {
+      "path": "scripts/company-localization.test.mjs",
+      "bytes": 5425,
+      "sha256": "ad7dff3ed378ebf9fe611795ded44ee66df0b2e754c93cdfb965ab0468043539"
+    },
+    {
+      "path": "scripts/component-harness.mjs",
+      "bytes": 4862,
+      "sha256": "0e627e1705d93fd762707e42cf18a51fcc68d39275f88c53977d330404d03a4a"
+    },
+    {
+      "path": "scripts/download-assets-fiscal-ai-7ee12bc9-company--NASDAQ_HOOD-4314f457.mjs",
+      "bytes": 3809,
+      "sha256": "3f2740699415603407ed1dbca16c423226c93bb398bcf1896e6d8167526d307c"
+    },
+    {
+      "path": "scripts/download-assets-simplywall-st-root-8a5edab2.mjs",
+      "bytes": 3795,
+      "sha256": "0aef30e8953330f98d6d13abd0519cd567f8b7eac08213eb8921faaa99fd8949"
+    },
+    {
+      "path": "scripts/localization.test.mjs",
+      "bytes": 3373,
+      "sha256": "b6d38ae57f8b5fe142639419a52322e6ccd659df0b2d671e541632e18b13870e"
+    },
+    {
+      "path": "scripts/localize-sections-simplywall-st-root-8a5edab2.mjs",
+      "bytes": 6229,
+      "sha256": "92f2210b9aec68eba178d1bc140c46dc58e7638d1b22062c6e84baf9cd920e68"
+    },
+    {
+      "path": "scripts/portal-change.test.mjs",
+      "bytes": 7656,
+      "sha256": "edb0ca9e5e50b2877b454359384f5a2599b355ae62231375b1357b88cfb2f8d3"
+    },
+    {
+      "path": "scripts/prepare-media-map-simplywall-st-root-8a5edab2.mjs",
+      "bytes": 1018,
+      "sha256": "026c908d0e42dbb8e6f1f17b0639b07c7e45aff078763cb2cf1eae6c7c876202"
+    },
+    {
+      "path": "scripts/prepare-sections-simplywall-st-root-8a5edab2.py",
+      "bytes": 13463,
+      "sha256": "f82fdb7f741b08e687a609c451f84dd5184a7d24fe0c1a6974ae26e005f6212b"
+    },
+    {
+      "path": "scripts/prepare-styles-simplywall-st-root-8a5edab2.mjs",
+      "bytes": 3022,
+      "sha256": "9da9ed180e6ab71b363bafa851936668cf52cd6238ea3613138b672c10473322"
+    },
+    {
+      "path": "scripts/private-session.test.mjs",
+      "bytes": 10561,
+      "sha256": "4502d98c0ec128b48a933b2b635fc268e09f86acfbcc1a5358f7f71714bc5382"
+    },
+    {
+      "path": "scripts/product-entry.test.mjs",
+      "bytes": 2665,
+      "sha256": "ab6d6dc8da13e398b3b105a41e44807931d293b899e1959c16331c7acf907ca7"
+    },
+    {
+      "path": "scripts/research-change.test.mjs",
+      "bytes": 5316,
+      "sha256": "b914fdd490e68ce8cd7c44d62e5d09ef3063e338a1c033595aa8b7d5fc3838f8"
+    },
+    {
+      "path": "scripts/workspace-polling.test.mjs",
+      "bytes": 2375,
+      "sha256": "32d86232bf1acad912e09413e9d6c604056ec34d8e56263ead5222a39e3dc910"
+    },
+    {
+      "path": "src/app/api/backend/[...path]/route.ts",
+      "bytes": 5117,
+      "sha256": "4f638fe27ca6ebafe0fc82e4b09529e2328809a7a23ab9553b3d2a4699f600d3"
+    },
+    {
+      "path": "src/app/app/companies/[instrumentId]/page.tsx",
+      "bytes": 775,
+      "sha256": "83cf6ab96b7b176de66d1fa05ed19ff92cd4c778b275f7278edd2cee23a5e6bf"
+    },
+    {
+      "path": "src/app/app/page.tsx",
+      "bytes": 553,
+      "sha256": "7b25244804a9f522ac10af1004be6f4fd499a767ac447c96526ec8da2aa04ccd"
+    },
+    {
+      "path": "src/app/app/research/[runId]/page.tsx",
+      "bytes": 603,
+      "sha256": "41f30b0247093a544d0fc16ea122f300bd230f0f3c787ffe6914df5a1cbeb2ee"
+    },
+    {
+      "path": "src/app/app/research/page.tsx",
+      "bytes": 867,
+      "sha256": "5f26bd9fc475ce7cef0d9c4b160c86d3681df52458c4b6cf996418456632df53"
+    },
+    {
+      "path": "src/app/favicon.ico",
+      "bytes": 25931,
+      "sha256": "2b8ad2d33455a8f736fc3a8ebf8f0bdea8848ad4c0db48a2833bd0f9cd775932"
+    },
+    {
+      "path": "src/app/fonts/GeistLatin.woff2",
+      "bytes": 29288,
+      "sha256": "9b6f5ff45b278c744b5f379a2c4ecbaf858a842b8eaf82ac8d21b699ca16c608"
+    },
+    {
+      "path": "src/app/fonts/GeistMonoLatin.woff2",
+      "bytes": 23108,
+      "sha256": "5f3d6ad60f29d6cb708414ec6887163d63bf197377ef5417d2483ff31ace6c3b"
+    },
+    {
+      "path": "src/app/fonts/OFL-Geist.txt",
+      "bytes": 4387,
+      "sha256": "f12f59163d92084b0473315ae4566cde0c1233d940ae464f5225a69c347cc691"
+    },
+    {
+      "path": "src/app/fonts/README.md",
+      "bytes": 949,
+      "sha256": "8a0a6b3b7ad70798b1571a71035ad9becefc842d4616aa9824c5924c7bde4163"
+    },
+    {
+      "path": "src/app/globals.css",
+      "bytes": 4501,
+      "sha256": "480b123a19e6968f92bcbc423a7a58804db12d0197b1d998985d4cf725636e72"
+    },
+    {
+      "path": "src/app/labs/function-integration/IntegrationNotice.tsx",
+      "bytes": 457,
+      "sha256": "6b9c2bb43ec45d2e9a74b5d1fe4ee5c2ec02298a23a37c4118f09ddfc764d8d9"
+    },
+    {
+      "path": "src/app/labs/function-integration/page.tsx",
+      "bytes": 394,
+      "sha256": "be8fa0a442854ba4897bd652b8b01c6f4222dd6bd3b74cc68d4045c71fc77020"
+    },
+    {
+      "path": "src/app/labs/r1-company-data-status/CompanySourcePreview.tsx",
+      "bytes": 4310,
+      "sha256": "64d2e2f86892e1eba3ee0005d4c784734f3e75d49a0ea37280807690b46f0501"
+    },
+    {
+      "path": "src/app/labs/r1-company-data-status/analysis-model-fixture.ts",
+      "bytes": 1376,
+      "sha256": "c5335bf88e05ae8e730b346032a9e422fb2e15cf702b0079edfed234f0a3acb3"
+    },
+    {
+      "path": "src/app/labs/r1-company-data-status/analyst-sources-fixture.ts",
+      "bytes": 996,
+      "sha256": "cc1dae9daccdd5e637e6dbad10bababb576fcfb8bbbc81ea4d3a0196431176b9"
+    },
+    {
+      "path": "src/app/labs/r1-company-data-status/page.tsx",
+      "bytes": 621,
+      "sha256": "c8e88f367ac0a050d1bc1e51426a92fd527a6059d42f97a2467849fd0a8f23d7"
+    },
+    {
+      "path": "src/app/labs/r1-company-data-status/preview.css",
+      "bytes": 229,
+      "sha256": "768b6a9db3b7898252e0a8c0755a172f21dd97e5fbf7748e8f5d9b4ab5c6a02f"
+    },
+    {
+      "path": "src/app/labs/r1-company-data-status/source-fixture.ts",
+      "bytes": 4930,
+      "sha256": "71bda94489eb5a5cc73610f24c05ffc75038136edcd957b88a499d27fdb57916"
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "bytes": 2352,
+      "sha256": "5f2274d7f233091a3d6ca3b408a8d8cfd40faa64d9e3e56604b55edc84ce55ff"
+    },
+    {
+      "path": "src/app/login/page.tsx",
+      "bytes": 395,
+      "sha256": "6861eaf13e2bc8f56fbc273c9bbf2b675920599ce91a706d1608a4645d2e5fa1"
+    },
+    {
+      "path": "src/app/page.tsx",
+      "bytes": 639,
+      "sha256": "dde33f491f7ee3cfe34e7cea727a4d95d933ae80aabe4ddceb4cd023784459bb"
+    },
+    {
+      "path": "src/app/references/simply-wall-st/page.tsx",
+      "bytes": 1012,
+      "sha256": "c6d246cf45693ad2884bf7a85e2a6bde48ae95dedfb9482e43a4c70adbf03099"
+    },
+    {
+      "path": "src/app/register/page.tsx",
+      "bytes": 404,
+      "sha256": "1ba3325e2c0b6737affbc3b7563bf502c10361edbcec4afe2d7fcd05a51a53d6"
+    },
+    {
+      "path": "src/components/accounts/AccountShell.tsx",
+      "bytes": 977,
+      "sha256": "10c9af286e09af5f99635c2f3d8d6d33cda41ef00e7315e82e89c7571c384b30"
+    },
+    {
+      "path": "src/components/accounts/AuthForm.tsx",
+      "bytes": 3136,
+      "sha256": "fa7f5b92d9fe7e63e85db7847e4af44dd2dedfc0272ee146465989155e15551e"
+    },
+    {
+      "path": "src/components/accounts/Workspace.tsx",
+      "bytes": 14363,
+      "sha256": "5159f5fa16efc974cfead3b334c7f149f0267e8ebb585a9cc729a4953ac9588e"
+    },
+    {
+      "path": "src/components/accounts/copy.ts",
+      "bytes": 4199,
+      "sha256": "6bd0b42ed59c9ebfa8ff0fcb5ac4afb69edade91d7e4e531fecfdbee239184e2"
+    },
+    {
+      "path": "src/components/accounts/styles.ts",
+      "bytes": 824,
+      "sha256": "e0745613d2619d6a2d9eb0464fc9ea319f8e572c51e245dd61d130c4b60b2422"
+    },
+    {
+      "path": "src/components/product/DemoPanel.tsx",
+      "bytes": 14934,
+      "sha256": "0c8a2803762798bb3cb7d63259ca8ac4759d825f51477f71cbf4149528f14df9"
+    },
+    {
+      "path": "src/components/product/ProductHeader.tsx",
+      "bytes": 4847,
+      "sha256": "85a1dd7ad71212c45441bd5d8ee55e4e0112911ac52ba75ea7ebcf71a664d21a"
+    },
+    {
+      "path": "src/components/product/ProductHome.tsx",
+      "bytes": 13225,
+      "sha256": "0c2dbc77b6cb16e899c7711a6cc07c660fe292d6c7312f855f7d65126ec802f9"
+    },
+    {
+      "path": "src/components/research/ResearchReportView.tsx",
+      "bytes": 4700,
+      "sha256": "4bcc74dcd5738b4f48356c9323e1780188e8dc2c1ec29439d70f527fad3a9cae"
+    },
+    {
+      "path": "src/components/research/ResearchRun.tsx",
+      "bytes": 8881,
+      "sha256": "a682d4ed9f89afb259b261a33b82482a48fe028a551e171349ab62ce4b60fa5e"
+    },
+    {
+      "path": "src/components/research/ResearchWorkspace.tsx",
+      "bytes": 11919,
+      "sha256": "a8548dcc4f83ffbe2403bf58d04b90d6fc6a106a34ef22c071f46093c0b02f2e"
+    },
+    {
+      "path": "src/components/research/api.ts",
+      "bytes": 861,
+      "sha256": "eb187b94257a98d60b4d6338f53e6fd5be1e542c7f81d4f7b98d897066ddaa79"
+    },
+    {
+      "path": "src/components/research/contracts.ts",
+      "bytes": 2561,
+      "sha256": "ff02cdc8b8494c63d2b5a7e2218ba9382825105dd371e6ec7c753b3ba1ba6a4d"
+    },
+    {
+      "path": "src/components/research/copy.ts",
+      "bytes": 11072,
+      "sha256": "be124c5630d92d94fe40336956cc18443c34e98d48ad58c9759adcda15c8710a"
+    },
+    {
+      "path": "src/components/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SearchGuidance.module.css",
+      "bytes": 1131,
+      "sha256": "c953ba1bf5438076d66704d191df8505eb0e3b442a11d17a5d29a08b444ff2d1"
+    },
+    {
+      "path": "src/components/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SearchGuidance.tsx",
+      "bytes": 531,
+      "sha256": "01cf8d446220d0b9cca46eac9cc928f52049cd629550a6e7c2ab13d800cf290c"
+    },
+    {
+      "path": "src/components/sites/fiscal-ai-7ee12bc9/shared/fonts.ts",
+      "bytes": 1209,
+      "sha256": "41599a52b636b2d7a24e3d95c4da573aede4782b62e7c5a83f0ad56e6788d59a"
+    },
+    {
+      "path": "src/components/sites/fiscal-ai-7ee12bc9/shared/foundation.module.css",
+      "bytes": 458,
+      "sha256": "a7fe32b662f6abe725a85ed59f497683e6a38038e175af8148e17c7e99d3c9cd"
+    },
+    {
+      "path": "src/components/sites/fiscal-ai-7ee12bc9/shared/icons.tsx",
+      "bytes": 11478,
+      "sha256": "e0b9e2f109d7a029f5b2dd7ab009e0fa2a8a47d43f856f0aad1069a35960afee"
+    },
+    {
+      "path": "src/components/sites/fiscal-ai-7ee12bc9/shared/types.ts",
+      "bytes": 357,
+      "sha256": "f2560863dc1914d3fc3c906c8c9b086a9b428c6ad8bca1c727ffb8ea8de7ca24"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/product-a/EnhancedAFooter.tsx",
+      "bytes": 3048,
+      "sha256": "9bde5f5fd33bf10ac991fa0b0f268c41ed3b816798b51d071d710bdad1b0ef83"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/product-a/EnhancedAHero.tsx",
+      "bytes": 2422,
+      "sha256": "d9344c5a07007e9696e5d689a1ae099badc24b48bd13673e11c2584ec3dc416f"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/product-a/EnhancedAHome.tsx",
+      "bytes": 856,
+      "sha256": "bd59be225756b2957df187f8893e55c671bd31e72e9844bcc4d677f490a42212"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/product-a/EnhancedANavigation.tsx",
+      "bytes": 6732,
+      "sha256": "68c3286893582bc0892e9dc23410fcb75af1d7d4a08ed26372d289fa96444120"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/product-a/EnhancedAPlatform.tsx",
+      "bytes": 4238,
+      "sha256": "e06b513f8ae5efdc7e07eb7b7320841c9bb64a6590833367b04e64e0354cf037"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/product-a/EnhancedASearch.tsx",
+      "bytes": 3458,
+      "sha256": "73c619dd2e4679bdf116a4dcee6940c628ebc44bd8838a513a26c8bc027516ce"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/product-a/EnhancedAWorkflow.tsx",
+      "bytes": 3650,
+      "sha256": "2e687e73bdb743c6a19afeb95c3b9ed6c07417780026352d886aa633945367ae"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/product-a/FullSourceHome.tsx",
+      "bytes": 1773,
+      "sha256": "29bbac665cfdaf3c0ebb393ba85f767ac5b19c3dc5c3876c4c9162f5065d6f42"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/CommunitySection.tsx",
+      "bytes": 3151,
+      "sha256": "645b0931fe57d35cc3fc43c70a5202dc0d41ff230390d301715b9db252ea9644"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/DiscoverySection.tsx",
+      "bytes": 8369,
+      "sha256": "a9488454343794e6e884708c8ff49c0f72b85e819e66c2c68e1e55311e461056"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/FinalCtaSection.tsx",
+      "bytes": 3483,
+      "sha256": "f245ab4add738178343ffb4fd9135f72bac6a418cc4ff5dc19db34f305177fc4"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/HeroMedia.tsx",
+      "bytes": 427,
+      "sha256": "ef6dd812a8e9ee33a75e1984a5e21fb201a9df29393b7ebe9e3004051c26faa6"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/HeroReviews.tsx",
+      "bytes": 773,
+      "sha256": "4bc65b60c5dfdf3f51237044f8215b316979a717843b68f540a07c84efc5079d"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/HeroSection.tsx",
+      "bytes": 1966,
+      "sha256": "299eab10437a7419a17cf1723bdacd1bc8456d606ea45814a5412fdf1ea7250a"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/PlatformSection.tsx",
+      "bytes": 3796,
+      "sha256": "f16be9c63f088873ef9216b960fd66648327a890c704eec9389fb5020645ca5a"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/PortfolioAnalysisSection.tsx",
+      "bytes": 7296,
+      "sha256": "f625a07760bc2e386de80694e8c5fc944be796d7f349f0b3f39e6ed293594d47"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/ResearchSection.tsx",
+      "bytes": 5467,
+      "sha256": "47b8c353c6fc038525ed1fcee5de6fba8e9aabd0a3e48d5d4d27269fba543d76"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/SmartUpdatesSection.tsx",
+      "bytes": 1906,
+      "sha256": "2307fd61f02f95551e9a21baee03a7c40d1f9a0217a4c308930f3f2cf2aca257"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/SourceFooter.tsx",
+      "bytes": 15631,
+      "sha256": "b0adba8b7557266fd4470df0699e700f13a6841166bb295bf39e8c4e2bfe509c"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/SourceNavigation.tsx",
+      "bytes": 7156,
+      "sha256": "4dc5693332903759c2afb5282f1871190a54cadd676dd9128dbaec90e01c8979"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/SourceStockSearch.tsx",
+      "bytes": 431,
+      "sha256": "02beadeac02bcfc73d19e3e359105f7a066a0765a1d017c191d33bdb813852ed"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/StockSearchSection.tsx",
+      "bytes": 3528,
+      "sha256": "0055abfd40711e65ff61da7ac886acb22750efcb81dd6348979c76e3e52219be"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/TestimonialsSection.tsx",
+      "bytes": 13271,
+      "sha256": "111eba23a0158e29fb467d22a5e383ed81745d3fe6f7dd5e7b5ad498f8a1f148"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/TrackingSection.tsx",
+      "bytes": 4364,
+      "sha256": "2a220f3531a96a03eca8d6a0bc097c58bc2e515d99e508b3d2715132604fd06d"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/root-8a5edab2/research-tabs.ts",
+      "bytes": 3654,
+      "sha256": "55da1bd3307159bc1246a4351461b4281150c6e5e7df4962575ed1e3a659ae2e"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/SourceFrame.tsx",
+      "bytes": 259,
+      "sha256": "4f79c7de513149ed0ad316cb4bac87d7f8f06c1556e084c6b10d194d6f4d5ae0"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/TradeAgentLogo.tsx",
+      "bytes": 403,
+      "sha256": "699296d9bc192c923fb82a460c365b0f0ee04dc694073f8e1a706cab8a1f0883"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/assets.ts",
+      "bytes": 9655,
+      "sha256": "45553109a78be8b3bbdfbe1e1b031085ca7d528deeee171d0f8c63faf9d6319b"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/captured-overrides.css",
+      "bytes": 264,
+      "sha256": "b1240aebd712b38f02a9a208e370e3fba7ade0aec27205b810e831ba46a07161"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/company-foundation.css",
+      "bytes": 356,
+      "sha256": "7c61ca950a608e7cac2240f59075f0bd7cc9c8ea7691db7a07c9feb56a77114d"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/company-source-styles.ts",
+      "bytes": 423,
+      "sha256": "95ef1460e18b79d8f6e071ba7493518bc8c0f31ce4c069bee5f9a90cbfec2afa"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/fonts.ts",
+      "bytes": 827,
+      "sha256": "633fc06e76ab33350b03a2e26736795f3fbb7e7ae004dbf044ea778029a0e1b3"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/foundation.css",
+      "bytes": 1045,
+      "sha256": "7f849dbd898c4adfe6697b2e0aca8a738dd37f4201e39ad72e010f82d19fb1eb"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/i18n/LanguageProvider.tsx",
+      "bytes": 2842,
+      "sha256": "951ebc5c927d040e205a00c4b0f2c4944d20087142d6ff55c7ec4ab580e4566d"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/i18n/locale.css",
+      "bytes": 1301,
+      "sha256": "3f89f6ca7c69199f3c714e2ccc31b474d4343fc7c52be511364131e5d9366ad4"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/i18n/messages.ts",
+      "bytes": 787,
+      "sha256": "52615cae63ce9515316bfa31bd7ddd699858a6f15767d4e4996806dd911c0f69"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/i18n/zh.json",
+      "bytes": 27828,
+      "sha256": "be276fe284f403ff21e5433ec7f5b9eeff0d8103e21ced4dcb23aae3feb2383a"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/icons.tsx",
+      "bytes": 1327,
+      "sha256": "f0b36ebd2a8b4a9de6ba4b0657b5949b96971aa70fe82a1f0ffc6a89119215c2"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/preview-interactions.css",
+      "bytes": 836,
+      "sha256": "efdcc746024d6123c2739257c6e36da47c6b13d94fae7068498ddef5a1f1361f"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/source-styles.css",
+      "bytes": 179193,
+      "sha256": "f96a40ba875b6deb7f11beeae354552b03a8d8ecd19d9f36281c2cc062449122"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/shared/types.ts",
+      "bytes": 129,
+      "sha256": "6eb114f0f5781a36ed9959456dda676bcb477d5b4f160ca9dba08b3fb0f00243"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/CompanyAnalysisModel.tsx",
+      "bytes": 1340,
+      "sha256": "8fa1ff576bbc792971dc505545725bc1b860f9446569f1d2b3a9abed9071fc66"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/CompanyAnalystSources.tsx",
+      "bytes": 1659,
+      "sha256": "a0bcf6180e73b93b2360e014641fb42a06bc777b27c386e4ebaf79cb87b9ed9f"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/CompanyDataSources.tsx",
+      "bytes": 3517,
+      "sha256": "1c8185754549c08a49e06266d621e47b45b175277b0e74492427069bd0f33ff6"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/CompanyDataStatusTable.tsx",
+      "bytes": 1721,
+      "sha256": "4b7e96412bddf0a48b981bb164b595ce9d5d0c77dfc8d2f208f0a63f81146dc8"
+    },
+    {
+      "path": "src/components/sites/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/types.ts",
+      "bytes": 1677,
+      "sha256": "7ea369d55b9f0c6ae059a375253cf81ec3bbfcb731607cc318ffd415a8e703cf"
+    },
+    {
+      "path": "src/components/ui/button.tsx",
+      "bytes": 3271,
+      "sha256": "d8af2a7cdec17d67f740d367af0804d54802de5cea6471f1ab11259a1442c7fa"
+    },
+    {
+      "path": "src/components/workspace/CompanyWorkspace.tsx",
+      "bytes": 10588,
+      "sha256": "c1d7e03e445aeb3833819b5975c1dd3f90335e82ebcd4dc8d8394f758b7ec647"
+    },
+    {
+      "path": "src/components/workspace/PortalResearchChange.tsx",
+      "bytes": 3099,
+      "sha256": "0533f61b99afa60d70a7546b0995e7d95a36ba7048006c4791177a978a995168"
+    },
+    {
+      "path": "src/components/workspace/ResearchCards.tsx",
+      "bytes": 3344,
+      "sha256": "44492501fa9629199317331f5035fd1e4e56ce76a5cb808c5632820e4bec2681"
+    },
+    {
+      "path": "src/components/workspace/ResearchChangePanel.tsx",
+      "bytes": 5067,
+      "sha256": "d50624d508a57b038e74ab840a03ffa42557d9060c837a06bf75e9bab7899b14"
+    },
+    {
+      "path": "src/components/workspace/contracts.ts",
+      "bytes": 1270,
+      "sha256": "84e546db3e6d9f73226437ae14355f3214f6060677aff7e61772526e331943ef"
+    },
+    {
+      "path": "src/components/workspace/polling.ts",
+      "bytes": 999,
+      "sha256": "6c5c0e160a2e1dee576e6598043af608d5609e5c166d5be6947d949498a0276e"
+    },
+    {
+      "path": "src/hooks/.gitkeep",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/lib/account-api.ts",
+      "bytes": 1531,
+      "sha256": "5f5e40dd029dfe6a1cff82d6819f32d2328af18cd857a9dd617b7351b1c68281"
+    },
+    {
+      "path": "src/lib/account-page-titles.ts",
+      "bytes": 870,
+      "sha256": "170eda95ba4c46c1066fc498d339938a783a0988e91300423c47f03bf1065cbe"
+    },
+    {
+      "path": "src/lib/utils.ts",
+      "bytes": 172,
+      "sha256": "74a147991a119f1c4cdc25a4d9b22713632fa32eb136e55ab6939b006d71b9d6"
+    },
+    {
+      "path": "src/types/.gitkeep",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tsconfig.json",
+      "bytes": 704,
+      "sha256": "dbacf04aa5f38c1ce4b0f030fbb84e5adff19306fb785b2e4aafef9c58705658"
+    }
+  ],
+  "note": "Initial snapshot hashes, before documented repository integration changes.",
+  "snapshot_hash_scope": "原提交60e6316在Windows工作树的初始完整迁入快照；Git换行归一化可能改变blob字节。后续整合差异列于integration_adjustments，不表示原文件丢失。",
+  "integration_adjustments": [
+    {
+      "path": ".gitignore",
+      "snapshot_sha256": "72ddbde774eebabd2a91393f68623d93e87b572dbb614beb3b9889638b88745a",
+      "integrated_worktree_sha256": "439ac65e0a87e3006de4dc45dbcf12a11ccfd913fe45b2070bddded167aff74b",
+      "reason": "忽略本地测试输出"
+    },
+    {
+      "path": "README.md",
+      "snapshot_sha256": "f4cf5ce58281a6c6beffdc2c557c10a9a8cf35848d70e28c4344dab4fd10594c",
+      "integrated_worktree_sha256": "181668b6405117a02b8c3f9972b68277b135de0d9a4f39b168b6e122b9d16f22",
+      "reason": "替换为主仓维护与运行入口"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/OUTPUT_PLAN.json",
+      "snapshot_sha256": "c407a5c7a16a6488e52cc1a1492cb6982b8bfa7844ee551450b4363dc319af12",
+      "integrated_worktree_sha256": "e693569c67bda95d7a1aa98665abf02cbc986c6aa7804e493246b77ec61f2d68",
+      "reason": "修订当前维护入口或复刻输出根目录，保留历史采样事实"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/RECOVERY_20261010.md",
+      "snapshot_sha256": "9aa1b0d73030ff336f60275e3ddd7d5d7ec0f728fd7bd22a3db734c5a95e67a2",
+      "integrated_worktree_sha256": "40fff9918e36522824cf8336556f28c93d12f5fb8383b5caa9b1b54bd59e3c16",
+      "reason": "修订当前维护入口或复刻输出根目录，保留历史采样事实"
+    },
+    {
+      "path": "docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SEARCH_RECOVERY_20261010.md",
+      "snapshot_sha256": "39f817b25866467aafe5d54555e4a9b21253c03d36b5d365e7621b52ab904370",
+      "integrated_worktree_sha256": "b98c7613a08dba268a777004105179b870c5734d84a07a63be45ba8b5d1a2013",
+      "reason": "修订当前维护入口或复刻输出根目录，保留历史采样事实"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/portfolio--demo-128b5e04/OUTPUT_PLAN.json",
+      "snapshot_sha256": "7fa4b62703512033b433cbb47aa562c8fd5e29d8d1680efc756757a82f4ae3f8",
+      "integrated_worktree_sha256": "7763e2d1be3bf2e3fed6de8df9da04fa1d95261c49d5c083e18a41530c95e23b",
+      "reason": "修订当前维护入口或复刻输出根目录，保留历史采样事实"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/root-8a5edab2/OUTPUT_PLAN.json",
+      "snapshot_sha256": "791e9b1c48627eaf1317d79533f0d518ab23dc09f0b4c16a183fa84ac65f8e19",
+      "integrated_worktree_sha256": "eb8232bad2444c599093ba01202f6b2fc58f6930da1da5c415b622ed5c81bff9",
+      "reason": "修订当前维护入口或复刻输出根目录，保留历史采样事实"
+    },
+    {
+      "path": "docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140/OUTPUT_PLAN.json",
+      "snapshot_sha256": "e45f8c479072533c209dcbd320395afe7f94aeb9b4c563ec798adaec59d4784b",
+      "integrated_worktree_sha256": "17215d778f533e903523efb7cde409a43286bbaed605854bb9875c3165ec6b9f",
+      "reason": "修订当前维护入口或复刻输出根目录，保留历史采样事实"
+    },
+    {
+      "path": "package.json",
+      "snapshot_sha256": "2ec388524c86e05aff2252a33bea648d1b449ecfa118d265d3921ccc552fcbd8",
+      "integrated_worktree_sha256": "a5eb1c2555ad8b4526a987b4c57b3e4f6f56d89726b54afdbefe6839d06707a1",
+      "reason": "加入既有行为测试入口"
+    }
+  ],
+  "unchanged_snapshot_files": 522
+}

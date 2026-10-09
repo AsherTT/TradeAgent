@@ -1,0 +1,1364 @@
+[
+  {
+    "locale": "zh",
+    "size": "desktop",
+    "bounds": {
+      "height": 324.39990234375,
+      "width": 800,
+      "x": 320,
+      "y": 1386.2625732421875
+    },
+    "description": "来源报告显示，Apple Inc. 由 88 位分析师覆盖，其中 40 位提交了本报告采用的收入或盈利预测。分析师提交的信息会在一天内持续更新。",
+    "heading": {
+      "rect": {
+        "height": 30,
+        "width": 800,
+        "x": 320,
+        "y": 1386.2625732421875
+      },
+      "style": {
+        "border": "0px solid lab(90.952 -0.0000596046 0)",
+        "fontSize": "20px",
+        "fontWeight": "500",
+        "lineHeight": "30px",
+        "padding": "0px",
+        "textAlign": "start",
+        "verticalAlign": "baseline"
+      },
+      "text": "分析师来源"
+    },
+    "lang": "zh-CN",
+    "notice": "这里只展示公开采样的三行。原网站需要登录才能查看其余 85 位分析师，完整展开列表尚未采到。",
+    "pageWidth": 1440,
+    "table": {
+      "rect": {
+        "height": 152,
+        "width": 800,
+        "x": 320,
+        "y": 1518.6624755859375
+      },
+      "rows": [
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 263.875,
+                "x": 320.3999938964844,
+                "y": 1519.0625
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "分析师"
+            },
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 535.3250122070312,
+                "x": 584.2750244140625,
+                "y": 1519.0625
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "机构"
+            }
+          ],
+          "rect": {
+            "height": 37.79999923706055,
+            "width": 799.2000122070312,
+            "x": 320.3999938964844,
+            "y": 1519.0625
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 263.875,
+                "x": 320.3999938964844,
+                "y": 1556.862548828125
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Amman Saeed"
+            },
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 535.3250122070312,
+                "x": 584.2750244140625,
+                "y": 1556.862548828125
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Accountability Research Corporation"
+            }
+          ],
+          "rect": {
+            "height": 37.79999923706055,
+            "width": 799.2000122070312,
+            "x": 320.3999938964844,
+            "y": 1556.862548828125
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 263.875,
+                "x": 320.3999938964844,
+                "y": 1594.6624755859375
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Warren Lau"
+            },
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 535.3250122070312,
+                "x": 584.2750244140625,
+                "y": 1594.6624755859375
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Aletheia Analyst Network Limited"
+            }
+          ],
+          "rect": {
+            "height": 37.79999923706055,
+            "width": 799.2000122070312,
+            "x": 320.3999938964844,
+            "y": 1594.6624755859375
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 263.875,
+                "x": 320.3999938964844,
+                "y": 1632.4625244140625
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Richard Kramer"
+            },
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 535.3250122070312,
+                "x": 584.2750244140625,
+                "y": 1632.4625244140625
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Arete Research Services LLP"
+            }
+          ],
+          "rect": {
+            "height": 37.79999923706055,
+            "width": 799.2000122070312,
+            "x": 320.3999938964844,
+            "y": 1632.4625244140625
+          }
+        }
+      ]
+    },
+    "viewport": 1440
+  },
+  {
+    "locale": "zh",
+    "size": "tablet",
+    "bounds": {
+      "height": 308.60009765625,
+      "width": 704,
+      "x": 32,
+      "y": 1323.2874755859375
+    },
+    "description": "来源报告显示，Apple Inc. 由 88 位分析师覆盖，其中 40 位提交了本报告采用的收入或盈利预测。分析师提交的信息会在一天内持续更新。",
+    "heading": {
+      "rect": {
+        "height": 27,
+        "width": 704,
+        "x": 32,
+        "y": 1323.2874755859375
+      },
+      "style": {
+        "border": "0px solid lab(90.952 -0.0000596046 0)",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "lineHeight": "27px",
+        "padding": "0px",
+        "textAlign": "start",
+        "verticalAlign": "baseline"
+      },
+      "text": "分析师来源"
+    },
+    "lang": "zh-CN",
+    "notice": "这里只展示公开采样的三行。原网站需要登录才能查看其余 85 位分析师，完整展开列表尚未采到。",
+    "pageWidth": 768,
+    "table": {
+      "rect": {
+        "height": 146,
+        "width": 704,
+        "x": 32,
+        "y": 1445.8875732421875
+      },
+      "rows": [
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 233.6750030517578,
+                "x": 32.400001525878906,
+                "y": 1446.2874755859375
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "700",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "分析师"
+            },
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 469.5249938964844,
+                "x": 266.07501220703125,
+                "y": 1446.2874755859375
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "700",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "机构"
+            }
+          ],
+          "rect": {
+            "height": 36.29999923706055,
+            "width": 703.2000122070312,
+            "x": 32.400001525878906,
+            "y": 1446.2874755859375
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 233.6750030517578,
+                "x": 32.400001525878906,
+                "y": 1482.5875244140625
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Amman Saeed"
+            },
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 469.5249938964844,
+                "x": 266.07501220703125,
+                "y": 1482.5875244140625
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Accountability Research Corporation"
+            }
+          ],
+          "rect": {
+            "height": 36.29999923706055,
+            "width": 703.2000122070312,
+            "x": 32.400001525878906,
+            "y": 1482.5875244140625
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 233.6750030517578,
+                "x": 32.400001525878906,
+                "y": 1518.8875732421875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Warren Lau"
+            },
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 469.5249938964844,
+                "x": 266.07501220703125,
+                "y": 1518.8875732421875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Aletheia Analyst Network Limited"
+            }
+          ],
+          "rect": {
+            "height": 36.29999923706055,
+            "width": 703.2000122070312,
+            "x": 32.400001525878906,
+            "y": 1518.8875732421875
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 233.6750030517578,
+                "x": 32.400001525878906,
+                "y": 1555.1875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Richard Kramer"
+            },
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 469.5249938964844,
+                "x": 266.07501220703125,
+                "y": 1555.1875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Arete Research Services LLP"
+            }
+          ],
+          "rect": {
+            "height": 36.29999923706055,
+            "width": 703.2000122070312,
+            "x": 32.400001525878906,
+            "y": 1555.1875
+          }
+        }
+      ]
+    },
+    "viewport": 768
+  },
+  {
+    "locale": "zh",
+    "size": "mobile",
+    "bounds": {
+      "height": 395.4000244140625,
+      "width": 358.3999938964844,
+      "x": 16,
+      "y": 1684.2874755859375
+    },
+    "description": "来源报告显示，Apple Inc. 由 88 位分析师覆盖，其中 40 位提交了本报告采用的收入或盈利预测。分析师提交的信息会在一天内持续更新。",
+    "heading": {
+      "rect": {
+        "height": 27,
+        "width": 358.3999938964844,
+        "x": 16,
+        "y": 1684.2874755859375
+      },
+      "style": {
+        "border": "0px solid lab(90.952 -0.0000596046 0)",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "lineHeight": "27px",
+        "padding": "0px",
+        "textAlign": "start",
+        "verticalAlign": "baseline"
+      },
+      "text": "分析师来源"
+    },
+    "lang": "zh-CN",
+    "notice": "这里只展示公开采样的三行。原网站需要登录才能查看其余 85 位分析师，完整展开列表尚未采到。",
+    "pageWidth": 390,
+    "table": {
+      "rect": {
+        "height": 185,
+        "width": 358.3999938964844,
+        "x": 16,
+        "y": 1830.6875
+      },
+      "rows": [
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 119.9375,
+                "x": 16.399999618530273,
+                "y": 1831.0875244140625
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "700",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "分析师"
+            },
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 237.6625061035156,
+                "x": 136.33750915527344,
+                "y": 1831.0875244140625
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "700",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "机构"
+            }
+          ],
+          "rect": {
+            "height": 36.29999923706055,
+            "width": 357.6000061035156,
+            "x": 16.399999618530273,
+            "y": 1831.0875244140625
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 55.79999923706055,
+                "width": 119.9375,
+                "x": 16.399999618530273,
+                "y": 1867.3875732421875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Amman Saeed"
+            },
+            {
+              "rect": {
+                "height": 55.79999923706055,
+                "width": 237.6625061035156,
+                "x": 136.33750915527344,
+                "y": 1867.3875732421875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Accountability Research Corporation"
+            }
+          ],
+          "rect": {
+            "height": 55.79999923706055,
+            "width": 357.6000061035156,
+            "x": 16.399999618530273,
+            "y": 1867.3875732421875
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 119.9375,
+                "x": 16.399999618530273,
+                "y": 1923.1875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Warren Lau"
+            },
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 237.6625061035156,
+                "x": 136.33750915527344,
+                "y": 1923.1875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Aletheia Analyst Network Limited"
+            }
+          ],
+          "rect": {
+            "height": 36.29999923706055,
+            "width": 357.6000061035156,
+            "x": 16.399999618530273,
+            "y": 1923.1875
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 55.79999923706055,
+                "width": 119.9375,
+                "x": 16.399999618530273,
+                "y": 1959.487548828125
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Richard Kramer"
+            },
+            {
+              "rect": {
+                "height": 55.79999923706055,
+                "width": 237.6625061035156,
+                "x": 136.33750915527344,
+                "y": 1959.487548828125
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Arete Research Services LLP"
+            }
+          ],
+          "rect": {
+            "height": 55.79999923706055,
+            "width": 357.6000061035156,
+            "x": 16.399999618530273,
+            "y": 1959.487548828125
+          }
+        }
+      ]
+    },
+    "viewport": 390
+  },
+  {
+    "locale": "en",
+    "size": "desktop",
+    "bounds": {
+      "height": 348.4000244140625,
+      "width": 800,
+      "x": 320,
+      "y": 1464.6624755859375
+    },
+    "description": "Apple Inc. is covered by 88 analysts. 40 of those analysts submitted the estimates of revenue or earnings used as inputs to our report. Analysts submissions are updated throughout the day.",
+    "heading": {
+      "rect": {
+        "height": 30,
+        "width": 800,
+        "x": 320,
+        "y": 1464.6624755859375
+      },
+      "style": {
+        "border": "0px solid lab(90.952 -0.0000596046 0)",
+        "fontSize": "20px",
+        "fontWeight": "500",
+        "lineHeight": "30px",
+        "padding": "0px",
+        "textAlign": "start",
+        "verticalAlign": "baseline"
+      },
+      "text": "Analyst Sources"
+    },
+    "lang": "en",
+    "notice": "Only the three publicly captured rows are shown. The source website requires sign-in to show the remaining 85 analysts; the expanded list has not been captured.",
+    "pageWidth": 1440,
+    "table": {
+      "rect": {
+        "height": 152,
+        "width": 800,
+        "x": 320,
+        "y": 1597.0625
+      },
+      "rows": [
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 263.875,
+                "x": 320.3999938964844,
+                "y": 1597.4625244140625
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Analyst"
+            },
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 535.3250122070312,
+                "x": 584.2750244140625,
+                "y": 1597.4625244140625
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Institution"
+            }
+          ],
+          "rect": {
+            "height": 37.79999923706055,
+            "width": 799.2000122070312,
+            "x": 320.3999938964844,
+            "y": 1597.4625244140625
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 263.875,
+                "x": 320.3999938964844,
+                "y": 1635.2625732421875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Amman Saeed"
+            },
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 535.3250122070312,
+                "x": 584.2750244140625,
+                "y": 1635.2625732421875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Accountability Research Corporation"
+            }
+          ],
+          "rect": {
+            "height": 37.79999923706055,
+            "width": 799.2000122070312,
+            "x": 320.3999938964844,
+            "y": 1635.2625732421875
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 263.875,
+                "x": 320.3999938964844,
+                "y": 1673.0625
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Warren Lau"
+            },
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 535.3250122070312,
+                "x": 584.2750244140625,
+                "y": 1673.0625
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Aletheia Analyst Network Limited"
+            }
+          ],
+          "rect": {
+            "height": 37.79999923706055,
+            "width": 799.2000122070312,
+            "x": 320.3999938964844,
+            "y": 1673.0625
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 263.875,
+                "x": 320.3999938964844,
+                "y": 1710.862548828125
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Richard Kramer"
+            },
+            {
+              "rect": {
+                "height": 37.79999923706055,
+                "width": 535.3250122070312,
+                "x": 584.2750244140625,
+                "y": 1710.862548828125
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "lineHeight": "21px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Arete Research Services LLP"
+            }
+          ],
+          "rect": {
+            "height": 37.79999923706055,
+            "width": 799.2000122070312,
+            "x": 320.3999938964844,
+            "y": 1710.862548828125
+          }
+        }
+      ]
+    },
+    "viewport": 1440
+  },
+  {
+    "locale": "en",
+    "size": "tablet",
+    "bounds": {
+      "height": 332.5999755859375,
+      "width": 704,
+      "x": 32,
+      "y": 1433.8875732421875
+    },
+    "description": "Apple Inc. is covered by 88 analysts. 40 of those analysts submitted the estimates of revenue or earnings used as inputs to our report. Analysts submissions are updated throughout the day.",
+    "heading": {
+      "rect": {
+        "height": 27,
+        "width": 704,
+        "x": 32,
+        "y": 1433.8875732421875
+      },
+      "style": {
+        "border": "0px solid lab(90.952 -0.0000596046 0)",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "lineHeight": "27px",
+        "padding": "0px",
+        "textAlign": "start",
+        "verticalAlign": "baseline"
+      },
+      "text": "Analyst Sources"
+    },
+    "lang": "en",
+    "notice": "Only the three publicly captured rows are shown. The source website requires sign-in to show the remaining 85 analysts; the expanded list has not been captured.",
+    "pageWidth": 768,
+    "table": {
+      "rect": {
+        "height": 146,
+        "width": 704,
+        "x": 32,
+        "y": 1556.487548828125
+      },
+      "rows": [
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 233.6750030517578,
+                "x": 32.400001525878906,
+                "y": 1556.8875732421875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "700",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Analyst"
+            },
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 469.5249938964844,
+                "x": 266.07501220703125,
+                "y": 1556.8875732421875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "700",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Institution"
+            }
+          ],
+          "rect": {
+            "height": 36.29999923706055,
+            "width": 703.2000122070312,
+            "x": 32.400001525878906,
+            "y": 1556.8875732421875
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 233.6750030517578,
+                "x": 32.400001525878906,
+                "y": 1593.1875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Amman Saeed"
+            },
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 469.5249938964844,
+                "x": 266.07501220703125,
+                "y": 1593.1875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Accountability Research Corporation"
+            }
+          ],
+          "rect": {
+            "height": 36.29999923706055,
+            "width": 703.2000122070312,
+            "x": 32.400001525878906,
+            "y": 1593.1875
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 233.6750030517578,
+                "x": 32.400001525878906,
+                "y": 1629.487548828125
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Warren Lau"
+            },
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 469.5249938964844,
+                "x": 266.07501220703125,
+                "y": 1629.487548828125
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Aletheia Analyst Network Limited"
+            }
+          ],
+          "rect": {
+            "height": 36.29999923706055,
+            "width": 703.2000122070312,
+            "x": 32.400001525878906,
+            "y": 1629.487548828125
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 233.6750030517578,
+                "x": 32.400001525878906,
+                "y": 1665.7874755859375
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Richard Kramer"
+            },
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 469.5249938964844,
+                "x": 266.07501220703125,
+                "y": 1665.7874755859375
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Arete Research Services LLP"
+            }
+          ],
+          "rect": {
+            "height": 36.29999923706055,
+            "width": 703.2000122070312,
+            "x": 32.400001525878906,
+            "y": 1665.7874755859375
+          }
+        }
+      ]
+    },
+    "viewport": 768
+  },
+  {
+    "locale": "en",
+    "size": "mobile",
+    "bounds": {
+      "height": 443.199951171875,
+      "width": 358.3999938964844,
+      "x": 16,
+      "y": 2008.6875
+    },
+    "description": "Apple Inc. is covered by 88 analysts. 40 of those analysts submitted the estimates of revenue or earnings used as inputs to our report. Analysts submissions are updated throughout the day.",
+    "heading": {
+      "rect": {
+        "height": 27,
+        "width": 358.3999938964844,
+        "x": 16,
+        "y": 2008.6875
+      },
+      "style": {
+        "border": "0px solid lab(90.952 -0.0000596046 0)",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "lineHeight": "27px",
+        "padding": "0px",
+        "textAlign": "start",
+        "verticalAlign": "baseline"
+      },
+      "text": "Analyst Sources"
+    },
+    "lang": "en",
+    "notice": "Only the three publicly captured rows are shown. The source website requires sign-in to show the remaining 85 analysts; the expanded list has not been captured.",
+    "pageWidth": 390,
+    "table": {
+      "rect": {
+        "height": 185,
+        "width": 358.3999938964844,
+        "x": 16,
+        "y": 2178.887451171875
+      },
+      "rows": [
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 119.9375,
+                "x": 16.399999618530273,
+                "y": 2179.28759765625
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "700",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Analyst"
+            },
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 237.6625061035156,
+                "x": 136.33750915527344,
+                "y": 2179.28759765625
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "700",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Institution"
+            }
+          ],
+          "rect": {
+            "height": 36.29999923706055,
+            "width": 357.6000061035156,
+            "x": 16.399999618530273,
+            "y": 2179.28759765625
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 55.79999923706055,
+                "width": 119.9375,
+                "x": 16.399999618530273,
+                "y": 2215.587646484375
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Amman Saeed"
+            },
+            {
+              "rect": {
+                "height": 55.79999923706055,
+                "width": 237.6625061035156,
+                "x": 136.33750915527344,
+                "y": 2215.587646484375
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Accountability Research Corporation"
+            }
+          ],
+          "rect": {
+            "height": 55.79999923706055,
+            "width": 357.6000061035156,
+            "x": 16.399999618530273,
+            "y": 2215.587646484375
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 119.9375,
+                "x": 16.399999618530273,
+                "y": 2271.387451171875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Warren Lau"
+            },
+            {
+              "rect": {
+                "height": 36.29999923706055,
+                "width": 237.6625061035156,
+                "x": 136.33750915527344,
+                "y": 2271.387451171875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Aletheia Analyst Network Limited"
+            }
+          ],
+          "rect": {
+            "height": 36.29999923706055,
+            "width": 357.6000061035156,
+            "x": 16.399999618530273,
+            "y": 2271.387451171875
+          }
+        },
+        {
+          "cells": [
+            {
+              "rect": {
+                "height": 55.79999923706055,
+                "width": 119.9375,
+                "x": 16.399999618530273,
+                "y": 2307.6875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "left",
+                "verticalAlign": "middle"
+              },
+              "text": "Richard Kramer"
+            },
+            {
+              "rect": {
+                "height": 55.79999923706055,
+                "width": 237.6625061035156,
+                "x": 136.33750915527344,
+                "y": 2307.6875
+              },
+              "style": {
+                "border": "0px solid lab(90.952 -0.0000596046 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "lineHeight": "19.5px",
+                "padding": "8px 16px",
+                "textAlign": "right",
+                "verticalAlign": "middle"
+              },
+              "text": "Arete Research Services LLP"
+            }
+          ],
+          "rect": {
+            "height": 55.79999923706055,
+            "width": 357.6000061035156,
+            "x": 16.399999618530273,
+            "y": 2307.6875
+          }
+        }
+      ]
+    },
+    "viewport": 390
+  }
+]

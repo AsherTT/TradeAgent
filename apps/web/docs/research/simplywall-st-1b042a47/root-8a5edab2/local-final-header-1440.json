@@ -1,0 +1,71 @@
+{
+  "header": [
+    {
+      "className": "navbar w-nav",
+      "rect": {
+        "bottom": 72,
+        "height": 72,
+        "left": 0,
+        "right": 1424.800048828125,
+        "top": 0,
+        "width": 1424.800048828125,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "className": "nav-menu w-nav-menu",
+      "rect": {
+        "bottom": 66,
+        "height": 60,
+        "left": 200,
+        "right": 1384.800048828125,
+        "top": 6,
+        "width": 1184.800048828125,
+        "x": 200,
+        "y": 6
+      }
+    },
+    {
+      "className": "main-links",
+      "rect": {
+        "bottom": 66,
+        "height": 60,
+        "left": 200,
+        "right": 981.625,
+        "top": 6,
+        "width": 781.625,
+        "x": 200,
+        "y": 6
+      }
+    },
+    {
+      "className": "search",
+      "rect": {
+        "bottom": 55,
+        "height": 38,
+        "left": 981.625,
+        "right": 1157.2624969482422,
+        "top": 17,
+        "width": 175.6374969482422,
+        "x": 981.625,
+        "y": 17
+      }
+    },
+    {
+      "className": "authentication",
+      "rect": {
+        "bottom": 55,
+        "height": 38,
+        "left": 1157.2625732421875,
+        "right": 1384.8000793457031,
+        "top": 17,
+        "width": 227.5375061035156,
+        "x": 1157.2625732421875,
+        "y": 17
+      }
+    }
+  ],
+  "iconFill": "rgb(158, 115, 51)",
+  "width": 1440
+}

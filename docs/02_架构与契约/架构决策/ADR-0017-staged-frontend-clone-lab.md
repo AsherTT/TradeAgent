@@ -47,3 +47,10 @@ Integration is staged:
   assets require ownership, permission, or replacement.
 - Browser automation is required for the cloning workflow.
 - The formal Phase 10 gate remains unchanged.
+
+
+## 2026-10-10 用户指令修订：源码持久化统一入库
+
+用户要求排查Docker/独立目录遗漏代码并补齐GitHub。本次把60e6316的完整前端快照迁入apps/web作为唯一维护入口，保留来源参考、原skill、许可和未完边界。原“独立目录开发、完成来源验收才迁入”的源码位置约束被本次明确指令替代；来源采样/组件spec/视觉验收和后端资格门槛保持，入库不等于产品验收或部署。
+
+沿用当前npm/package-lock.json，不同时引入pnpm转换；原模板目录作为可恢复历史，不再双向维护。构建、类型、行为检查在新位置运行，前端纳入GitHub及Azure CI。Docker运行时只消费本地仓库构建产物，源码不在容器中开发。
