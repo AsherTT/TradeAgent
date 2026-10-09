@@ -38,3 +38,17 @@
 公司默认三宽度采样解决了“完全没有有效公司样本”的旧阻塞；整页仍缺平板截图、滚动/hover/图表/展开/菜单/异常状态、所有章节spec/实现、完整源pathname及自有对象适配后对照。门户来源尺寸和其他页签仍缺。当前P10→R1→来源采样与独立组件实现；R2尚未启动。
 
 前端证据根：docs/research/simplywall-st-1b042a47/stocks--us--tech--nasdaq-aapl--apple-eed85140；详细三尺寸数据与截图索引见components/CompanyDataStatusTable.validation.md。门户限制在portfolio--demo-128b5e04/README.md记录。正式待办以DEVELOPMENT_PLAN.md为准。
+
+## 同日继续：数据来源区域与开发服务
+
+沿用cloner项目，f58d910先保存CompanyDataSources.spec及三宽度样式、桌面图和类型；小工作树实现合入f01f37a，d78757a修正验证页系统纵向滚动条挤占手机15px宽度的问题，49cfc92保存证据。增加四列六行数据来源、原生列表、12条精确公开href、脚注及TTM说明；静态fixture仅在原lab，与更新时间表共用section，不接自有/app或声明真实金融数据。
+
+本地1440/768/390内容宽800/704/358；手机表格429.4，只在自身语义region横向滚动，document.scrollWidth均等于视口。实际键盘ArrowRight令scrollLeft由0变4、随后8；provider焦点underline/gold/无transition与来源一致。验证页根滚动条隐藏规则仅当存在专用class时适用，注册页实测该class不存在且scrollbarWidth=auto，其他路由不受影响。框架差异、约0.5～1.2px表高量化和约8px平板外框差保留为整页验收项。
+
+lint/typecheck/build通过；31项已有前端行为/SSR检查全部通过，无跳过。原R1 code-review两轴只定向复核0940aee...f01f37a新增，Standards0/Spec0，没有再调用整阶段审查。后续验证页外框修正由主代理三尺寸定位及复验；静态实现没有新增镜像测试。后端未改，未重跑474项普通后端测试。
+
+平板全页导出768×12737、DOM高12743，但读图发现注册/登录提示覆盖，归档为overview-tablet-full-signup-gate-diagnostic.jpg；不登记默认平板全页验收完成。本轮仍无机器人验证，没有操作第三方登录/注册/条款。详细证据见前端components/CompanyDataSources.validation.md和三个宽度图；公司完整主概览及门户全状态仍待。
+
+按用户要求启动Docker Desktop与已有postgres、redis，并重建/启动api镜像，包含当前R1代码。数据库和缓存healthy，api的127.0.0.1:8000/health返回200；容器内数据库SELECT 1成功，Redis PING返回PONG，schema现为0016_account_research=head，无需迁移。前端127.0.0.1:3107/register返回200；无账户cookie的BFF auth/me与portal正确返回401。worker和beat保持停止，模型开关实测False；未修改.env、删除卷、创建账户或发起研究。
+
+当前为P10→R1→FE-03公司来源分块实现/QA-01验证，已完成两个静态区域。下一项补Analysis Model与分析师来源说明，并继续完整交互采样、各章节装配和自有契约接入后的对照；R1尚未完成，R2尚未启动。
