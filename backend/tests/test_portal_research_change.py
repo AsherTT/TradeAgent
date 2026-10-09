@@ -48,6 +48,78 @@ def test_portal_watchlist_changes_match_company_history_independently_of_researc
         app.dependency_overrides.pop(get_research_enqueuer, None)
 
 
+def test_portal_full_page_keeps_each_company_comparison_inside_its_first_50_records(
+    account_client: tuple[TestClient, Database],
+) -> None:
+    client, database = account_client
+    registered = client.post("/auth/register", json=ACCOUNT, headers=ORIGIN)
+    user_id = UUID(registered.json()["user_id"])
+    company_ids = [UUID(INSTRUMENT_ID), *[uuid4() for _ in range(20)]]
+    app.dependency_overrides[get_research_enqueuer] = lambda: lambda _: "offline-task"
+    try:
+        template_id = finished_run(client, database, day=-1, gaps=("market",))
+
+        async def seed() -> None:
+            async with database.sessions() as session, session.begin():
+                template = await session.get(ResearchRunRow, UUID(template_id))
+                assert template is not None
+                for company_id in company_ids[1:]:
+                    session.add(InstrumentRow(
+                        instrument_id=company_id, current_symbol=f"PAGE{company_id.hex[:8]}",
+                        exchange="NASDAQ", currency="USD", asset_type="equity",
+                        company_name="Full page fixture", status="active",
+                    ))
+                for company_id in company_ids:
+                    for position in range(1, 53):
+                        if company_id == company_ids[0] and position == 1:
+                            continue
+                        run_id = uuid4()
+                        cutoff = CUTOFF - timedelta(days=position)
+                        query = template.query if position == 1 or position >= 51 else (
+                            "Incompatible question"
+                        )
+                        session.add(ResearchRunRow(
+                            research_run_id=run_id, instrument_id=company_id, query=query,
+                            horizon=template.horizon, status="insufficient_evidence",
+                            created_at=cutoff, analysis_timestamp=cutoff,
+                            state_json={**template.state_json, "research_id": str(run_id),
+                                        "instrument_id": str(company_id), "query": query,
+                                        "requested_at": cutoff.isoformat(),
+                                        "analysis_timestamp": cutoff.isoformat()},
+                        ))
+                        session.add(UserResearchRow(
+                            user_id=user_id, research_run_id=run_id, request_id=uuid4(),
+                            request_digest="offline-full-page-checkpoint",
+                        ))
+        asyncio.run(seed())
+        for company_id in company_ids:
+            followed = client.post(f"/workspace/watchlist/{company_id}", headers=ORIGIN)
+            assert followed.status_code == 204
+        response = client.get("/workspace/portal", params={"limit": 20})
+        assert response.status_code == 200
+        body = response.json()
+        assert body["watchlist"]["total"] == 21
+        assert len(body["research_changes"]) == 20
+        assert [item["instrument_id"] for item in body["research_changes"]] == [
+            item["instrument_id"] for item in body["watchlist"]["items"]
+        ]
+        for item in body["research_changes"]:
+            change = item["research_change"]
+            assert change["window_limit"] == 50 and change["has_more"] is True
+            assert change["latest"]["analysis_timestamp"] == "2026-10-08T00:00:00Z"
+            assert change["availability"] == "no_comparable_previous"
+            assert change["previous"] is None and change["evidence_gap_count_delta"] is None
+        next_page = client.get("/workspace/portal", params={
+            "limit": 20, "watchlist_offset": 20,
+        }).json()
+        assert len(next_page["research_changes"]) == 1
+        assert next_page["research_changes"][0]["instrument_id"] not in {
+            item["instrument_id"] for item in body["research_changes"]
+        }
+    finally:
+        app.dependency_overrides.pop(get_research_enqueuer, None)
+
+
 def test_portal_changes_are_only_for_the_current_owned_available_watchlist_page(
     account_client: tuple[TestClient, Database],
 ) -> None:
