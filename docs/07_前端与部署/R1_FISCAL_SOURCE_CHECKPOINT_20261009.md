@@ -1,5 +1,16 @@
 # R1 Fiscal 控制台来源采样检查点
 
+## 2026-10-10：搜索超时补齐并开始独立组件实现
+
+前端89db998完整归档v6.0.2默认搜索弹窗630节点（分组读取，连续index/合法parent验证），HOOD匹配/无结果状态、桌面与手机参考图及1440/768/390静态提示全部计算CSS。已补手机清空恢复默认、Companies/ETFs & Funds/Investors分类各10条、Escape关闭、投资者上下键高亮切换；60e6316保存闭环。原HOOD单次下键无变化单列，不以其他分类的成功覆盖。
+
+按cloner skill先写完整SearchGuidance.spec.md，再在隔离worktree派发builder；f5f7121实现首个Fiscal静态提示组件并快进合并。Builder类型检查、合并后lint/typecheck/production build通过，原10个page路由保留；沿用本阶段原code-review两轴仅89db998...f5f7121新增组件，Standards0/Spec0，没有重复整阶段审查。组件未导入路由，未完成组件运行渲染/整页视觉QA或/app布局接入。
+
+进一步确认输出量约20万字符会截断大JSON，连续分片或读取+慢截图会超过整次工具预算；有效方案是每次独立100节点分组、解析再保存、截图单独调用。工具超时不代表skill报错或网站打不开。临时viewport已reset，最终默认807×822、来源搜索关闭且无可见dialog，tab8保留。
+
+下一步补完整搜索/导航hover与键盘/响应式、公司页签/内部滚动/图表状态→逐组件spec/builder/合并构建→来源路径装配与三尺寸全状态对照→接自有证券/研究契约与/app验收。仅首个静态组件通过派发门槛，完整搜索/导航仍受skill **“For stateful components: every state's content and styles are captured”** 约束。当前P10/R1/FE-02，R2未启动；中文提交、未push/部署或改后端运行。详见前端docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SEARCH_RECOVERY_20261010.md。以下保留历史。
+
+
 ## 2026-10-10：自动化菜单采样已恢复
 
 用户确认网站正常可访问；skill未报执行异常，此前工具的短等待与会话重置不能当作网站故障。前端4a18ad4通过较长等待和分批动作/检查，已成功导航、取得真实AX状态、普通点击Analysis/Resources/Settings、读取展开计算样式、验证公司标题外部点击关闭。真实菜单采样已可继续，不再等待用户重开面板。CDP鼠标移动仍有超时，尚不能断言所有通道已恢复或根因已完全确定。

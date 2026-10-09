@@ -1,5 +1,7 @@
 # 最新项目进展：方案 B 股票投研与后端补齐
 
+2026-10-10搜索与实现最新：前端89db998补搜索默认完整630节点、HOOD/无结果、三尺寸静态提示；60e6316补手机清空、四分类、Escape及投资者上下键。f5f7121按cloner隔离builder实现首个SearchGuidance，合并lint/types/build及原R1新差异两轴0项。组件尚未接路由，完整搜索/导航hover和其余页状态仍待，来源装配与/app重构未完成；仍P10/R1，R2未启动。已定位大输出截断与长批次超时，采用小块独立读取/截图，未push。见[Fiscal检查点](../07_前端与部署/R1_FISCAL_SOURCE_CHECKPOINT_20261009.md)。以下历史保留。
+
 2026-10-10最新：前端4a18ad4恢复真实Fiscal菜单采样，保存Analysis/Resources/Settings及外部点击关闭的计算样式和Analysis真实展开截图。此前问题在自动化工具等待/连接，不能宣称网站打不开；较长等待和分批操作已连续成功，搜索/hover/响应式仍待。完整spec、builder与/app装配未完成；本轮只有来源档案，无新产品代码或重复整阶段审查。见[Fiscal检查点](../07_前端与部署/R1_FISCAL_SOURCE_CHECKPOINT_20261009.md)。
 
 2026-10-09再次续开发：前端4b10733补齐来源基础图标，累计15个；lint/types及R1新增差异两轴复核0项。原生localhost读取/点击成功，同一标签切换Fiscal后导航/资产读取仍超时，显示后DOM亦超时；确认基本输入可用，来源上下文仍阻塞，具体根因未定。已请求手动检查来源菜单。基础仍未导入产品路由，/app装配与全状态spec未完成。详见[Fiscal检查点](../07_前端与部署/R1_FISCAL_SOURCE_CHECKPOINT_20261009.md)。
