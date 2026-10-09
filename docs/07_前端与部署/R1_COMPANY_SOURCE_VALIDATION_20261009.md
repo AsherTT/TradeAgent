@@ -70,3 +70,17 @@ lint/typecheck/build通过；31项已有前端行为/SSR检查全部通过，无
 点击Show 85 more analysts仍保持默认三行并出现“continue analysing AAPL”注册提示，正文称88位分析师、40位提交估计；analyst-expand-signup-gate.dom.txt归档此状态，未实现虚假85行或展开按钮。不是机器人验证，没有第三方登录、注册或条款操作。Docker postgres/redis仍healthy，api继续运行，模型/worker未启用。
 
 详细证据由前端bf19db8保存，见components/CompanyBilingual.validation.md、CompanyBilingual.local-validation.json、CompanyBilingual.interaction-validation.json及六张company-bilingual图。当前仍P10→R1→FE-03分块实现/QA-01；下一步补公开公司章节、完整交互规格/装配与自有接入后对照，受限分析师状态待补。完整来源公司页、门户全状态及R1未完成，R2未启动。
+
+## 同日继续：公开分析师来源与工作台方案
+
+前端753fb07先冻结CompanyAnalystSources.spec/类型及三宽度各18节点定向归档；3102e70合入小工作树的纯文本静态组件，7a0a29e接入统一LanguageProvider、列名/说明翻译及完整列表未采说明，d03ae4e保存验证与六张截图。现有独立lab共四组件、五个区域。分析师与机构名称不翻译，88位覆盖/40位提交仅属来源报告样本；不制造其余85行或展开按钮。
+
+本轮来源公司页DOM读取超时，未取得新鲜样式；复用此前有效三尺寸默认档，并保留前轮展开触发注册提示的事实。没有遇到机器人验证，也未操作第三方登录、注册或条款。完整展开、来源整页/全状态/源pathname及自有接入后对照继续待办。
+
+本地1440/768/390的document宽度分别等于视口；分析师表宽/高800×152、704×146、358.4×185，中英三行保持一致；手机数据行高55.8/36.3/55.8，来源55.825/36.329/55.825。六张图已读图，标题外侧留白修正并复拍；浏览器级覆盖未生效后采用文档允许的临时标签开发视口覆盖，逐次核对实际innerWidth，再清除覆盖并关闭临时标签。已知约8px平板外框差及量化边框差仍属完整装配验收项。
+
+七份现有前端检查共34 passed、0 failed、0 skipped，lint/typecheck/production build通过。沿用原R1 code-review两轴，仅定向复核bf19db8...7a0a29e：Standards0/Spec0，没有重启整阶段审查。生产/app、公司、研究及报告页面与后端未修改，没有重复后端474项检查。提交全中文，未push或部署。
+
+/labs/r1-company-data-status只可直接预览，无正式导航入口、无自身财务或Agent业务接口。正式/app从首页“我的门户”进入，关注/目录进入稳定公司地址，公司“发起研究”预选公司，顶栏“研究任务”进入本人任务；既有预算/状态/取消/部分报告走自有BFF/FastAPI，模型执行仍关闭。来源样本与功能联调骨架明确分开。
+
+用户要求先选择工作台布局，本轮提供[三个候选方案](RESEARCH_WORKSPACE_OPTIONS_20261009.md)及可切换中英布局示意，未实施正式工作台重构。Simply侧重多公司跟踪、Fiscal侧重财务研究终端、Quartr侧重证据核验；来源当前采样不足分别登记，选定后冻结实际界面规格。当前仍P10→R1→FE-03/QA-01，R1尚未完成、R2未启动。
