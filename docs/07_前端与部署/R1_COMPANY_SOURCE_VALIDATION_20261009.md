@@ -1,6 +1,6 @@
 # R1 公司来源基准与更新时间表验证
 
-2026-10-09，Asia/Shanghai。关联正式开发计划FE-02、FE-03、QA-01。本次只推进公司来源采样及一个静态组件，R1/P10尚未完成。
+2026-10-09，Asia/Shanghai。关联正式开发计划FE-02、FE-03、QA-01。按同日增量顺序记录公司来源采样、静态组件与双语验证，R1/P10尚未完成。
 
 ## 当前结果
 
@@ -52,3 +52,21 @@ lint/typecheck/build通过；31项已有前端行为/SSR检查全部通过，无
 按用户要求启动Docker Desktop与已有postgres、redis，并重建/启动api镜像，包含当前R1代码。数据库和缓存healthy，api的127.0.0.1:8000/health返回200；容器内数据库SELECT 1成功，Redis PING返回PONG，schema现为0016_account_research=head，无需迁移。前端127.0.0.1:3107/register返回200；无账户cookie的BFF auth/me与portal正确返回401。worker和beat保持停止，模型开关实测False；未修改.env、删除卷、创建账户或发起研究。
 
 当前为P10→R1→FE-03公司来源分块实现/QA-01验证，已完成两个静态区域。下一项补Analysis Model与分析师来源说明，并继续完整交互采样、各章节装配和自有契约接入后的对照；R1尚未完成，R2尚未启动。
+
+## 同日继续：中英语言入口与分析说明
+
+用户要求所有当前及后续页面提供中英按钮。继续使用cloner工程，b66fc9a先建立CompanyAnalysisModel.spec和BilingualCompanyPreview.spec、三宽度定向样式、实时outerHTML与共享类型/样式；d9147e1合入小工作树静态模型组件，61ecf49接入公司实验页的中英翻译、语言入口、功能联调提示与标题、输入保留及公开双语SSR检查。提交中文，无push/部署；不迁入apps/web。
+
+公司实验页现有更新时间表、数据来源、分析模型三个组件，含独立行业指标说明，共四个静态区域。首页/来源参考、账户、门户、公司、研究与报告保留已有统一语言入口；新实验页按钮复用同一个LanguageProvider。语言切换更新文本、html.lang、文档标题和偏好cookie；金融样本日期、UTC口径、公开href及数据权限保持原契约。英文保留来源基准，中文是明确适配，不把来源样本接为自有产品数据。
+
+来源模型区域799×276截图已读图，三宽度9节点定向档及桌面实时outerHTML已归档。英文团队说明原本缺词且没有team链接；前三条不同标签均指向同一support分类地址，行业说明原文使用section，按来源保留。中文仅描述模型设计与构建，不推测团队。四条模型链接均新标签页、noopener noreferrer nofollow，实际键盘焦点underline/gold通过。
+
+中英各1440/768/390六张全页图均读图，document.scrollWidth始终等于视口。表容器800/704/358.4，中文表格同宽，英文手机表429.4，仅自身region横向滚动；ArrowRight后scrollLeft=40且聚焦。英文移动标题与语言按钮分行，不遮挡；激活按钮金底黑字。英文桌面模型区域800×276，与来源高度及换行一致；已有约1px表高量化、平板约8px验证外框差仍保留为完整页装配验收项。
+
+真实浏览器英文刷新、跨页到门户/功能联调页、中文返回及刷新通过。浏览器已有登录状态使/register跳转/app，仅记为门户语言入口验证，未退出会话或创建账户。注册页无会话中英SSR、真实AuthForm切换前后输入保留由独立测试覆盖。最终恢复中文和正常viewport。
+
+工程lint/typecheck/production build通过，七份前端检查启用产品、参考、双语SSR，34 passed、0 failed、0 skipped；新增测试使用真实语言上下文，不提交注册或业务请求。原R1 code-review两轴仅定向复核49cfc92...61ecf49：Standards0/Spec0，没有重新启动整阶段审查。后端未改，未重复后端474项检查。
+
+点击Show 85 more analysts仍保持默认三行并出现“continue analysing AAPL”注册提示，正文称88位分析师、40位提交估计；analyst-expand-signup-gate.dom.txt归档此状态，未实现虚假85行或展开按钮。不是机器人验证，没有第三方登录、注册或条款操作。Docker postgres/redis仍healthy，api继续运行，模型/worker未启用。
+
+详细证据由前端bf19db8保存，见components/CompanyBilingual.validation.md、CompanyBilingual.local-validation.json、CompanyBilingual.interaction-validation.json及六张company-bilingual图。当前仍P10→R1→FE-03分块实现/QA-01；下一步补公开公司章节、完整交互规格/装配与自有接入后对照，受限分析师状态待补。完整来源公司页、门户全状态及R1未完成，R2未启动。
