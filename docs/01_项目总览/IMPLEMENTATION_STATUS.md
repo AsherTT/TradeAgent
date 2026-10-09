@@ -8,7 +8,7 @@ Last updated: 2026-10-09 (Asia/Shanghai)
 
 [股票投研后端补充架构](../02_架构与契约/EQUITY_RESEARCH_BACKEND_EXTENSION_20261009.md)记录复用矩阵与领域边界；[开发计划](DEVELOPMENT_PLAN.md)是唯一任务状态清单，新BE-12～17和既有R2～R5任务共同完成证券/股本→财务→用途合格行情→基础估值/同行→授权证据/完整研究→论点/评估。情景DCF工具独立可选，默认关闭。
 
-此前前端d03ae4e的R1独立来源lab已有四组件/五区域、双语三尺寸与34项检查/构建记录；仅公开分析师三行，完整公司/门户/Fiscal/Quartr仍待。本轮只修改文档，没有新增运行实现或新测试/真实资格，没有重启整阶段审查。P10仍R1、R2未启动、P5完整研究未完成；模型与worker未因选型启用。详细当前进展见[进度入口](DEVELOPMENT_PROGRESS_20261008.md)。
+此前前端d03ae4e的R1独立来源lab已有四组件/五区域；仅公开分析师三行，完整公司/门户/Fiscal/Quartr仍待。方案B核对后主仓0416ff1/44b5793、前端9fcf474补当前关注页本人有界研究变化汇总及双语入口。最终486普通后端测试、89.65%覆盖、Ruff/mypy106文件，前端36项行为/SSR与lint/types/build通过；合成PG/BFF和门户中英三尺寸/详情刷新返回通过。原R1新增差异Standards0、Spec1项满页验收缺口补齐关闭，没有重启整阶段skill。Fiscal默认AX可读但精确DOM/CSS/截图仍超时，不计来源视觉资格。P10仍R1、R2未启动、P5完整研究未完成；模型与worker未启用。见[门户验证](../07_前端与部署/R1_PORTAL_CHANGE_VALIDATION_20261009.md)与[进度入口](DEVELOPMENT_PROGRESS_20261008.md)。
 
 ## 前序实现与资格记录（保留当时范围）
 
