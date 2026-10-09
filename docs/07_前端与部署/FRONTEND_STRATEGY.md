@@ -1,6 +1,18 @@
 # Frontend Strategy
 
-## Confirmed product scope (2026-10-08, Asia/Shanghai)
+## Latest implementation boundary (2026-10-10, Asia/Shanghai)
+
+Option B, the Fiscal-style equity research console, is the confirmed workspace direction.
+Source and product constraints from enhanced A remain; the approved Simply homepage is preserved.
+All frontend source/research now lives in TradeAgent/apps/web with npm/package-lock.json;
+reviewed migration and normal GitHub synchronization are complete. The old clone directory
+is history only. P10 stays at R1: partial Fiscal sampling and a detached static component
+do not qualify the source page or /app reconstruction. Continue the original clone-website
+skill at apps/web: complete state specs, isolated builders, source visual QA, then own-contract
+adaptation and a second comparison. Financial, evidence, thesis and real-provider gates stay open.
+The historical scope below does not override this latest location or selected console.
+
+## Confirmed product scope (2026-10-08 historical record)
 
 Adopt the approved [enhanced-A design](FRONTEND_DESIGN_ENHANCED_A_20261008.md).
 It supersedes V2-B visual unification: preserve observed source pages/internal navigation,

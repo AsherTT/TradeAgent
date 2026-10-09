@@ -1,6 +1,16 @@
 # Architecture Baseline
 
-## Current product direction (2026-10-09, Asia/Shanghai)
+## 当前源码与实现边界（2026-10-10，Asia/Shanghai）
+
+后端和前端已统一在TradeAgent主仓维护：`backend/app`、`backend/tests`、`alembic`为后端边界，`apps/web`为完整Next16/React19前端；npm锁文件、原clone-website skill、许可、素材和研究证据保留。旧ai-website-cloner-template目录仅作历史，不再双向维护。来源组件/CSS/字体/资产仍按site-key/page-key隔离；迁入不是整页来源或产品验收。位置修订见[ADR-0017](架构决策/ADR-0017-staged-frontend-clone-lab.md)，审计和云端验证见[源码同步验收](../07_前端与部署/SOURCE_SYNC_VALIDATION_20261010.md)。
+
+运行数据流保持Next同源BFF→FastAPI账户授权/有界应用查询→领域服务→SQLAlchemy/PostgreSQL；研究图/来源/模型仍受预算、PIT与Redis/Celery边界约束。容器是本地源码的构建快照，不是源码维护入口；运行API审计未发现未落盘的新功能，旧容器变体只归档。前端与后端CI已纳入主仓，根Ruff/Docker构建上下文排除前端；这些持久化变更未新增业务接口、schema或真实数据资格。
+
+R1现有账户/关注/公司/有界研究和本人研究记录变化可复用；当前关注页变化采用单次分区每证券50+1窗口、最多20证券，未知为null，不等于财务/论点或投资表现。Fiscal作用域基础与首个SearchGuidance组件已实现但未接路由；菜单/搜索部分采样及平板无结果/关闭证据已补，完整状态规格、来源pathname与/app布局重构仍待。P10仍R1、R2未启动，BE-02/03和BE-12～17继续按[唯一任务表](../01_项目总览/DEVELOPMENT_PLAN.md)与[股票投研补充架构](EQUITY_RESEARCH_BACKEND_EXTENSION_20261009.md)推进。
+
+准入顺序保持实际采样→完整小组件spec→隔离实现/检查→来源装配及三尺寸全状态对照→自有账户/证券/研究契约适配→接入后再次对照。每阶段迭代code-review一次，已启动的流程沿用且不得因新会话重复整套调用。源码同步和CI成功不代表P5完整研究、P10整体验收、材料权利、供应商用途资格、真实worker/模型执行或P11部署完成。下方旧日期段落保留其范围。
+
+## Current product direction (updated 2026-10-10, Asia/Shanghai)
 
 The user confirmed option B, a Fiscal-style equity-research console, as the main workspace.
 The enhanced-A source-preservation and product-identity rules remain: keep the approved
@@ -10,9 +20,9 @@ with TradeAgent contracts and account ownership. Real portfolio/return/dividend 
 and screening follow later. See the [development plan and backlog](../01_项目总览/DEVELOPMENT_PLAN.md)
 and [frontend architecture](../07_前端与部署/FRONTEND_ARCHITECTURE.md) for route/module/API dependencies.
 
-Accounts/watchlists and bounded account-owned research are implemented in the sibling
-frontend. The R1 entry increment adds portal/company read projections and company-linked research.
-The generic homepage was rejected and corrected in ai-website-cloner-template using the captured
+Accounts/watchlists and bounded account-owned research are implemented in the canonical
+frontend at apps/web. The R1 entry increment adds portal/company read projections and company-linked research.
+The generic homepage was rejected and corrected in the clone lab and migrated into apps/web using the captured
 source DOM, fonts, styles and breakpoints. Company/portal skeletons are integration output, not
 approved source reproductions. Representative source sampling and user visual approval remain pending.
 The latest user correction selects the complete cloner reference homepage as the root
@@ -22,11 +32,12 @@ feature links are disclosed as reference material, not evidence of implemented b
 capability. Portfolio/screening backends remain deferred; own account/research flows stay local.
 Fiscal/Quartr product work is incomplete. The earlier pause awaiting user frontend requirements is resolved by
 the confirmed scope. Bounded development may continue; complete P5/P10 qualification,
-reviewed migration into apps/web, real-provider gates and P11 remain outstanding.
+real-provider gates, full source/product acceptance and P11 remain outstanding.
+The reviewed migration into apps/web and normal GitHub synchronization are complete.
 The dated observations below are historical slices; their pause/implementation statements
 do not override this current direction or imply that full integration is complete.
 
-## 方案 B 股票投研后端补充（2026-10-09，当前）
+## 方案 B 股票投研后端补充（2026-10-09能力补充）
 
 用户确认主控制台方案 B，并授权登记完整股票投研所需后端任务。P1–P9可复用身份、PIT/质量、模型网关、持久化/队列、行情/量化、研究/证据、记忆及评估；不足以直接交付完整股票投研。四项年度SEC事实/两个比例不能支撑多期财务或估值，综合中的Bull/Bear字段不等于独立Critic，fixture资格不等于真实行情/预测表现。
 
@@ -54,7 +65,7 @@ do not override this current direction or imply that full integration is complet
 
 | 借鉴行为 | 自有应用能力与拟定职责 | 当前缺口/计划 |
 | --- | --- | --- |
-| Simply 公司章节、关注与门户 | 账户范围门户查询、公司详情、本人最近研究及历史变化投影；公司公开事实与私有研究分开授权 | 门户/公司只读分页投影已接通；真实历史变化和来源视觉待补，BE-01 / R1 |
+| Simply 公司章节、关注与门户 | 账户范围门户查询、公司详情、本人最近研究及历史变化投影；公司公开事实与私有研究分开授权 | 门户/公司只读分页投影已接通；本人有界研究记录变化已有，完整财务/论点领域变化和来源视觉待补，BE-01 / R1 |
 | Fiscal 多期表格、趋势、来源与分部/KPI | 财务事实序列与申报版本存储，单位/期间/口径对齐，确定性指标服务，分部/KPI身份及原始申报定位 | 当前仅年度切片；BE-02～03 / R2 |
 | Quartr 材料检索、引用与原文阅读 | 以本人授权研究为入口的材料/片段查询，文档/内容版本/位置映射，有界检索和安全投影 | 复用证据与RAG持久化；账户阅读接口待补，BE-04 / R3 |
 | TradeAgent 论点与预测 | 账户论点历史/受控写命令、不可变版本与乐观并发，研究记忆回流、Critic与冻结准入 | 内部基础不是公开账户能力；BE-05～08 / R4 |
