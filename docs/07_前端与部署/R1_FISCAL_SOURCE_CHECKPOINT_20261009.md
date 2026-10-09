@@ -1,5 +1,14 @@
 # R1 Fiscal 控制台来源采样检查点
 
+## 最新续开发：基础已实现，布局接入仍待
+
+前端85df17c已实现独立Fiscal的next/font/local配置（6个TTF）、局部CSS Module默认实测tokens、9个归档SVG和来源公司/导航类型；没有导入产品路由，没有派发交互组件。全仓lint/typecheck/build通过，6字体路径/9SVG逐项核验通过；同一R1流程仅定向aac6dd9...85df17c，Standards0/Spec0，没有重复整阶段审查。产品字体渲染及页面视觉对照仍未验收，字体定义不能当成已接入门户。
+
+本轮复查新建标签、临时显示来源、重新定位当前任务和官方CDP输入；默认DOM/矩形间歇可读，locator普通/force点击及CDP输入仍超时，未验证点击后变化。尚不能确认根因是原站、面板挂载还是输入通道；没有注入DOM、禁用校验或更改浏览器配置。已请求用户关闭再打开右侧浏览器面板，恢复后先一次点击→状态核验，再继续全状态spec/派发/装配。当前仍P10/R1，基础准备已有代码，Fiscal布局和/app接入未开始。
+
+前端详见docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/FOUNDATION.md；以下保留上一轮来源归档与helper验证历史。
+
+
 用户继续开发并要求复刻严格遵循 `D:/桌面/ai-website-cloner-template/.agents/skills/clone-website/SKILL.md`。本轮优先推进 FE-02，当前仍 P10/R1，R2 未启动。完成的是来源证据和资产归档增量，`/app` 的 Fiscal 布局实现尚未开始。
 
 ## 新增证据
