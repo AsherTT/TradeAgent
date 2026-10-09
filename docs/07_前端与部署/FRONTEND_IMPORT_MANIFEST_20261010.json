@@ -2718,5 +2718,6 @@
       "reason": "加入既有行为测试入口"
     }
   ],
-  "unchanged_snapshot_files": 522
+  "unchanged_snapshot_files": 522,
+  "integration_baseline_commit": "0bf3fc194a77d842aa1029d339fc012ad96032b2"
 }

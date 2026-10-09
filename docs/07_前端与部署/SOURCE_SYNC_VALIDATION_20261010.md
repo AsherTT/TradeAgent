@@ -37,7 +37,9 @@
 
 正常推送成功，origin/main从913bb02快进至d2ec530；独立ls-remote与本地HEAD均为d2ec530f717973ac3a6ed39706e28a8929aaf9e6，ahead/behind为0/0。此前43个未推送提交及本轮迁入/审查两个提交均已同步，远程树含apps/web的102个src文件和全部来源档案。
 
-第一次[GitHub检查](https://github.com/AsherTT/TradeAgent/actions/runs/37965661086)前端全部成功，后端485通过、1失败。失败在test_context_budget_never_exposes_partial_chunk：cutoff先取当前时间、fixture随后再次取当前时间，在Linux更高时钟精度下hit时间大于cutoff，被正确排除，因此truncated为False。修复限定测试夹具：at改为必传、长度测试和有毒/异证券/未知来源样本显式使用cutoff，避免错误地走未来过滤分支。生产RAG逻辑与时间截止门槛保持；定向Ruff及该文件4项测试通过，不重复调用阶段skill。修复提交后的云端结果再按实际核验。
+第一次[GitHub检查](https://github.com/AsherTT/TradeAgent/actions/runs/37965661086)前端全部成功，后端485通过、1失败。失败在test_context_budget_never_exposes_partial_chunk：cutoff先取当前时间、fixture随后再次取当前时间，在Linux更高时钟精度下hit时间大于cutoff，被正确排除，因此truncated为False。修复限定测试夹具：at改为必传、长度测试和有毒/异证券/未知来源样本显式使用cutoff，避免错误地走未来过滤分支。生产RAG逻辑与时间截止门槛保持；定向Ruff及该文件4项测试通过，不重复调用阶段skill。
+
+修复与平板来源增量已于e99e22c提交并正常推送；独立ls-remote核对远程和本地均为e99e22c3925771bc5482d564c4b1e3612fc46741，ahead/behind为0/0，工作区清洁。本轮累计46个中文说明提交（原43个加迁入、审查记录和修复3个）；远程保留原531文件及新增来源证据，apps/web合计536文件。修复后[GitHub检查37966472987](https://github.com/AsherTT/TradeAgent/actions/runs/37966472987)已确认completed/success，前后端两job全部通过。这份最终结果归档属于文档更新，已通过的代码与配置不再改动。
 
 ### 在新维护入口继续开发
 
