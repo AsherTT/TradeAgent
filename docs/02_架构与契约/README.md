@@ -14,5 +14,6 @@
 | --- | --- |
 | 整体架构与模块边界 | [ARCHITECTURE.md](ARCHITECTURE.md) |
 | 研究门户、Fiscal财务、Quartr阅读的前端架构与接口依赖 | [FRONTEND_ARCHITECTURE.md](../07_前端与部署/FRONTEND_ARCHITECTURE.md) |
+| 方案B股票投研：P1–P9复用、股本/行情/估值/同行及研究补充 | [EQUITY_RESEARCH_BACKEND_EXTENSION_20261009.md](EQUITY_RESEARCH_BACKEND_EXTENSION_20261009.md) |
 | 数据契约与时间、身份规则 | [DATA_CONTRACT.md](DATA_CONTRACT.md) |
 | 模型网关、路由与运行边界 | [MODEL_GATEWAY.md](MODEL_GATEWAY.md) |

@@ -1,10 +1,12 @@
 # Architecture Baseline
 
-## Current product direction (2026-10-08, Asia/Shanghai)
+## Current product direction (2026-10-09, Asia/Shanghai)
 
-The confirmed enhanced-A direction keeps the research-platform scope: Simply Wall St portal/company
-organization, Fiscal multi-period financial views and Quartr report/source verification,
-using TradeAgent contracts and account ownership. Real portfolio/return/dividend tracking
+The user confirmed option B, a Fiscal-style equity-research console, as the main workspace.
+The enhanced-A source-preservation and product-identity rules remain: keep the approved
+Simply homepage/source reference, use the Fiscal console to organize securities, financials,
+market/valuation and research, and use Quartr-style report/source verification,
+with TradeAgent contracts and account ownership. Real portfolio/return/dividend tracking
 and screening follow later. See the [development plan and backlog](../01_项目总览/DEVELOPMENT_PLAN.md)
 and [frontend architecture](../07_前端与部署/FRONTEND_ARCHITECTURE.md) for route/module/API dependencies.
 
@@ -23,6 +25,23 @@ the confirmed scope. Bounded development may continue; complete P5/P10 qualifica
 reviewed migration into apps/web, real-provider gates and P11 remain outstanding.
 The dated observations below are historical slices; their pause/implementation statements
 do not override this current direction or imply that full integration is complete.
+
+## 方案 B 股票投研后端补充（2026-10-09，当前）
+
+用户确认主控制台方案 B，并授权登记完整股票投研所需后端任务。P1–P9可复用身份、PIT/质量、模型网关、持久化/队列、行情/量化、研究/证据、记忆及评估；不足以直接交付完整股票投研。四项年度SEC事实/两个比例不能支撑多期财务或估值，综合中的Bull/Bear字段不等于独立Critic，fixture资格不等于真实行情/预测表现。
+
+完整复用矩阵、领域职责、时间/身份/公式约束与验收见[股票投研后端补充架构](EQUITY_RESEARCH_BACKEND_EXTENSION_20261009.md)，状态仅维护在[开发计划](../01_项目总览/DEVELOPMENT_PLAN.md)：
+
+| 待补能力 | 对应增量/任务 | 实施边界 |
+| --- | --- | --- |
+| 发行人/证券/上市股类与股本 | BE-12 / R2 | 保持instrument_id，补时间有效关系、ADR/股类及股数口径，不误用加权平均股数计算市值 |
+| 多期财务、确定性指标 | BE-02/03 / R2 | 三张报表/分部/KPI、修订/PIT、单位/期间与来源，当前年度切片不是已完成序列 |
+| 有界行情与数据资格 | BE-13、DATA-01/02 / R2前置/R5历史 | 报价、技术、严格回测用途分别验证；来源连通不提高质量资格 |
+| 基础估值与有界同行 | BE-14/15 / R2 | 确定性计算、输入快照/来源/公式版本与不可比状态，缺数不当0，历史不用未来输入 |
+| 原文、业务/事件/风险与完整研究 | BE-04～08/16 / R3/R4 | 本人授权、逐项能力准入/引用、独立Critic及论点回流，旧报告诚实保留范围 |
+| 结果评估、账户工具与审计 | BE-09～11 / R4/R5 | 不可变快照、本人权限、真实成熟样本；可选情景估值BE-17另验/默认关闭 |
+
+服务继续采用现有BFF/FastAPI/SQLAlchemy/PostgreSQL与受限Redis/Celery研究图，新增领域/API/schema先冻结增量spec。不可扩大内部令牌端点、开启模型或改变既有质量/预算/不可变规则来赶页面进度。当前仅架构与计划补充，P10仍R1，运行代码未改，P5完整研究及真实来源资格仍待；下方2026-10-08章节与更早检查点保留历史范围，不覆盖本次选型。
 
 ## 增强 A 的产品查询与后端补齐（2026-10-08，逐项实施）
 

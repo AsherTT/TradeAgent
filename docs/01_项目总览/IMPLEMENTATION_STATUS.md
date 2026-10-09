@@ -2,6 +2,16 @@
 
 Last updated: 2026-10-09 (Asia/Shanghai)
 
+## 当前：方案 B 股票投研与后端补充（2026-10-09）
+
+用户接受Fiscal式股票投研控制台作为主工作台。只读核对主仓9266b82的P1–P9实现及阶段资格：底座可复用，完整股票投研尚未实现。P5完整真实综合仍待，P6～P9限定fixture资格不代表真实表现；财务仍年度四概念/两个比例，无独立估值/同行服务，股票股本/映射、行情账户读取、独立Critic与记忆回流仍待补。
+
+[股票投研后端补充架构](../02_架构与契约/EQUITY_RESEARCH_BACKEND_EXTENSION_20261009.md)记录复用矩阵与领域边界；[开发计划](DEVELOPMENT_PLAN.md)是唯一任务状态清单，新BE-12～17和既有R2～R5任务共同完成证券/股本→财务→用途合格行情→基础估值/同行→授权证据/完整研究→论点/评估。情景DCF工具独立可选，默认关闭。
+
+此前前端d03ae4e的R1独立来源lab已有四组件/五区域、双语三尺寸与34项检查/构建记录；仅公开分析师三行，完整公司/门户/Fiscal/Quartr仍待。本轮只修改文档，没有新增运行实现或新测试/真实资格，没有重启整阶段审查。P10仍R1、R2未启动、P5完整研究未完成；模型与worker未因选型启用。详细当前进展见[进度入口](DEVELOPMENT_PROGRESS_20261008.md)。
+
+## 前序实现与资格记录（保留当时范围）
+
 R1 record-change follow-up (backend 02801e8/802db09, frontend 523a4f3) adds account/company-owned finished-record comparisons within a disclosed 50-record window. Matching conditions and strictly earlier aware analysis cutoffs are required; unknown deltas stay null. Safe snapshots, quality, admitted-evidence/gap counts and local report links are available. This is record coverage, not financial/thesis/market performance; portal-wide change aggregation remains pending. Ordinary tests: 474 passed, 1 live-model test deselected, 89.70% coverage; Ruff and strict mypy (106 app files) pass. Frontend: 31 behavior/SSR checks plus lint/types/build pass; actual local PG/BFF and Chinese 1440/768/390 / English mobile empty-history UI checked. Same R1 review agents inspected only the new diff: Standards 0, Spec 1 fixed and closed. See [record-change validation](../07_前端与部署/R1_RESEARCH_CHANGE_VALIDATION_20261009.md).
 
 Portal source access now yields Holdings default-content DOM/styles, but screenshots are truncated and observed widths disagree with requested dimensions. Complete interaction/responsive sampling and company source reproduction remain unqualified; builders are not dispatched. P10 stays at R1 function completion/source inspection, before R2 multi-period financials. Older historical-change statements below are superseded only for this bounded record comparison.
