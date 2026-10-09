@@ -2,6 +2,14 @@
 
 2026-10-10维护入口修订：本档案随60e6316源码迁入`D:/桌面/Trade/TradeAgent/apps/web`。后续采样、spec、builder和提交均在新入口进行；下文旧目录和旧提交号为来源历史，不是后续写入目标。当前未完成事项与来源门槛保持。
 
+## 迁入后平板补采
+
+主仓已与GitHub同步后重新打开原URL，来源仍v6.0.2。768×1000的搜索默认框架、输入/按钮样式及30条链接保存于`v602-tablet-search-shell-resumed.json`；它仅保存外层，不冒充630节点完整默认态。平板搜索采用铺满视口的弹窗，自动聚焦`main-search-bar-modal`。同名入口有抽屉离屏与页头两份，明确定位`#ph-app-header`内可见输入，避免strict mode歧义。
+
+无结果查询`zzzznonexistentcompany987654`的全部51个节点、父索引、属性、矩形、计算样式和SVG保存于`v602-tablet-search-no-results-resumed.json`；来源截图为同命名空间`source-tablet-search-no-results-resumed.jpg`，已查看。Escape关闭后搜索输入不存在、可见dialog为空、公司标题保留，保存`v602-tablet-search-escape-closed-resumed.json`。恢复临时视口后继续后续状态采样。此批没有产品代码变更，不重复构建或阶段审查。
+
+旧60e6316以后来源文件在主仓提交；下文“未push”和旧工作区只指当时历史。卡片深层、hover、Tab/Enter、关闭按钮/点击外部、动画与导航等缺项保持，完整规格就绪后再派发builder。
+
 ## 已取得的增量
 
 来源当前为 v6.0.2。桌面 1440×1000 点击页头搜索成功打开独立搜索弹窗，自动聚焦 `main-search-bar-modal`；默认 All 分类有30个结果。不是下拉框，也不是网站不可访问。
