@@ -24,10 +24,11 @@ CUTOFF = datetime(2026, 10, 9, tzinfo=UTC)
 def finished_run(
     client: TestClient, database: Database, *, day: int, gaps: tuple[str, ...] = (),
     query: str = "Assess evidence gaps", horizon: str = "3-5 days",
+    instrument_id: str = INSTRUMENT_ID,
 ) -> str:
     """Prepare a persisted offline worker checkpoint; inspect it only through HTTP."""
     accepted = client.post("/workspace/research", json={
-        **submission(), "query": query, "horizon": horizon,
+        **submission(), "query": query, "horizon": horizon, "instrument_id": instrument_id,
     }, headers=ORIGIN)
     assert accepted.status_code == 202, accepted.text
     run_id = accepted.json()["research_run_id"]

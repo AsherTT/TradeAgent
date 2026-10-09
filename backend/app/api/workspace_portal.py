@@ -46,6 +46,13 @@ class CompanyDetail(BaseModel):
     research_change: ResearchChange
 
 
+class CompanyResearchChange(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    instrument_id: UUID
+    research_change: ResearchChange
+
+
 class PortalSummary(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -54,6 +61,42 @@ class PortalSummary(BaseModel):
     recent_research: WorkspacePage[ResearchSummary]
     active_research: list[ResearchSummary]
     active_research_total: int
+    research_changes: list[CompanyResearchChange]
+
+
+async def watchlist_research_changes(
+    session: AsyncSession, user_id: UUID, instrument_ids: list[UUID],
+) -> list[CompanyResearchChange]:
+    if not instrument_ids:
+        return []
+    ranked = select(
+        ResearchRunRow.research_run_id,
+        func.row_number().over(
+            partition_by=ResearchRunRow.instrument_id,
+            order_by=(ResearchRunRow.created_at.desc(), ResearchRunRow.research_run_id.desc()),
+        ).label("record_number"),
+    ).join(UserResearchRow).where(
+        UserResearchRow.user_id == user_id,
+        ResearchRunRow.instrument_id.in_(instrument_ids),
+        ResearchRunRow.status.in_(
+            (ResearchStatus.COMPLETE.value, ResearchStatus.INSUFFICIENT_EVIDENCE.value),
+        ),
+    ).subquery()
+    rows = await session.scalars(select(ResearchRunRow).join(
+        ranked, ranked.c.research_run_id == ResearchRunRow.research_run_id,
+    ).where(ranked.c.record_number <= RESEARCH_CHANGE_WINDOW + 1).order_by(
+        ResearchRunRow.instrument_id, ranked.c.record_number,
+    ))
+    histories: dict[UUID, list[ResearchRunRow]] = {key: [] for key in instrument_ids}
+    for row in rows:
+        histories[row.instrument_id].append(row)
+    return [CompanyResearchChange(
+        instrument_id=key,
+        research_change=research_change([
+            state for row in histories[key][:RESEARCH_CHANGE_WINDOW]
+            if (state := read_change_state(row.state_json)) is not None
+        ], has_more=len(histories[key]) > RESEARCH_CHANGE_WINDOW),
+    ) for key in instrument_ids]
 
 
 async def research_page(
@@ -80,9 +123,9 @@ async def portal_summary(
         WatchlistRow.user_id == user.user_id, InstrumentRow.delisted_at.is_(None),
     )
     followed_total = await session.scalar(select(func.count()).select_from(followed.subquery()))
-    companies = await session.scalars(followed.order_by(
+    companies = list(await session.scalars(followed.order_by(
         WatchlistRow.created_at.desc(), InstrumentRow.instrument_id.desc(),
-    ).offset(watchlist_offset).limit(limit))
+    ).offset(watchlist_offset).limit(limit)))
     owned = select(ResearchRunRow).join(UserResearchRow).where(
         UserResearchRow.user_id == user.user_id,
     )
@@ -96,6 +139,9 @@ async def portal_summary(
         ),
         recent_research=await research_page(session, owned, limit, research_offset),
         active_research=active.items, active_research_total=active.total,
+        research_changes=await watchlist_research_changes(
+            session, user.user_id, [company.instrument_id for company in companies],
+        ),
     )
 
 
