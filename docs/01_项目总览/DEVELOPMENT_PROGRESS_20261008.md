@@ -5,9 +5,9 @@
 当前仍为 **P10 / R1**，优先FE-02、FE-03与QA-01；R2未启动。用户已确定方案B（Fiscal式股票投研工作台），保留已认可Simply首页，Quartr负责报告与证据阅读；增强A的来源还原、品牌、语言和自有对象约束保持。`/app`现有功能骨架可联调，正式来源布局重构尚未开始。
 
 - **源码统一与GitHub同步已完成。** 531个前端受版本管理文件完整迁入`TradeAgent/apps/web`，这是后续唯一维护入口；旧模板目录仅作历史。原43个未推送提交及后续迁入/修复/验收记录已正常快进推送；交接前核对主仓与origin/main同为774fa52、0/0、工作区清洁。容器只读审计未发现需恢复的新后端功能，两处旧变体已归档，见[源码同步验证](../07_前端与部署/SOURCE_SYNC_VALIDATION_20261010.md)。历史提交映射及原目录保留，不强推、不推备份分支。
-- **Fiscal默认与部分交互采样已恢复。** 已有独立基础/字体/15个来源图标、Analysis/Resources/Settings展开、搜索部分状态及首个静态SearchGuidance组件。e99e22c在新入口补768×1000搜索框架、无结果全部51节点/计算样式/截图和Escape关闭；默认搜索框架仅外层，不算完整结果卡片规格。组件尚未接入路由，完整来源页与/app重构未完成，见[Fiscal最新检查点](../07_前端与部署/R1_FISCAL_SOURCE_CHECKPOINT_20261009.md)。不能将工具超时写成skill失败或网站打不开。
+- **Fiscal第二个静态组件与搜索键盘状态已推进。** 独立基础/字体/15图标、Analysis/Resources/Settings和部分搜索已有；74466b4补SearchEmptyMessage完整spec/三尺寸/指针证据，ff07646按隔离builder实现并合并。lint/typecheck/build通过，原10个page路由保留；R1原流程一次新增差异双轴复核各0项。SearchEmptyMessage与SearchGuidance通过独立SSR/CSS/本地字体的三尺寸渲染对照，未接正式路由或验收Next字体loader。补三类代表结果卡片深层样式、桌面HOOD上下键、Tab转HOOD pages、Clear Search恢复默认及Enter同公司选择关闭；公司hover档均已hover，非hover差值和全结果CSS仍缺。此前e99e22c平板外层/51节点与Escape证据保持。完整来源页与/app重构未完成，见[Fiscal最新检查点](../07_前端与部署/R1_FISCAL_SOURCE_CHECKPOINT_20261009.md)和[组件增量验收](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/STATIC_COMPONENT_VALIDATION_20261010.md)。不能将工具超时写成skill失败或网站打不开。
 - **已验证范围。** 迁入后锁定安装、lint/typecheck/build通过，10个page路径保留；36项前端行为/SSR合计通过。后端486普通测试通过，覆盖89.65%，Ruff/mypy 106文件通过。首次云端发现测试样本时间晚于截止点，e99e22c仅修复测试夹具，生产PIT门槛保持。e99e22c及774fa52的GitHub前后端检查均success，见[最新已完成检查](https://github.com/AsherTT/TradeAgent/actions/runs/37966965591)。本次文档更新不重复运行已通过的代码测试或阶段审查。
-- **下一会话直接续FE-02。** 补搜索卡片深层样式、hover/focus/clear、Tab/Enter/关闭与动画，导航键盘/响应式子菜单/帮助/Updates，以及公司页签、内部滚动和图表状态；充分采样的小组件逐个冻结spec、隔离builder、合并检查。之后装配来源pathname、完成三尺寸全状态对照，再适配/app并验证自有契约。源整页未通过不提前声明门户重构完成，详细任务只维护在[开发计划](DEVELOPMENT_PLAN.md)。
+- **继续FE-02。** 代表卡片与桌面HOOD键盘证据不覆盖全部分类/三尺寸；继续补非hover→hover、focus/clear、直接页面结果、分类Tab/Enter、关闭/动画、导航键盘/响应式子菜单/帮助/Updates，以及公司页签/内部滚动/图表。充分采样的小组件逐个冻结spec、隔离builder、合并检查，之后装配来源pathname及三尺寸全状态对照，再适配/app验证自有契约。源整页未通过不提前声明门户重构完成，任务状态只维护在[开发计划](DEVELOPMENT_PLAN.md)。
 - **运行与约束。** 交接前只读确认API、PostgreSQL、Redis运行，worker/beat未运行，3107已有预览监听但来源目录未确认；不要重复占用端口。真实模型开关沿用关闭配置，本次未启动或修改。每个大阶段迭代只调用一次code-review，修复并复验；中文commit，沿用已授权的正常push，不改变部署/真实执行资格。
 
 ## 本次更新之前的开发记录（历史）

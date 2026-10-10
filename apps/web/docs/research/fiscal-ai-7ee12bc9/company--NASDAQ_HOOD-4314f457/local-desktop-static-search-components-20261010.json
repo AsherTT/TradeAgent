@@ -1,0 +1,212 @@
+{
+  "assets": [
+    11
+  ],
+  "focusTargets": 0,
+  "fonts": "loaded",
+  "nodes": [
+    {
+      "computed": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "0px",
+        "boxSizing": "border-box",
+        "color": "rgb(255, 255, 255)",
+        "cursor": "auto",
+        "display": "block",
+        "fontFamily": "FiscalJakarta, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "letterSpacing": "normal",
+        "lineHeight": "24.8px",
+        "margin": "0px",
+        "padding": "16px",
+        "textAlign": "start",
+        "transitionDuration": "0s",
+        "whiteSpace": "normal"
+      },
+      "rect": {
+        "bottom": 96.79999923706056,
+        "height": 56.79999923706055,
+        "left": 237,
+        "right": 1203,
+        "top": 40,
+        "width": 966,
+        "x": 237,
+        "y": 40
+      },
+      "selector": "#result p",
+      "text": "No results found..."
+    },
+    {
+      "computed": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "border": "",
+        "borderRadius": "0px",
+        "boxSizing": "border-box",
+        "color": "rgb(255, 255, 255)",
+        "cursor": "auto",
+        "display": "block",
+        "fontFamily": "FiscalJakarta, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "letterSpacing": "normal",
+        "lineHeight": "24.8px",
+        "margin": "0px",
+        "padding": "10px 16px",
+        "textAlign": "start",
+        "transitionDuration": "0s",
+        "whiteSpace": "normal"
+      },
+      "rect": {
+        "bottom": 166.40000534057617,
+        "height": 37.60000228881836,
+        "left": 237,
+        "right": 1203,
+        "top": 128.8000030517578,
+        "width": 966,
+        "x": 237,
+        "y": 128.8000030517578
+      },
+      "selector": "#guidance > div",
+      "text": "Tip: Navigate directly to pages by typing \"Tesla income statement\", \"Apple estimates\", or \"MSFT pages\""
+    },
+    {
+      "computed": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(175, 175, 182)",
+        "borderRadius": "0px",
+        "boxSizing": "border-box",
+        "color": "rgb(175, 175, 182)",
+        "cursor": "auto",
+        "display": "block",
+        "fontFamily": "FiscalJakarta, sans-serif",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "letterSpacing": "normal",
+        "lineHeight": "16.8px",
+        "margin": "0px",
+        "padding": "0px",
+        "textAlign": "center",
+        "transitionDuration": "0s",
+        "whiteSpace": "normal"
+      },
+      "rect": {
+        "bottom": 156.4000072479248,
+        "height": 16.80000114440918,
+        "left": 253,
+        "right": 1187,
+        "top": 139.60000610351562,
+        "width": 934,
+        "x": 253,
+        "y": 139.60000610351562
+      },
+      "selector": "#guidance p",
+      "text": "Tip: Navigate directly to pages by typing \"Tesla income statement\", \"Apple estimates\", or \"MSFT pages\""
+    },
+    {
+      "computed": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(154, 148, 137)",
+        "borderRadius": "0px",
+        "boxSizing": "border-box",
+        "color": "rgb(154, 148, 137)",
+        "cursor": "auto",
+        "display": "inline",
+        "fontFamily": "FiscalJakarta, sans-serif",
+        "fontSize": "12px",
+        "fontWeight": "600",
+        "letterSpacing": "normal",
+        "lineHeight": "16.8px",
+        "margin": "0px",
+        "padding": "0px",
+        "textAlign": "center",
+        "transitionDuration": "0s",
+        "whiteSpace": "normal"
+      },
+      "rect": {
+        "bottom": 155.60000896453855,
+        "height": 15.199999809265137,
+        "left": 655.0375366210938,
+        "right": 802.9000396728516,
+        "top": 140.40000915527344,
+        "width": 147.8625030517578,
+        "x": 655.0375366210938,
+        "y": 140.40000915527344
+      },
+      "selector": "#guidance span",
+      "text": "\"Tesla income statement\""
+    },
+    {
+      "computed": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(154, 148, 137)",
+        "borderRadius": "0px",
+        "boxSizing": "border-box",
+        "color": "rgb(154, 148, 137)",
+        "cursor": "auto",
+        "display": "inline",
+        "fontFamily": "FiscalJakarta, sans-serif",
+        "fontSize": "12px",
+        "fontWeight": "600",
+        "letterSpacing": "normal",
+        "lineHeight": "16.8px",
+        "margin": "0px",
+        "padding": "0px",
+        "textAlign": "center",
+        "transitionDuration": "0s",
+        "whiteSpace": "normal"
+      },
+      "rect": {
+        "bottom": 155.60000896453855,
+        "height": 15.199999809265137,
+        "left": 808.1875,
+        "right": 912.8875045776368,
+        "top": 140.40000915527344,
+        "width": 104.70000457763672,
+        "x": 808.1875,
+        "y": 140.40000915527344
+      },
+      "selector": "#guidance span",
+      "text": "\"Apple estimates\""
+    },
+    {
+      "computed": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(154, 148, 137)",
+        "borderRadius": "0px",
+        "boxSizing": "border-box",
+        "color": "rgb(154, 148, 137)",
+        "cursor": "auto",
+        "display": "inline",
+        "fontFamily": "FiscalJakarta, sans-serif",
+        "fontSize": "12px",
+        "fontWeight": "600",
+        "letterSpacing": "normal",
+        "lineHeight": "16.8px",
+        "margin": "0px",
+        "padding": "0px",
+        "textAlign": "center",
+        "transitionDuration": "0s",
+        "whiteSpace": "normal"
+      },
+      "rect": {
+        "bottom": 155.60000896453855,
+        "height": 15.199999809265137,
+        "left": 932.125,
+        "right": 1013.3499984741212,
+        "top": 140.40000915527344,
+        "width": 81.2249984741211,
+        "x": 932.125,
+        "y": 140.40000915527344
+      },
+      "selector": "#guidance span",
+      "text": "\"MSFT pages\""
+    }
+  ],
+  "url": "http://127.0.0.1:3120/?size=desktop",
+  "viewport": [
+    1440,
+    1000
+  ]
+}

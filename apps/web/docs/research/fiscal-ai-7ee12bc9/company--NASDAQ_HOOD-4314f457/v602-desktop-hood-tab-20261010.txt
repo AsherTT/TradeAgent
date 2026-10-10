@@ -1,0 +1,806 @@
+- navigation:
+  - link "Fiscal.ai dashboard":
+    - /url: /dashboard/
+  - link "v6.0.2":
+    - /url: /changelog/
+    - generic: v6.0.2
+  - navigation "Main":
+    - list:
+      - link "Dashboard":
+        - /url: /dashboard/
+        - paragraph: Dashboard
+      - button "Analysis":
+        - paragraph: Analysis
+      - link "Charting":
+        - /url: /fundamental-charting/
+        - paragraph: Charting
+      - link "Screener":
+        - /url: /screener/
+        - paragraph: Screener
+      - link "Query":
+        - /url: /document-search/
+        - paragraph: Query
+      - link "Earnings":
+        - /url: /earnings-calendar/
+        - paragraph: Earnings
+      - link "Fund Letters":
+        - /url: /fund-letters/
+        - paragraph: Fund Letters
+      - button "Resources":
+        - paragraph: Resources
+  - navigation "Account":
+    - separator
+    - list:
+      - button "Settings":
+        - paragraph: Settings
+    - separator
+    - button "Updates":
+      - paragraph: Updates
+- banner:
+  - textbox "Search 50,000+ companies"
+  - generic: /
+  - button:
+  - button "Sign Up / Login":
+    - generic: Sign Up / Login
+- main:
+  - img "Robinhood Markets, Inc. Website"
+  - heading "Robinhood Markets, Inc." [level=1]
+  - paragraph: NASDAQ-HOOD
+  - button:
+  - button:
+  - separator
+  - heading "$109.13" [level=2]
+  - generic: $2.12 (2.0%)
+  - paragraph: 15 min delay
+  - button:
+  - link:
+    - /url: /company/NASDAQ_HOOD/investor-relations/759691/
+  - button "HOOD Summit '26 Engines of Creation":
+    - paragraph: HOOD Summit '26 Engines of Creation
+  - tablist:
+    - tab "Overview":
+      - generic: Overview
+    - tab "Financials":
+      - generic: Financials
+    - tab "Investor Relations":
+      - generic: Investor Relations
+    - tab "Research":
+      - generic: Research
+    - tab "Estimates":
+      - generic: Estimates
+    - tab "News":
+      - generic: News
+    - tab "Ownership":
+      - generic: Ownership
+    - tab "Industry":
+      - generic: Industry
+    - tab "Modeling":
+      - generic: Modeling
+    - tab "Filings":
+      - generic: Filings
+  - region:
+    - heading "Company Overview" [level=2]
+    - button "Show more"
+    - region:
+      - paragraph: Robinhood Markets, Inc. is an American financial services company headquartered in Menlo Park, California. It operates a popular electronic trading platform that allows retail investors to trade stocks, exchange-traded funds (ETFs), options, and cryptocurrencies commission-free. The company is known for democratizing finance through its user-friendly mobile app and fractional share trading. In addition to its core brokerage services, Robinhood offers cash management, margin lending, and subscription-based premium features via Robinhood Gold.
+    - list:
+      - paragraph: Name
+      - paragraph: Robinhood Markets, Inc.
+      - separator
+      - paragraph: CEO
+      - paragraph: Vladimir Tenev
+      - separator
+      - paragraph: Website
+      - link "robinhood.com":
+        - /url: https://robinhood.com
+        - text: robinhood.com
+      - separator
+      - paragraph: Sector
+      - paragraph: Capital Markets
+      - separator
+      - paragraph: Year Founded
+      - paragraph: "2013"
+      - separator
+  - region:
+    - heading "Company Statistics" [level=2]
+    - radiogroup:
+      - radio "USD" [checked]
+      - generic: USD
+    - heading "Profile" [level=3]
+    - list:
+      - paragraph: Market Cap
+      - paragraph: $98.02B
+      - separator
+      - paragraph: EV
+      - paragraph: —
+      - separator
+      - paragraph: Shares Out
+      - paragraph: 899.1M
+      - separator
+      - paragraph: Revenue
+      - paragraph: $4.93B
+      - separator
+      - paragraph: Employees
+      - paragraph: 2,900
+    - heading "Margins" [level=3]
+    - list:
+      - paragraph: Gross
+      - paragraph: 95.2%
+      - separator
+      - paragraph: EBITDA
+      - paragraph: —
+      - separator
+      - paragraph: Operating
+      - paragraph: 46%
+      - separator
+      - paragraph: Pre-Tax
+      - paragraph: 49%
+      - separator
+      - paragraph: Net
+      - paragraph: 42.2%
+      - separator
+      - paragraph: FCF
+      - paragraph: 4.4%
+    - heading "Returns (5Yr Avg)" [level=3]
+    - list:
+      - paragraph: ROA
+      - paragraph: 0.9%
+      - separator
+      - paragraph: ROTA
+      - paragraph: 6%
+      - separator
+      - paragraph: ROE
+      - paragraph: 5.8%
+      - separator
+      - paragraph: ROCE
+      - paragraph: —
+      - separator
+      - paragraph: ROIC
+      - paragraph: 1.1%
+    - heading "Valuation (TTM)" [level=3]
+    - list:
+      - paragraph: P/E
+      - paragraph: "48"
+      - separator
+      - paragraph: P/B
+      - paragraph: "10.3"
+      - separator
+      - paragraph: EV/Sales
+      - paragraph: —
+      - separator
+      - paragraph: EV/EBITDA
+      - paragraph: —
+      - separator
+      - paragraph: P/FCF
+      - paragraph: "447.6"
+      - separator
+      - paragraph: EV/Gross Profit
+      - paragraph: —
+    - heading "Valuation (NTM)" [level=3]
+    - list:
+      - paragraph: Price Target
+      - paragraph: $134.68
+      - separator
+      - paragraph: P/E
+      - paragraph: "43.2"
+      - separator
+      - paragraph: PEG
+      - paragraph: "2.8"
+      - separator
+      - paragraph: EV/Sales
+      - paragraph: —
+      - separator
+      - paragraph: EV/EBITDA
+      - paragraph: —
+      - separator
+      - paragraph: P/FCF
+      - paragraph: "35.1"
+    - heading "Financial Health" [level=3]
+    - list:
+      - paragraph: Cash
+      - paragraph: $5.36B
+      - separator
+      - paragraph: Net Debt
+      - paragraph: "-$980M"
+      - separator
+      - paragraph: Debt/Equity
+      - paragraph: "0.2"
+      - separator
+      - paragraph: EBIT/Interest
+      - paragraph: —
+    - heading "Growth (CAGR)" [level=3]
+    - list:
+      - paragraph: Rev 3Yr
+      - paragraph: 43.5%
+      - separator
+      - paragraph: Rev 5Yr
+      - paragraph: 24.1%
+      - separator
+      - paragraph: Rev 10Yr
+      - paragraph: —
+      - separator
+      - paragraph: Dil EPS 3Yr
+      - paragraph: 34.6%
+      - separator
+      - paragraph: Dil EPS 5Yr
+      - paragraph: "-23.3%"
+      - separator
+      - paragraph: Dil EPS 10Yr
+      - paragraph: —
+      - separator
+      - paragraph: FCF 5Yr
+      - paragraph: —
+      - separator
+      - paragraph: Shares 5Yr
+      - paragraph: 31.4%
+      - separator
+      - paragraph: Rev Fwd 2Yr
+      - paragraph: 23.4%
+      - separator
+      - paragraph: EBITDA Fwd 2Yr
+      - paragraph: 25.3%
+      - separator
+      - paragraph: EPS Fwd 2Yr
+      - paragraph: 10.8%
+      - separator
+      - paragraph: EPS LT Growth Est
+      - paragraph: 15.4%
+    - heading "Dividends" [level=3]
+    - list:
+      - paragraph: Yield
+      - paragraph: —
+      - separator
+      - paragraph: Payout
+      - paragraph: —
+      - separator
+      - paragraph: DPS
+      - paragraph: —
+      - separator
+      - paragraph: DPS Growth 3Yr
+      - paragraph: —
+      - separator
+      - paragraph: DPS Growth 5Yr
+      - paragraph: —
+      - separator
+      - paragraph: DPS Growth 10Yr
+      - paragraph: —
+      - separator
+      - paragraph: DPS Growth Fwd 2Yr
+      - paragraph: —
+  - region:
+    - heading "Bulls Say" [level=2]
+    - list:
+      - paragraph: Robinhood could be one of the largest beneficiaries of a significant anticipated intergenerational wealth transfer in the US, with a median customer age of just 35 years old.
+      - paragraph: Widespread adoption of tokenized assets could benefit Robinhood as one of the early movers in the space.
+      - paragraph: With a significant fixed-cost base, Robinhood could grow even more profitable over time if it can successfully execute its ambitious product road map.
+    - heading "Bears Say" [level=2]
+    - list:
+      - paragraph: The firm might struggle to retain users as they age, given that Robinhood is the first brokerage for more than one half of its customers.
+      - paragraph: If Robinhood's core user base is largely saturated, marketing programs like the firm's IRA match may simply be "renting" customers, driving deteriorating marketing returns over time in a competitive industry.
+      - paragraph: Consistent client underperformance relative to market benchmarks could encourage less active and less lucrative investing behavior.
+  - 'link "Source: Morningstar Analysis - Oct 01, 2026"':
+    - /url: /company/NASDAQ_HOOD/research/
+  - heading "What's happening" [level=2]
+  - paragraph: Sep 12, 2026 - Oct 9, 2026
+  - list:
+    - listitem: Robinhood expanded its trading and AI offerings, unveiling automated Robinhood Agents and planning 24/7 weekend stock and ETF trading.
+    - listitem: Sports-event contracts drew regulatory challenges in several states; Robinhood sued Connecticut, while Missouri and Ohio authorities issued cease-and-desist demands.
+    - listitem: Robinhood added $25 million in Bitcoin to its corporate balance sheet and announced new crypto-network integrations.
+    - listitem: The DOJ brought fraud charges against two Robinhood employees; separate charges were reported against two former Robinhood engineers over alleged insider trading.
+    - listitem: Robinhood shares fell about 4.6% after crypto legislation failed to advance.
+  - paragraph: At its HOOD Summit, Robinhood introduced Robinhood Agents for strategy development, research and automated trading, along with Agent Apps, a marketplace for third-party tools. It also announced plans to extend stock and ETF trading to weekends, added active-trader features, and introduced U.S. perpetual futures contracts via Bitstamp.
+  - paragraph: The event-contract disputes span multiple jurisdictions. Connecticut ordered Robinhood and other platforms to stop offering or promoting sports-event contracts and let state customers withdraw funds; Robinhood then filed a federal lawsuit arguing federal oversight preempts state regulation. Missouri separately demanded that Robinhood and other platforms stop offering the contracts. Ohio’s order was directed to Robinhood Derivatives and nine other platforms, giving them 14 days to respond and shut down operations in the state.
+  - paragraph: In crypto, Robinhood confirmed a $25 million Bitcoin allocation. It also announced support for Circle’s Arc network, including USDC deposits and withdrawals, while Robinhood Chain adopted Chainlink CCIP 2.0. Other ecosystem developments included a 100 million UUSD issuance on the chain and a satellite-intelligence app partnership with SkyFi.
+  - paragraph: The DOJ charges against two employees and separate allegations involving two former engineers add legal scrutiny. Robinhood also faced a federal suit challenging claims that its AMC-linked stock tokens are backed one-for-one by the underlying shares, and it sought Supreme Court intervention in its dispute over state regulation of sports-event contracts.
+  - heading "Earnings" [level=2]
+  - radiogroup:
+    - radio "Annual"
+    - generic: Annual
+    - radio "Quarterly" [checked]
+    - generic: Quarterly
+  - radiogroup:
+    - radio "Revenue" [checked]
+    - generic: Revenue
+    - radio "EPS (GAAP)"
+    - generic: EPS (GAAP)
+  - paragraph: Revenue
+  - paragraph: $1.31B
+  - paragraph: Estimate
+  - paragraph: $1.28B
+  - paragraph: Q2 2026
+  - generic: Beat
+  - paragraph: +2.1%
+  - paragraph:
+    - text: Revenue beat 11 out of 21
+    - generic: (52%)
+  - paragraph:
+    - text: EPS beat 15 out of 20
+    - generic: (75%)
+  - search:
+    - generic: NASDAQ:HOOD
+    - button:
+    - textbox
+  - button:
+  - radiogroup:
+    - radio "Price Chart" [checked]
+    - generic: Price Chart
+    - radio "Technical Analysis"
+    - generic: Technical Analysis
+  - textbox "Min Date"
+  - radiogroup:
+    - radio "1D"
+    - generic: 1D
+    - radio "5D"
+    - generic: 5D
+    - radio "1M"
+    - generic: 1M
+    - radio "3M"
+    - generic: 3M
+    - radio "6M"
+    - generic: 6M
+    - radio "YTD"
+    - generic: YTD
+    - radio "1Y"
+    - generic: 1Y
+    - radio "3Y"
+    - generic: 3Y
+    - radio "5Y" [checked]
+    - generic: 5Y
+    - radio "10Y"
+    - generic: 10Y
+    - radio "MAX"
+    - generic: MAX
+  - textbox "Max Date"
+  - textbox: Price
+  - separator
+  - paragraph: $109.13
+  - paragraph: +$67.06
+  - paragraph: (159.4%)
+  - paragraph: past 5 years
+  - button "Download chart":
+    - generic: Download
+  - combobox:
+    - option "Zoom" [disabled]
+    - option "1D" [disabled]
+    - option "5D"
+    - option "1M"
+    - option "3M"
+    - option "6M"
+    - option "YTD"
+    - option "1Y"
+    - option "3Y"
+    - option "5Y" [selected]
+    - option "10Y" [disabled]
+    - option "MAX"
+  - textbox: 2021-10-07
+  - textbox: 2026-10-09
+  - list:
+    - button "Indicators"
+    - generic "separator"
+    - button "Simple shapes"
+    - button
+    - list:
+      - button "Label"
+      - button "Circle"
+      - button "Ellipse"
+      - button "Rectangle"
+    - button "Lines"
+    - button
+    - list:
+      - button "Segment"
+      - button "Arrow segment"
+      - button "Ray"
+      - button "Arrow ray"
+      - button "Line"
+      - button "Arrow line"
+      - button "Horizontal line"
+      - button "Vertical line"
+    - button "Crooked lines"
+    - button
+    - list:
+      - button "Elliott 3 line"
+      - button "Elliott 5 line"
+      - button "Crooked 3 line"
+      - button "Crooked 5 line"
+    - button "Measure"
+    - button
+    - list:
+      - button "Measure XY"
+      - button "Measure X"
+      - button "Measure Y"
+    - button "Advanced"
+    - button
+    - list:
+      - button "Fibonacci"
+      - button "Fibonacci Time Zones"
+      - button "Pitchfork"
+      - button "Parallel channel"
+      - button "Time Cycles"
+    - button "Toggle annotations"
+    - generic "separator"
+    - button "Vertical labels"
+    - button
+    - list:
+      - button "Vertical counter"
+      - button "Vertical label"
+      - button "Vertical arrow"
+    - button "Flags"
+    - button
+    - list:
+      - button "Flag circle"
+      - button "Flag diamond"
+      - button "Flag square"
+      - button "Flag simple"
+    - generic "separator"
+    - button "Zoom change"
+    - button
+    - list:
+      - button "Zoom X"
+      - button "Zoom Y"
+      - button "Zooom XY"
+    - button "Fullscreen"
+    - button "Type change"
+    - button
+    - list:
+      - button "OHLC"
+      - button "Line"
+      - button "Candlestick"
+      - button "Hollow Candlestick"
+      - button "HLC"
+      - button "Heikin Ashi"
+    - generic "separator"
+    - button "Current Price Indicators"
+    - button "Save chart"
+  - paragraph: 11 Oct, 2021 - 10 Oct, 2026 (5y)
+  - paragraph: NasdaqGS:HOOD
+  - separator
+  - paragraph: "Total Chg: 159.4% (CAGR: 21.0%)"
+- dialog:
+  - button:
+  - search:
+    - searchbox "Search 50,000+ companies" [active]: HOOD pages
+  - tablist:
+    - tab "All" [selected]:
+      - generic: All
+    - tab "Companies":
+      - generic: Companies
+    - tab "ETFs & Funds":
+      - generic: ETFs & Funds
+    - tab "Investors":
+      - generic: Investors
+  - separator
+  - button "Clear Search":
+    - generic: Clear Search
+  - listbox:
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Income Statement US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/financials/income-statement/annual/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Income Statement
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Balance Sheet US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/financials/balance-sheet/annual/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Balance Sheet
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Cash Flow US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/financials/cash-flow-statement/annual/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Cash Flow
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Ratios US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/financials/ratios/annual/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Ratios
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Segments & KPIs US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/financials/segments-and-kpis/annual/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Segments & KPIs
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Adjusted Numbers US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/financials/adjusted-numbers/annual/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Adjusted Numbers
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Custom Metrics US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/financials/custom-metrics/annual/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Custom Metrics
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Investor Relations US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/investor-relations/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Investor Relations
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Research US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/research/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Research
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Estimates US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/estimates/revenue/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Estimates
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. News US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/news/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: News
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Insiders US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/insiders/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Insiders
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Insider Trades US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/insider-trades/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Insider Trades
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Ownership US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/ownership/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Ownership
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Industry US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/industry/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Industry
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Modeling US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/financial-modeling/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Modeling
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Robinhood Markets, Inc. Website Robinhood Markets, Inc. Filings US Flag NASDAQ:HOOD":
+      - /url: /company/NASDAQ_HOOD/filings/
+      - img "Robinhood Markets, Inc. Website"
+      - paragraph: Robinhood Markets, Inc.
+      - generic: Filings
+      - img "US Flag"
+      - paragraph: NASDAQ:HOOD
+    - link "Hoodin AB Website Hoodin AB Income Statement SE Flag XSAT:HOODIN":
+      - /url: /company/XSAT_HOODIN/financials/income-statement/annual/
+      - img "Hoodin AB Website"
+      - paragraph: Hoodin AB
+      - generic: Income Statement
+      - img "SE Flag"
+      - paragraph: XSAT:HOODIN
+    - link "Hoodin AB Website Hoodin AB Balance Sheet SE Flag XSAT:HOODIN":
+      - /url: /company/XSAT_HOODIN/financials/balance-sheet/annual/
+      - img "Hoodin AB Website"
+      - paragraph: Hoodin AB
+      - generic: Balance Sheet
+      - img "SE Flag"
+      - paragraph: XSAT:HOODIN
+    - link "Hoodin AB Website Hoodin AB Cash Flow SE Flag XSAT:HOODIN":
+      - /url: /company/XSAT_HOODIN/financials/cash-flow-statement/annual/
+      - img "Hoodin AB Website"
+      - paragraph: Hoodin AB
+      - generic: Cash Flow
+      - img "SE Flag"
+      - paragraph: XSAT:HOODIN
+    - link "Hoodin AB Website Hoodin AB Ratios SE Flag XSAT:HOODIN":
+      - /url: /company/XSAT_HOODIN/financials/ratios/annual/
+      - img "Hoodin AB Website"
+      - paragraph: Hoodin AB
+      - generic: Ratios
+      - img "SE Flag"
+      - paragraph: XSAT:HOODIN
+    - link "Hoodin AB Website Hoodin AB Adjusted Numbers SE Flag XSAT:HOODIN":
+      - /url: /company/XSAT_HOODIN/financials/adjusted-numbers/annual/
+      - img "Hoodin AB Website"
+      - paragraph: Hoodin AB
+      - generic: Adjusted Numbers
+      - img "SE Flag"
+      - paragraph: XSAT:HOODIN
+    - link "Hoodin AB Website Hoodin AB Custom Metrics SE Flag XSAT:HOODIN":
+      - /url: /company/XSAT_HOODIN/financials/custom-metrics/annual/
+      - img "Hoodin AB Website"
+      - paragraph: Hoodin AB
+      - generic: Custom Metrics
+      - img "SE Flag"
+      - paragraph: XSAT:HOODIN
+    - link "Hoodin AB Website Hoodin AB Investor Relations SE Flag XSAT:HOODIN":
+      - /url: /company/XSAT_HOODIN/investor-relations/
+      - img "Hoodin AB Website"
+      - paragraph: Hoodin AB
+      - generic: Investor Relations
+      - img "SE Flag"
+      - paragraph: XSAT:HOODIN
+    - link "Hoodin AB Website Hoodin AB Research SE Flag XSAT:HOODIN":
+      - /url: /company/XSAT_HOODIN/research/
+      - img "Hoodin AB Website"
+      - paragraph: Hoodin AB
+      - generic: Research
+      - img "SE Flag"
+      - paragraph: XSAT:HOODIN
+    - link "Hoodin AB Website Hoodin AB Insider Trades SE Flag XSAT:HOODIN":
+      - /url: /company/XSAT_HOODIN/insider-trades/
+      - img "Hoodin AB Website"
+      - paragraph: Hoodin AB
+      - generic: Insider Trades
+      - img "SE Flag"
+      - paragraph: XSAT:HOODIN
+    - link "Hoodin AB Website Hoodin AB Industry SE Flag XSAT:HOODIN":
+      - /url: /company/XSAT_HOODIN/industry/
+      - img "Hoodin AB Website"
+      - paragraph: Hoodin AB
+      - generic: Industry
+      - img "SE Flag"
+      - paragraph: XSAT:HOODIN
+    - link "Hoodin AB Website Hoodin AB Modeling SE Flag XSAT:HOODIN":
+      - /url: /company/XSAT_HOODIN/financial-modeling/
+      - img "Hoodin AB Website"
+      - paragraph: Hoodin AB
+      - generic: Modeling
+      - img "SE Flag"
+      - paragraph: XSAT:HOODIN
+    - link "Hoodin AB Website Hoodin AB Filings SE Flag XSAT:HOODIN":
+      - /url: /company/XSAT_HOODIN/filings/
+      - img "Hoodin AB Website"
+      - paragraph: Hoodin AB
+      - generic: Filings
+      - img "SE Flag"
+      - paragraph: XSAT:HOODIN
+    - link "ASML Holding N.V. Website ASML Holding N.V. Income Statement US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/financials/income-statement/annual/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Income Statement
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Balance Sheet US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/financials/balance-sheet/annual/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Balance Sheet
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Cash Flow US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/financials/cash-flow-statement/annual/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Cash Flow
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Ratios US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/financials/ratios/annual/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Ratios
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Segments & KPIs US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/financials/segments-and-kpis/annual/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Segments & KPIs
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Adjusted Numbers US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/financials/adjusted-numbers/annual/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Adjusted Numbers
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Custom Metrics US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/financials/custom-metrics/annual/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Custom Metrics
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Investor Relations US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/investor-relations/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Investor Relations
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Research US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/research/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Research
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Estimates US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/estimates/revenue/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Estimates
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. News US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/news/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: News
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Insiders US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/insiders/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Insiders
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Insider Trades US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/insider-trades/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Insider Trades
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Ownership US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/ownership/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Ownership
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Industry US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/industry/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Industry
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Dividends US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/dividends/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Dividends
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Modeling US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/financial-modeling/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Modeling
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - link "ASML Holding N.V. Website ASML Holding N.V. Filings US Flag NASDAQ:ASML":
+      - /url: /company/NASDAQ_ASML/filings/
+      - img "ASML Holding N.V. Website"
+      - paragraph: ASML Holding N.V.
+      - generic: Filings
+      - img "US Flag"
+      - paragraph: NASDAQ:ASML
+    - separator
+  - paragraph: "Tip: Navigate directly to pages by typing \"Tesla income statement\", \"Apple estimates\", or \"MSFT pages\""
+- alert

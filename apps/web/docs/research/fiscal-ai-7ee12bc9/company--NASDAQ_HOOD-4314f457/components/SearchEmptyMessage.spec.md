@@ -3,7 +3,7 @@
 ## Overview
 - Source: https://fiscal.ai/company/NASDAQ_HOOD/; v6.0.2, 2026-10-10.
 - Target: `src/components/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SearchEmptyMessage.tsx` and same-name CSS Module.
-- Screenshots in `docs/design-references/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/`: `source-{desktop,tablet,mobile}-search-empty-message-20261010.png`.
+- Screenshots in `docs/design-references/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/`: `source-{desktop,tablet,mobile}-search-empty-message-20261010.jpg` (browser output is JPEG, filenames match the byte signature).
 - Interaction model: static paragraph within the search result scroll area.
 - Scope: the paragraph only; parent scroll viewport, table wrapper, zero-height result containers, search state, tabs and navigation remain outside this component.
 

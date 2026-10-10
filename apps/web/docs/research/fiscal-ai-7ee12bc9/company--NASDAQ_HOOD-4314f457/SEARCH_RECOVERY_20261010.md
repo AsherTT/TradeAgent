@@ -4,6 +4,23 @@
 
 ## 迁入后平板补采
 
+### 后续增量：无结果组件与HOOD键盘状态
+
+主仓74466b4归档SearchEmptyMessage完整spec及三尺寸段落全部CSS/指针状态，ff07646通过隔离builder实现。合并后lint/typecheck/build通过，原10个page路由保留；R1原流程一次定向双轴复核74466b4...ff07646均0项。两个静态组件SearchEmptyMessage/SearchGuidance已通过独立实际SSR+CSS+本地字体的三尺寸渲染对照，但验证页手动映射CSS类与@font-face，不作为Next字体loader、产品父布局或/app接入验收。见[组件增量验收](STATIC_COMPONENT_VALIDATION_20261010.md)。未接任何正式路由。
+
+新档案全部位于本目录，截图在既有同page-key命名空间：
+
+- `v602-{desktop,mobile}-hood-result-cards-deep-20261010.json.gz`保存公司/ETF/投资者代表卡片的所有后代样式，桌面26/20/13节点、手机25/20/13节点。部分卡片超出当前滚动区，不能以DOM存在代替可见/hover/导航验收；未收齐30条HOOD结果的全部CSS。
+- `v602-desktop-hood-result-company-hover-20261010.json.gz`确认真实CDP鼠标移动后公司卡片:hover=true、背景rgb(64,64,79)。baseline档已经相同背景且悬停，故**没有取得该卡片真正的非hover→hover样式差值**；ETF/投资者hover仍待。
+- ArrowDown从首条HOOD移到第二条ASML，ArrowUp恢复HOOD；输入焦点保持。两份`v602-desktop-hood-arrow*20261010.json`保留完整href/data-active/背景列表。鼠标仍在HOOD上，HOOD悬停背景与ASML键盘选中背景分开记录，不能合并成统一active色。此证据只覆盖本轮桌面All/HOOD序列。
+- Tab将输入由`HOOD`改为`HOOD pages`，input保持active；显示47条内部页面结果和Clear Search。`v602-desktop-hood-tab-20261010.txt`是完整DOM快照；`v602-desktop-hood-pages-card-and-clear-20261010.json.gz`保留全部链接文案/href、首条Income Statement卡片19节点和Clear Search三节点的全部CSS；同名Tab来源JPEG已查看。其他46条页面结果的完整CSS、移动/平板和返回键行为尚缺。
+- Clear Search点击后query为空、恢复30条默认结果、按钮消失且输入仍active，见`v602-desktop-hood-pages-clear-20261010.json`。
+- 重新输入HOOD确认首条data-active=true后按Enter，搜索输入消失、可见dialog为空，URL仍为`/company/NASDAQ_HOOD/`且Robinhood标题存在；before/after两档保存。该同pathname选择验证不授予其他结果跨pathname或分类导航验收。
+
+四个较大的深层档案以gzip无损保存，解压字节逐一核验与原JSON一致。资产403/429保持，不新增下载。来源临时视口最终reset、搜索已由Enter关闭；当前标签只用于后续采样，不复用旧tab8编号。
+
+下一步继续补卡片非hover/hover/focus、各分类与三尺寸键盘/关闭/动画、直接页面结果及导航/公司/图表状态，再按完整spec逐个builder。不能由本轮小组件和桌面键盘状态推断完整搜索spec已可派发。
+
 主仓已与GitHub同步后重新打开原URL，来源仍v6.0.2。768×1000的搜索默认框架、输入/按钮样式及30条链接保存于`v602-tablet-search-shell-resumed.json`；它仅保存外层，不冒充630节点完整默认态。平板搜索采用铺满视口的弹窗，自动聚焦`main-search-bar-modal`。同名入口有抽屉离屏与页头两份，明确定位`#ph-app-header`内可见输入，避免strict mode歧义。
 
 无结果查询`zzzznonexistentcompany987654`的全部51个节点、父索引、属性、矩形、计算样式和SVG保存于`v602-tablet-search-no-results-resumed.json`；来源截图为同命名空间`source-tablet-search-no-results-resumed.jpg`，已查看。Escape关闭后搜索输入不存在、可见dialog为空、公司标题保留，保存`v602-tablet-search-escape-closed-resumed.json`。恢复临时视口后继续后续状态采样。此批没有产品代码变更，不重复构建或阶段审查。

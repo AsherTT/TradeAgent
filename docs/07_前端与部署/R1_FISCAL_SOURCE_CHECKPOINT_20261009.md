@@ -2,11 +2,17 @@
 
 ## 最新检查点：源码统一后平板补采（2026-10-10）
 
+### 本轮续开发：第二个静态组件与HOOD键盘状态
+
+74466b4保存SearchEmptyMessage三尺寸完整小组件spec与指针证据，ff07646按clone-website隔离builder实现并快进合并。合并lint/typecheck/build通过，原10个page路由保留；R1原流程仅一次定向复核新组件，Standards0/Spec0。新段落与既有SearchGuidance均已完成独立SSR+CSS+本地字体字节的1440/768/390渲染对照；不是Next字体loader、整页或/app接入验收。两组件仍未接正式路由，完整搜索和来源pathname仍未装配。详见[组件增量验收](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/STATIC_COMPONENT_VALIDATION_20261010.md)。
+
+补公司/ETF/投资者代表卡片深层样式及公司hover证据（两档均已hover，非hover差值仍缺）；桌面All/HOOD上下键、Tab变成HOOD pages及47个页面链接、Clear Search恢复30默认结果、Enter选中HOOD关闭搜索均已取得后检查。只保存代表页卡片完整CSS，不等于全部HOOD结果/全部尺寸分类验收。下一步补各卡片非hover/focus/关闭/动画、直接页面结果三尺寸/导航等；[搜索恢复记录](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SEARCH_RECOVERY_20261010.md)保留具体范围与缺项。P10/R1持续，R2未启动。
+
 后续采样与实现唯一入口为主仓`apps/web`，原60e6316的531个文件已完整迁入GitHub，旧目录/提交号/未push记录保留历史。迁入后的前后端CI成功，见[源码同步验收](SOURCE_SYNC_VALIDATION_20261010.md)。本段优先于下方旧阻塞/旧标签号。
 
 e99e22c在新入口补768×1000搜索默认外层框架与30条链接、无结果全部51节点/parent/属性/计算样式/SVG及已查看截图、Escape关闭后无输入/无可见dialog证据。默认外层档不代替630节点或各类深层卡片规格。来源v6.0.2，公开公司Overview不是已登录Portal。此前tab8已关闭后重新打开同URL；下一会话重新盘点标签，不能复用旧编号/REPL句柄。临时视口已reset，最终读取768×1000、搜索关闭；操作成功不代表全部自动化通道和动画均已验收。
 
-当前仅SearchGuidance已有完整小组件spec/隔离实现，组件未接路由，完整Fiscal source pathname与/app布局均未装配。下步补搜索/导航hover/focus/键盘/关闭/响应式/动画、公司页签/内部滚动/图表，按完整spec派发小builder，再来源与接入后双语三尺寸对照。P10/R1、FE-02/QA-01继续，R2未启动。最新细项见主仓[搜索恢复记录](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SEARCH_RECOVERY_20261010.md)；资产403/429缺项保持，不连续机械重刷。
+SearchGuidance与SearchEmptyMessage已有完整小组件spec/隔离实现及独立渲染对照，组件未接路由，完整Fiscal source pathname与/app布局均未装配。下步补搜索/导航hover/focus/键盘/关闭/响应式/动画、公司页签/内部滚动/图表，按完整spec派发小builder，再来源与接入后双语三尺寸对照。P10/R1、FE-02/QA-01继续，R2未启动。最新细项见主仓[搜索恢复记录](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SEARCH_RECOVERY_20261010.md)；资产403/429缺项保持，不连续机械重刷。
 
 ## 前序来源采样记录（历史）
 

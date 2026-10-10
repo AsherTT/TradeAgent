@@ -1,0 +1,162 @@
+{
+  "active": "main-search-bar-modal",
+  "clearButton": false,
+  "links": [
+    {
+      "active": "true",
+      "href": "/company/NASDAQ_NVDA/",
+      "text": "NVIDIA CorporationNASDAQ:NVDA (Equity)Income Statement, Balance Sheet, Cash Flow, Ratios, Segments & KPIs +13 moreTab40 Listings"
+    },
+    {
+      "active": null,
+      "href": "/company/NASDAQ_AAPL/",
+      "text": "Apple Inc.NASDAQ:AAPL (Equity)36 Listings"
+    },
+    {
+      "active": null,
+      "href": "/company/NASDAQ_GOOG/",
+      "text": "Alphabet Inc.NASDAQ:GOOG (Equity)65 Listings"
+    },
+    {
+      "active": null,
+      "href": "/company/NASDAQ_MSFT/",
+      "text": "Microsoft CorporationNASDAQ:MSFT (Equity)42 Listings"
+    },
+    {
+      "active": null,
+      "href": "/company/NASDAQ_AMZN/",
+      "text": "Amazon.com, Inc.NASDAQ:AMZN (Equity)39 Listings"
+    },
+    {
+      "active": null,
+      "href": "/etf/ARCA-VTI/",
+      "text": "Vanguard Index Funds - Vanguard Morningstar Total Stock Market ETFARCA:VTI  (ETF)"
+    },
+    {
+      "active": null,
+      "href": "/company/NASDAQ_SPCX/",
+      "text": "SpaceXNASDAQ:SPCX (Equity)27 Listings"
+    },
+    {
+      "active": null,
+      "href": "/company/NYSE_TSM/",
+      "text": "Taiwan Semiconductor Manufacturing Company LimitedNYSE:TSM (Equity)15 Listings"
+    },
+    {
+      "active": null,
+      "href": "/company/NASDAQ_META/",
+      "text": "Meta Platforms, Inc.NASDAQ:META (Equity)38 Listings"
+    },
+    {
+      "active": null,
+      "href": "/company/NASDAQ_AVGO/",
+      "text": "Broadcom Inc.NASDAQ:AVGO (Equity)29 Listings"
+    },
+    {
+      "active": null,
+      "href": "/etf/ARCA-VOO/",
+      "text": "Vanguard Index Funds - Vanguard S&P 500 ETFARCA:VOO  (ETF)"
+    },
+    {
+      "active": null,
+      "href": "/company/XSAU_2222/",
+      "text": "Saudi AramcoXSAU:2222 (Equity)"
+    },
+    {
+      "active": null,
+      "href": "/etf/ARCA-IVV/",
+      "text": "iShares Trust - iShares Core S&P 500 ETFARCA:IVV  (ETF)"
+    },
+    {
+      "active": null,
+      "href": "/etf/ARCA-SPY/",
+      "text": "State Street SPDR S&P 500 ETF TrustARCA:SPY  (ETF)"
+    },
+    {
+      "active": null,
+      "href": "/etf/ASX-VTS/",
+      "text": "Vanguard US Total Market Shares Index ETFASX:VTS  (ETF)"
+    },
+    {
+      "active": null,
+      "href": "/etf/NasdaqGM-QQQ/",
+      "text": "Invesco QQQ Trust, Series 1NasdaqGM:QQQ  (ETF)"
+    },
+    {
+      "active": null,
+      "href": "/etf/ARCA-VUG/",
+      "text": "Vanguard Index Funds - Vanguard Morningstar Growth ETFARCA:VUG  (ETF)"
+    },
+    {
+      "active": null,
+      "href": "/etf/MutualFund-AGTH.X",
+      "text": "The Growth Fund of AmericaMutualFund:AGTH.X  (Fund)"
+    },
+    {
+      "active": null,
+      "href": "/etf/BOVESPA-BOVB11/",
+      "text": "ETF Bradesco Ibovespa Fundo De IndiceBOVESPA:BOVB11  (ETF)"
+    },
+    {
+      "active": null,
+      "href": "/etf/BOVESPA-BOVV11/",
+      "text": "It Now Ibovespa Fundo de IndiceBOVESPA:BOVV11  (ETF)"
+    },
+    {
+      "active": null,
+      "href": "/investor/jfs-wealth-advisors-llc-99986914/",
+      "text": "JFJFS Wealth Advisors, LLC (Investor)"
+    },
+    {
+      "active": null,
+      "href": "/investor/yuanta-new-china-fund-99949277/",
+      "text": "YUYuanta New China Fund (Investor)"
+    },
+    {
+      "active": null,
+      "href": "/investor/platinum-global-fund-(long-only)-99948718/",
+      "text": "PLPlatinum Global Fund (Long Only) (Investor)"
+    },
+    {
+      "active": null,
+      "href": "/investor/balentine-llc-99944936/",
+      "text": "BABalentine LLC (Investor)"
+    },
+    {
+      "active": null,
+      "href": "/investor/pacific-select-fund-pd-emerging-markets-index-portfolio-99944490/",
+      "text": "PAPacific Select Fund - PD Emerging Markets Index Portfolio (Investor)"
+    },
+    {
+      "active": null,
+      "href": "/investor/pacific-select-fund-pd-high-yield-bond-market-portfolio-99944473/",
+      "text": "PAPacific Select Fund - PD High Yield Bond Market Portfolio (Investor)"
+    },
+    {
+      "active": null,
+      "href": "/investor/nuveen-investment-trust-v-nuveen-nwq-flexible-income-fund-99942854/",
+      "text": "NUNuveen Investment Trust V - Nuveen NWQ Flexible Income Fund (Investor)"
+    },
+    {
+      "active": null,
+      "href": "/investor/fullgoal-shanghai-composite-index-etf-99936882/",
+      "text": "FUFullgoal Shanghai Composite Index ETF (Investor)"
+    },
+    {
+      "active": null,
+      "href": "/investor/mcginn-penninger-investment-management-inc.-99936830",
+      "text": "MCMcGinn Penninger Investment Management, Inc. (Investor)"
+    },
+    {
+      "active": null,
+      "href": "/investor/ofi-invest-rebond-99930001/",
+      "text": "OFOFI Invest Rebond (Investor)"
+    }
+  ],
+  "query": "",
+  "url": "https://fiscal.ai/company/NASDAQ_HOOD/",
+  "viewport": [
+    1440,
+    1000
+  ]
+}
