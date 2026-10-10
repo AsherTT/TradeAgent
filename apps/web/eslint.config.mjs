@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local validation harnesses and generated evidence are not product source.
+    ".test-output/**",
   ]),
 ]);
 
