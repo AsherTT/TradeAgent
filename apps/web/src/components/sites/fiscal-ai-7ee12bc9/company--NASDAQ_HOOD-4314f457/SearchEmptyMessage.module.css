@@ -1,0 +1,38 @@
+.message {
+  display: block;
+  box-sizing: border-box;
+  position: static;
+  width: auto;
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  max-width: none;
+  max-height: none;
+  padding: 16px;
+  margin: 0;
+  border: 0 none;
+  border-radius: 0;
+  background-color: transparent;
+  background-image: none;
+  font-family: var(--font-fiscal-jakarta), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24.8px;
+  letter-spacing: normal;
+  color: rgb(255, 255, 255);
+  text-align: start;
+  white-space: normal;
+  text-decoration: none;
+  text-transform: none;
+  overflow: visible;
+  opacity: 1;
+  cursor: auto;
+  box-shadow: none;
+  transform: none;
+  transition-property: all;
+  transition-duration: 0s;
+  transition-delay: 0s;
+  transition-timing-function: ease;
+  animation-name: none;
+  animation-duration: 0s;
+}
