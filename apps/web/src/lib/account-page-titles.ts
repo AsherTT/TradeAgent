@@ -8,6 +8,7 @@ export const accountPageTitles: Record<string, string> = {
   "/register": "TradeAgent — Create account",
   "/app": "TradeAgent — Workspace",
   "/labs/r1-company-data-status": "Company source component preview | TradeAgent",
+  "/labs/r1-fiscal-search": "Fiscal search component preview | TradeAgent",
   "/labs/function-integration": "Functional integration preview | TradeAgent",
 };
 
