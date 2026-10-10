@@ -33,5 +33,8 @@
     "src/components/sites/fiscal-ai-7ee12bc9/shared/types.ts",
     "src/components/sites/fiscal-ai-7ee12bc9/shared/icons.tsx"
   ],
-  "foundation_status": "本地字体、默认实测作用域tokens、已采SVG和参考类型已实现；未接产品路由，未派发交互组件，不声明Phase1全状态完成。"
+  "foundation_status": "本地字体、默认tokens、SVG和参考类型已实现；三个来源子组件已验收，本轮仅接独立开发预览；完整来源交互采样未完成。",
+  "development_preview_route": "/labs/r1-fiscal-search",
+  "development_preview_route_file": "src/app/labs/r1-fiscal-search/page.tsx",
+  "development_preview_scope": "三个已验收来源子组件的独立手动验证容器；自有双语说明/清空示例，不装配完整搜索、源公司页或正式/app布局。"
 }
