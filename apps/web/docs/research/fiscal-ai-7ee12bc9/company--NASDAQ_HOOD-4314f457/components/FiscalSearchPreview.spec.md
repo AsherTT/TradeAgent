@@ -17,6 +17,7 @@
 - 每个来源样本容器 `lang="en"`、背景 rgb(41,41,49)，水平居中。
 - 样本容器宽317.375px，min-width768px时657.2px，min-width1024px时966px，max-width100%；这是验证宽度，不表示完整搜索父层。
 - 自有容器使用 Tailwind；不得用全局选择器改来源组件。
+- 实際主应用测量后：按钮验证父容器用普通行内布局居中，避免 flex item 将来源 inline-block 计算成 block；样本容器内 span 的 outline-color 作用域恢复为 currentColor，抵消主应用 Tailwind preflight 的未显示 outline 色。不改来源子组件或全局基础。
 
 ## 交互状态（自有验证容器）
 - 初始 query="HOOD pages"，清空计数0。

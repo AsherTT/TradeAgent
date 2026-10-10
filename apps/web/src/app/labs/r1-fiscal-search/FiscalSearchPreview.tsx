@@ -8,7 +8,7 @@ import { SearchGuidance } from "@/components/sites/fiscal-ai-7ee12bc9/company--N
 import { LanguageSwitcher, useLanguage } from "@/components/sites/simplywall-st-1b042a47/shared/i18n/LanguageProvider";
 
 const initialQuery = "HOOD pages";
-const sampleClassName = "mx-auto w-[317.375px] max-w-full bg-[#292931] min-[768px]:w-[657.2px] min-[1024px]:w-[966px]";
+const sampleClassName = "mx-auto w-[317.375px] max-w-full bg-[#292931] min-[768px]:w-[657.2px] min-[1024px]:w-[966px] [&_span]:[outline-color:currentColor]";
 const steps = [
   "Edit the demo input. Clear Search appears only while the input contains text.",
   "Hover over Clear Search, then click it. The input becomes empty and the clear count increases by one.",
@@ -72,7 +72,7 @@ export function FiscalSearchPreview() {
               className="w-full rounded-md border border-white/30 bg-[#202026] px-3 py-2 text-base text-white outline-offset-2 focus-visible:outline-2 focus-visible:outline-[#fdcc6a]"
             />
           </div>
-          <div lang="en" className={`${sampleClassName} flex min-h-[62px] items-center justify-center`}>
+          <div lang="en" className={`${sampleClassName} min-h-[62px] py-4 text-center leading-none`}>
             {query.length > 0 && <SearchClearButton onClear={clearQuery} />}
           </div>
           <div className="mt-4 flex flex-wrap items-center gap-4">
