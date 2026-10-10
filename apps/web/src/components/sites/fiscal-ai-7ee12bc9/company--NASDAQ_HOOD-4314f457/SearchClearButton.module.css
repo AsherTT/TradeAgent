@@ -1,0 +1,88 @@
+.button {
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  width: 100px;
+  height: 30px;
+  min-width: 0;
+  min-height: 0;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0 10px;
+  border: 0.8px solid transparent;
+  border-radius: 24px;
+  background-color: transparent;
+  background-image: none;
+  box-shadow: none;
+  font-family: var(--font-fiscal-jakarta), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 12px;
+  letter-spacing: normal;
+  color: rgb(175, 175, 182);
+  text-align: center;
+  text-transform: none;
+  text-decoration: none;
+  white-space: normal;
+  overflow: hidden;
+  opacity: 1;
+  cursor: pointer;
+  transform: none;
+  animation: none;
+  transition: opacity 0.2s ease-in-out 0s;
+  outline: none;
+  outline-offset: 0;
+}
+
+.button:hover {
+  opacity: 0.7;
+}
+
+.button:focus-visible {
+  outline: 1.6px solid rgb(94, 94, 116);
+  outline-offset: 1.6px;
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.inner,
+.label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  position: static;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  background-image: none;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  cursor: inherit;
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
+.inner {
+  justify-content: center;
+  white-space: normal;
+  overflow: visible;
+  transition: transform 0.15s ease 0s, opacity 0.1s ease 0s;
+}
+
+.label {
+  justify-content: normal;
+  min-width: auto;
+  min-height: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: all 0s ease 0s;
+}
