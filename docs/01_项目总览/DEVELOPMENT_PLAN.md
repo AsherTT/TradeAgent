@@ -1,5 +1,7 @@
 # 研究平台开发计划与待办
 
+2026-10-10本轮续开发：f1e54c5/012a29a按clone-website完整规格/隔离builder新增SearchClearButton；真实Next字体与客户端七组记录样式相对尺寸一致，mouse/Enter/Space恰一次回调且无submit。6ca0cef修复临时验证产物误入lint，完整check通过；原R1增量双轴0项，无阶段重复调用。Investors空query桌面/手机、长标题换行、真正hover/focus已采，平板/query高亮/分类完整状态仍待。三子组件未接路由，完整搜索/来源pathname与/app布局未装配，P10/R1继续、R2未启动。见[清空控件验收](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/CLEAR_BUTTON_VALIDATION_20261010.md)；下方前序同步hash保持为历史检查点。
+
 2026-10-10最新：源码统一与正常GitHub同步已完成，前端唯一维护入口为`TradeAgent/apps/web`，沿用npm/package-lock.json；独立模板目录及旧未push记录只作历史。P10仍R1，R2未启动；正式/app来源布局重构未开始。Fiscal已补平板搜索外层/无结果及Escape；74466b4/ff07646新增无结果静态组件规格/隔离实现、两个静态组件独立三尺寸渲染对照，桌面HOOD上下键/Tab直接页面/Clear Search/Enter状态归档。完整搜索/导航/公司图表状态仍待。交接前774fa52与origin/main一致，前后端云端检查通过；见[最新进度](DEVELOPMENT_PROGRESS_20261008.md)、[源码同步验收](../07_前端与部署/SOURCE_SYNC_VALIDATION_20261010.md)。下文历史切片不覆盖当前任务表。
 
 更新：2026-10-10，Asia/Shanghai。状态：首版范围已由用户确认；下列未完成任务进入开发计划，未因文档登记或有界修复而完成。

@@ -1,0 +1,197 @@
+{
+  "component": "SearchClearButton",
+  "sourceCommit": "f1e54c5",
+  "implementationCommit": "012a29a",
+  "states": [
+    {
+      "state": "desktop-default",
+      "comparisons": 138,
+      "differences": [],
+      "fontAliases": [
+        {
+          "node": 0,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        },
+        {
+          "node": 1,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        },
+        {
+          "node": 2,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        }
+      ],
+      "fontStatus": "loaded"
+    },
+    {
+      "state": "tablet-default",
+      "comparisons": 138,
+      "differences": [],
+      "fontAliases": [
+        {
+          "node": 0,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        },
+        {
+          "node": 1,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        },
+        {
+          "node": 2,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        }
+      ],
+      "fontStatus": "loaded"
+    },
+    {
+      "state": "mobile-default",
+      "comparisons": 138,
+      "differences": [],
+      "fontAliases": [
+        {
+          "node": 0,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        },
+        {
+          "node": 1,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        },
+        {
+          "node": 2,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        }
+      ],
+      "fontStatus": "loaded"
+    },
+    {
+      "state": "desktop-hover",
+      "comparisons": 138,
+      "differences": [],
+      "fontAliases": [
+        {
+          "node": 0,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        },
+        {
+          "node": 1,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        },
+        {
+          "node": 2,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        }
+      ],
+      "fontStatus": "loaded"
+    },
+    {
+      "state": "desktop-focus",
+      "comparisons": 138,
+      "differences": [],
+      "fontAliases": [
+        {
+          "node": 0,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        },
+        {
+          "node": 1,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        },
+        {
+          "node": 2,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        }
+      ],
+      "fontStatus": "loaded"
+    },
+    {
+      "state": "desktop-focus-without-hover",
+      "comparisons": 138,
+      "differences": [],
+      "fontAliases": [
+        {
+          "node": 0,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        },
+        {
+          "node": 1,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        },
+        {
+          "node": 2,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        }
+      ],
+      "fontStatus": "loaded"
+    },
+    {
+      "state": "desktop-pressed",
+      "comparisons": 138,
+      "differences": [],
+      "fontAliases": [
+        {
+          "node": 0,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        },
+        {
+          "node": 1,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        },
+        {
+          "node": 2,
+          "source": "\"Plus Jakarta Sans\", sans-serif",
+          "local": "fiscalJakarta, sans-serif"
+        }
+      ],
+      "fontStatus": "loaded"
+    }
+  ],
+  "activation": [
+    {
+      "method": "click",
+      "totalCalls": "1",
+      "expectedTotalCalls": "1",
+      "query": "",
+      "buttonAbsent": true,
+      "submits": "0",
+      "passed": true
+    },
+    {
+      "method": "enter",
+      "totalCalls": "2",
+      "expectedTotalCalls": "2",
+      "query": "",
+      "buttonAbsent": true,
+      "submits": "0",
+      "passed": true
+    },
+    {
+      "method": "space",
+      "totalCalls": "3",
+      "expectedTotalCalls": "3",
+      "query": "",
+      "buttonAbsent": true,
+      "submits": "0",
+      "passed": true
+    }
+  ]
+}

@@ -2,6 +2,12 @@
 
 ## 最新检查点：源码统一后平板补采（2026-10-10）
 
+### 最新续开发：清空控件与投资者状态
+
+f1e54c5冻结SearchClearButton完整规格/三尺寸及hover/focus/pressed/native mouse/Space证据，012a29a由隔离builder实现并合并。真实独立Next/font-local/客户端七组样式相对尺寸一致；mouse/Enter/Space每次callback一次、无submit。6ca0cef修复lint误扫描已Git忽略临时Next产物，完整lint/types/build通过。原R1双轴仅新增组件及追加lint hunk，各0项，无整阶段重启。
+
+Investors空query桌面/手机首条、长标题、末条完整样式和真正非hover→hover、keyboardfocus已保存，父选择/hover/focus分开。平板实际尺寸未匹配，未登记完成。Recent Searches及native clear焦点变化补记。三组件未接路由，完整搜索/来源pathname和/app未装配，R2未启动。见[清空控件增量验收](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/CLEAR_BUTTON_VALIDATION_20261010.md)。3120服务停止，来源保留Investors空query，最终实际390×1000；下次先核实视口/状态。以下为前序记录。
+
 ### 本轮续开发：第二个静态组件与HOOD键盘状态
 
 74466b4保存SearchEmptyMessage三尺寸完整小组件spec与指针证据，ff07646按clone-website隔离builder实现并快进合并。合并lint/typecheck/build通过，原10个page路由保留；R1原流程仅一次定向复核新组件，Standards0/Spec0。新段落与既有SearchGuidance均已完成独立SSR+CSS+本地字体字节的1440/768/390渲染对照；不是Next字体loader、整页或/app接入验收。两组件仍未接正式路由，完整搜索和来源pathname仍未装配。详见[组件增量验收](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/STATIC_COMPONENT_VALIDATION_20261010.md)。

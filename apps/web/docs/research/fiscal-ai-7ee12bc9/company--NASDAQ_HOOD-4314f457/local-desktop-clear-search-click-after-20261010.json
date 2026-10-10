@@ -1,0 +1,17 @@
+{
+  "active": {
+    "tag": "BODY",
+    "text": ""
+  },
+  "calls": "1",
+  "fontStatus": "loaded",
+  "nodes": [],
+  "query": "",
+  "submits": "0",
+  "url": "http://127.0.0.1:3120/",
+  "viewport": {
+    "dpr": 1.0000000149011612,
+    "height": 1000,
+    "width": 1440
+  }
+}

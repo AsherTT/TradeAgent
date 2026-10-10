@@ -4,6 +4,14 @@
 
 ## 迁入后平板补采
 
+### 最新增量：清空控件与投资者默认/hover/focus
+
+f1e54c5保存清空控件完整规格/三尺寸/交互状态，012a29a隔离builder实现native button/onClear。真实Next字体/客户端七组样式相对尺寸一致，mouse/Enter/Space单次callback、无submit；6ca0cef修复临时产物误入lint后完整check通过。原R1增量双轴0项，见[CLEAR_BUTTON_VALIDATION_20261010.md](CLEAR_BUTTON_VALIDATION_20261010.md)。三组件未接路由，完整搜索spec未可派发。
+
+新增Investors空query首条/长标题/末条桌面/手机各12节点，长标题真正非hover→hover和keyboardfocus；父选择rgb28/28/33、hover64/64/79、ring94/94/116分开。手机长标题两行、头像隐藏。平板请求与实际宽度不符，未记完成；query高亮/类型标签、分类/三尺寸键盘、非hover焦点/跨路径选择/父关闭动画仍待。
+
+当前一条Recent Searches；native mouse/Space clear移除控件后BODYfocus、31links，早先locator inputfocus/30links作为当时观察保留。未清空历史。来源后续保留Investors空query，定向临时尺寸清除后实际390×1000，3120服务已停。以下为前序增量。
+
 ### 后续增量：无结果组件与HOOD键盘状态
 
 主仓74466b4归档SearchEmptyMessage完整spec及三尺寸段落全部CSS/指针状态，ff07646通过隔离builder实现。合并后lint/typecheck/build通过，原10个page路由保留；R1原流程一次定向双轴复核74466b4...ff07646均0项。两个静态组件SearchEmptyMessage/SearchGuidance已通过独立实际SSR+CSS+本地字体的三尺寸渲染对照，但验证页手动映射CSS类与@font-face，不作为Next字体loader、产品父布局或/app接入验收。见[组件增量验收](STATIC_COMPONENT_VALIDATION_20261010.md)。未接任何正式路由。
