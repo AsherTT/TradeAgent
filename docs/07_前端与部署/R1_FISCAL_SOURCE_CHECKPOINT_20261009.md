@@ -1,5 +1,7 @@
 # R1 Fiscal 控制台来源采样检查点
 
+2026-10-10最新可查看入口：`/labs/r1-fiscal-search` 已按规格/隔离builder完成，三来源子组件和next/font在主应用运行，自有开发容器不冒充完整搜索。中英1440/768/390各246项样式/相对尺寸0差异，匹配前置条件hover/focus/pressed各138项0差异；mouse/Enter/Space与语言状态保留通过，完整check和原R1新差异双轴0项。当前DockerAPI/PG/Redis与主仓3107已启动，手动看效果见[R1验证入口](R1_MANUAL_VALIDATION_20261010.md)；[主应用组合验收](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/FISCAL_PREVIEW_VALIDATION_20261010.md)。完整源pathname/父搜索/投资者结果与/app布局仍未装配、缺失来源状态继续按前序检查点补齐，P10/R1不变。
+
 ## 最新检查点：源码统一后平板补采（2026-10-10）
 
 ### 最新续开发：清空控件与投资者状态

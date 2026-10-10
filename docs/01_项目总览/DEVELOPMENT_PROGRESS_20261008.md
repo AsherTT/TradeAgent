@@ -1,5 +1,7 @@
 # 最新项目进展：方案 B 股票投研与后端补齐
 
+2026-10-10最新手动验证入口：9473a79/f2b0f8f/2db6a9c按原clone流程规格先行、隔离builder实现 `/labs/r1-fiscal-search`，真实导入三个Fiscal搜索来源子组件，自有双语说明/清空示例/计数/重置。主应用三尺寸中英各246项对照0差异，匹配前置条件的hover/focus/pressed各138项0差异；mouse/Enter/Space均恰一次，语言保留query/计数与刷新偏好。完整check通过，普通前端35 passed/1 skipped；原R1仅新差异定向双轴0项，未重启阶段skill。原十路由保持，源公司页/完整搜索与正式/app Fiscal布局仍未装配，P10/R1继续、R2未启动。Docker Desktop与当前源码API、PG、Redis已启动，主仓3107开发服务保留；数据库现有0016未升级，模型/worker/beat关闭。见[手动验证入口与步骤](../07_前端与部署/R1_MANUAL_VALIDATION_20261010.md)、[本轮组合验收](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/FISCAL_PREVIEW_VALIDATION_20261010.md)。下方旧“未接路由”状态为当时历史，本轮仅新增独立labs验证入口。
+
 ## 最新检查点（2026-10-10，Asia/Shanghai）
 
 当前仍为 **P10 / R1**，优先FE-02、FE-03与QA-01；R2未启动。用户已确定方案B（Fiscal式股票投研工作台），保留已认可Simply首页，Quartr负责报告与证据阅读；增强A的来源还原、品牌、语言和自有对象约束保持。`/app`现有功能骨架可联调，正式来源布局重构尚未开始。
