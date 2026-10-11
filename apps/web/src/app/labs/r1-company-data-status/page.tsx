@@ -10,7 +10,7 @@ export async function generateMetadata() {
 
 export default function CompanyDataStatusPreviewPage() {
   return (
-    <main className={`${sourceBureauSans.variable} ${sourceBureauSerif.variable} sws-company-preview min-h-screen bg-[#151515] py-8 text-white`}>
+    <main className={`${sourceBureauSans.variable} ${sourceBureauSerif.variable} sws-company-preview min-h-screen bg-[#1a1a1a] text-white`}>
       <CompanySourcePreview />
     </main>
   );

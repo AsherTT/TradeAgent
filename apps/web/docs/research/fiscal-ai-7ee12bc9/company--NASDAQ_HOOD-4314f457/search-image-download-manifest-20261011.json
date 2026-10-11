@@ -1,0 +1,246 @@
+{
+  "inventory": "search-live-images-20261011.json",
+  "probeEvidence": "search-image-http-probes-20261011.json",
+  "generatedAt": "2026-10-11T05:11:25.125Z",
+  "policy": "Only observed public image URLs or their explicit original flag url parameter; no logo reconstruction; no retries after HTTP 429",
+  "assets": [
+    {
+      "alt": "Robinhood Markets, Inc. Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_HOOD&ticker=HOOD&exchange=NASDAQ&webpage=robinhood.com&name=Robinhood+Markets%2C+Inc.&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_HOOD&ticker=HOOD&exchange=NASDAQ&webpage=robinhood.com&name=Robinhood+Markets%2C+Inc.&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "failed-probe",
+      "httpStatus": 429,
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "US Flag",
+      "observedUrl": "https://fiscal.ai/_next/image/?url=https%3A%2F%2Fcdn.fiscal.ai%2Fflags%2FUS.svg&w=32&q=75",
+      "requestedUrl": "https://cdn.fiscal.ai/flags/US.svg",
+      "derivation": "Decoded url parameter of the observed Next image src; original flag asset",
+      "status": "downloaded",
+      "httpStatus": 200,
+      "contentType": "image/svg+xml",
+      "path": "public/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/search-images-20261011/flag-US-a3d4aaef8172.svg",
+      "bytes": 1420,
+      "sha256": "a3d4aaef8172bb9aebceb1a5b742be8ded6996a818e48d01ee8d9291d7307132"
+    },
+    {
+      "alt": "NVIDIA Corporation Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_NVDA&ticker=NVDA&exchange=NASDAQ&webpage=www.nvidia.com&name=NVIDIA+Corporation&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_NVDA&ticker=NVDA&exchange=NASDAQ&webpage=www.nvidia.com&name=NVIDIA+Corporation&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "Apple Inc. Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_AAPL&ticker=AAPL&exchange=NASDAQ&webpage=www.apple.com&name=Apple+Inc.&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_AAPL&ticker=AAPL&exchange=NASDAQ&webpage=www.apple.com&name=Apple+Inc.&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "Alphabet Inc. Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_GOOG&ticker=GOOG&exchange=NASDAQ&webpage=abc.xyz&name=Alphabet+Inc.&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_GOOG&ticker=GOOG&exchange=NASDAQ&webpage=abc.xyz&name=Alphabet+Inc.&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "Microsoft Corporation Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_MSFT&ticker=MSFT&exchange=NASDAQ&webpage=www.microsoft.com&name=Microsoft+Corporation&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_MSFT&ticker=MSFT&exchange=NASDAQ&webpage=www.microsoft.com&name=Microsoft+Corporation&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "Amazon.com, Inc. Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_AMZN&ticker=AMZN&exchange=NASDAQ&webpage=www.amazon.com&name=Amazon.com%2C+Inc.&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_AMZN&ticker=AMZN&exchange=NASDAQ&webpage=www.amazon.com&name=Amazon.com%2C+Inc.&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "Vanguard Index Funds - Vanguard Morningstar Total Stock Market ETF Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?ticker=VTI&exchange=ARCA&name=Vanguard+Index+Funds+-+Vanguard+Morningstar+Total+Stock+Market+ETF&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?ticker=VTI&exchange=ARCA&name=Vanguard+Index+Funds+-+Vanguard+Morningstar+Total+Stock+Market+ETF&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "SpaceX Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_SPCX&ticker=SPCX&exchange=NASDAQ&webpage=www.spacex.com&name=SpaceX&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_SPCX&ticker=SPCX&exchange=NASDAQ&webpage=www.spacex.com&name=SpaceX&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "Taiwan Semiconductor Manufacturing Company Limited Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NYSE_TSM&ticker=TSM&exchange=NYSE&webpage=www.tsmc.com&name=Taiwan+Semiconductor+Manufacturing+Company+Limited&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NYSE_TSM&ticker=TSM&exchange=NYSE&webpage=www.tsmc.com&name=Taiwan+Semiconductor+Manufacturing+Company+Limited&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "Meta Platforms, Inc. Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_META&ticker=META&exchange=NASDAQ&webpage=www.meta.com&name=Meta+Platforms%2C+Inc.&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_META&ticker=META&exchange=NASDAQ&webpage=www.meta.com&name=Meta+Platforms%2C+Inc.&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "Broadcom Inc. Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_AVGO&ticker=AVGO&exchange=NASDAQ&webpage=www.broadcom.com&name=Broadcom+Inc.&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_AVGO&ticker=AVGO&exchange=NASDAQ&webpage=www.broadcom.com&name=Broadcom+Inc.&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "Vanguard Index Funds - Vanguard S&P 500 ETF Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?ticker=VOO&exchange=ARCA&name=Vanguard+Index+Funds+-+Vanguard+S%26P+500+ETF&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?ticker=VOO&exchange=ARCA&name=Vanguard+Index+Funds+-+Vanguard+S%26P+500+ETF&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "Saudi Aramco Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?companyKey=XSAU_2222&ticker=2222&exchange=XSAU&webpage=www.aramco.com&name=Saudi+Aramco&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?companyKey=XSAU_2222&ticker=2222&exchange=XSAU&webpage=www.aramco.com&name=Saudi+Aramco&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "SA Flag",
+      "observedUrl": "https://fiscal.ai/_next/image/?url=https%3A%2F%2Fcdn.fiscal.ai%2Fflags%2FSA.svg&w=32&q=75",
+      "requestedUrl": "https://cdn.fiscal.ai/flags/SA.svg",
+      "derivation": "Decoded url parameter of the observed Next image src; original flag asset",
+      "status": "downloaded",
+      "httpStatus": 200,
+      "contentType": "image/svg+xml",
+      "path": "public/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/search-images-20261011/flag-SA-3ec38895915d.svg",
+      "bytes": 1127,
+      "sha256": "3ec38895915da3751673547bc07d703c0b0b240d30def1a093bbaba98f80f285"
+    },
+    {
+      "alt": "iShares Trust - iShares Core S&P 500 ETF Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?ticker=IVV&exchange=ARCA&name=iShares+Trust+-+iShares+Core+S%26P+500+ETF&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?ticker=IVV&exchange=ARCA&name=iShares+Trust+-+iShares+Core+S%26P+500+ETF&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "State Street SPDR S&P 500 ETF Trust Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?ticker=SPY&exchange=ARCA&name=State+Street+SPDR+S%26P+500+ETF+Trust&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?ticker=SPY&exchange=ARCA&name=State+Street+SPDR+S%26P+500+ETF+Trust&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "Vanguard US Total Market Shares Index ETF Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?ticker=VTS&exchange=ASX&name=Vanguard+US+Total+Market+Shares+Index+ETF&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?ticker=VTS&exchange=ASX&name=Vanguard+US+Total+Market+Shares+Index+ETF&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "AU Flag",
+      "observedUrl": "https://fiscal.ai/_next/image/?url=https%3A%2F%2Fcdn.fiscal.ai%2Fflags%2FAU.svg&w=32&q=75",
+      "requestedUrl": "https://cdn.fiscal.ai/flags/AU.svg",
+      "derivation": "Decoded url parameter of the observed Next image src; original flag asset",
+      "status": "downloaded",
+      "httpStatus": 200,
+      "contentType": "image/svg+xml",
+      "path": "public/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/search-images-20261011/flag-AU-7bb415cdfe9a.svg",
+      "bytes": 1671,
+      "sha256": "7bb415cdfe9a6d231f816f8181987ed6be5709c948c16d68b781d49409b8b59b"
+    },
+    {
+      "alt": "Invesco QQQ Trust, Series 1 Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?ticker=QQQ&exchange=NASDAQ&name=Invesco+QQQ+Trust%2C+Series+1&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?ticker=QQQ&exchange=NASDAQ&name=Invesco+QQQ+Trust%2C+Series+1&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "Vanguard Index Funds - Vanguard Morningstar Growth ETF Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?ticker=VUG&exchange=ARCA&name=Vanguard+Index+Funds+-+Vanguard+Morningstar+Growth+ETF&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?ticker=VUG&exchange=ARCA&name=Vanguard+Index+Funds+-+Vanguard+Morningstar+Growth+ETF&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "The Growth Fund of America Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?ticker=AGTH.X&exchange=MutualFund&name=The+Growth+Fund+of+America&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?ticker=AGTH.X&exchange=MutualFund&name=The+Growth+Fund+of+America&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "ETF Bradesco Ibovespa Fundo De Indice Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?ticker=BOVB11&exchange=BOVESPA&name=ETF+Bradesco+Ibovespa+Fundo+De+Indice&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?ticker=BOVB11&exchange=BOVESPA&name=ETF+Bradesco+Ibovespa+Fundo+De+Indice&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    },
+    {
+      "alt": "BR Flag",
+      "observedUrl": "https://fiscal.ai/_next/image/?url=https%3A%2F%2Fcdn.fiscal.ai%2Fflags%2FBR.svg&w=32&q=75",
+      "requestedUrl": "https://cdn.fiscal.ai/flags/BR.svg",
+      "derivation": "Decoded url parameter of the observed Next image src; original flag asset",
+      "status": "downloaded",
+      "httpStatus": 200,
+      "contentType": "image/svg+xml",
+      "path": "public/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/search-images-20261011/flag-BR-7029a973f7df.svg",
+      "bytes": 565,
+      "sha256": "7029a973f7df12453e20a2bd851017c0e00549ba4b5ef0311633b89b202e4114"
+    },
+    {
+      "alt": "It Now PIBB IBrX-50 Index Fund Website",
+      "observedUrl": "https://fiscal.ai/api/company-logo/?ticker=PIBB11&exchange=BOVESPA&name=It+Now+PIBB+IBrX-50+Index+Fund&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "requestedUrl": "https://fiscal.ai/api/company-logo/?ticker=PIBB11&exchange=BOVESPA&name=It+Now+PIBB+IBrX-50+Index+Fund&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+      "derivation": "Observed image src, unchanged",
+      "status": "not-attempted",
+      "reason": "HTTP 429 observed on fiscal.ai; host circuit breaker prevents bulk retries",
+      "evidence": "search-image-http-probes-20261011.json"
+    }
+  ]
+}

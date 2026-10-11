@@ -26,6 +26,8 @@ export function SearchResultRow({ result, active, showInvestorType, onSelect, id
       href={`https://fiscal.ai${result.href}`}
       className={`${styles.link} ${investor ? styles.investor : styles.security}`}
       data-active={active ? "true" : undefined}
+      role="option"
+      aria-selected={active}
       onClick={onSelect}
     >
       <div className={styles.body}>

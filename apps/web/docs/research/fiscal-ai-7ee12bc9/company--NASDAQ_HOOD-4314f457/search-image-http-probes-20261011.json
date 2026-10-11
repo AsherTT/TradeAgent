@@ -1,0 +1,38 @@
+[
+  {
+    "observedDate": "2026-10-11",
+    "requestedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_HOOD&ticker=HOOD&exchange=NASDAQ&webpage=robinhood.com&name=Robinhood+Markets%2C+Inc.&dpl=dpl_3HT9FosQtU8Rd1qxEAF6DF1kxBqr",
+    "derivation": "First company logo in observed search-live-images-20261011.json",
+    "httpStatus": 429,
+    "contentType": "text/html; charset=utf-8",
+    "responseBytes": 33944,
+    "bodySaved": false
+  },
+  {
+    "observedDate": "2026-10-11",
+    "requestedUrl": "https://fiscal.ai/_next/image/?url=https%3A%2F%2Fcdn.fiscal.ai%2Fflags%2FUS.svg&w=32&q=75",
+    "derivation": "First flag in observed search-live-images-20261011.json",
+    "httpStatus": 429,
+    "contentType": "text/html; charset=utf-8",
+    "responseBytes": 33953,
+    "bodySaved": false
+  },
+  {
+    "observedDate": "2026-10-11",
+    "requestedUrl": "https://cdn.fiscal.ai/flags/US.svg",
+    "derivation": "Decoded url parameter from the observed US flag optimizer URL",
+    "httpStatus": 200,
+    "contentType": "image/svg+xml",
+    "responseBytes": 1420,
+    "bodySaved": false
+  },
+  {
+    "observedDate": "2026-10-11",
+    "requestedUrl": "https://fiscal.ai/api/company-logo/?companyKey=NASDAQ_HOOD&ticker=HOOD&exchange=NASDAQ&webpage=robinhood.com&name=Robinhood+Markets%2C+Inc.",
+    "derivation": "One controlled probe removing only the deployment dpl parameter from the observed HOOD logo URL",
+    "httpStatus": 429,
+    "contentType": "text/html; charset=utf-8",
+    "responseBytes": 33939,
+    "bodySaved": false
+  }
+]

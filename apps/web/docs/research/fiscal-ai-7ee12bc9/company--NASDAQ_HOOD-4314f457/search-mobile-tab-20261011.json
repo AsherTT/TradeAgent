@@ -1,0 +1,108 @@
+{
+  "active": "main-search-bar-modal",
+  "controls": [
+    {
+      "class": "mantine-focus-auto mantine-active m_220c80f2 m_86a44da5 mantine-CloseButton-root m_87cf2631 mantine-UnstyledButton-root",
+      "id": "",
+      "rect": {
+        "bottom": 51,
+        "height": 34,
+        "left": 339.3999938964844,
+        "right": 373.3999938964844,
+        "top": 17,
+        "width": 34,
+        "x": 339.3999938964844,
+        "y": 17
+      },
+      "tag": "BUTTON",
+      "text": "",
+      "type": "button"
+    },
+    {
+      "class": "data-posthog-ignore Search-module-scss-module__xEK7JW__input m_8fb7ebe7 mantine-Input-input mantine-TextInput-input",
+      "id": "main-search-bar-modal",
+      "rect": {
+        "bottom": 97,
+        "height": 42,
+        "left": 17,
+        "right": 373.3999938964844,
+        "top": 55,
+        "width": 356.3999938964844,
+        "x": 17,
+        "y": 55
+      },
+      "tag": "INPUT",
+      "text": "",
+      "type": "search"
+    },
+    {
+      "class": "mantine-Tabs-tab mantine-UnstyledButton-root",
+      "id": "mantine-s96j4t3v3-tab-All",
+      "rect": {
+        "bottom": 161,
+        "height": 24,
+        "left": 29,
+        "right": 74,
+        "top": 137,
+        "width": 45,
+        "x": 29,
+        "y": 137
+      },
+      "tag": "BUTTON",
+      "text": "All",
+      "type": "button"
+    },
+    {
+      "class": "mantine-Tabs-tab mantine-UnstyledButton-root",
+      "id": "mantine-s96j4t3v3-tab-Companies",
+      "rect": {
+        "bottom": 161,
+        "height": 24,
+        "left": 78,
+        "right": 180.1500015258789,
+        "top": 137,
+        "width": 102.1500015258789,
+        "x": 78,
+        "y": 137
+      },
+      "tag": "BUTTON",
+      "text": "Companies",
+      "type": "button"
+    },
+    {
+      "class": "mantine-Tabs-tab mantine-UnstyledButton-root",
+      "id": "mantine-s96j4t3v3-tab-ETFs",
+      "rect": {
+        "bottom": 161,
+        "height": 24,
+        "left": 184.15000915527344,
+        "right": 298.07501220703125,
+        "top": 137,
+        "width": 113.9250030517578,
+        "x": 184.15000915527344,
+        "y": 137
+      },
+      "tag": "BUTTON",
+      "text": "ETFs & Funds",
+      "type": "button"
+    },
+    {
+      "class": "mantine-Tabs-tab mantine-UnstyledButton-root",
+      "id": "mantine-s96j4t3v3-tab-Investors",
+      "rect": {
+        "bottom": 189,
+        "height": 24,
+        "left": 29,
+        "right": 125.9375,
+        "top": 165,
+        "width": 96.9375,
+        "x": 29,
+        "y": 165
+      },
+      "tag": "BUTTON",
+      "text": "Investors",
+      "type": "button"
+    }
+  ],
+  "query": ""
+}
