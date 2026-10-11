@@ -5,8 +5,8 @@
 ## Overview
 - Source: https://fiscal.ai/company/NASDAQ_HOOD/ → search → Apple → 36 Listings.
 - Target: src/components/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SearchListingRows.tsx and .module.css.
-- Screenshots: docs/design-references/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/listings-source-{desktop,tablet,mobile}-open-20261012.png.
-- Evidence: listings-apple-{desktop,tablet,mobile}-query-open-20261012.json; listings-mobile-exact-css-20261012.json; listings-expanded-data-20261012.json. Raw computed-property enumeration omits shorthand values; explicit-property evidence supplies padding/gap/line-height.
+- Accepted screenshots: listings-source-desktop-open-20261012.png and listings-source-{tablet,mobile}-fresh-20261012.png in the page screenshot namespace.
+- Accepted geometry evidence: listings-apple-desktop-query-open-20261012.json.gz and listings-source-{tablet,mobile}-fresh-20261012.json.gz; listings-expanded-data-20261012.json supplies content. See SEARCH_LISTINGS_VALIDATION_20261012.md for resized/mislabeled capture exclusions. Raw computed-property enumeration omits shorthand values; explicit-property evidence supplies padding/gap/line-height.
 - Interaction model: click-driven rows; enclosing company controls expansion. Component does not own query, category, expansion or navigation.
 
 ## DOM Structure
@@ -22,9 +22,9 @@
 - Anchor height: 30.3px; generated from padding + paragraph line box, not fixed height.
 - Left section: flex; align-items/justify-content center; margin 0 12px 0 0; width/height 18px; transition transform .15s.
 - Flag frame: flex center; position relative; border .8px solid transparent; radius 4px; width/height/min-width/min-height 18px; box-sizing border-box.
-- Image: block; position absolute; width/height 16.4px; border-radius 9999px; source asset supplied by listing.flag. alt supplied by listing.flagAlt; do not replace flags with emoji.
+- Image: block; position absolute; width/height 16.4px; border-radius 9999px; object-fit cover and object-position center center, preserving the source circular crop of rectangular SVG assets. Source asset supplied by listing.flag; alt supplied by listing.flagAlt; do not replace flags with emoji.
 - Body: display block; flex 1; overflow hidden; text-overflow ellipsis; label span inline 14px/21.7px. Market p display block; margin/padding 0; 14px/20.3px; white-space normal.
-- Separator: source horizontal border rgb(64,64,79), .8px; no padding/margin. Parent stack separates header and child region by 10px. Separator appears only for an open region, after the rows.
+- Separator: source horizontal border rgb(64,64,79), .8px, opacity .3; no padding/margin. Parent stack separates header and child region by 10px. Separator appears only for an open region, after the rows.
 - Existing source NavLink hover token rgb(64,64,79), keyboard-active rgb(28,28,33). Native focus-visible outline may use existing row focus token rgb(94,94,116); record as accessibility adaptation, do not change resting geometry.
 
 ## States & Behaviors

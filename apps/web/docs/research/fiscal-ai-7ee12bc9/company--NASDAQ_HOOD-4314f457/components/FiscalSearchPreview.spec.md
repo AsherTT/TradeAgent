@@ -2,7 +2,7 @@
 
 本文件替代2026-10-10的三个静态叶子验证容器规格。用户指出孤立演示廉价、要求按本地clone工作流还原，授权更新现有lab。正式/app及首页保留。
 
-范围：采集的完整弹窗外框、输入、分类、默认30条真实公开参考结果、投资者分类、提示。结果数据/素材按SearchResultData与SearchResultRow规格；输入分类按SearchControls；父框按SearchDialogFrame。来源公司整页、页面搜索47行、Listing展开及全球搜索服务仍待，不能标R1完成。
+范围：采集的完整弹窗外框、输入、分类、默认30条真实公开参考结果、投资者分类、提示，以及2026-10-12接入的九公司331个上市地点。结果数据/素材按SearchResultData、SearchResultRow与SearchListingRows规格；输入分类按SearchControls；父框按SearchDialogFrame。来源公司整页、页面搜索47行及全球搜索服务仍待，不能标R1完成。
 
 父card：height65vh、widthfull、margin-top10、bg44/44/53、radius8、原三层shadow；frame stackgap12、formmb8，使输入下边到card上边30px。类别strip来源flexwrap，divider0.8px rgb64/64/79；结果滚动区域flex1/min-height0。默认30条按来源排序，10公司10ETF10投资者。源当前有历史HOOD Recent，但无历史的参考预览不伪造账户历史。
 
@@ -17,3 +17,9 @@
 沿用R1已调用一次code-review的原两轴代理，仅本次新增diff定向复核，不重新启动整阶段审查。
 
 来源使用叠加式自定义滚动条，不占列表内容宽度。父native滚动保留并隐藏内部gutter；自定义thumb拖动/hover/全状态尚待采集与装配，不标完整搜索验收。
+
+## 2026-10-12 当前行为（覆盖上方历史待项）
+
+referenceListings只含九家默认公司331个实测条目。筛选只匹配30条主结果name/market，不能用子上市代码搜索完整目录。展开可并存；保留仍可见公司的状态，被筛选移除后重现为折叠。lab选择子行只显示公司名、该market与真实来源链接并关闭，不写数据库。关闭/切语言/重开保留query/category/展开，这是用户上下文约束的适配；原站重新打开会清空输入和展开。
+
+原listbox/option/aria-activedescendant模型已改为命名region/原生链接/独立按钮，输入aria-controls及aria-describedby关联结果和隐藏键盘说明，方向键目标由role=status播报。Tab空query清除高亮但允许自然前进至分类与链接；上方“保持输入focus”的来源记录保留为采样历史，不再作为当前实现要求。ArrowUp/Down仍只针对主结果，子行用原生Tab/Enter。此项为可访问性适配，不声称来源键盘全状态1:1。

@@ -1,0 +1,75 @@
+{
+  "scope": "Earlier option counts preceded accessibility correction; final three cases verify final region model.",
+  "checks": [
+    {
+      "case": "collapse",
+      "value": "false",
+      "links": 0
+    },
+    {
+      "case": "Enter expands",
+      "value": "true"
+    },
+    {
+      "case": "Space collapses",
+      "value": "false"
+    },
+    {
+      "case": "reopen retained query/expansion",
+      "value": "AAPL",
+      "expanded": "true"
+    },
+    {
+      "case": "multiple companies",
+      "expanded": 2,
+      "children": 76
+    },
+    {
+      "case": "unmounted Apple expansion reset",
+      "apple": "false",
+      "nvidia": "true"
+    },
+    {
+      "case": "all 9 companies",
+      "children": 331,
+      "companies": 9,
+      "duplicateIds": [],
+      "failedImages": [],
+      "horizontalOverflow": false,
+      "options": 30
+    },
+    {
+      "case": "ArrowDown still selects primary Apple",
+      "active": "Apple Inc.\n\nNASDAQ:AAPL (Equity)\n\nIncome Statement, Balance Sheet, Cash Flow, Ratios, Segments & KPIs +13 more"
+    },
+    {
+      "case": "Escape restores focus/body scroll",
+      "activeText": "Open search",
+      "dialog": false,
+      "overflow": ""
+    },
+    {
+      "case": "Chinese preserves query/category/expansion",
+      "category": "公司",
+      "expanded": "true",
+      "listings": 36,
+      "query": "AAPL"
+    },
+    {
+      "case": "accessible empty-query Tab",
+      "activedescendant": null,
+      "focus": "All",
+      "listboxes": 0,
+      "options": 0,
+      "role": "tab"
+    },
+    {
+      "case": "keyboard target announced",
+      "value": "Keyboard target: Apple Inc. NASDAQ:AAPL (Equity)"
+    },
+    {
+      "case": "mouse listing selection",
+      "status": "Selected reference result: Apple Inc. · DB:APC · View source page"
+    }
+  ]
+}

@@ -36,6 +36,6 @@
   "foundation_status": "来源字体、类型、真实素材及有界搜索父组件已装配；完整公司源pathname和/app仍待。",
   "development_preview_route": "/labs/r1-fiscal-search",
   "development_preview_route_file": "src/app/labs/r1-fiscal-search/page.tsx",
-  "development_preview_scope": "2026-10-11替代三叶子验证容器：采集的搜索弹窗、输入、分类、30条默认参考结果及有界筛选/键盘选择；全球数据、47页模式、Listings、自定义scrollbar全状态及整公司页待。",
+  "development_preview_scope": "2026-10-12：来源搜索弹窗、输入、分类、30条默认参考结果、九公司331上市地点及21真实国旗，有界筛选/展开/键盘选择；全球数据、47页模式、自定义scrollbar全状态及整公司页待。命名结果region/原生链接/独立disclosure/读屏播报为可访问性适配。",
   "corrective_increment": "用户认为孤立验证页廉价；依clone技能在apps/web采样、完整小spec、复用隔离builder、合并后真实三尺寸父布局对照；不扩大为整页1:1验收。"
 }

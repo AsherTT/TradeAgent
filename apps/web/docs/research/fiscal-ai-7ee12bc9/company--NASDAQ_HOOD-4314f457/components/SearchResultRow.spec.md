@@ -71,3 +71,11 @@
 
 ## 2026-10-11 三尺寸装配纠偏
 最新search-source-tablet-investor-css：768px原站name14/20.3、gap6、avatar20；logo显示28。1440pxname16/24.8、gap12、avatar28。原768字号/间距判断已纠正；1024作为目前有界适配断点，临界仍待补采。
+
+## 2026-10-12 上市地点接线与可访问性适配
+
+九家默认公司的331个原始上市地点已采集、归档、接入父组件；此前“Listings未观察/待”的记录仅是历史。SearchResultRow外层flex column gap10，主链接与disclosure按钮并列，避免来源嵌套交互。按钮aria-expanded/aria-controls与区域ID关联，16px箭头旋转；多个公司可同时展开。SearchListingRows规格管理子行与分隔线。
+
+主公司国旗补齐原站object-fit:cover和居中裁切。Apple激活说明以实测+13 more为准。所有href/别名按来源保存，不推断证券身份。
+
+结果父容器改为命名region，主行为原生链接，不使用option/aria-selected；移除输入框活动后代关系，通过隐藏说明/状态播报保留上下键快捷选择。空query Tab清除高亮并自然移动焦点，是相对原站的可访问性适配。源码检验和截图不等于整搜索服务验收。
