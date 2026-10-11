@@ -376,5 +376,9 @@
   "The report columns and source section are restored here. The complete company report, charts and sidebar interactions are still pending. Sidebar links open the original website; market cap is a captured reference value.": "本页已还原报告分栏和数据来源区域，完整公司报告、图表和侧栏交互仍待开发。目录链接打开原站，市值为采集时的参考值。",
   "(Equity)": "（股票）",
   "(ETF)": "（ETF）",
-  "(Fund)": "（基金）"
+  "(Fund)": "（基金）",
+  "This preview restores the captured search dialog, 30 reference results and 331 alternate listings across nine companies. Filtering uses these samples only; global search and company pages are still pending.": "本页还原已采集的搜索弹窗、30 条参考结果及九家公司的 331 个上市地点。筛选仅使用这些样本；全球搜索和公司详情页仍待接入。",
+  "Use the arrow keys to choose a main result and Enter to confirm. Tab moves to category controls, company links and listing buttons.": "使用方向键选择主结果，回车确认。Tab 可访问分类、公司链接和上市地点按钮。",
+  "Keyboard target:": "键盘选中：",
+  "No main result selected.": "未选中主结果。"
 }

@@ -9,10 +9,9 @@ interface SearchInputBarProps {
   onQueryChange: (query: string) => void;
   onKeyDown: KeyboardEventHandler<HTMLInputElement>;
   inputRef: RefObject<HTMLInputElement | null>;
-  activeResultId?: string | null;
 }
 
-export function SearchInputBar({ query, onQueryChange, onKeyDown, inputRef, activeResultId }: SearchInputBarProps) {
+export function SearchInputBar({ query, onQueryChange, onKeyDown, inputRef }: SearchInputBarProps) {
   const { t } = useLanguage();
   const showHint = query.length === 0;
 
@@ -38,9 +37,8 @@ export function SearchInputBar({ query, onQueryChange, onKeyDown, inputRef, acti
           enterKeyHint="go"
           placeholder={t("Search 50,000+ companies")}
           aria-label={t("Search")}
-          aria-autocomplete="list"
           aria-controls="fiscal-search-results"
-          aria-activedescendant={activeResultId ?? undefined}
+          aria-describedby="fiscal-search-keyboard-help"
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
           onKeyDown={onKeyDown}
