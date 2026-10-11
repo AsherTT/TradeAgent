@@ -15,3 +15,5 @@
 外围只有紧凑说明、语言切换、重新打开和reference选择反馈，全部位于modal外，不能当source company背景。同宽截图比较modal/input/card/tab/list/row/footer真实rect/style，手机/平板fresh打开为fullviewport，桌面1000px居中。实际3width验收再纠偏，未观察的overlayclick/动画/Listing/导航不作全状态claim。
 
 沿用R1已调用一次code-review的原两轴代理，仅本次新增diff定向复核，不重新启动整阶段审查。
+
+来源使用叠加式自定义滚动条，不占列表内容宽度。父native滚动保留并隐藏内部gutter；自定义thumb拖动/hover/全状态尚待采集与装配，不标完整搜索验收。

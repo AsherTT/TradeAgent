@@ -68,3 +68,6 @@
 - 实际Next字体/客户端三尺寸检查，分别测active/hover/focus；只测截图不能证明键盘选择和滚动。
 - 当前尚缺tablet代表全枚举行CSS、HOOD其余行深采、真实媒体归档，以及上述未观察行为；父补齐后才能声明完整全状态1:1。
 - 本轮仅来源提取与规格整理，不重新启动阶段code-review。
+
+## 2026-10-11 三尺寸装配纠偏
+最新search-source-tablet-investor-css：768px原站name14/20.3、gap6、avatar20；logo显示28。1440pxname16/24.8、gap12、avatar28。原768字号/间距判断已纠正；1024作为目前有界适配断点，临界仍待补采。

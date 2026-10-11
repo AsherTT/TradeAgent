@@ -1,0 +1,44 @@
+[
+  {
+    "size": "desktop",
+    "sourceViewport": [
+      1440,
+      1000
+    ],
+    "localViewport": [
+      1440,
+      1000
+    ],
+    "rows": 10,
+    "tolerancePx": 0.1,
+    "diffs": []
+  },
+  {
+    "size": "tablet",
+    "sourceViewport": [
+      768,
+      1000
+    ],
+    "localViewport": [
+      768,
+      1000
+    ],
+    "rows": 10,
+    "tolerancePx": 0.1,
+    "diffs": []
+  },
+  {
+    "size": "mobile",
+    "sourceViewport": [
+      390,
+      1000
+    ],
+    "localViewport": [
+      390,
+      1000
+    ],
+    "rows": 10,
+    "tolerancePx": 0.1,
+    "diffs": []
+  }
+]

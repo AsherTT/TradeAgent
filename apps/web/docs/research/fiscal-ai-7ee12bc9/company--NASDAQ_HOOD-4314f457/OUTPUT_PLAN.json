@@ -33,8 +33,9 @@
     "src/components/sites/fiscal-ai-7ee12bc9/shared/types.ts",
     "src/components/sites/fiscal-ai-7ee12bc9/shared/icons.tsx"
   ],
-  "foundation_status": "本地字体、默认tokens、SVG和参考类型已实现；三个来源子组件已验收，本轮仅接独立开发预览；完整来源交互采样未完成。",
+  "foundation_status": "来源字体、类型、真实素材及有界搜索父组件已装配；完整公司源pathname和/app仍待。",
   "development_preview_route": "/labs/r1-fiscal-search",
   "development_preview_route_file": "src/app/labs/r1-fiscal-search/page.tsx",
-  "development_preview_scope": "三个已验收来源子组件的独立手动验证容器；自有双语说明/清空示例，不装配完整搜索、源公司页或正式/app布局。"
+  "development_preview_scope": "2026-10-11替代三叶子验证容器：采集的搜索弹窗、输入、分类、30条默认参考结果及有界筛选/键盘选择；全球数据、47页模式、Listings、自定义scrollbar全状态及整公司页待。",
+  "corrective_increment": "用户认为孤立验证页廉价；依clone技能在apps/web采样、完整小spec、复用隔离builder、合并后真实三尺寸父布局对照；不扩大为整页1:1验收。"
 }

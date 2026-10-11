@@ -11,7 +11,7 @@ query受控，onChange透传，不trim或locale reset；键盘委托父，不添
 width100%，height/minheight42，boxsizingborderbox；padding0 14px 0 40px，白色Jakarta40016/40px，letter-spacingnormal，bg44/44/53，radius32，border.8solid175/175/182，outline none，transition .2s ease-in-out。
 源手机focus=true仍borderdim/boxshadnone；desktop早期focus记录border242/199/133，shadow rgba(242,199,133,.4) 0 0 15 3 / rgba(242,199,133,.8) 0 0 0 1。桌面focus真实再采父纠偏，不能宣称全focus已验收。
 search icon left:absolute x0 y1 width40height40 flexcenter color175/175/182 pointer-eventsnone，svg18x18 stroke currentcolor2 fillnone viewBox0 0 24 24 circle11,11,r8 line21,21 to16.65,16.65 roundcap/join。
-desktop>=1024 query空时右侧"/" kbd可见：源当前shell index20，从search-shell-all-computed-20261011.json枚举CSS及first-part属性取精确字体/边框/opacity；父补shorthand可读key CSS border各side。手机fresh无kbd，不补。
+desktop>=1024 query空时右侧"/" kbd可见：最新来源first-part index18及computed index20核实 DM Mono12px/18.6px、weight700、padding3px5px、opacity1、margin-right4px、radius8、bg94/94/116、color216/217/223、border各边.8px/bottom2.4px，rect18.8×27.8。手机fresh无kbd。
 右hint出现input rightpadding40，否则14；原webkit native search cancel显示与否父以浏览器验证，先保留native type语义。
 aria-autocomplete list，aria-controls fiscal-search-results，aria-activedescendant父activeResultId可空，不指向不存在元素。
 ## 分类栏（完整inline规格）

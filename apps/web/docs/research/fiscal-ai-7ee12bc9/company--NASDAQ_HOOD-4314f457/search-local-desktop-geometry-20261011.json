@@ -1,4 +1,5 @@
 {
+  "focus": "main-search-bar-modal",
   "input": {
     "bottom": 175.1999969482422,
     "height": 42,
@@ -161,16 +162,6 @@
       "text": "OFOFI Invest Rebond"
     }
   ],
-  "tabs": {
-    "bottom": 239.1999969482422,
-    "height": 24,
-    "left": 249,
-    "right": 623.0125122070312,
-    "top": 215.1999969482422,
-    "width": 374.0125122070313,
-    "x": 249,
-    "y": 215.1999969482422
-  },
   "viewport": [
     1440,
     1000

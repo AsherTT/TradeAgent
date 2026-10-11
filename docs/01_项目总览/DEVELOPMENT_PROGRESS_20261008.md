@@ -1,5 +1,8 @@
 # 最新项目进展：方案 B 股票投研与后端补齐
 
+2026-10-11当前：根据用户对“廉价验证页/未还原父布局”的反馈，旧三段搜索lab已替换为来源搜索弹窗父装配，接真实25项图像素材、四分类与30条参考结果；公司来源改为真实25%/75%报告分栏和公开默认身份/目录。三尺寸投资者几何/文案0差异，公司的滚动槽与侧栏仍为有界适配；全球搜索、47页模式、Listings、自定义滚动条全状态、完整公司报告及正式/app布局仍待，不宣布一比一整页完成。lint/typecheck/build通过，真实本地入口36项前端测试全通过；原R1两轴仅新增diff定向复核0项，未重复调用整阶段。Docker/API/PG/Redis保持运行，模型/worker/beat仍关，无新迁移。P10/R1继续，R2未启动。见[最新手动验收](../07_前端与部署/R1_MANUAL_VALIDATION_20261011.md)及[本轮来源对照](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SEARCH_PARENT_VALIDATION_20261011.md)。后续先按完整来源父壳/状态继续开发，不再将孤立叶子验证页当整页视觉交付。下方2026-10-10内容保留为历史切片。
+
+
 2026-10-10最新手动验证入口：9473a79/f2b0f8f/2db6a9c按原clone流程规格先行、隔离builder实现 `/labs/r1-fiscal-search`，真实导入三个Fiscal搜索来源子组件，自有双语说明/清空示例/计数/重置。主应用三尺寸中英各246项对照0差异，匹配前置条件的hover/focus/pressed各138项0差异；mouse/Enter/Space均恰一次，语言保留query/计数与刷新偏好。完整check通过，普通前端35 passed/1 skipped；原R1仅新差异定向双轴0项，未重启阶段skill。原十路由保持，源公司页/完整搜索与正式/app Fiscal布局仍未装配，P10/R1继续、R2未启动。Docker Desktop与当前源码API、PG、Redis已启动，主仓3107开发服务保留；数据库现有0016未升级，模型/worker/beat关闭。见[手动验证入口与步骤](../07_前端与部署/R1_MANUAL_VALIDATION_20261010.md)、[本轮组合验收](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/FISCAL_PREVIEW_VALIDATION_20261010.md)。下方旧“未接路由”状态为当时历史，本轮仅新增独立labs验证入口。
 
 ## 最新检查点（2026-10-10，Asia/Shanghai）

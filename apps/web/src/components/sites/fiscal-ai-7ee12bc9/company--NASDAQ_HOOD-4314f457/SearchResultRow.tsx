@@ -17,7 +17,9 @@ interface SearchResultRowProps {
 export function SearchResultRow({ result, active, showInvestorType, onSelect, id }: SearchResultRowProps) {
   const { t } = useLanguage();
   const investor = result.kind === "investor";
-  const etfMarket = result.kind === "etf" ? result.market?.match(/^([^:]+:)([^ ]+)(.*)$/) : null;
+  const market = result.market?.replace("(Equity)", t("(Equity)"))
+    .replace("(ETF)", t("(ETF)")).replace("(Fund)", t("(Fund)"));
+  const etfMarket = result.kind === "etf" ? market?.match(/^([^:]+:)([^ ]+)(.*)$/) : null;
   const flagCode = result.flag?.match(/flag-([A-Z]+)-/)?.[1];
 
   return (
@@ -71,7 +73,7 @@ export function SearchResultRow({ result, active, showInvestorType, onSelect, id
                             </span>
                           ))}
                           <p className={styles.marketText}>
-                            {etfMarket ? <>{etfMarket[1]}<span className={styles.ticker}>{etfMarket[2]}</span>{etfMarket[3]}</> : result.market}
+                            {etfMarket ? <>{etfMarket[1]}<span className={styles.ticker}>{etfMarket[2]}</span>{etfMarket[3]}</> : market}
                           </p>
                         </div>
                       </div>

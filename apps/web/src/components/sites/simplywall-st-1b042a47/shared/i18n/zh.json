@@ -373,5 +373,8 @@
   "Dividend": "股息",
   "Other Information": "其他信息",
   "Stock Community": "股票社区",
-  "The report columns and source section are restored here. The complete company report, charts and sidebar interactions are still pending. Sidebar links open the original website; market cap is a captured reference value.": "本页已还原报告分栏和数据来源区域，完整公司报告、图表和侧栏交互仍待开发。目录链接打开原站，市值为采集时的参考值。"
+  "The report columns and source section are restored here. The complete company report, charts and sidebar interactions are still pending. Sidebar links open the original website; market cap is a captured reference value.": "本页已还原报告分栏和数据来源区域，完整公司报告、图表和侧栏交互仍待开发。目录链接打开原站，市值为采集时的参考值。",
+  "(Equity)": "（股票）",
+  "(ETF)": "（ETF）",
+  "(Fund)": "（基金）"
 }
