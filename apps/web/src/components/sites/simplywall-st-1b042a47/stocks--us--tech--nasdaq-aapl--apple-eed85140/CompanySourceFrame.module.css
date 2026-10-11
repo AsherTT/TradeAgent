@@ -1,0 +1,117 @@
+.frame {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1199px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.sidebar {
+  display: none;
+}
+
+.sidebarContent {
+  position: sticky;
+  top: 80px;
+  box-sizing: border-box;
+  padding-right: 24px;
+}
+
+.identity {
+  padding-bottom: 12px;
+}
+
+.name,
+.ticker,
+.marketText {
+  margin: 0;
+  font-weight: 400;
+}
+
+.name {
+  padding: 0 10px 0 0;
+  color: white;
+  font-family: var(--font-sws-bureau-serif), Georgia, serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.ticker,
+.marketText,
+.navigation {
+  font-family: var(--font-sws-bureau-sans), -apple-system, system-ui,
+    BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+.ticker {
+  padding: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.market {
+  padding-top: 2px;
+}
+
+.marketText {
+  padding: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: list-item;
+  position: relative;
+}
+
+.link {
+  display: block;
+  margin: 0;
+  padding: 4px 0 4px 18px;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  text-decoration: none;
+  transition: none;
+}
+
+.overview {
+  color: white;
+}
+
+.report {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  /* This bounded breakpoint awaits the source site's exact media-query evidence. */
+  .frame {
+    display: flex;
+    gap: 0;
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .sidebar {
+    display: block;
+    width: 25%;
+  }
+
+  .report {
+    width: 75%;
+  }
+}
