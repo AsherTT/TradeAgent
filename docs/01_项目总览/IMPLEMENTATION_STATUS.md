@@ -1,97 +1,10 @@
 # Implementation Status
 
-Latest R1 increment: `e8c6e85` connects a sampled/spec-driven Fiscal header/sidebar/mobile drawer through the shared /app layout. Page authentication and existing business bodies remain; AccountShell omits its old global header only in that layout. Bilingual three-size/breakpoint/short-window/focus/route checks, 91 selected source CSS comparisons and all 52 frontend tests/check pass. Fixed-new-diff Standards/Spec both report 0 without repeating whole-R1 review. See [validation](../07_前端与部署/R1_APP_SHELL_VALIDATION_20261012.md). Next: portal body, company overview, research/submit, task/budget/cancel, report/account, then R1 whole-site acceptance. R1 remains incomplete; R2 has not started. Older dated checkpoints below retain their historical scope.
+> 本分支仅保留P1–P9旧版后端；当前范围见[2026-10-13分支基线](EASYTRADEAGENT_BASELINE_20261013.md)。下文保留历史后端验证边界，不代表完整真实运行资格。
 
-Last updated: 2026-10-12 (Asia/Shanghai)
+Last updated: 2026-10-03
 
-Latest R1 continuation: `c89675f` wires a sampled/spec-driven/isolated-builder SearchClearBar into the real SEC search. Clear resets query/page/keyboard choice/scroll and returns input focus. Its visibility for every nonempty product query is an explicit adaptation; the source shows it in page-search mode, which remains out of scope. English selected relative geometry (45 values) and CSS (156 properties), Chinese three-size layout and short-window sticky/clear behavior pass. Frontend check and all 49 tests pass with SSR enabled; fixed-new-diff Standards/Spec reviews both report 0 without repeating whole-R1 review. Backend code is unchanged and its previous suite is not rerun. See [validation](../07_前端与部署/R1_SEARCH_CLEAR_VALIDATION_20261012.md). R1 remains incomplete, R2 not started; selected search/Simply closure still precedes /app shell/portal.
-
-Session handoff: code/evidence checkpoint `94181235a33c1fe635737a0f26806eb638e642c3` was normally pushed and its [frontend/backend CI succeeded](https://github.com/AsherTT/TradeAgent/actions/runs/38238128605). This handoff only updates documentation, backlog summaries and architecture projections. Start at [NEXT_SESSION_START_20261012.md](NEXT_SESSION_START_20261012.md); the sole task-state table remains DEVELOPMENT_PLAN.md. P10/R1 remains incomplete, R2 has not started. Continue selected search/Simply state closure, then /app shell/portal and all existing product pages. Temporary builder worktree cleanup was rejected by automatic approval and the worktree remains; apps/web in the primary repository is the canonical maintenance entry.
-
-Latest correction: Fiscal selected identity/profile blocks now follow source inspection at three sizes, full specs, isolated builders, per-component merge/build and bounded comparison. Product directory details use those components with real SEC fields. This qualifies selected blocks, not the full commercial company page or entire /app. Frontend check and 46 tests pass; backend 497 pass, 1 live-model deselected, 89.74% coverage, Ruff and strict mypy (108 files) pass. Same R1 review agents inspected only the fixed new diff: Standards 0, Spec 1 fixed and closed. See [validation](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/COMPANY_IDENTITY_VALIDATION_20261012.md) and [review](../07_前端与部署/R1_COMPANY_DISCOVERY_REVIEW_20261012.md). P10 stays at incomplete R1; R2 has not started. Remaining selected search/Simply states precede full /app reconstruction.
-
-当前实际增量：SEC真实身份目录搜索（本地实测10,445条）、认证API/BFF、缓存/退避、精确证券匹配与自有目录详情已接线；`/app/company-search`与工作台入口可用，lab默认真实目录，源站样本改为独立对照模式。不写入instrument/SymbolHistory，没有数据库迁移，不授予研究资格。浏览器验证AAPL真实查询与点击自有详情。当前仍P10/R1，R2未启动；完整公司业务页与整个/app视觉重构待。见[契约与验收边界](../07_前端与部署/R1_COMPANY_DISCOVERY_20261012.md)和[手验](../07_前端与部署/R1_MANUAL_VALIDATION_20261012.md)。下方为较早检查点。
-
-## 当前执行约束：方案2最终定义
-
-本轮实际代码增量为搜索modal深色薄滚动条纠偏：1280×720的四节点16几何值与来源0差异，其他三尺寸无几何回归，check及两属性定向复核通过。开发前端和Docker三服务已恢复，数据库仍0016，模型False、worker/beat关闭。记录见[短窗口验收](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SHORT_WINDOW_VALIDATION_20261012.md)；选定区块与整个/app仍未完成。
-
-用户已选择按功能区同步交付，并明确P10后路线，见[最终方案](../07_前端与部署/DEVELOPMENT_EXECUTION_OPTIONS_20261012.md)。R1先选定搜索/Simply区块收尾再整个现有网站接线，不等完整商业公司报告/全球搜索；R2～R6逐块完成完整研究平台。R1第一版、完整P10、真实运行准入与P11部署分别记录。P10后先发布准备/有限试用，再既有AI能力质量深化及单项业务扩展；此定义没有开启模型或采购数据。当前代码仍沿前一检查点，R1未完成、R2未启动；下方旧全来源前置被本次明确范围替代。
-
-## 当前检查点：R1上市地点来源增量
-
-23216c3补九家默认公司的331个真实上市地点与21国旗、独立展开/选择及双语上下文。1440/768/390的36子行链接/文字/旗帜矩形共1296值0差异，截图补圆形cover裁切；lint/typecheck/build与36项前端测试通过。沿用R1原两轴，仅新增diff定向复核，1项选项列表语义问题修复并关闭。未改后端、配置或迁移，模型/worker/beat仍关。当前P10/R1未完成、R2未启动；整搜索/完整公司报告/整个研究空间重构仍待，依已定来源→整站/app→R1验收→R2～R6顺序继续。见[最新手验](../07_前端与部署/R1_MANUAL_VALIDATION_20261012.md)及[正式计划](DEVELOPMENT_PLAN.md)。下方保留历史检查点。
-
-## 当前检查点：R1来源复刻与整个研究空间重构顺序
-
-当前仍P10/R1、R2未启动。`acd79cc`已正常push，前端36项本地测试和lint/typecheck/build通过，前后端云端检查成功；Fiscal搜索父弹窗/输入/分类/30条参考结果和Simply公司报告分栏/身份/目录已装配，但完整来源与正式产品接入仍待。用户2026-10-11再次确认：先完成搜索/公司来源复刻，再重构整个`/app`研究空间及现有公司/研究/报告页面，完成R1验收后推进R2～R6；方案B及已认可首页保留。此次更新仅文档，不宣称新增功能。完整状态见[最新进度](DEVELOPMENT_PROGRESS_20261008.md)，唯一任务清单及阶段出口见[正式计划](DEVELOPMENT_PLAN.md#开发顺序与阶段完成条件)。P1～P9可复用底座不代表完整真实研究/历史/评估均完成；P11部署仍后续。
-
-## 2026-10-10检查点：源码统一、CI与Fiscal平板补采（历史）
-
-主仓`apps/web`已成为唯一前端维护入口，源码与GitHub正常同步；完整531文件迁入、旧容器差异归档、43个历史未推送提交补齐及测试时间夹具修复见[源码同步验收](../07_前端与部署/SOURCE_SYNC_VALIDATION_20261010.md)。e99e22c与774fa52前后端云端检查通过。Fiscal平板搜索外层、无结果51节点/样式/截图及Escape已补，静态SearchGuidance未接路由，来源整页与/app布局重构仍待。P10仍R1、R2未启动、生产RAG/PIT与真实执行资格不变。任务状态仅维护在开发计划；下方2026-10-09及更早段落为时间线记录。
-
-## 方案 B 股票投研与后端补充（2026-10-09历史记录）
-
-用户接受Fiscal式股票投研控制台作为主工作台。只读核对主仓9266b82的P1–P9实现及阶段资格：底座可复用，完整股票投研尚未实现。P5完整真实综合仍待，P6～P9限定fixture资格不代表真实表现；财务仍年度四概念/两个比例，无独立估值/同行服务，股票股本/映射、行情账户读取、独立Critic与记忆回流仍待补。
-
-[股票投研后端补充架构](../02_架构与契约/EQUITY_RESEARCH_BACKEND_EXTENSION_20261009.md)记录复用矩阵与领域边界；[开发计划](DEVELOPMENT_PLAN.md)是唯一任务状态清单，新BE-12～17和既有R2～R5任务共同完成证券/股本→财务→用途合格行情→基础估值/同行→授权证据/完整研究→论点/评估。情景DCF工具独立可选，默认关闭。
-
-此前前端d03ae4e的R1独立来源lab已有四组件/五区域；仅公开分析师三行，完整公司/门户/Fiscal/Quartr仍待。方案B核对后主仓0416ff1/44b5793、前端9fcf474补当前关注页本人有界研究变化汇总及双语入口。最终486普通后端测试、89.65%覆盖、Ruff/mypy106文件，前端36项行为/SSR与lint/types/build通过；合成PG/BFF和门户中英三尺寸/详情刷新返回通过。原R1新增差异Standards0、Spec1项满页验收缺口补齐关闭，没有重启整阶段skill。Fiscal默认AX可读但精确DOM/CSS/截图仍超时，不计来源视觉资格。P10仍R1、R2未启动、P5完整研究未完成；模型与worker未启用。见[门户验证](../07_前端与部署/R1_PORTAL_CHANGE_VALIDATION_20261009.md)与[进度入口](DEVELOPMENT_PROGRESS_20261008.md)。
-
-## 前序实现与资格记录（保留当时范围）
-
-R1 record-change follow-up (backend 02801e8/802db09, frontend 523a4f3) adds account/company-owned finished-record comparisons within a disclosed 50-record window. Matching conditions and strictly earlier aware analysis cutoffs are required; unknown deltas stay null. Safe snapshots, quality, admitted-evidence/gap counts and local report links are available. This is record coverage, not financial/thesis/market performance; portal-wide change aggregation remains pending. Ordinary tests: 474 passed, 1 live-model test deselected, 89.70% coverage; Ruff and strict mypy (106 app files) pass. Frontend: 31 behavior/SSR checks plus lint/types/build pass; actual local PG/BFF and Chinese 1440/768/390 / English mobile empty-history UI checked. Same R1 review agents inspected only the new diff: Standards 0, Spec 1 fixed and closed. See [record-change validation](../07_前端与部署/R1_RESEARCH_CHANGE_VALIDATION_20261009.md).
-
-Portal source access now yields Holdings default-content DOM/styles, but screenshots are truncated and observed widths disagree with requested dimensions. Complete interaction/responsive sampling and company source reproduction remain unqualified; builders are not dispatched. P10 stays at R1 function completion/source inspection, before R2 multi-period financials. Older historical-change statements below are superseded only for this bounded record comparison.
-
-2026-10-09 R1 delta: company/research session races, late 401 handling in parallel reads,
-and the application data-scope link repaired (frontend 94be555/f2ef46a). Final frontend
-27 behavior/SSR checks and lint/types/build pass; synthetic local PG/BFF and responsive
-UI checked. Delta Standards/Spec findings 1/1 fixed and closed in targeted follow-up,
-without repeating old R1 review. Source company page remains verification/timeout blocked;
-complete source visuals and R1/P10 remain unfinished. See [page audit](../07_前端与部署/R1_PAGE_AUDIT_20261009.md).
-
-Current plan: [research-platform development plan and backlog](DEVELOPMENT_PLAN.md).
-The user confirmed the enhanced-A design: retain observed source pages/internal navigation
-and unify product identity, account and research context. Real portfolio/return/dividend
-tracking and screening remain deferred. Latest [project progress](DEVELOPMENT_PROGRESS_20261008.md)
-and [approved design](../07_前端与部署/FRONTEND_DESIGN_ENHANCED_A_20261008.md) record backend gap-filling
-authorization and page details still awaiting observation/confirmation. This replaces the
-old V2-B visual-unification rule, not existing qualification gates.
-Own accounts/watchlists and bounded account-owned
-research/status/cancellation/partial reports are implemented in the independent frontend.
-The R1 entry increment (backend 909ab54, initial frontend d59aea4) connects portal/company
-read projections and company-selected research. The user rejected the generic homepage;
-frontend 1de6187 and its preceding commits correct it using cloner source DOM, fonts,
-styles and breakpoints, and fix session invalidation. The latest user correction restores
-the full reference homepage at / with all 11 body sections and own header/footer logos,
-replacing the reduced homepage and fictional demo. Source media, reviews and external
-feature links are disclosed as reference material; own account/workspace links stay local;
-the source homepage is preserved under /references/simply-wall-st and the old functional
-homepage is explicitly unapproved under /labs/function-integration. See the
-[increment record](../07_前端与部署/R1_PRODUCT_ENTRY_VALIDATION_20261008.md).
-The user now accepts the basic homepage reproduction. Other pages remain unverified:
-the next session must audit and repair them through the sibling cloner skill's full
-sampling/spec/implementation/responsive comparison workflow, prioritizing existing backend
-contracts and architecture. Appropriate observable source behavior may be integrated via
-documented contract extensions. See the maintained backlog for exact next actions.
-Company/portal layouts are functional adaptation skeletons awaiting source observation and
-visual approval. Historical-change projections, Fiscal multi-period views and Quartr
-source reading remain unfinished; full R1/P10 integration is not claimed.
-
-Continue bounded product increments under the [frontend architecture](../07_前端与部署/FRONTEND_ARCHITECTURE.md).
-The previous requirement to wait for user frontend scope is resolved; full P5/P10,
-real provider qualification, consolidated-push gates and P11 deployment are not completed
-or waived. Recorded 2026-10-07 account-research checks: 452 passed/1 skipped, frontend
-13 tests plus lint/types/build. See [qualification](../07_前端与部署/ACCOUNT_RESEARCH_VALIDATION_20261007.md).
-2026-10-08 bounded checks: 456 passed/1 skipped, 89.66% coverage; new owned projections
-and local PG/BFF integration verified without a model worker. Same-phase Standards/Spec
-review findings were fixed and closed. Basic homepage approval is now recorded;
-other-page effect confirmation and full R1 remain pending.
-
-## Historical checkpoint (2026-10-03)
-
-Latest status: [pre-P10 repair checkpoint](PRE_P10_CHECKPOINT_20261003.md).
+Latest status: [P1–P9 backend repair checkpoint](P1_P9_CHECKPOINT_20261003.md).
 Catalyst failure finalization, source rejection handling, independent module loading
 and health metadata are fixed. Response accounting and sanitized attempt diagnostics
 are durable. Live run 1c29c77d-abc0-4c5c-a524-5954e2266f13 produced two valid
@@ -100,7 +13,7 @@ with no full synthesis. V1 technical indicators and strategy statistics are impl
 Final checks: 439 passed, 1 skipped, 90.29% coverage; Ruff/strict mypy passed.
 Full research, richer financial analysis, memory feedback, real forward/history
 performance and full observability remain open. Four stored forecasts are fixtures;
-no real outcomes exist. P10 is paused pending the user's frontend requirements.
+no real outcomes exist.
 The complete pre-fix audit and the records below retain their historical context.
 
 The 2026-10-03 bounded P5 increment adds deterministic source-linked partial financial
@@ -113,7 +26,7 @@ the local Docker engine was not running; no new live qualification is claimed.
 Spec: `docs/03_研究与分析/FINANCIAL_PARTIAL_ASSESSMENT.md`. Independent Standards/Spec reviews
 both have zero findings, including final report-language polish; 23 affected report
 tests and final static checks pass. See `docs/06_验证与审查/财务与报告/FINANCIAL_PARTIAL_ASSESSMENT_REVIEW.md`.
-P10 remains unstarted.
+
 
 Earlier assessment: `docs/01_项目总览/DEVELOPMENT_PROGRESS_20261002.md`. The earlier entries below
 are chronological qualification records; later live qualification supersedes historical
@@ -138,7 +51,7 @@ qualifies the empty-output path, not confirmed event extraction. Ordinary checks
 See `docs/06_验证与审查/财务与报告/FINANCIAL_CATALYST_QUALIFICATION.md` for the bounded qualification.
 Standards reported zero findings; Spec's one P2 was corrected and closed. See
 `docs/06_验证与审查/财务与报告/FINANCIAL_CATALYST_REVIEW.md` for the pinned review and regression evidence.
-P10 remains unstarted; development must pause before that phase.
+
 
 The 2026-10-02 source-bound claim increment passed Standards and Spec review with
 zero findings. Ordinary suite: 350 passed, 1 skipped, 90.21% coverage; Ruff and
@@ -164,7 +77,7 @@ strict mypy passed. See `docs/06_验证与审查/财务与报告/SYNTHESIS_CLAIM
 - This increment passed dual-axis review after three Spec corrections. Ordinary checks:
   339 passed, 1 skipped, 90.14% coverage; Ruff and strict mypy passed. See
   `docs/06_验证与审查/财务与报告/FINANCIAL_INTEGRATION_REVIEW.md`. Live SEC access and complete corporate-action
-  coverage remain outstanding; P10 has not started.
+  coverage remain outstanding.
 
 - Phase 0 repository and Python 3.12 project baseline
 - FastAPI health skeleton
@@ -517,10 +430,6 @@ strict mypy passed. See `docs/06_验证与审查/财务与报告/SYNTHESIS_CLAIM
   or live document source is claimed. Phase 8 Gate E and offline Gate G slices are
   fixture-qualified after one whole-phase code review. Production forward-observation
   wiring and live performance qualification remain pending.
-- ADR-0017 and `docs/07_前端与部署/FRONTEND_STRATEGY.md` approve an isolated Phase 5 frontend clone lab using a
-  reviewed and pinned `ai-website-cloner-template` revision. `apps/web` is still unimplemented,
-  Gate C now permits real Research API integration under that strategy, while the formal frontend
-  milestone remains Phase 10.
 - Phase 9 Gate F is fixture-qualified for a restricted deterministic strategy and
   non-executable TradeIntent. Historical universe, market, and corporate-action
   sources are represented by explicit qualified inputs; real provider completeness,

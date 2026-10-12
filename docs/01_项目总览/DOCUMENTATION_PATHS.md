@@ -13,7 +13,6 @@
 | `docs/ADR/ADR-0006-research-budget-loop-guard.md` | [docs/02_架构与契约/架构决策/ADR-0006-research-budget-loop-guard.md](../02_架构与契约/架构决策/ADR-0006-research-budget-loop-guard.md) |
 | `docs/ADR/ADR-0007-security-master-corporate-actions.md` | [docs/02_架构与契约/架构决策/ADR-0007-security-master-corporate-actions.md](../02_架构与契约/架构决策/ADR-0007-security-master-corporate-actions.md) |
 | `docs/ADR/ADR-0016-live-observation-analysis-cutoff.md` | [docs/02_架构与契约/架构决策/ADR-0016-live-observation-analysis-cutoff.md](../02_架构与契约/架构决策/ADR-0016-live-observation-analysis-cutoff.md) |
-| `docs/ADR/ADR-0017-staged-frontend-clone-lab.md` | [docs/02_架构与契约/架构决策/ADR-0017-staged-frontend-clone-lab.md](../02_架构与契约/架构决策/ADR-0017-staged-frontend-clone-lab.md) |
 | `docs/ADR/ADR-0018-explicit-research-timestamp-modes.md` | [docs/02_架构与契约/架构决策/ADR-0018-explicit-research-timestamp-modes.md](../02_架构与契约/架构决策/ADR-0018-explicit-research-timestamp-modes.md) |
 | `docs/ADR/ADR-0019-current-provider-and-cache-ownership.md` | [docs/02_架构与契约/架构决策/ADR-0019-current-provider-and-cache-ownership.md](../02_架构与契约/架构决策/ADR-0019-current-provider-and-cache-ownership.md) |
 | `docs/ALPHA_VANTAGE_QUALIFICATION.md` | [docs/06_验证与审查/模型与行情/ALPHA_VANTAGE_QUALIFICATION.md](../06_验证与审查/模型与行情/ALPHA_VANTAGE_QUALIFICATION.md) |
@@ -28,7 +27,6 @@
 | `docs/FINANCIAL_PARTIAL_ASSESSMENT.md` | [docs/03_研究与分析/FINANCIAL_PARTIAL_ASSESSMENT.md](../03_研究与分析/FINANCIAL_PARTIAL_ASSESSMENT.md) |
 | `docs/FINANCIAL_PARTIAL_ASSESSMENT_REVIEW.md` | [docs/06_验证与审查/财务与报告/FINANCIAL_PARTIAL_ASSESSMENT_REVIEW.md](../06_验证与审查/财务与报告/FINANCIAL_PARTIAL_ASSESSMENT_REVIEW.md) |
 | `docs/FINNHUB_NEWS.md` | [docs/04_数据源与检索/FINNHUB_NEWS.md](../04_数据源与检索/FINNHUB_NEWS.md) |
-| `docs/FRONTEND_STRATEGY.md` | [docs/07_前端与部署/FRONTEND_STRATEGY.md](../07_前端与部署/FRONTEND_STRATEGY.md) |
 | `docs/GATE_B_QUALIFICATION.md` | [docs/06_验证与审查/阶段验收/GATE_B_QUALIFICATION.md](../06_验证与审查/阶段验收/GATE_B_QUALIFICATION.md) |
 | `docs/GATE_C_QUALIFICATION.md` | [docs/06_验证与审查/阶段验收/GATE_C_QUALIFICATION.md](../06_验证与审查/阶段验收/GATE_C_QUALIFICATION.md) |
 | `docs/GATE_D_QUALIFICATION.md` | [docs/06_验证与审查/阶段验收/GATE_D_QUALIFICATION.md](../06_验证与审查/阶段验收/GATE_D_QUALIFICATION.md) |
@@ -45,11 +43,11 @@
 | `docs/PHASE8_POSTGRES_QUALIFICATION.md` | [docs/06_验证与审查/检索与评估/PHASE8_POSTGRES_QUALIFICATION.md](../06_验证与审查/检索与评估/PHASE8_POSTGRES_QUALIFICATION.md) |
 | `docs/PHASE8_WORKFLOW.md` | [docs/05_记忆评估与策略/PHASE8_WORKFLOW.md](../05_记忆评估与策略/PHASE8_WORKFLOW.md) |
 | `docs/PHASE9_WORKFLOW.md` | [docs/05_记忆评估与策略/PHASE9_WORKFLOW.md](../05_记忆评估与策略/PHASE9_WORKFLOW.md) |
-| `docs/PRE_P10_AUDIT_20261003.md` | [docs/01_项目总览/PRE_P10_AUDIT_20261003.md](PRE_P10_AUDIT_20261003.md) |
-| `docs/PRE_P10_CHECKPOINT_20261003.md` | [docs/01_项目总览/PRE_P10_CHECKPOINT_20261003.md](PRE_P10_CHECKPOINT_20261003.md) |
-| `docs/PRE_P10_QUANT_COMPLETION.md` | [docs/05_记忆评估与策略/PRE_P10_QUANT_COMPLETION.md](../05_记忆评估与策略/PRE_P10_QUANT_COMPLETION.md) |
-| `docs/PRE_P10_RELIABILITY_FIXES.md` | [docs/03_研究与分析/PRE_P10_RELIABILITY_FIXES.md](../03_研究与分析/PRE_P10_RELIABILITY_FIXES.md) |
-| `docs/PRE_P10_STRATEGY_METRICS.md` | [docs/05_记忆评估与策略/PRE_P10_STRATEGY_METRICS.md](../05_记忆评估与策略/PRE_P10_STRATEGY_METRICS.md) |
+| `docs/P1_P9_AUDIT_20261003.md` | [docs/01_项目总览/P1_P9_AUDIT_20261003.md](P1_P9_AUDIT_20261003.md) |
+| `docs/P1_P9_CHECKPOINT_20261003.md` | [docs/01_项目总览/P1_P9_CHECKPOINT_20261003.md](P1_P9_CHECKPOINT_20261003.md) |
+| `docs/P1_P9_QUANT_COMPLETION.md` | [docs/05_记忆评估与策略/P1_P9_QUANT_COMPLETION.md](../05_记忆评估与策略/P1_P9_QUANT_COMPLETION.md) |
+| `docs/P1_P9_RELIABILITY_FIXES.md` | [docs/03_研究与分析/P1_P9_RELIABILITY_FIXES.md](../03_研究与分析/P1_P9_RELIABILITY_FIXES.md) |
+| `docs/P1_P9_STRATEGY_METRICS.md` | [docs/05_记忆评估与策略/P1_P9_STRATEGY_METRICS.md](../05_记忆评估与策略/P1_P9_STRATEGY_METRICS.md) |
 | `docs/RAG_ACTION_AUDIT_REVIEW.md` | [docs/06_验证与审查/检索与评估/RAG_ACTION_AUDIT_REVIEW.md](../06_验证与审查/检索与评估/RAG_ACTION_AUDIT_REVIEW.md) |
 | `docs/RAG_EMBEDDING_SOURCE_RESEARCH.md` | [docs/04_数据源与检索/RAG_EMBEDDING_SOURCE_RESEARCH.md](../04_数据源与检索/RAG_EMBEDDING_SOURCE_RESEARCH.md) |
 | `docs/RAG_LEXICAL_MODE.md` | [docs/04_数据源与检索/RAG_LEXICAL_MODE.md](../04_数据源与检索/RAG_LEXICAL_MODE.md) |

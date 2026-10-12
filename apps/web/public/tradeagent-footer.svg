@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="189" height="45" viewBox="0 0 189 45">
-  <g transform="scale(.703125)">
-    <rect width="64" height="64" rx="14" fill="#fdcc6a"/>
-    <path d="M17 18h30v7H36v24h-8V25H17z" fill="#191816"/>
-  </g>
-  <text x="54" y="30" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="22.5" font-weight="700">TradeAgent</text>
-</svg>

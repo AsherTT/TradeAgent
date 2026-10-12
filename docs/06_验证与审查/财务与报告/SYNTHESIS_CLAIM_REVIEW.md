@@ -37,7 +37,7 @@ was needed. The Spec reviewer independently ran 11 claim-boundary tests.
 - Market/action completeness and RAG inputs still prevent real synthesis. Verified
   business/catalyst analysis, complete reports and real forward evaluation remain
   unqualified. Source-bound claim tests do not establish successful live synthesis.
-- P10 remains unstarted. The stage is locally committed; the full-phase push gate
+-  The stage is locally committed; the full-phase push gate
   is still pending the remaining source and analysis qualifications.
 
 Final unresolved counts: Standards 0; Spec 0.

@@ -1,5 +1,7 @@
 # Agentic Equity Research Workbench
-## 方案 B 最终定版 v1.1.1 — Quant Integrity + Operational Reliability Hardened
+
+> 此分支保留 P1–P9 旧版后端设计；原前端与云部署实施章节已移除，完整历史保留在 main。
+## P1–P9 后端设计保留版（基于原方案 B） v1.1.1 — Quant Integrity + Operational Reliability Hardened
 
 **文档状态：Architecture & Technology Baseline Frozen v1.1.1**
 **用途：Codex 开发唯一 Source of Truth**
@@ -78,11 +80,9 @@ v1.1.1 进一步明确这些能力在真实运行中的 **冷启动、成熟度�
 
 ---
 
-# 3. 总体九层架构
+# 3. 后端架构
 
 ```text
-Presentation
-  ↓
 LangGraph + ResearchState + BudgetGuard
   ↓
 AI Runtime Gateway
@@ -97,7 +97,7 @@ Strategy / Backtest / Risk
   ↓
 Replay / Evaluation / Integrity
   ↓
-PostgreSQL / Redis / Observability / Azure
+PostgreSQL / Redis / Observability
 
 Cross-cutting Quality / Maturity Layer:
 DataQuality + EvaluationMaturity + ReplayIntegrity + SecurityStatus + ResearchCompletion
@@ -142,23 +142,6 @@ mypy
 pre-commit
 ```
 
-## Frontend
-```text
-Node.js 24 LTS
-Next.js 16
-React
-TypeScript strict
-pnpm
-Tailwind CSS
-shadcn/ui
-TanStack Query
-TradingView Lightweight Charts / ECharts
-Zod
-Vitest
-React Testing Library
-Playwright
-```
-
 ## Database
 ```text
 PostgreSQL 18
@@ -171,7 +154,6 @@ PostgreSQL FTS
 ## Local
 ```text
 Docker Compose
-web
 api
 worker
 postgres
@@ -184,8 +166,6 @@ redis
 
 ```text
 agentic-equity-workbench/
-├─ apps/
-│  └─ web/
 ├─ backend/
 │  ├─ app/
 │  │  ├─ api/
@@ -1978,13 +1958,6 @@ respx
 Hypothesis
 ```
 
-Frontend：
-```text
-Vitest
-React Testing Library
-Playwright
-```
-
 Mocks：
 ```text
 MockLLMExecutor
@@ -2048,67 +2021,6 @@ Historical universe cannot use future constituents
 Provider corporate-action golden cases
 Degraded provider disables/restricts strict backtest
 Unverified instrument cannot silently enter validated strict universe
-```
-
----
-
-# 54. Azure Cloud A
-
-目标：
-```text
-Azure DevOps
- ↓
-CI/CD
- ↓
-Azure Container Registry
- ↓
-Azure Container Apps
-
-├ web
-├ api
-└ worker
-
- ↓
-Azure PostgreSQL + pgvector
-Azure Redis
-Azure Blob
-Azure Key Vault
-Application Insights
-Log Analytics
-```
-
-当前不选 AKS。
-
----
-
-# 55. Personal Codex on Azure
-
-允许实验：
-```text
-Azure Worker
- ↓
-CodexSubscriptionExecutor
- ↓
-ChatGPT Plus/Pro
-```
-
-但必须先验证：
-```text
-credential persistence
-restart
-refresh
-concurrency
-quota
-timeout
-retry
-session isolation
-```
-
-失败：
-```text
-Codex
- ↓ fallback
-Qwen / DeepSeek / OpenAI API
 ```
 
 ---
@@ -2294,36 +2206,6 @@ Gate F：
 no current-LLM historical signal regeneration
 ```
 
-## Phase 10 — UI
-```text
-Dashboard
-Research
-Ticker
-Thesis
-Replay
-Forecast Evaluation
-Calibration Dashboard
-Model Settings
-Trace
-Integrity Metadata
-Evaluation Maturity
-Sample Size / Confidence Interval
-Data Quality / Provider Quality
-QualityGate / SystemConfidence
-```
-
-## Phase 11 — Azure
-```text
-Docker
-Azure DevOps
-ACR
-Container Apps
-Azure PostgreSQL
-Redis
-Key Vault
-Application Insights
-```
-
 ## Future — Universe Scanner
 ```text
 UniverseProvider
@@ -2386,9 +2268,6 @@ Batch Research
 - every bucket shows sample_count
 - confidence intervals available
 - low-sample buckets marked INSUFFICIENT_SAMPLE
-
-## Gate H — Deployment
-- Local Docker and Azure behavior consistent
 
 ## Gate I — QualityGate
 - ModelConfidence separated from SystemConfidence

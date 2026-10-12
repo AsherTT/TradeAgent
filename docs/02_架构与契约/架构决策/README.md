@@ -16,6 +16,5 @@
 | 0006：研究预算与循环限制 | [ADR-0006-research-budget-loop-guard.md](ADR-0006-research-budget-loop-guard.md) |
 | 0007：证券身份与公司行动 | [ADR-0007-security-master-corporate-actions.md](ADR-0007-security-master-corporate-actions.md) |
 | 0016：真实观察与分析截止时间 | [ADR-0016-live-observation-analysis-cutoff.md](ADR-0016-live-observation-analysis-cutoff.md) |
-| 0017：前端分阶段设计实验 | [ADR-0017-staged-frontend-clone-lab.md](ADR-0017-staged-frontend-clone-lab.md) |
 | 0018：显式研究时间模式 | [ADR-0018-explicit-research-timestamp-modes.md](ADR-0018-explicit-research-timestamp-modes.md) |
 | 0019：当前行情提供商与缓存归属 | [ADR-0019-current-provider-and-cache-ownership.md](ADR-0019-current-provider-and-cache-ownership.md) |

@@ -15,33 +15,6 @@ class Settings(BaseSettings):
 
     app_env: str = "local"
     log_level: str = "INFO"
-    database_ssl: bool = False
-    auth_cookie_secure: bool = False
-    auth_session_hours: int = Field(default=168, ge=1, le=720)
-    auth_attempt_limit: int = Field(default=10, ge=1, le=100)
-    account_research_models_enabled: bool = False
-    auth_allowed_origins: tuple[str, ...] = (
-        "http://127.0.0.1:3107", "http://localhost:3107",
-    )
-
-    @model_validator(mode="after")
-    def validate_account_origins(self) -> Settings:
-        if not self.auth_allowed_origins:
-            raise ValueError("account origins must not be empty")
-        for origin in self.auth_allowed_origins:
-            parsed = urlsplit(origin)
-            if (
-                parsed.scheme not in {"http", "https"} or not parsed.hostname
-                or parsed.username is not None or parsed.password is not None
-                or parsed.path or parsed.query or parsed.fragment
-            ):
-                raise ValueError("account origins must be explicit HTTP(S) origins")
-            if parsed.scheme == "http" and parsed.hostname not in {"localhost", "127.0.0.1"}:
-                raise ValueError("remote account origins require HTTPS")
-            if parsed.scheme == "https" and not self.auth_cookie_secure:
-                raise ValueError("HTTPS account origins require secure session cookies")
-        return self
-
     database_url: str = (
         "postgresql+asyncpg://tradeagent:tradeagent-local-only@localhost:5432/tradeagent"
     )

@@ -24,7 +24,6 @@ from backend.app.contracts.research import (
 )
 from backend.app.evaluation.reporting import maturity_for_research
 from backend.app.jobs.celery_app import enqueue_research_run
-from backend.app.persistence.accounts import UserResearchRow
 from backend.app.persistence.repositories import ResearchRunRepository
 from backend.app.persistence.session import get_session
 from backend.app.reports.research import ResearchReport, build_research_report
@@ -91,16 +90,6 @@ async def submit_research(
     session: Annotated[AsyncSession, Depends(get_session)],
     enqueue: Annotated[ResearchEnqueuer, Depends(get_research_enqueuer)],
 ) -> ResearchAccepted:
-    return await create_research(submission, session, enqueue)
-
-
-async def create_research(
-    submission: ResearchSubmission,
-    session: AsyncSession,
-    enqueue: ResearchEnqueuer,
-    *,
-    ownership: UserResearchRow | None = None,
-) -> ResearchAccepted:
     requested_at = utc_now()
     analysis_timestamp = submission.analysis_timestamp
     if submission.timestamp_mode is ResearchTimestampMode.FIXED_CUTOFF:
@@ -162,9 +151,6 @@ async def create_research(
     )
     repository = ResearchRunRepository(session)
     await repository.create(state)
-    if ownership is not None:
-        ownership.research_run_id = state.research_id
-        session.add(ownership)
     await session.commit()
     try:
         task_id = enqueue(str(state.research_id))
@@ -191,7 +177,6 @@ async def get_research(
     session: Annotated[AsyncSession, Depends(get_session)],
 ) -> ResearchState:
     state = await ResearchRunRepository(session).get(research_run_id)
-    await reject_account_research(research_run_id, session)
     if state is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="research run not found")
     return state
@@ -202,7 +187,6 @@ async def cancel_research(
     research_run_id: UUID,
     session: Annotated[AsyncSession, Depends(get_session)],
 ) -> ResearchState:
-    await reject_account_research(research_run_id, session)
     cancelled = await ResearchRunRepository(session).cancel(research_run_id)
     if cancelled is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="research run not found")
@@ -215,14 +199,7 @@ async def get_research_report(
     research_run_id: UUID,
     session: Annotated[AsyncSession, Depends(get_session)],
 ) -> ResearchReport:
-    await reject_account_research(research_run_id, session)
     state = await ResearchRunRepository(session).get(research_run_id)
     if state is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="research run not found")
     return build_research_report(state)
-
-
-async def reject_account_research(research_run_id: UUID, session: AsyncSession) -> None:
-    """Legacy internal APIs cannot bypass account-run ownership."""
-    if await session.get(UserResearchRow, research_run_id) is not None:
-        raise HTTPException(404, detail="research run not found")

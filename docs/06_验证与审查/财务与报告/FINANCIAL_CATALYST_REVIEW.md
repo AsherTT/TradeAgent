@@ -35,7 +35,7 @@ No new whole-stage review or unrelated refactor was performed.
 - Nonempty interpretations and invalid attribution are independently fixture-qualified;
   no confirmed live catalyst extraction is claimed.
 - Market/action quality remains UNVERIFIED, complete_analysis=false. Business analysis,
-  verified catalysts and full live synthesis remain outstanding. P10 is unstarted.
+  verified catalysts and full live synthesis remain outstanding.
 - Commits remain local under the existing whole-phase push rule.
 
 Final unresolved review counts: Standards 0; Spec 0 (one P2 corrected and closed).

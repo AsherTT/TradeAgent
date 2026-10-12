@@ -1,148 +1,19 @@
 # Architecture Baseline
 
-## 最新实现与会话交接边界（2026-10-12）
-
-公共应用壳增量 `e8c6e85`：前端/app共享layout加载Fiscal字体、来源顶栏/侧栏及移动抽屉，客户端AppShell管理focus/inert/overflow/shortcut/断点；各page认证、所有权、DTO和BFF不变。正文仍逐页重构，不新增后端接口、迁移或真实研究资格。验收与下一块门户正文见[R1公共壳验收](../07_前端与部署/R1_APP_SHELL_VALIDATION_20261012.md)，唯一任务表同步至该增量；下方为此前交接边界。
-
-当前仍P10/R1，R2未启动。主仓`apps/web`为唯一前端入口；后端`backend/app`沿用账户授权、领域服务和PostgreSQL安全主数据。新增公司发现是现有FastAPI内的只读服务，不另建后端、不将来源商业页签自动扩成全部数据服务。已同步代码检查点`9418123`云端前后端通过，下一步与状态见[唯一任务表](../01_项目总览/DEVELOPMENT_PLAN.md#下一会话交接检查点2026-10-12)和[下一会话入口](../01_项目总览/NEXT_SESSION_START_20261012.md)。后文旧日期为历史范围。
-
-新增只读路径：Next账户保护页`/app/company-search`及`/app/companies/discovery/{cik}` → 固定GET/参数白名单同源BFF → `backend/app/api/company_discovery.py` → `backend/app/company_directory.py`的公共SEC目录快照。固定官方来源、真实User-Agent、既有Redis限速器；公共快照进程内24小时缓存，失败5分钟退避、最多7天显式陈旧数据、有界HTTP及格式校验。无数据库迁移或定时任务，目录快照不是研究证据缓存，不改变ADR-0018/0019的研究截止时间与合格行情缓存规则。
-
-CIK标识发行人，完整目录落点使用CIK＋交易代码＋交易所；同发行人多代码不合并。只有唯一、当前有效的本地代码/交易所匹配才返回instrument_id，其余保留候选身份。目录不写instrument/SymbolHistory，不授予PIT、证券类别、报价/财务或发起研究资格；研究仍以永久instrument_id及原授权/质量门槛执行。接口/缓存/错误范围以[公司发现契约](../07_前端与部署/R1_COMPANY_DISCOVERY_20261012.md)为准。
-
-前端已按严格clone流程补FiscalCompanyIdentity/FiscalCompanyProfile两个选定区块，并用于自有SEC字段；来源样本在独立lab对照，实际产品与样本隔离。它们不含报价、收藏、音频、整页导航或图表，不代表整个/app完成。下一增量仍选定来源状态收尾→应用壳/门户→现有网站逐页；模型、worker、beat保持关闭。完整研究、R2数据、P10总验收与P11部署各自独立验收。
-
-## 2026-10-12执行方案2最终定义
-
-用户选择逐功能区同步交付并要求明确P10之后的路线，见[最终方案](../07_前端与部署/DEVELOPMENT_EXECUTION_OPTIONS_20261012.md)。P1～P9底座与现有BFF/FastAPI/数据库/研究图保持；R1先选定来源区块收尾再整个现有网站接线，完整商业来源页不再前置。R2日线行情→年度财务小块→股本/基础估值/有界同行；R3授权片段；R4完整研究/Critic/论点；R5诊断及有资格工具；R6为P10出口。实现、真实资格与产品验收分列，R1第一版不等于完整P10。
-
-P10后沿原P11做发布准备/受控部署，再有限试用与真实质量/生产工程深化；分析师共识、新闻/持股、更多市场、组合/筛选、收费等按价值单项确认。不会据页面导航自动新增全部商业数据服务，也不据职业路线重建同类Agent/评估技术栈。此次方案定稿不启用模型/worker、采购数据或部署。任务与出口唯一维护[开发计划](../01_项目总览/DEVELOPMENT_PLAN.md)，下方较早日期保留历史范围。
-
-## 当前源码与实现边界（2026-10-10，Asia/Shanghai）
-
-后端和前端已统一在TradeAgent主仓维护：`backend/app`、`backend/tests`、`alembic`为后端边界，`apps/web`为完整Next16/React19前端；npm锁文件、原clone-website skill、许可、素材和研究证据保留。旧ai-website-cloner-template目录仅作历史，不再双向维护。来源组件/CSS/字体/资产仍按site-key/page-key隔离；迁入不是整页来源或产品验收。位置修订见[ADR-0017](架构决策/ADR-0017-staged-frontend-clone-lab.md)，审计和云端验证见[源码同步验收](../07_前端与部署/SOURCE_SYNC_VALIDATION_20261010.md)。
-
-运行数据流保持Next同源BFF→FastAPI账户授权/有界应用查询→领域服务→SQLAlchemy/PostgreSQL；研究图/来源/模型仍受预算、PIT与Redis/Celery边界约束。容器是本地源码的构建快照，不是源码维护入口；运行API审计未发现未落盘的新功能，旧容器变体只归档。前端与后端CI已纳入主仓，根Ruff/Docker构建上下文排除前端；这些持久化变更未新增业务接口、schema或真实数据资格。
-
-R1现有账户/关注/公司/有界研究和本人研究记录变化可复用；当前关注页变化采用单次分区每证券50+1窗口、最多20证券，未知为null，不等于财务/论点或投资表现。Fiscal作用域基础与首个SearchGuidance组件已实现但未接路由；菜单/搜索部分采样及平板无结果/关闭证据已补，完整状态规格、来源pathname与/app布局重构仍待。P10仍R1、R2未启动，BE-02/03和BE-12～17继续按[唯一任务表](../01_项目总览/DEVELOPMENT_PLAN.md)与[股票投研补充架构](EQUITY_RESEARCH_BACKEND_EXTENSION_20261009.md)推进。
-
-准入顺序保持实际采样→完整小组件spec→隔离实现/检查→来源装配及三尺寸全状态对照→自有账户/证券/研究契约适配→接入后再次对照。每阶段迭代code-review一次，已启动的流程沿用且不得因新会话重复整套调用。源码同步和CI成功不代表P5完整研究、P10整体验收、材料权利、供应商用途资格、真实worker/模型执行或P11部署完成。下方旧日期段落保留其范围。
-
-## Current product direction (updated 2026-10-10, Asia/Shanghai)
-
-The user confirmed option B, a Fiscal-style equity-research console, as the main workspace.
-The enhanced-A source-preservation and product-identity rules remain: keep the approved
-Simply homepage/source reference, use the Fiscal console to organize securities, financials,
-market/valuation and research, and use Quartr-style report/source verification,
-with TradeAgent contracts and account ownership. Real portfolio/return/dividend tracking
-and screening follow later. See the [development plan and backlog](../01_项目总览/DEVELOPMENT_PLAN.md)
-and [frontend architecture](../07_前端与部署/FRONTEND_ARCHITECTURE.md) for route/module/API dependencies.
-
-Accounts/watchlists and bounded account-owned research are implemented in the canonical
-frontend at apps/web. The R1 entry increment adds portal/company read projections and company-linked research.
-The generic homepage was rejected and corrected in the clone lab and migrated into apps/web using the captured
-source DOM, fonts, styles and breakpoints. Company/portal skeletons are integration output, not
-approved source reproductions. Representative source sampling and user visual approval remain pending.
-The latest user correction selects the complete cloner reference homepage as the root
-preview, restoring all 11 body sections with own header/footer logos. It supersedes the
-reduced six-area homepage, not account/data contracts. Original media, reviews and external
-feature links are disclosed as reference material, not evidence of implemented business
-capability. Portfolio/screening backends remain deferred; own account/research flows stay local.
-Fiscal/Quartr product work is incomplete. The earlier pause awaiting user frontend requirements is resolved by
-the confirmed scope. Bounded development may continue; complete P5/P10 qualification,
-real-provider gates, full source/product acceptance and P11 remain outstanding.
-The reviewed migration into apps/web and normal GitHub synchronization are complete.
-The dated observations below are historical slices; their pause/implementation statements
-do not override this current direction or imply that full integration is complete.
-
-## 方案 B 股票投研后端补充（2026-10-09能力补充）
-
-用户确认主控制台方案 B，并授权登记完整股票投研所需后端任务。P1–P9可复用身份、PIT/质量、模型网关、持久化/队列、行情/量化、研究/证据、记忆及评估；不足以直接交付完整股票投研。四项年度SEC事实/两个比例不能支撑多期财务或估值，综合中的Bull/Bear字段不等于独立Critic，fixture资格不等于真实行情/预测表现。
-
-完整复用矩阵、领域职责、时间/身份/公式约束与验收见[股票投研后端补充架构](EQUITY_RESEARCH_BACKEND_EXTENSION_20261009.md)，状态仅维护在[开发计划](../01_项目总览/DEVELOPMENT_PLAN.md)：
-
-| 待补能力 | 对应增量/任务 | 实施边界 |
-| --- | --- | --- |
-| 发行人/证券/上市股类与股本 | BE-12 / R2 | 保持instrument_id，补时间有效关系、ADR/股类及股数口径，不误用加权平均股数计算市值 |
-| 多期财务、确定性指标 | BE-02/03 / R2 | 三张报表/分部/KPI、修订/PIT、单位/期间与来源，当前年度切片不是已完成序列 |
-| 有界行情与数据资格 | BE-13、DATA-01/02 / R2前置/R5历史 | 报价、技术、严格回测用途分别验证；来源连通不提高质量资格 |
-| 基础估值与有界同行 | BE-14/15 / R2 | 确定性计算、输入快照/来源/公式版本与不可比状态，缺数不当0，历史不用未来输入 |
-| 原文、业务/事件/风险与完整研究 | BE-04～08/16 / R3/R4 | 本人授权、逐项能力准入/引用、独立Critic及论点回流，旧报告诚实保留范围 |
-| 结果评估、账户工具与审计 | BE-09～11 / R4/R5 | 不可变快照、本人权限、真实成熟样本；可选情景估值BE-17另验/默认关闭 |
-
-服务继续采用现有BFF/FastAPI/SQLAlchemy/PostgreSQL与受限Redis/Celery研究图，新增领域/API/schema先冻结增量spec。不可扩大内部令牌端点、开启模型或改变既有质量/预算/不可变规则来赶页面进度。当前仅架构与计划补充，P10仍R1，运行代码未改，P5完整研究及真实来源资格仍待；下方2026-10-08章节与更早检查点保留历史范围，不覆盖本次选型。
-
-## 增强 A 的产品查询与后端补齐（2026-10-08，逐项实施）
-
-用户已认可保留来源核心页面与内部导航、统一产品身份和操作上下文，并授权依据
-公开可观察的功能逻辑补齐研究平台后端。最新[增强 A 设计](../07_前端与部署/FRONTEND_DESIGN_ENHANCED_A_20261008.md)
-替代旧 V2-B 的跨来源视觉统一规则；冻结 v1.1.1 的身份、时间、预算与不可变性规则不变。
-本节区分已实现的R1查询与后续能力方案，不推断第三方私有实现。
-
-### 能力分工与复用边界
-
-| 借鉴行为 | 自有应用能力与拟定职责 | 当前缺口/计划 |
-| --- | --- | --- |
-| Simply 公司章节、关注与门户 | 账户范围门户查询、公司详情、本人最近研究及历史变化投影；公司公开事实与私有研究分开授权 | 门户/公司只读分页投影已接通；本人有界研究记录变化已有，完整财务/论点领域变化和来源视觉待补，BE-01 / R1 |
-| Fiscal 多期表格、趋势、来源与分部/KPI | 财务事实序列与申报版本存储，单位/期间/口径对齐，确定性指标服务，分部/KPI身份及原始申报定位 | 当前仅年度切片；BE-02～03 / R2 |
-| Quartr 材料检索、引用与原文阅读 | 以本人授权研究为入口的材料/片段查询，文档/内容版本/位置映射，有界检索和安全投影 | 复用证据与RAG持久化；账户阅读接口待补，BE-04 / R3 |
-| TradeAgent 论点与预测 | 账户论点历史/受控写命令、不可变版本与乐观并发，研究记忆回流、Critic与冻结准入 | 内部基础不是公开账户能力；BE-05～08 / R4 |
-
-### 服务、存储与契约边界
-
-- Next 展示来源界面并维护可恢复状态；同源BFF只代理精确路径/方法和服务器会话。
-  FastAPI应用层负责账户授权、有界查询/命令与DTO；领域服务负责财务计算、时间可见性、
-  质量、研究完整性和冻结资格；SQLAlchemy/PostgreSQL负责事实/版本/归属持久化。
-  外部采集和模型执行沿用来源适配器、预算与Redis/Celery研究图，不进入浏览器。
-- 复用既有 `/workspace/companies`、`/workspace/watchlist` 与精确账户研究
-  `/workspace/research` 的提交、列表、options、详情、cancel和report能力。新增URI、DTO和
-  迁移在各增量规格冻结，不能把拟定职责写成现有接口；不扩开旧内部research/RAG/thesis。
-- R1已新增 `GET /workspace/portal` 和 `GET /workspace/companies/{instrument_id}`：
-  逐请求验证会话，研究只按本人归属查询；复用安全摘要，拒绝未知/退市对象，响应no-store。
-  分页包含items/total/offset/limit，limit为1～20，offset为0～10000；门户活动列表最多3项，
-  总数单独返回；可用关注列表排除退市对象。无schema迁移、无来源/模型调用。
-  接口实现主仓 `909ab54`、前端联调 `d59aea4`；首页来源纠偏与会话竞态修复为前端 `1de6187`及其前置提交，见[R1规格](../07_前端与部署/R1_PRODUCT_ENTRY_SPEC_20261008.md)
-  与[增量验证](../07_前端与部署/R1_PRODUCT_ENTRY_VALIDATION_20261008.md)。
-- 财务序列至少区分instrument、概念/分部/KPI身份、单位/币种、期间类型及起止日期、
-  申报版本、来源定位和信息可用时间。财年/日历年、年度/季度/TTM、原始/标准化口径
-  不静默混合；重述版本保留，按Analysis Timestamp选取当时可知记录。
-  分部/KPI不可随显示名称改变身份；业务划分变化、口径不兼容与缺值有显式状态。
-  正式schema/迁移和公式在BE-02/03规格中确定，不凭页面需要前端重算。
-- 已有证据/RAG文档和chunk优先复用；材料查询返回安全的来源、内容范围、版本与位置。
-  必须先验证本人研究归属及证据关联，不能通过全局evidence/document UUID读他人材料。
-  页长、文本长度、过滤条件、查询次数与检索范围有界；上传材料不提升来源信任，片段不冒充全文。
-- 论点/预测读取和写入重新执行账户与引用授权；冻结仍依赖合格完整综合和不可变执行来源。
-  公共事实可按许可共享，账户研究/笔记/论点不可共享。变化投影需真实历史版本与明确比较时间，
-  不将首次研究或fixture显示为改善、收益或成熟结果。
-- 前端期间/阅读状态不改变持久Analysis Timestamp；把财务选择转成研究输入时，必须由
-  提交契约显式支持和后端校验，不能新增查询参数便声称研究实际使用了该期间。
-  对未知成本、缺项、质量未验证和部分报告保留明确状态；来源评分不映射为SystemConfidence。
-
-### 增量准入与验证
-
-来源页面/交互清单 → 现有契约映射 → 缺口与数据资格 → 增量spec → 前后端实现 →
-代表页面效果确认与行为验收。只借鉴首版对应功能；直播音频、全市场覆盖、估值共识、
-组合与筛选等不因参考网站提供便自动纳入首版或授予来源资格。
-
-复用账户HTTP/BFF、财务确定性行为、证据存储/报告和论点版本等已有测试边界。
-新增权限/数据行为按TDD覆盖本人/他人/历史未归属、非法ID、分页上限、期间切换、
-申报修订/截止时间、原文定位与版本、并发及冻结拒绝；本地真实PG/BFF和产品UI逐增量验收。
-后端行为、视觉还原、离线金例、真实来源资格分别记录。具体任务仍以开发计划为唯一清单。
-
-## Frozen baseline and historical checkpoints
+> 本分支仅保留P1–P9旧版后端；当前范围见[2026-10-13分支基线](../01_项目总览/EASYTRADEAGENT_BASELINE_20261013.md)。下文保留历史后端验证边界，不代表完整真实运行资格。
 
 The source-of-truth architecture is **Agentic Equity Research Workbench v1.1.1 — Quant Integrity + Operational Reliability Hardened** dated 2026-09-16.
 
-Current checkpoint: [2026-10-03 pre-P10 fixes](../01_项目总览/PRE_P10_CHECKPOINT_20261003.md).
+Current checkpoint: [2026-10-03 P1–P9 backend fixes](../01_项目总览/P1_P9_CHECKPOINT_20261003.md).
 Catalyst failure handling and independent imports are fixed; live nonempty source
 interpretations passed citation checks. V1 indicator and strategy statistic calculations
 are implemented with explicit configuration and data gates. Research-memory feedback,
 richer analysis, full observability and real market/strategy qualification remain open.
-Formal P10 is paused for user requirements. The earlier whole-blueprint audit is a
+The earlier whole-blueprint audit is a
 pre-fix snapshot; stage descriptions below retain their historical slice context.
 
 Current audit (2026-10-02): Phases 6–9 have their recorded fixture qualifications;
-Phase 5 live completion remains open and Phase 10 has not started. Current model
+Phase 5 live completion remains open Current model
 intent/planning, news and SEC financial acquisition have passed the real local
 HTTP/Redis/Celery/PostgreSQL path. Corporate-action completeness, live RAG inputs and
 verified financial/catalyst analysis still prevent a complete report. See
@@ -190,11 +61,6 @@ workflow tracer are implemented. The initial production current-acquisition rout
 request-scoped yfinance history snapshot for bars and observed corporate actions, is qualified only
 against offline fixtures, remains default-off, and fails closed when yfinance is not configured.
 
-ADR-0017 permits an isolated frontend clone lab during Phase 5 for early visual and interaction
-learning. It does not move the formal product UI out of Phase 10: only reviewed design artifacts
-and components may enter `apps/web`. Gate C now permits research API integration; later screens
-wait for their Phase 6-9 contracts.
-
 ADR-0019 keeps current acquisition yfinance-only until another current-capable adapter is
 independently qualified. It also assigns the qualified fixed-cutoff cache to each worker process as
 a configurable bounded LRU; cache contents are expendable and never authoritative research state.
@@ -222,7 +88,6 @@ a configurable bounded LRU; cache contents are expendable and never authoritativ
 - fail-closed provider and per-bar quality gates for strict backtests
 - deterministic pandas/NumPy/SciPy technical indicators
 - unit and adapter tests
-- documented staged frontend strategy; `apps/web` remains unimplemented
 
 Phase 9 produces restricted deterministic fixture signals and a non-executable
 TradeIntent. No component places broker orders or establishes historical alpha;

@@ -201,6 +201,3 @@ ADR-0019 closes the provider/cache architecture decision: current acquisition re
 yfinance-only until a second adapter is independently qualified, and the fixed-cutoff qualified
 cache is a configurable bounded LRU owned by each worker process rather than durable research
 state.
-
-An isolated frontend clone lab may run alongside these steps under ADR-0017. It uses mock data and
-cannot widen Phase 5 scope, change domain contracts, or claim that the Phase 10 product UI exists.

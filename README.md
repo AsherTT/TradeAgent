@@ -1,108 +1,28 @@
-# Agentic Equity Research Workbench
+# EasyTradeAgent — P1–P9 后端基础
 
-开发文档入口：[中文分类导航](docs/README.md)。
+当前分支：`feature/dev-EasyTradeAgent`。从 main 的 `59bdebe` 创建，后端与设计文档以正式前端开发前的 `f568b37` 为核对基线。
 
-**Current direction (2026-10-08, Asia/Shanghai):** the user approved
-[enhanced A](docs/07_前端与部署/FRONTEND_DESIGN_ENHANCED_A_20261008.md): preserve source core pages/internal
-navigation and unify product identity/account/company context. The research platform comes first;
-real portfolio/return/dividend tracking and screening follow later. Latest
-[project progress](docs/01_项目总览/DEVELOPMENT_PROGRESS_20261008.md) records the backend gap-filling direction.
-Own accounts/watchlists and bounded account-owned research work in [apps/web](apps/web/README.md).
-The homepage remains a source prototype with external feature links; Fiscal financial
-depth and Quartr source verification are not completed. Continue the bounded frontend/backend
-[development plan and backlog](docs/01_项目总览/DEVELOPMENT_PLAN.md) under the
-[frontend architecture](docs/07_前端与部署/FRONTEND_ARCHITECTURE.md).
-The earlier wait for frontend scope is resolved; full analysis, P10 acceptance and P11
-deployment remain outstanding. This is a planning update, not new runtime qualification.
+本分支保留原 P1–P9 的契约、模型网关、数据库/队列、证券身份与公司行动、研究图、证据/论点/预测、安全检索、回放评估、确定性量化/回测/风控。历史模拟验证不代表全部真实数据或模型资格已具备；完整边界见[后端检查点](docs/01_项目总览/P1_P9_CHECKPOINT_20261003.md)和[架构](docs/02_架构与契约/ARCHITECTURE.md)。
 
-**Historical checkpoint (2026-10-03):** catalyst failure handling and independent imports are
-fixed; two live source-reported interpretations passed citation checks. The V1
-technical indicator and strategy statistic calculations are implemented, with
-explicit missing-data/configuration boundaries. Full analysis and real market/strategy
-qualification remain incomplete. Formal P10 is paused for the user's frontend requirements.
-See [the current checkpoint](docs/01_项目总览/PRE_P10_CHECKPOINT_20261003.md) and
-[the earlier complete audit](docs/01_项目总览/PRE_P10_AUDIT_20261003.md). Earlier milestone wording
-below describes its original slice, not completion of the whole product.
+旧前端源码、复刻素材、门户/账户/公司发现后端增量、对应迁移及开发方案均已移除。新的前端范围和参考网站等待用户需求，当前不预先制定方案。main 的源码和构建配置仍保留，可在切回后重建原版本。
 
-Production-minded research and quantitative decision-support workbench. The current implementation contains the completed Phase 0-4 foundation and the first Phase 5 vertical slice:
+## 本地检查
 
-- Phase 0: repository, tooling, configuration, Docker and CI skeletons
-- Phase 1: versioned Pydantic contracts
-- Phase 2: pluggable multi-model runtime proof of concept
-- Phase 3 foundation: SQLAlchemy/Alembic persistence, SecurityMaster storage, research-run API, and Celery/Redis queue boundaries
-- Phase 4: point-in-time corporate actions, provider-neutral market data, deterministic price normalization, provider qualification, and technical indicators
-- Phase 5 slice: bounded LangGraph planning and evidence workflow, durable state transitions,
-  execution leases, retry/redelivery protection, pending-run reconciliation, budget enforcement,
-  and terminal Celery execution
-
-Phase 4 is covered by golden-case tests and a Docker-backed PostgreSQL migration qualification.
-The Phase 5 slice is qualified offline with deterministic model and market-data adapters. The
-free market-data route checks a qualified local cache, prefers Alpha Vantage, and retries the
-complete request through yfinance only after typed operational failures. It is wired behind the
-default-off `MARKET_DATA_ENABLED` setting. A later KLAC Yahoo connectivity check succeeded through
-this workstation's system proxy; provider quality remains fixture-qualified. Broader
-research/RAG nodes, a backtesting engine, the integrated product UI, and Azure deployment remain
-deferred to later architecture gates. Phase 5 may begin an isolated frontend design clone lab,
-but real API integration is gated by stable backend contracts and does not count as Phase 10.
-See `docs/06_验证与审查/模型与行情/ALPHA_VANTAGE_QUALIFICATION.md`, `docs/06_验证与审查/模型与行情/YFINANCE_QUALIFICATION.md`, and
-`docs/07_前端与部署/FRONTEND_STRATEGY.md`.
-
-## Requirements
-
-- Python 3.12.10 (pinned in `.python-version`)
-- Node.js 24.21.0 (pinned in `.nvmrc`; isolated frontend design work may begin in Phase 5)
-- Docker Desktop with Compose (optional for infrastructure)
-- Provider credentials only for explicitly selected live-model tests
-
-## Local setup
-
-当前前端源码已纳入本仓库 `apps/web`，后续开发及GitHub提交统一在本项目完成。运行与验证方式见 [前端说明](apps/web/README.md)。Docker API使用本地源码构建的快照，修改后端后需要重新构建才能刷新容器；运行缓存与数据卷不属于源码。
+Python 3.12，安装开发依赖后检查：
 
 ```powershell
-py -3.12 -m venv .venv
-.venv\Scripts\Activate.ps1
-python -m pip install -e ".[dev,codex]"
-python -m pytest
+python -m pip install -e ".[dev]"
+python -m pytest -m "not live_model"
 python -m ruff check .
 python -m mypy backend/app
 ```
 
-Copy `.env.example` to `.env` before enabling live executors. Ordinary tests never call a real model.
+普通测试不调用真实模型。模型、来源和worker启用仍需原契约规定的独立准入。
 
-On Windows with nvm, select the pinned Node runtime with `nvm use 24.21.0`.
-`CODEX_MODEL` is a model selector, not a secret. The Codex subscription executor
-reuses the local `codex login` session and does not require an API key in `.env`.
+## Docker
 
-## Run the API and worker foundation
+本分支保留P1–P9的Dockerfile、docker-compose.yml和迁移0001–0014。重建镜像用 `docker compose build`；运行迁移/API或worker前分别核对配置，不自动启动执行器。
 
-```powershell
-uvicorn backend.app.main:app --reload
-```
+切回main后，可用其根目录Compose重建原后端，前端构建配置位于该分支的apps/web。本次从未修改的main提交导出独立上下文，成功构建后端镜像、导入API并检查到0016_account_research迁移头；验证镜像随后也清除。旧容器、镜像、数据卷和构建缓存已按请求清理，数据库与卷恢复备份只保存在本机临时目录。
 
-The health endpoint is available at `GET /health`.
-
-`POST /research` persists and queues a run. The worker executes the bounded graph and
-`GET /research/{research_run_id}` returns its durable state. Market data remains disabled by
-default; enabling it composes the qualified cache and Alpha Vantage-to-yfinance route from the
-SecurityMaster symbol epoch. The fixed-cutoff cache is a bounded worker-local LRU configured by
-`MARKET_DATA_CACHE_MAX_ENTRIES`; current research remains yfinance-only until a second adapter is
-independently qualified. Ordinary tests use deterministic offline adapters and never spend model
-or provider quota.
-
-Free Finnhub company news is available for current research when `NEWS_ENABLED=true`,
-`MARKET_DATA_ENABLED=true`, and `FINNHUB_API_KEY` is set to a free Finnhub key. The worker
-captures company news before freezing the current market cutoff, filters and stores eligible
-headline/summary evidence, and includes the original article link. Fixed-cutoff historical runs
-do not fetch newly observed news. Finnhub access and the separate market-data route still require
-live network qualification before a full live report can be claimed.
-
-Celery Beat periodically republishes old, unclaimed pending runs to close the database-commit/
-broker-publication crash window. `RESEARCH_RECONCILE_INTERVAL_SECONDS`,
-`RESEARCH_RECONCILE_GRACE_SECONDS`, and `RESEARCH_RECONCILE_BATCH_SIZE` bound that work. A
-republication never changes run state; the worker execution lease remains authoritative.
-
-## Runtime design
-
-Business code submits a typed `ModelRequest` to `ModelGateway`. The gateway validates capabilities, selects an executor according to `TaskPolicy`, applies retry/fallback rules, validates the provider response against the requested Pydantic schema, and records execution metadata. Provider-specific behavior stays inside executor adapters.
-
-See `docs/02_架构与契约/MODEL_GATEWAY.md`, `docs/02_架构与契约/DATA_CONTRACT.md`, and `docs/02_架构与契约/架构决策/` for the milestone decisions.
+开发文档入口：[P1–P9 文档导航](docs/README.md)。分支边界：[基线说明](docs/01_项目总览/EASYTRADEAGENT_BASELINE_20261013.md)。

@@ -43,7 +43,7 @@ findings only, without a repeated review of the entire phase.
   widget authorization returned NotAuthorized. Yahoo quality stays UNVERIFIED.
 - Complete financial/catalyst analysis and full section-specific synthesis citations
   remain outstanding. The result is insufficient evidence, not a complete report.
-- P10 has not started. Local changes are committed; the completed-phase push gate
+- Local changes are committed; the completed-phase push gate
   remains pending these qualifications.
 
 Reusable opt-in probes live in backend/tests/codex_current_probe.py,

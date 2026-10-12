@@ -16,10 +16,12 @@ from backend.app.config import get_settings
 
 
 class Database:
-    def __init__(self, url: str, *, echo: bool = False, ssl: bool = False) -> None:
+    def __init__(self, url: str, *, echo: bool = False) -> None:
         self.engine: AsyncEngine = create_async_engine(
-            url, echo=echo, pool_pre_ping=True, hide_parameters=True,
-            connect_args={"ssl": True} if ssl else {},
+            url,
+            echo=echo,
+            pool_pre_ping=True,
+            hide_parameters=True,
         )
         self.sessions = async_sessionmaker(self.engine, expire_on_commit=False)
 
@@ -40,9 +42,7 @@ class Database:
 @lru_cache
 def get_database() -> Database:
     settings = get_settings()
-    return Database(
-        settings.database_url, echo=False, ssl=settings.database_ssl,
-    )
+    return Database(settings.database_url, echo=False)
 
 
 async def get_session() -> AsyncIterator[AsyncSession]:
