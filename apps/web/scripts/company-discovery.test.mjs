@@ -61,6 +61,33 @@ test("a stale query 401 clears directory data and late success cannot restore it
   assert.equal(requests, 2);
 });
 
+test("returning to an earlier query hides its old response until a fresh request completes", async (t) => {
+  const pendingB = deferred();
+  const pendingA = deferred();
+  let appleRequests = 0;
+  const ui = await mount(t, CompanyDiscoverySearch, {}, async (url) => {
+    if (String(url).includes("query=MSFT")) return pendingB.promise;
+    if (String(url).includes("query=AAPL") && ++appleRequests > 1) return pendingA.promise;
+    return Response.json(page);
+  });
+  await settle();
+  await ui.fill("input[type=search]", "AAPL");
+  await settle();
+  assert.match(ui.text(), /Apple Inc\./);
+  await ui.fill("input[type=search]", "MSFT");
+  await settle();
+  await ui.fill("input[type=search]", "AAPL");
+  assert.doesNotMatch(ui.text(), /Apple Inc\./);
+  const input = ui.document.querySelector("input[type=search]");
+  await flush(() => input.dispatchEvent(new ui.document.defaultView.KeyboardEvent("keydown", { key: "Enter", bubbles: true })));
+  assert.deepEqual(ui.navigations, []);
+  await settle();
+  await flush(() => pendingB.resolve(Response.json({ ...page, items: [{ ...items[0], name: "Microsoft Corp.", symbol: "MSFT" }] })));
+  assert.doesNotMatch(ui.text(), /Microsoft Corp\./);
+  await flush(() => pendingA.resolve(Response.json(page)));
+  assert.match(ui.text(), /Apple Inc\./);
+});
+
 test("empty coverage and unavailable configuration have distinct messages and retries retain query", async (t) => {
   const urls = [];
   const ui = await mount(t, CompanyDiscoverySearch, {}, async (url) => {
