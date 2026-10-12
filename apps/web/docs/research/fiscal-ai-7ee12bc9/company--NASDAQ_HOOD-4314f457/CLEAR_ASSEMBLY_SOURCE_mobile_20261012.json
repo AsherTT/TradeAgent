@@ -1,0 +1,148 @@
+{
+  "nodes": [
+    {
+      "html": "<button class=\"mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root\" data-variant=\"transparent\" data-size=\"xs\" type=\"button\" style=\"--button-height: var(--button-height-xs); --button-padding-x: var(--button-padding-x-xs); --button-fz: var(--mantine-font-size-xs); --button-bg: transparent; --button-hover: transparent; --button-color: var(--mantine-color-dark-light-color); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent; padding-inline: var(--mantine-spacing-xs); color: var(--mantine-color-dimmed); width: calc(6.25rem * var(--mantine-scale));\"><span class=\"m_80f1301b mantine-Button-inner\"><span class=\"m_811560b9 mantine-Button-label\">Clear Search</span></span></button>",
+      "rect": {
+        "bottom": 295.20001220703125,
+        "height": 30,
+        "left": 36.51250076293945,
+        "right": 136.51250076293945,
+        "top": 265.20001220703125,
+        "width": 100,
+        "x": 36.51250076293945,
+        "y": 265.20001220703125
+      },
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(175, 175, 182)",
+        "display": "inline-block",
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "fontSize": "12px",
+        "height": "30px",
+        "lineHeight": "12px",
+        "margin": "0px",
+        "opacity": "1",
+        "outline": "rgb(175, 175, 182) none 2.4px",
+        "outlineOffset": "0px",
+        "padding": "0px 10px",
+        "position": "relative",
+        "top": "0px",
+        "transform": "none",
+        "transition": "opacity 0.2s ease-in-out",
+        "width": "100px",
+        "zIndex": "auto"
+      },
+      "tag": "BUTTON",
+      "text": "Clear Search"
+    },
+    {
+      "html": "<span class=\"m_80f1301b mantine-Button-inner\"><span class=\"m_811560b9 mantine-Button-label\">Clear Search</span></span>",
+      "rect": {
+        "bottom": 294.3999996185303,
+        "height": 28.399999618530273,
+        "left": 47.3125,
+        "right": 125.7125015258789,
+        "top": 266,
+        "width": 78.4000015258789,
+        "x": 47.3125,
+        "y": 266
+      },
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(175, 175, 182)",
+        "display": "flex",
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "fontSize": "12px",
+        "height": "28.4px",
+        "lineHeight": "12px",
+        "margin": "0px",
+        "opacity": "1",
+        "outline": "rgb(175, 175, 182) none 2.4px",
+        "outlineOffset": "0px",
+        "padding": "0px",
+        "position": "static",
+        "top": "auto",
+        "transform": "none",
+        "transition": "transform 0.15s, opacity 0.1s",
+        "width": "78.4px",
+        "zIndex": "auto"
+      },
+      "tag": "SPAN",
+      "text": "Clear Search"
+    },
+    {
+      "html": "<span class=\"m_811560b9 mantine-Button-label\">Clear Search</span>",
+      "rect": {
+        "bottom": 294.3999996185303,
+        "height": 28.399999618530273,
+        "left": 49.712501525878906,
+        "right": 123.3000030517578,
+        "top": 266,
+        "width": 73.5875015258789,
+        "x": 49.712501525878906,
+        "y": 266
+      },
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(175, 175, 182)",
+        "display": "flex",
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "fontSize": "12px",
+        "height": "28.4px",
+        "lineHeight": "12px",
+        "margin": "0px",
+        "opacity": "1",
+        "outline": "rgb(175, 175, 182) none 2.4px",
+        "outlineOffset": "0px",
+        "padding": "0px",
+        "position": "static",
+        "top": "auto",
+        "transform": "none",
+        "transition": "all",
+        "width": "73.5875px",
+        "zIndex": "auto"
+      },
+      "tag": "SPAN",
+      "text": "Clear Search"
+    },
+    {
+      "html": "<div class=\"sticky top-0 z-10 bg-[var(--mantine-color-body)] py-1\"><button class=\"mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root\" data-variant=\"transparent\" data-size=\"xs\" type=\"button\" style=\"--button-height: var(--button-height-xs); --button-padding-x: var(--button-padding-x-xs); --button-fz: var(--mantine-font-size-xs); --button-bg: transparent; --button-hover: transparent; --button-color: var(--mantine-color-dark-light-color); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent; padding-inline: var(--mantine-spacing-xs); color: var(--mantine-color-dimmed); width: calc(6.25rem * var(--mantine-scale));\"><span class=\"m_80f1301b mantine-Button-inner\"><span class=\"m_811560b9 mantine-Button-label\">Clear Search</span></span></button></div>",
+      "rect": {
+        "bottom": 299.20001220703125,
+        "height": 38,
+        "left": 36.51250076293945,
+        "right": 353.88750076293945,
+        "top": 261.20001220703125,
+        "width": 317.375,
+        "x": 36.51250076293945,
+        "y": 261.20001220703125
+      },
+      "styles": {
+        "backgroundColor": "rgb(28, 28, 33)",
+        "color": "rgb(255, 255, 255)",
+        "display": "block",
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "fontSize": "16px",
+        "height": "38px",
+        "lineHeight": "24.8px",
+        "margin": "0px",
+        "opacity": "1",
+        "outline": "rgb(255, 255, 255) none 2.4px",
+        "outlineOffset": "0px",
+        "padding": "4px 0px",
+        "position": "sticky",
+        "top": "0px",
+        "transform": "none",
+        "transition": "all",
+        "width": "317.375px",
+        "zIndex": "10"
+      },
+      "tag": "DIV",
+      "text": "Clear Search"
+    }
+  ],
+  "viewport": {
+    "height": 1000,
+    "width": 390
+  }
+}
