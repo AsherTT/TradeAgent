@@ -1,0 +1,40 @@
+.shell {
+  min-height: 100dvh;
+  background: rgb(28, 28, 33);
+  color: white;
+  font-family: var(--font-fiscal-jakarta), 'Microsoft YaHei', sans-serif;
+}
+
+.content {
+  padding-top: 64px;
+  min-height: 100dvh;
+}
+
+.content:focus { outline: none; }
+
+.language {
+  color: white;
+}
+
+.language button[aria-pressed='true'] {
+  color: #191816;
+}
+
+.skip {
+  position: fixed;
+  top: 8px;
+  left: 12px;
+  z-index: 102;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: #fdcc6a;
+  color: #191816;
+  transform: translateY(-200%);
+}
+
+.skip:focus { transform: none; }
+
+@media (min-width: 1024px) {
+  .content { padding-left: 80px; }
+  .skip { left: 92px; }
+}

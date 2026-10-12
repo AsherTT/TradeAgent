@@ -54,8 +54,18 @@ export async function flush(action = () => {}) {
   await act(async () => { await action(); await setImmediate(); });
 }
 
-export async function mount(t, Component, props, fetch, locale = "en") {
+export async function mount(t, Component, props, fetch, locale = "en", environment = {}) {
   const dom = new JSDOM("<!doctype html><div id='root'></div>", { url: "http://localhost/app" });
+  dom.window.document.body.style.overflow = environment.bodyOverflow ?? "";
+  let desktop = environment.desktop ?? true;
+  let pathname = environment.pathname ?? "/app";
+  const mediaListeners = new Set();
+  dom.window.matchMedia = (query) => ({
+    media: query,
+    get matches() { return desktop; },
+    addEventListener: (type, listener) => { if (type === "change") mediaListeners.add(listener); },
+    removeEventListener: (type, listener) => { if (type === "change") mediaListeners.delete(listener); },
+  });
   const originals = new Map();
   for (const [name, value] of Object.entries({
     window: dom.window, document: dom.window.document, Node: dom.window.Node,
@@ -83,13 +93,19 @@ export async function mount(t, Component, props, fetch, locale = "en") {
       else delete globalThis[name];
     }
   });
-  await flush(() => root.render(createElement(AppRouterContext.Provider, { value: router },
-    createElement(PathnameContext.Provider, { value: "/app" },
+  const render = () => root.render(createElement(AppRouterContext.Provider, { value: router },
+    createElement(PathnameContext.Provider, { value: pathname },
       createElement(LanguageProvider, { initialLocale: locale }, createElement(Component, props)),
     ),
-  )));
+  ));
+  await flush(render);
   return {
     document: dom.window.document, navigations,
+    resizeDesktop: (matches) => flush(() => {
+      desktop = matches;
+      for (const listener of mediaListeners) listener({ matches });
+    }),
+    navigatePathname: (next) => flush(() => { pathname = next; render(); }),
     text: () => dom.window.document.body.textContent,
     click: (label) => {
       const button = [...dom.window.document.querySelectorAll("button")].find((node) => node.textContent === label);

@@ -8,7 +8,7 @@ export async function generateMetadata() { return accountMetadata("/app/company-
 export default async function CompanySearchPage() {
   const identity = await getAccount();
   if (!identity.account && !identity.unavailable) redirect("/login");
-  return <main className={`${fiscalJakarta.variable} ${fiscalMono.variable} min-h-screen bg-[#151515] text-white`}>
+  return <main className={`${fiscalJakarta.variable} ${fiscalMono.variable} min-h-[calc(100dvh-64px)] bg-[#151515] text-white`}>
     <CompanyDiscoverySearch key={identity.account?.user_id ?? "unavailable"} />
   </main>;
 }

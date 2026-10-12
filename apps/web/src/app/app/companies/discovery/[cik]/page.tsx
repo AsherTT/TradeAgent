@@ -15,7 +15,7 @@ export default async function DirectoryCompanyPage({ params, searchParams }: {
   const { symbol, exchange = "" } = await searchParams;
   if (!/^[0-9]{1,10}$/.test(cik) || typeof symbol !== "string" || !symbol || symbol.length > 32
     || typeof exchange !== "string" || exchange.length > 32) notFound();
-  return <main className={`${fiscalJakarta.variable} ${fiscalMono.variable} min-h-screen bg-[#1c1c21] text-white`}>
+  return <main className={`${fiscalJakarta.variable} ${fiscalMono.variable} min-h-[calc(100dvh-64px)] bg-[#1c1c21] text-white`}>
     <CompanyDirectoryDetail key={`${identity.account?.user_id}:${cik}:${symbol}:${exchange}`} cik={cik} symbol={symbol} exchange={exchange} />
   </main>;
 }

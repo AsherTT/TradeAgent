@@ -197,7 +197,7 @@ export function Workspace({
   }
   return (
     <AccountShell>
-      <section className="mb-7 flex flex-wrap items-start justify-between gap-5">
+      <section id="account" className="mb-7 flex scroll-mt-20 flex-wrap items-start justify-between gap-5">
         <div>
           <p className={styles.eyebrow}>
             {zh ? "你的研究空间" : "YOUR RESEARCH SPACE"}
