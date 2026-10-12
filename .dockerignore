@@ -8,5 +8,3 @@ __pycache__
 .coverage
 htmlcov
 node_modules
-.test-output
-apps/web
