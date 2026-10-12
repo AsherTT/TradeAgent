@@ -13,3 +13,7 @@
   line-height: 24.8px;
   color: rgb(255, 255, 255);
 }
+
+.bar > button {
+  vertical-align: middle;
+}
