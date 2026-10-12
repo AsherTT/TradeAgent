@@ -1,5 +1,15 @@
 # Architecture Baseline
 
+## 最新实现与会话交接边界（2026-10-12）
+
+当前仍P10/R1，R2未启动。主仓`apps/web`为唯一前端入口；后端`backend/app`沿用账户授权、领域服务和PostgreSQL安全主数据。新增公司发现是现有FastAPI内的只读服务，不另建后端、不将来源商业页签自动扩成全部数据服务。已同步代码检查点`9418123`云端前后端通过，下一步与状态见[唯一任务表](../01_项目总览/DEVELOPMENT_PLAN.md#下一会话交接检查点2026-10-12)和[下一会话入口](../01_项目总览/NEXT_SESSION_START_20261012.md)。后文旧日期为历史范围。
+
+新增只读路径：Next账户保护页`/app/company-search`及`/app/companies/discovery/{cik}` → 固定GET/参数白名单同源BFF → `backend/app/api/company_discovery.py` → `backend/app/company_directory.py`的公共SEC目录快照。固定官方来源、真实User-Agent、既有Redis限速器；公共快照进程内24小时缓存，失败5分钟退避、最多7天显式陈旧数据、有界HTTP及格式校验。无数据库迁移或定时任务，目录快照不是研究证据缓存，不改变ADR-0018/0019的研究截止时间与合格行情缓存规则。
+
+CIK标识发行人，完整目录落点使用CIK＋交易代码＋交易所；同发行人多代码不合并。只有唯一、当前有效的本地代码/交易所匹配才返回instrument_id，其余保留候选身份。目录不写instrument/SymbolHistory，不授予PIT、证券类别、报价/财务或发起研究资格；研究仍以永久instrument_id及原授权/质量门槛执行。接口/缓存/错误范围以[公司发现契约](../07_前端与部署/R1_COMPANY_DISCOVERY_20261012.md)为准。
+
+前端已按严格clone流程补FiscalCompanyIdentity/FiscalCompanyProfile两个选定区块，并用于自有SEC字段；来源样本在独立lab对照，实际产品与样本隔离。它们不含报价、收藏、音频、整页导航或图表，不代表整个/app完成。下一增量仍选定来源状态收尾→应用壳/门户→现有网站逐页；模型、worker、beat保持关闭。完整研究、R2数据、P10总验收与P11部署各自独立验收。
+
 ## 2026-10-12执行方案2最终定义
 
 用户选择逐功能区同步交付并要求明确P10之后的路线，见[最终方案](../07_前端与部署/DEVELOPMENT_EXECUTION_OPTIONS_20261012.md)。P1～P9底座与现有BFF/FastAPI/数据库/研究图保持；R1先选定来源区块收尾再整个现有网站接线，完整商业来源页不再前置。R2日线行情→年度财务小块→股本/基础估值/有界同行；R3授权片段；R4完整研究/Critic/论点；R5诊断及有资格工具；R6为P10出口。实现、真实资格与产品验收分列，R1第一版不等于完整P10。

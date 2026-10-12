@@ -2,6 +2,8 @@
 
 ## 最新实施状态（2026-10-12，Asia/Shanghai）
 
+交接检查点：`9418123`已推送且云端前后端通过。初始通用目录详情布局已纠正：按迁入主仓的clone-website完整工作流，来源三尺寸采样→两份spec→隔离builder→逐次build→对照，用`FiscalCompanyIdentity`/`FiscalCompanyProfile`接实际SEC身份及来源字段。原文比较在`/labs/r1-fiscal-company-identity`，不是实时产品数据；正式返回/语言/覆盖提示属于明确产品适配。selected区块有界验收不覆盖整个公司页或/app，见[证据](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/COMPANY_IDENTITY_VALIDATION_20261012.md)。后续执行入口见[交接索引](../01_项目总览/NEXT_SESSION_START_20261012.md)。
+
 本轮真实搜索增量已落地：`/app/company-search`复用来源搜索父框/输入/结果行，通过认证BFF查询SEC发行人代码目录；已收录的唯一有效代码/交易所匹配进入现有公司页，候选进入`/app/companies/discovery/{cik}?symbol=...&exchange=...`。目录详情为身份功能页，尚不是完整来源公司业务页。`/labs/r1-fiscal-search`默认真实目录，关闭后可切到独立源站样本对照；产品模式替换源站全球/类别/页面提示。后端仅缓存公共身份快照，无研究安全主数据写入；全网站视觉重构继续待。契约见[R1公司发现方案](R1_COMPANY_DISCOVERY_20261012.md)。后文未接线表述以本轮范围为准，其余缺口保留。
 
 用户已选择[执行方案2及最终路线](DEVELOPMENT_EXECUTION_OPTIONS_20261012.md)：先收尾选定搜索/Simply来源区块，再逐页重构整个现有/app，完成R1第一版；之后按R2行情/年度财务/基础定价、R3证据、R4研究论点、R5诊断/有资格工具、R6推进完整P10。原“完整商业公司报告/全球与47页搜索先完成”前置由本定义替代；视觉仍为Fiscal方案B，来源逐块精确对照，不降低已选区块质量。P10后的P11准备/受控发布、有限试用、AI工程深化和可选业务扩展独立进行；未因定稿新增运行资格。
@@ -39,6 +41,9 @@ P10仍R1，R2未启动。Fiscal搜索已装配来源父弹窗、输入/分类、
 | --- | --- | --- |
 | `/login`、`/register` | 自有账户 | 已实现，本地会话 |
 | `/app` | 本人Portal，关注/任务/研究变化 | 关注、活动任务、最近研究分页、目录搜索及本人有界研究变化已接通；完整领域变化与来源布局待补 |
+| `/app/company-search` | 认证SEC目录搜索 | 已实现debounce/分页/明确覆盖和错误/内部选择跳转；真实查询不局限30参考样本，非全球目录 |
+| `/app/companies/discovery/{cik}?symbol=...&exchange=...` | 未纳入研究目录的发行人代码候选 | 已实现自有GET详情与Fiscal身份/概览选定区块；可刷新，真实来源/抓取时间/陈旧状态可见，无伪行情、关注或研究操作 |
+| `/labs/r1-fiscal-company-identity` | 原文来源区块比较 | 已实现参考snapshot验证容器，不作为正式业务/研究数据 |
 | `/app/companies` | 公司目录、本人关注 | 拟定；当前嵌在/app |
 | `/app/companies/{instrument_id}` | 公司概览、最近研究、章节入口 | 身份、本人关注/研究、研究预选与刷新/返回已接通；来源视觉与完整章节待补 |
 | `/app/companies/{instrument_id}/financials` | 财务期间/事实/指标/来源 | 待开发 |
@@ -52,6 +57,8 @@ P10仍R1，R2未启动。Fiscal搜索已装配来源父弹窗、输入/分类、
 
 使用instrument_id、research_run_id、evidence_id、thesis_id作为稳定对象地址。ticker为展示/时间相关解析属性；URL刷新和返回不依赖临时客户端状态。财务期间、模式、章节及引用采用可恢复的查询参数/锚点，其白名单在各增量规格定义。
 
+公司发现候选单独以CIK＋symbol＋exchange定位，不能将发行人CIK直接当作研究证券ID。`companyDestination`优先有效本地UUID，其余进入候选页；`useCompanyDiscovery`按每次请求代次隔离结果，A→B→A不恢复旧响应，401使本挂载会话视图失效，旧成功响应不得恢复。源站已观察四家logo仅按准确身份元组复用，不猜其他公司的标识。
+
 ## 技术模块与数据流
 
 当前Next16/React19/strict TypeScript/Tailwind前端已根据用户2026-10-10源码同步指令迁入`TradeAgent/apps/web`，完整快照来自原模板60e6316。保留npm锁文件，前端源码、来源证据及skill统一随主仓提交；原模板目录留作历史。迁入位置不授予来源整页/产品验收资格，Fiscal门户装配与/app改造仍待。见SOURCE_SYNC_SPEC_20261010.md及apps/web/README.md。
@@ -61,6 +68,8 @@ flowchart LR
   U[浏览器：统一TradeAgent UI] --> N[Next：服务端路由/账户校验]
   N --> B[同源BFF：路径方法/Origin/会话/超时]
   B --> A[FastAPI：账户授权/有界查询与命令]
+  A --> C[公共SEC身份目录：有界进程缓存]
+  C --> S[SEC固定官方目录：既有限速]
   A --> P[(PostgreSQL：事实/归属/版本/证据)]
   A --> Q[Redis与Celery：受限研究任务]
   Q --> G[研究图/来源/模型适配器]
@@ -88,6 +97,7 @@ flowchart LR
 | 页面能力 | 需补的应用查询/命令 | 权限与数据边界 |
 | --- | --- | --- |
 | Portal/公司概览 | 已实现GET /workspace/portal及/companies/{instrument_id}，本人研究记录变化及当前关注页research_changes已有；单次分区每证券50+1，上限20证券，完整财务/论点领域变化待补 | 本人私有对象，分页/总数有界；目录是已接入记录，不泄露他人研究，空/未知变化不制造差值 |
+| 公司发现/候选身份 | 已实现GET /workspace/company-discovery及/{cik}；搜索query/limit/offset、详情symbol/exchange固定白名单，安全来源不可用码可显示 | 账户会话必需；公共快照与研究主数据分开，不写库或自动授予研究/数据资格；没有任意供应商代理 |
 | 多期财务 | 期间序列、申报修订/口径、分部/KPI身份、确定性指标、原始申报定位和截止时间 | 财年/季度/TTM不混算，申报修订和当时可知规则保持；空值有原因 |
 | 证据阅读 | 本人授权研究的材料/证据/片段、文档范围/位置/内容版本与有界检索 | evidence UUID不等于访问许可；不得从全局证据表绕过研究归属；不自动提升上传材料信任 |
 | 论点跟踪 | 本人论点历史/版本/预测读取和受限写命令 | 不开放旧内部令牌接口；完整综合与冻结资格必须重验，历史不可变 |

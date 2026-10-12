@@ -12,7 +12,7 @@
 
 | 阅读内容 | 文件 |
 | --- | --- |
-| 最新整体架构：主仓源码边界、R1现状及后续准入（2026-10-10） | [ARCHITECTURE.md](ARCHITECTURE.md) |
+| 最新整体架构：只读SEC目录、主仓边界、R1及后续准入（2026-10-12） | [ARCHITECTURE.md](ARCHITECTURE.md) |
 | 最新前端架构：apps/web维护入口、方案B与接口依赖 | [FRONTEND_ARCHITECTURE.md](../07_前端与部署/FRONTEND_ARCHITECTURE.md) |
 | 方案B股票投研：P1–P9复用、股本/行情/估值/同行及研究补充 | [EQUITY_RESEARCH_BACKEND_EXTENSION_20261009.md](EQUITY_RESEARCH_BACKEND_EXTENSION_20261009.md) |
 | 数据契约与时间、身份规则 | [DATA_CONTRACT.md](DATA_CONTRACT.md) |
