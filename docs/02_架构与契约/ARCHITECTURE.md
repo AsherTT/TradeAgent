@@ -1,5 +1,11 @@
 # Architecture Baseline
 
+## 2026-10-12执行方案2最终定义
+
+用户选择逐功能区同步交付并要求明确P10之后的路线，见[最终方案](../07_前端与部署/DEVELOPMENT_EXECUTION_OPTIONS_20261012.md)。P1～P9底座与现有BFF/FastAPI/数据库/研究图保持；R1先选定来源区块收尾再整个现有网站接线，完整商业来源页不再前置。R2日线行情→年度财务小块→股本/基础估值/有界同行；R3授权片段；R4完整研究/Critic/论点；R5诊断及有资格工具；R6为P10出口。实现、真实资格与产品验收分列，R1第一版不等于完整P10。
+
+P10后沿原P11做发布准备/受控部署，再有限试用与真实质量/生产工程深化；分析师共识、新闻/持股、更多市场、组合/筛选、收费等按价值单项确认。不会据页面导航自动新增全部商业数据服务，也不据职业路线重建同类Agent/评估技术栈。此次方案定稿不启用模型/worker、采购数据或部署。任务与出口唯一维护[开发计划](../01_项目总览/DEVELOPMENT_PLAN.md)，下方较早日期保留历史范围。
+
 ## 当前源码与实现边界（2026-10-10，Asia/Shanghai）
 
 后端和前端已统一在TradeAgent主仓维护：`backend/app`、`backend/tests`、`alembic`为后端边界，`apps/web`为完整Next16/React19前端；npm锁文件、原clone-website skill、许可、素材和研究证据保留。旧ai-website-cloner-template目录仅作历史，不再双向维护。来源组件/CSS/字体/资产仍按site-key/page-key隔离；迁入不是整页来源或产品验收。位置修订见[ADR-0017](架构决策/ADR-0017-staged-frontend-clone-lab.md)，审计和云端验证见[源码同步验收](../07_前端与部署/SOURCE_SYNC_VALIDATION_20261010.md)。
