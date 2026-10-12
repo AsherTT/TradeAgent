@@ -1,0 +1,64 @@
+.viewport {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: normal;
+  gap: 10px 4px;
+  width: max-content;
+  min-width: 100%;
+  margin: 0 0 10px;
+  padding: 4px 0;
+  white-space: nowrap;
+}
+
+.tab {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 0.8px solid transparent;
+  border-radius: 4px;
+  background-color: rgb(44, 44, 53);
+  color: rgb(255, 255, 255);
+  font-family: var(--font-fiscal-jakarta), sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all;
+}
+
+.tab[aria-selected="true"] {
+  background-color: rgb(64, 64, 79);
+  font-weight: 500;
+}
+
+.tab:focus-visible {
+  outline: 1.6px solid rgb(94, 94, 116);
+  outline-offset: 1.6px;
+}
+
+.label {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  font-weight: inherit;
+  line-height: 14px;
+}
