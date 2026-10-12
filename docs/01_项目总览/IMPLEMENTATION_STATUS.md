@@ -2,6 +2,8 @@
 
 Last updated: 2026-10-12 (Asia/Shanghai)
 
+Latest correction: Fiscal selected identity/profile blocks now follow source inspection at three sizes, full specs, isolated builders, per-component merge/build and bounded comparison. Product directory details use those components with real SEC fields. This qualifies selected blocks, not the full commercial company page or entire /app. Frontend check and 46 tests pass; backend 497 pass, 1 live-model deselected, 89.74% coverage, Ruff and strict mypy (108 files) pass. Same R1 review agents inspected only the fixed new diff: Standards 0, Spec 1 fixed and closed. See [validation](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/COMPANY_IDENTITY_VALIDATION_20261012.md) and [review](../07_前端与部署/R1_COMPANY_DISCOVERY_REVIEW_20261012.md). P10 stays at incomplete R1; R2 has not started. Remaining selected search/Simply states precede full /app reconstruction.
+
 当前实际增量：SEC真实身份目录搜索（本地实测10,445条）、认证API/BFF、缓存/退避、精确证券匹配与自有目录详情已接线；`/app/company-search`与工作台入口可用，lab默认真实目录，源站样本改为独立对照模式。不写入instrument/SymbolHistory，没有数据库迁移，不授予研究资格。浏览器验证AAPL真实查询与点击自有详情。当前仍P10/R1，R2未启动；完整公司业务页与整个/app视觉重构待。见[契约与验收边界](../07_前端与部署/R1_COMPANY_DISCOVERY_20261012.md)和[手验](../07_前端与部署/R1_MANUAL_VALIDATION_20261012.md)。下方为较早检查点。
 
 ## 当前执行约束：方案2最终定义

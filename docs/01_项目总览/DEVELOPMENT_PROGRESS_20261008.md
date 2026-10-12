@@ -1,5 +1,7 @@
 # 最新项目进展：方案 B 股票投研与后端补齐
 
+2026-10-12最新纠正：严格执行迁入主仓的clone工作流，来源三尺寸采样→两份完整spec→隔离builder→逐组件合并build→有界对照，Fiscal身份/概览替换了最初通用目录卡片。自有真实SEC字段、返回/语言/来源状态属于明确适配，不冒称完整来源页面。前端check/46项测试、后端497项及静态检查通过；固定增量审查Standards0、Spec1已修复关闭，未重复全R1 skill。见[验收证据](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/COMPANY_IDENTITY_VALIDATION_20261012.md)及[手验](../07_前端与部署/R1_MANUAL_VALIDATION_20261012.md)。仍R1未完成、R2未启动，下一步选定搜索/Simply状态收尾与整个/app逐页重构；下方通用功能页描述为纠正前检查点。
+
 2026-10-12搜索产品接线增量：修复“选择后只关闭弹窗”的实际断点；默认真实搜索改用自有认证API/BFF查询SEC身份目录，24小时进程缓存、失败退避与有界陈旧快照，真实本地快照10,445条。已收录有效唯一代码/交易所匹配进入自有公司页，其余进入可刷新分享的自有目录详情；不自动导入研究主数据、不假造行情或财务。正式入口`/app/company-search`，`/app`已有入口；lab独立保留30样本/331上市地点的对照模式。浏览器已实际查询AAPL并点击进入自有详情。R1仍未完成、R2未启动，新增详情仅身份功能页，不称完整Fiscal公司页复刻；下一步收尾选定来源状态并重构/app应用壳与门户。契约、覆盖边界及后续目录准入见[本轮方案](../07_前端与部署/R1_COMPANY_DISCOVERY_20261012.md)，手验以[最新入口](../07_前端与部署/R1_MANUAL_VALIDATION_20261012.md)为准。以下为之前检查点。
 
 2026-10-12方案2首个运行增量：按实测在搜索modal作用域补dark color-scheme/thin scrollbar，英文1280×720四父壳节点16项几何与来源0差异，其余1440/768/390相对基线0回归；Escape/中文重开与AAPL展开验证通过。lint/typecheck/build通过，本次两CSS属性新增差异Standards0/Spec0，未重启全R1审查。恢复3107与Docker/API/PG/Redis，现有迁移依赖检查后schema仍0016，模型False、worker/beat未启动。见[短窗口验收](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SHORT_WINDOW_VALIDATION_20261012.md)。当前R1未完成；接下来选定清空/关闭状态与Simply区块收尾，再/app应用壳与门户。
