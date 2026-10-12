@@ -2,6 +2,8 @@
 
 ## 最新实现与会话交接边界（2026-10-12）
 
+公共应用壳增量 `e8c6e85`：前端/app共享layout加载Fiscal字体、来源顶栏/侧栏及移动抽屉，客户端AppShell管理focus/inert/overflow/shortcut/断点；各page认证、所有权、DTO和BFF不变。正文仍逐页重构，不新增后端接口、迁移或真实研究资格。验收与下一块门户正文见[R1公共壳验收](../07_前端与部署/R1_APP_SHELL_VALIDATION_20261012.md)，唯一任务表同步至该增量；下方为此前交接边界。
+
 当前仍P10/R1，R2未启动。主仓`apps/web`为唯一前端入口；后端`backend/app`沿用账户授权、领域服务和PostgreSQL安全主数据。新增公司发现是现有FastAPI内的只读服务，不另建后端、不将来源商业页签自动扩成全部数据服务。已同步代码检查点`9418123`云端前后端通过，下一步与状态见[唯一任务表](../01_项目总览/DEVELOPMENT_PLAN.md#下一会话交接检查点2026-10-12)和[下一会话入口](../01_项目总览/NEXT_SESSION_START_20261012.md)。后文旧日期为历史范围。
 
 新增只读路径：Next账户保护页`/app/company-search`及`/app/companies/discovery/{cik}` → 固定GET/参数白名单同源BFF → `backend/app/api/company_discovery.py` → `backend/app/company_directory.py`的公共SEC目录快照。固定官方来源、真实User-Agent、既有Redis限速器；公共快照进程内24小时缓存，失败5分钟退避、最多7天显式陈旧数据、有界HTTP及格式校验。无数据库迁移或定时任务，目录快照不是研究证据缓存，不改变ADR-0018/0019的研究截止时间与合格行情缓存规则。

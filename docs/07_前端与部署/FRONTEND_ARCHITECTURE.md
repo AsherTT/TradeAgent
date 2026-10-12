@@ -1,5 +1,7 @@
 # TradeAgent前端架构与融合实施
 
+2026-10-12公共壳实现：`/app/layout.tsx` 加载Fiscal字体并用AppShell管理真实导航、快捷键、移动focus/inert/overflow和1024断点，来源FiscalAppHeader/FiscalAppSidebar只渲染。WorkbenchLayoutContext让AccountShell在该路径移除旧全局ProductHeader；page自身认证/对象key/DTO与BFF保持，公共壳不缓存账户。正文64px顶部/桌面80px左侧偏移；旧业务正文、目录正文语言控件暂保留，按下一块逐页来源重构。52项前端测试/check、中英三尺寸与定向两轴0项通过；见[验收](R1_APP_SHELL_VALIDATION_20261012.md)。本轮只完成公共外框，后续先门户正文再公司/研究/任务/报告/账户，R1未完成/R2未启动。
+
 ## 最新实施状态（2026-10-12，Asia/Shanghai）
 
 R1续增量 `c89675f`：正式SEC搜索复用来源清空按钮及新sticky父条，非空query显示属于产品适配，清空同时重置分页/键盘选择/滚动并恢复输入focus；请求代次与401失效规则保持。来源样本模式不改，47页模式未实现。来源三尺寸小spec/隔离builder/合并build及产品中英QA闭环见[本轮验收](R1_SEARCH_CLEAR_VALIDATION_20261012.md)。此增量仅FE-02选定状态，整个/app应用壳与门户仍待冻结来源规格，不宣布R1完成。

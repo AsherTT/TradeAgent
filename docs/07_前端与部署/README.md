@@ -1,5 +1,7 @@
 # 07_前端与部署
 
+> 最新公共应用壳：[产品规格](R1_APP_SHELL_SPEC_20261012.md)、[clone流程/中英三尺寸/交互/审查验收](R1_APP_SHELL_VALIDATION_20261012.md)。已接入整个/app外框；下一块门户正文，再公司/研究/任务/报告/账户逐页，R1未完成/R2未启动。
+
 > 最新交接入口（2026-10-12）：[下一会话索引](../01_项目总览/NEXT_SESSION_START_20261012.md)、[SEC公司发现契约](R1_COMPANY_DISCOVERY_20261012.md)、[最新手验](R1_MANUAL_VALIDATION_20261012.md)及[定向审查闭环](R1_COMPANY_DISCOVERY_REVIEW_20261012.md)。Fiscal身份/概览已按严格clone流程替换通用目录布局，正式搜索为真实SEC目录；完整/app与选定来源剩余状态仍待。不是整商业页或P10验收完成。
 
 > 2026-10-12最终执行入口：[方案2最终定义、P10出口与网站后续路线](DEVELOPMENT_EXECUTION_OPTIONS_20261012.md)。用户已选择逐功能区同步交付，现有/app整站逐页重构；完整来源商业报告不再是R1前置，任务状态仍唯一维护[开发计划](../01_项目总览/DEVELOPMENT_PLAN.md)。
