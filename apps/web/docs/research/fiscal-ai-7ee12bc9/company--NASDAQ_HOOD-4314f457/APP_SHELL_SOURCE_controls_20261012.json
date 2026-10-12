@@ -1,0 +1,49 @@
+{
+  "burger": {
+    "after": {
+      "backgroundColor": "rgb(255, 255, 255)",
+      "border": "0px none rgb(255, 255, 255)",
+      "content": "\"\"",
+      "display": "block",
+      "height": "1.5px",
+      "left": "0px",
+      "position": "absolute",
+      "top": "6px",
+      "transform": "none",
+      "transition": "background-color 0.3s, transform 0.3s",
+      "width": "18px"
+    },
+    "base": {
+      "backgroundColor": "rgb(255, 255, 255)",
+      "border": "0px none rgb(255, 255, 255)",
+      "content": "normal",
+      "display": "block",
+      "height": "1.5px",
+      "left": "0px",
+      "position": "relative",
+      "top": "0px",
+      "transform": "none",
+      "transition": "background-color 0.3s, transform 0.3s",
+      "width": "18px"
+    },
+    "before": {
+      "backgroundColor": "rgb(255, 255, 255)",
+      "border": "0px none rgb(255, 255, 255)",
+      "content": "\"\"",
+      "display": "block",
+      "height": "1.5px",
+      "left": "0px",
+      "position": "absolute",
+      "top": "-6px",
+      "transform": "none",
+      "transition": "background-color 0.3s, transform 0.3s",
+      "width": "18px"
+    }
+  },
+  "keyboard": {
+    "closeButton": "closes source navigation; source close retains focus on hidden close button",
+    "mobileEscape": "does not close source navigation",
+    "slash": "opens dialog and focuses main-search-bar-modal"
+  },
+  "placeholderColor": "rgb(175, 175, 182)"
+}
