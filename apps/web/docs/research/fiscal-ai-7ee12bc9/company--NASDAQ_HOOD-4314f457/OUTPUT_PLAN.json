@@ -41,5 +41,9 @@
   "product_discovery_increment": "2026-10-12：自有SEC身份目录与内部落点已接线；用户再次要求严格clone工作流，原自有功能详情须先采样/spec/隔离builder/三尺寸QA再接源身份/概览区块；禁止用未采原创卡片称1:1。",
   "identity_comparison_route": "/labs/r1-fiscal-company-identity",
   "identity_product_route": "/app/companies/discovery/[cik]",
-  "identity_scope": "只复刻来源身份logo/名称/代码子块与Company Overview选定区块，来源样本用于独立比较；产品替换真实SEC字段/状态。报价/音频/收藏/财务及完整应用壳按各自规格后续完成，不冒称完整商业公司页。"
+  "identity_scope": "只复刻来源身份logo/名称/代码子块与Company Overview选定区块，来源样本用于独立比较；产品替换真实SEC字段/状态。报价/音频/收藏/财务及完整应用壳按各自规格后续完成，不冒称完整商业公司页。",
+  "search_clear_increment": "2026-10-12：SearchClearBar小规格/三尺寸实际来源/隔离builder/合并build后接正式SEC搜索，产品非空query显示是明确适配；普通源query无此按钮，来源参考模式保持原实现，47页模式未实现。清空重置query/page/keyboard/scroll和输入focus，不改变权限或请求代次。",
+  "search_clear_product_route": "/app/company-search",
+  "search_clear_spec": "components/SearchClearBar.spec.md",
+  "search_clear_validation": "../../../../../../docs/07_前端与部署/R1_SEARCH_CLEAR_VALIDATION_20261012.md"
 }

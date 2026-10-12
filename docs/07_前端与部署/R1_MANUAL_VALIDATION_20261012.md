@@ -1,5 +1,9 @@
 # R1 手动查看与验证 — 2026-10-12
 
+## 最新：正式搜索清空与焦点
+
+打开[正式公司搜索](http://127.0.0.1:3107/app/company-search)，输入AAPL；非空输入应出现“清空搜索”/Clear Search。用鼠标或聚焦后Enter/Space清空：输入变空、按钮消失、分页回首、焦点回输入，弹窗保持打开。在多结果查询A滚动后，清空条应固定在列表顶部；清空回顶。关闭或Escape后焦点回打开入口；切语言/重开保留未清空的query。旧响应不得恢复已清空的结果；认证失效仍须登录。49项前端测试和完整check通过，新增固定差异两轴0项；源站普通query没有该清空条，产品显示为明确适配。完整来源模式及R1未完成，详见[本轮验收](R1_SEARCH_CLEAR_VALIDATION_20261012.md)。
+
 ## 本轮真实搜索与自有公司落点
 
 用户再次要求严格clone流程后，公司身份/概览已按三尺寸采样→两个完整spec→隔离builder→逐次build→对照修正，替换最初的通用详情卡片。打开[原文区块对照](http://127.0.0.1:3107/labs/r1-fiscal-company-identity)可看同源字体、46px标识、概览展开和紧凑字段行。正式详情用同组件展示真实SEC字段；整页导航、图表和整个/app重构仍未完成，不能记为整页1:1。证据见[有界验收](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/COMPANY_IDENTITY_VALIDATION_20261012.md)。

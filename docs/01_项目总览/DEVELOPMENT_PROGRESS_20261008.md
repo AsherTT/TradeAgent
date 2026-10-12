@@ -1,5 +1,7 @@
 # 最新项目进展：方案 B 股票投研与后端补齐
 
+2026-10-12继续R1：`c89675f`完成真实SEC搜索清空装配，按clone三尺寸来源采样→spec→隔离builder→合并build→产品接线→中英/短窗口QA。清空恢复query/分页/键盘选择/滚动和输入focus，迟到普通响应不能恢复、迟到401仍失效；源普通query无Clear Search，产品非空显示明确登记为适配。45局部几何最大差异0.000016px、156选定CSS0差异，前端check/49项测试通过，新增固定差异Standards0/Spec0；没有重复全R1审查或无变化全后端测试。见[本轮验收](../07_前端与部署/R1_SEARCH_CLEAR_VALIDATION_20261012.md)。当前仍R1未完成，下一步继续选定搜索/Simply状态收尾，再/app应用壳与门户；R2未启动，模型/worker/beat仍关闭。
+
 2026-10-12会话交接整理：最新代码/验收检查点为`94181235a33c1fe635737a0f26806eb638e642c3`，已正常同步`origin/main`，[云端前后端检查成功](https://github.com/AsherTT/TradeAgent/actions/runs/38238128605)。本次交接只整理文档，已同步正式任务表BE-01/QA-01/LATER-03、整体/前端/后端补充架构和索引；不会因交接标为R1完成。下一会话从[入口索引](NEXT_SESSION_START_20261012.md)开始，按[唯一任务表的下一步](DEVELOPMENT_PLAN.md#下一会话交接检查点2026-10-12)继续选定来源状态收尾→/app应用壳与门户→整个现有网站逐页；R2仍未启动。临时builder工作树清理被自动审批拒绝，已保留，后续不应当作主维护入口。
 
 2026-10-12最新纠正：严格执行迁入主仓的clone工作流，来源三尺寸采样→两份完整spec→隔离builder→逐组件合并build→有界对照，Fiscal身份/概览替换了最初通用目录卡片。自有真实SEC字段、返回/语言/来源状态属于明确适配，不冒称完整来源页面。前端check/46项测试、后端497项及静态检查通过；固定增量审查Standards0、Spec1已修复关闭，未重复全R1 skill。见[验收证据](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/COMPANY_IDENTITY_VALIDATION_20261012.md)及[手验](../07_前端与部署/R1_MANUAL_VALIDATION_20261012.md)。仍R1未完成、R2未启动，下一步选定搜索/Simply状态收尾与整个/app逐页重构；下方通用功能页描述为纠正前检查点。

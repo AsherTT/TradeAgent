@@ -1,5 +1,11 @@
 # 已观察行为与待采状态
 
+## 2026-10-12续开发：选定清空条与产品适配
+
+真实源站普通AAPL查询无Clear Search，HOOD pages模式有；父条sticky/top0/z10/padding4px0/background28/28/33，高38px，button100×30，补采vertical-align:middle。三尺寸来源是打开后resize状态，不泛化为fresh-open弹窗布局。来源直接页面模式47项仍不在R1本增量。
+
+正式SEC搜索新增非空query清空入口（明确适配），源样本筛选模式不改。中英三尺寸bar/按钮大小与无横向溢出已验；鼠标/Enter/Space清空保持dialog、focus回输入；1280×720滚动720px后父条保持结果viewport顶部，清空scrollTop回0。普通迟到结果拒绝、迟到401仍失效。证据为同目录CLEAR_ASSEMBLY_*及components/SearchClearBar.spec.md，产品功能不等同原站所有模式。
+
 ## 2026-10-12 公司身份/概览选定区块
 
 重新采集来源三尺寸默认态、概览描述展开态；真实指针移至控制：hover下划线；Tab到网站链接、Shift+Tab回展开控制：focus-visible描边1.6px rgb(94,94,116)/offset1.6px。描述默认60px、展开随内容宽度，源声明max-height200ms transition；其余选定身份logo/name/market静态，不滚动切换。公司其他报价/收藏/音频/整页章节不在此次选定范围。完整小spec、builder与有界QA见[本轮验收](COMPANY_IDENTITY_VALIDATION_20261012.md)，下表是早前更宽范围的采样缺口，未因此全部关闭。

@@ -2,6 +2,8 @@
 
 ## 最新实施状态（2026-10-12，Asia/Shanghai）
 
+R1续增量 `c89675f`：正式SEC搜索复用来源清空按钮及新sticky父条，非空query显示属于产品适配，清空同时重置分页/键盘选择/滚动并恢复输入focus；请求代次与401失效规则保持。来源样本模式不改，47页模式未实现。来源三尺寸小spec/隔离builder/合并build及产品中英QA闭环见[本轮验收](R1_SEARCH_CLEAR_VALIDATION_20261012.md)。此增量仅FE-02选定状态，整个/app应用壳与门户仍待冻结来源规格，不宣布R1完成。
+
 交接检查点：`9418123`已推送且云端前后端通过。初始通用目录详情布局已纠正：按迁入主仓的clone-website完整工作流，来源三尺寸采样→两份spec→隔离builder→逐次build→对照，用`FiscalCompanyIdentity`/`FiscalCompanyProfile`接实际SEC身份及来源字段。原文比较在`/labs/r1-fiscal-company-identity`，不是实时产品数据；正式返回/语言/覆盖提示属于明确产品适配。selected区块有界验收不覆盖整个公司页或/app，见[证据](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/COMPANY_IDENTITY_VALIDATION_20261012.md)。后续执行入口见[交接索引](../01_项目总览/NEXT_SESSION_START_20261012.md)。
 
 本轮真实搜索增量已落地：`/app/company-search`复用来源搜索父框/输入/结果行，通过认证BFF查询SEC发行人代码目录；已收录的唯一有效代码/交易所匹配进入现有公司页，候选进入`/app/companies/discovery/{cik}?symbol=...&exchange=...`。目录详情为身份功能页，尚不是完整来源公司业务页。`/labs/r1-fiscal-search`默认真实目录，关闭后可切到独立源站样本对照；产品模式替换源站全球/类别/页面提示。后端仅缓存公共身份快照，无研究安全主数据写入；全网站视觉重构继续待。契约见[R1公司发现方案](R1_COMPANY_DISCOVERY_20261012.md)。后文未接线表述以本轮范围为准，其余缺口保留。
