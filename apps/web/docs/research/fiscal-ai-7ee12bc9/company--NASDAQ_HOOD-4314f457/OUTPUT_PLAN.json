@@ -26,7 +26,7 @@
   ],
   "authorization": "用户已确定方案B与跨来源组合应用，继续门户重构；保留已认可首页，允许实测后适配/app，现有账户/研究契约保持。",
   "foundation": "Fiscal独立作用域CSS/字体，不修改全局Simply基础。",
-  "state_policy": "本轮先完成可充分采样的小组件；完整来源页未完成不装配或宣布源页面完成。源路径保留；完整功能接入/app需参考和接入后对照。",
+  "state_policy": "2026-10-12用户确定执行方案2：来源验收按选定区块/状态，随后逐页接/app；完整商业公司页、全球/47页搜索不是R1前置。源路径保留为对应完整来源页未来输出，不以局部区块宣布源整页完成；产品接线后仍需对照与实际契约验收。",
   "foundation_files": [
     "src/components/sites/fiscal-ai-7ee12bc9/shared/fonts.ts",
     "src/components/sites/fiscal-ai-7ee12bc9/shared/foundation.module.css",

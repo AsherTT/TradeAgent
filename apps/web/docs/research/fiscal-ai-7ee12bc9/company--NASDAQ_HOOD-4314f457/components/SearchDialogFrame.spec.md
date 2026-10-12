@@ -30,3 +30,11 @@ focus-visible ring1.6px solid94/94/116 offset1.6、native active translateY1 源
 最小语义适配记录：给原无标签close增加t("Close search")，不会增加source界面新文案。
 typecheck通过，commit中文 feat: 还原Fiscal搜索弹窗父布局；只两文件，别加入临时foundation。
 完整来源搜索allstates尚未完成，这是一份完整有界父布局spec，后续父采边界后纠偏。
+
+## 2026-10-12方案2短窗口收尾规格
+
+实测1280×720 fresh-open来源v6.0.2，证据search-short-source-1280x720-20261012.json及同名截图。来源.modal为overflow:auto、scrollbar-width:thin，color-scheme:dark（由来源html继承），scrollbar-color:auto；原生滚动允许内容662px在648px/90dvh视口内访问。不得用overflow:hidden或scrollbar-width:none掩盖这段溢出，也不在全局改Simply基础。
+
+纠偏只在现有.modal作用域加color-scheme:dark和scrollbar-width:thin。该窗口modal rect x140/y36/1000×648，clientWidth990（实际body989.6）、scrollHeight662；输入x157/y91/955.6×42，Card x157/y163/955.6×468，close x1078.6/y53/34×34。相对原auto scrollbar的985px客户宽度，应恢复来源宽度。原生滚动外观按同一浏览器环境截图比较，默认scrollbar-color不猜自定义token。
+
+主代理负责现有父壳两属性纠偏及实际本地1280×720对照，验证键盘关闭/重开、宽度和中英布局；1440/768/390复验此作用域改动无几何回归。这里不实现自定义结果scrollbar或新增页面搜索，不把局部状态判作R1/搜索全产品完成。沿用R1原增量审查，不重启阶段skill。

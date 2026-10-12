@@ -1,0 +1,30 @@
+[
+  {
+    "case": "native outer scroll remains available",
+    "clientHeight": 648,
+    "dialogBottom": 684,
+    "footerBottom": 670.5999889373779,
+    "scrollHeight": 662,
+    "scrollTop": 0
+  },
+  {
+    "case": "Escape restores launch focus",
+    "bodyOverflow": "",
+    "dialog": false,
+    "focus": "Open search"
+  },
+  {
+    "case": "Chinese query and disclosure after reopen",
+    "expanded": "true",
+    "rows": 37
+  },
+  {
+    "case": "English1280x720 PageDown scroll",
+    "scrollRange": 14,
+    "scrollTop": 13.600000381469728,
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  }
+]
