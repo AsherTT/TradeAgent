@@ -1,0 +1,122 @@
+{
+  "scroll": [
+    {
+      "class": "m_c0783ff9 mantine-ScrollArea-viewport",
+      "rect": {
+        "bottom": 127.60000228881836,
+        "height": 53.60000228881836,
+        "left": 16,
+        "right": 374.3999938964844,
+        "top": 74,
+        "width": 358.3999938964844,
+        "x": 16,
+        "y": 74
+      },
+      "scrollWidth": 387,
+      "width": 358
+    },
+    {
+      "class": "mrt-table-container MRT_TableContainer-module_root__JIsGB MRT_TableContainer-module_root-sticky__uC4qx",
+      "rect": {
+        "bottom": 735.7999877929688,
+        "height": 299.3999938964844,
+        "left": 12,
+        "right": 378.3999938964844,
+        "top": 436.3999938964844,
+        "width": 366.3999938964844,
+        "x": 12,
+        "y": 436.3999938964844
+      },
+      "scrollWidth": 787,
+      "width": 366
+    }
+  ],
+  "tickerCell": {
+    "bottom": 573.5999870300293,
+    "height": 44.79999923706055,
+    "left": 12.40000057220459,
+    "right": 121.4875020980835,
+    "top": 528.7999877929688,
+    "width": 109.0875015258789,
+    "x": 12.40000057220459,
+    "y": 528.7999877929688
+  },
+  "tickerMobile": [
+    {
+      "rect": {
+        "bottom": 0,
+        "height": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "styles": {
+        "color": "rgb(255, 255, 255)",
+        "display": "flow-root",
+        "fontSize": "12px",
+        "lineHeight": "18.6px"
+      },
+      "text": "NVIDIA Corporation"
+    },
+    {
+      "rect": {
+        "bottom": 551.800012588501,
+        "height": 18.600000381469727,
+        "left": 52.79999923706055,
+        "right": 115.0875015258789,
+        "top": 533.2000122070312,
+        "width": 62.28750228881836,
+        "x": 52.79999923706055,
+        "y": 533.2000122070312
+      },
+      "styles": {
+        "color": "rgb(255, 255, 255)",
+        "display": "block",
+        "fontSize": "12px",
+        "lineHeight": "18.6px"
+      },
+      "text": "NVDA"
+    },
+    {
+      "rect": {
+        "bottom": 0,
+        "height": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "styles": {
+        "color": "rgb(255, 255, 255)",
+        "display": "none",
+        "fontSize": "12px",
+        "lineHeight": "17.4px"
+      },
+      "text": "NasdaqGS:NVDA"
+    },
+    {
+      "rect": {
+        "bottom": 569.199987411499,
+        "height": 17.399999618530273,
+        "left": 52.79999923706055,
+        "right": 115.0875015258789,
+        "top": 551.7999877929688,
+        "width": 62.28750228881836,
+        "x": 52.79999923706055,
+        "y": 551.7999877929688
+      },
+      "styles": {
+        "color": "rgb(255, 255, 255)",
+        "display": "block",
+        "fontSize": "12px",
+        "lineHeight": "17.4px"
+      },
+      "text": "NasdaqGS"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "dialogs": 0,
+  "tabs": [
+    {
+      "hover": false,
+      "label": "Summary",
+      "selected": "true",
+      "styles": {
+        "backgroundColor": "rgb(64, 64, 79)",
+        "color": "rgb(255, 255, 255)",
+        "fontWeight": "500",
+        "outline": "rgb(255, 255, 255) none 2.4px",
+        "outlineOffset": "0px",
+        "transition": "all"
+      }
+    },
+    {
+      "hover": true,
+      "label": "Performance",
+      "selected": "false",
+      "styles": {
+        "backgroundColor": "rgb(44, 44, 53)",
+        "color": "rgb(255, 255, 255)",
+        "fontWeight": "400",
+        "outline": "rgb(255, 255, 255) none 2.4px",
+        "outlineOffset": "0px",
+        "transition": "all"
+      }
+    },
+    {
+      "hover": false,
+      "label": "News",
+      "selected": "false",
+      "styles": {
+        "backgroundColor": "rgb(44, 44, 53)",
+        "color": "rgb(255, 255, 255)",
+        "fontWeight": "400",
+        "outline": "rgb(255, 255, 255) none 2.4px",
+        "outlineOffset": "0px",
+        "transition": "all"
+      }
+    },
+    {
+      "hover": false,
+      "label": "Markets",
+      "selected": "false",
+      "styles": {
+        "backgroundColor": "rgb(44, 44, 53)",
+        "color": "rgb(255, 255, 255)",
+        "fontWeight": "400",
+        "outline": "rgb(255, 255, 255) none 2.4px",
+        "outlineOffset": "0px",
+        "transition": "all"
+      }
+    }
+  ]
+}
