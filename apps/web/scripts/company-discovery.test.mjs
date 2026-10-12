@@ -148,3 +148,89 @@ test("empty-query Tab clears the main keyboard choice; ArrowUp selects the last 
   await flush(() => key("Enter"));
   assert.deepEqual(ui.navigations, [`/app/companies/${id}`]);
 });
+
+test("clearing a paged search resets the directory and rejects the previous page response", async (t) => {
+  const previousPage = deferred();
+  const clearedPage = deferred();
+  const urls = [];
+  let emptyRequests = 0;
+  const ui = await mount(t, CompanyDiscoverySearch, {}, async (url) => {
+    const params = new URL(String(url), "http://localhost").searchParams;
+    urls.push({ query: params.get("query"), offset: params.get("offset") });
+    if (!params.get("query")) return ++emptyRequests === 1 ? Response.json(page) : clearedPage.promise;
+    if (params.get("offset") === "20") return previousPage.promise;
+    return Response.json({ ...page, total: 40 });
+  });
+  await settle();
+  assert.equal([...ui.document.querySelectorAll("button")].some((node) => node.textContent === "Clear Search"), false);
+  await ui.fill("input[type=search]", "AAPL");
+  await settle();
+  await ui.click("Next");
+  await settle();
+  await ui.click("Clear Search");
+  const input = ui.document.querySelector("input[type=search]");
+  assert.equal(input.value, "");
+  assert.equal(ui.document.activeElement, input);
+  assert.doesNotMatch(ui.text(), /Apple Inc\./);
+  await flush(() => input.dispatchEvent(new ui.document.defaultView.KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true })));
+  assert.deepEqual(ui.navigations, []);
+  await settle();
+  assert.deepEqual(urls.at(-1), { query: "", offset: "0" });
+  await flush(() => previousPage.resolve(Response.json({ ...page, items: [{ ...items[0], name: "Old page company" }], offset: 20, total: 40 })));
+  assert.doesNotMatch(ui.text(), /Old page company/);
+  await flush(() => clearedPage.resolve(Response.json(page)));
+  assert.match(ui.text(), /Apple Inc\./);
+  assert.ok(ui.document.querySelector('[role="dialog"]'));
+});
+
+test("localized clear stays usable on a failed search without reviving an expired session", async (t) => {
+  const oldRequest = deferred();
+  const ui = await mount(t, CompanyDiscoverySearch, {}, async (url) => {
+    if (String(url).includes("query=AAPL")) return oldRequest.promise;
+    return Response.json(page);
+  }, "zh");
+  await settle();
+  await ui.fill("input[type=search]", "AAPL");
+  await settle();
+  await ui.click("清空搜索");
+  await settle();
+  assert.match(ui.text(), /Apple Inc\./);
+  await flush(() => oldRequest.resolve(Response.json({ detail: "authentication_required" }, { status: 401 })));
+  assert.match(ui.text(), /请登录后查询/);
+  assert.doesNotMatch(ui.text(), /Apple Inc\./);
+  await ui.fill("input[type=search]", "MSFT");
+  await ui.click("清空搜索");
+  await settle();
+  assert.equal(ui.document.querySelector("input[type=search]").value, "");
+  assert.equal(ui.document.activeElement, ui.document.querySelector("input[type=search]"));
+  assert.match(ui.text(), /请登录后查询/);
+  assert.deepEqual(ui.navigations, []);
+});
+
+test("closing and reopening preserves query, restores focus and contains Tab around enabled controls", async (t) => {
+  const ui = await mount(t, CompanyDiscoverySearch, {}, async () => Response.json({ ...page, total: 40 }));
+  await settle();
+  await ui.fill("input[type=search]", "AAPL");
+  await settle();
+  const close = ui.document.querySelector('button[aria-label="Close search"]');
+  const next = [...ui.document.querySelectorAll("button")].find((node) => node.textContent === "Next");
+  close.focus();
+  const backward = new ui.document.defaultView.KeyboardEvent("keydown", { key: "Tab", shiftKey: true, bubbles: true, cancelable: true });
+  await flush(() => close.dispatchEvent(backward));
+  assert.equal(backward.defaultPrevented, true);
+  assert.equal(ui.document.activeElement, next);
+  const forward = new ui.document.defaultView.KeyboardEvent("keydown", { key: "Tab", bubbles: true, cancelable: true });
+  await flush(() => next.dispatchEvent(forward));
+  assert.equal(ui.document.activeElement, close);
+  assert.equal(ui.document.body.style.overflow, "hidden");
+  await flush(() => close.dispatchEvent(new ui.document.defaultView.KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true })));
+  assert.equal(ui.document.querySelector('[role="dialog"]'), null);
+  assert.equal(ui.document.body.style.overflow, "");
+  assert.equal(ui.document.activeElement.textContent, "Open search");
+  await ui.click("Open search");
+  const input = ui.document.querySelector("input[type=search]");
+  assert.equal(input.value, "AAPL");
+  assert.equal(ui.document.activeElement, input);
+  assert.equal(ui.document.body.style.overflow, "hidden");
+  await settle();
+});

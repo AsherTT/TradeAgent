@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { SearchDialogFrame } from "@/components/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SearchDialogFrame";
 import { SearchInputBar } from "@/components/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SearchInputBar";
+import { SearchClearBar } from "@/components/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SearchClearBar";
 import { SearchCategoryBar } from "@/components/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SearchCategoryBar";
 import { SearchEmptyMessage } from "@/components/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SearchEmptyMessage";
 import { SearchGuidance } from "@/components/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SearchGuidance";
@@ -27,6 +28,7 @@ export function CompanyDiscoverySearch({ referenceControl }: { referenceControl?
   const inputRef = useRef<HTMLInputElement>(null);
   const launchRef = useRef<HTMLButtonElement>(null);
   const regionRef = useRef<HTMLDivElement>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
   const params = new URLSearchParams({ query, limit: "20", offset: String(offset) });
   const { data, error, pending } = useCompanyDiscovery<DiscoveryPage>(`company-discovery?${params}`, open, revision);
   const results = data?.items ?? [];
@@ -36,6 +38,14 @@ export function CompanyDiscoverySearch({ referenceControl }: { referenceControl?
     if (open) inputRef.current?.focus();
     else launchRef.current?.focus();
   }, [open]);
+
+  function clearSearch() {
+    setQuery("");
+    setOffset(0);
+    setActiveIndex(0);
+    if (resultsRef.current) resultsRef.current.scrollTop = 0;
+    inputRef.current?.focus({ preventScroll: true });
+  }
   useEffect(() => {
     if (!open) return;
     const previous = document.body.style.overflow;
@@ -99,7 +109,8 @@ export function CompanyDiscoverySearch({ referenceControl }: { referenceControl?
         <div className={panel.card}>
           <SearchCategoryBar category="company" options={[{ value: "company", label: zh ? "SEC 公司目录" : "SEC directory" }]} onCategoryChange={() => { setActiveIndex(0); inputRef.current?.focus(); }} />
           <div className={panel.divider} />
-          <div className={panel.scroll} id="fiscal-search-results" role="region" aria-label={t("Search results")} aria-busy={pending}>
+          <div ref={resultsRef} className={panel.scroll} id="fiscal-search-results" role="region" aria-label={t("Search results")} aria-busy={pending}>
+            {query.length > 0 && <SearchClearBar onClear={clearSearch} label={zh ? "清空搜索" : "Clear Search"} />}
             {pending ? <SearchEmptyMessage message={zh ? "正在查询公司目录…" : "Searching the company directory…"} />
               : error ? <><div role="alert"><SearchEmptyMessage message={failure} /></div><div className={styles.actions}>{error === "session_required" ? <Link className={styles.action} href="/login">{zh ? "登录" : "Sign in"}</Link> : <button type="button" className={styles.action} onClick={() => setRevision((value) => value + 1)}>{zh ? "重试" : "Retry"}</button>}</div></>
                 : results.length ? results.map((company, index) => {

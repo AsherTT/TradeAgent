@@ -16,7 +16,7 @@
 - bar：display block，position sticky，top 0px，z-index 10；background rgb(28,28,33)。
 - padding 4px 0，margin 0，box-sizing border-box，font-family var(--font-fiscal-jakarta),sans-serif。
 - font-size 16px，line-height 24.8px，font-weight 400，color white；自然宽度，高度38px。
-- button：宽100px/高30px，完全复用既有 SearchClearButton CSS。
+- button：宽100px/高30px，复用既有 SearchClearButton CSS；父条内局部 `vertical-align: middle`。2026-10-12 mobile原DOM补采确认这一属性，消除浏览器默认baseline额外空间；不修改原按钮CSS。
 - desktop bar966px，tablet657.2px，mobile317.375px；以上是同一来源弹窗 resize 后的实际结果，不硬编码父宽、不称 fresh-open 弹窗布局通过。
 - button与bar左边界一致，top相差4px；inner与label相对矩形复用已验收spec。
 
