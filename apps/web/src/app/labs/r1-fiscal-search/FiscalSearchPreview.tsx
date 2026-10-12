@@ -12,9 +12,17 @@ import { defaultSearchResults } from "@/components/sites/fiscal-ai-7ee12bc9/comp
 import { referenceListings } from "@/components/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/search-listing-data";
 import type { SearchCategory, SearchResult } from "@/components/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/search-types";
 import { LanguageSwitcher, useLanguage } from "@/components/sites/simplywall-st-1b042a47/shared/i18n/LanguageProvider";
-import styles from "./FiscalSearchPreview.module.css";
+import styles from "@/components/sites/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SearchResultsPanel.module.css";
+import { CompanyDiscoverySearch } from "@/components/workspace/CompanyDiscoverySearch";
 
 export function FiscalSearchPreview() {
+  const { locale } = useLanguage();
+  const [reference, setReference] = useState(false);
+  return reference ? <FiscalReferenceSearchPreview onProductMode={() => setReference(false)} />
+    : <CompanyDiscoverySearch referenceControl={<button type="button" className="mt-4 cursor-pointer underline" onClick={() => setReference(true)}>{locale === "zh" ? "切换到源站样本对照" : "Switch to source sample comparison"}</button>} />;
+}
+
+function FiscalReferenceSearchPreview({ onProductMode }: { onProductMode: () => void }) {
   const { t } = useLanguage();
   const [open, setOpen] = useState(true);
   const [query, setQuery] = useState("");
@@ -113,6 +121,7 @@ export function FiscalSearchPreview() {
         <p className="mt-2 max-w-3xl text-sm leading-6 text-white/70">
           {t("Close the dialog to change language. Your query and category are preserved when you reopen it. The source page-navigation tip is retained for comparison; page search is not connected yet.")}
         </p>
+        <button type="button" className="mt-4 cursor-pointer underline" onClick={onProductMode}>{t("Research workspace")} · SEC</button>
         <button ref={launchRef} type="button" onClick={() => setOpen(true)} className="mt-5 cursor-pointer rounded-full border border-white/40 px-5 py-2 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2">
           {t("Open search")}
         </button>

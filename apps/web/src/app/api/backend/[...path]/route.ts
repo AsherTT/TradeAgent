@@ -29,14 +29,17 @@ const exactRoutes: Record<string, string[]> = {
   "auth/logout": ["POST"], "auth/me": ["GET"],
   "workspace/research": ["GET", "POST"], "workspace/research/options": ["GET"],
   "workspace/companies": ["GET"], "workspace/watchlist": ["GET"], "workspace/portal": ["GET"],
+  "workspace/company-discovery": ["GET"],
 };
 
 async function proxy(request: Request, context: { params: Promise<{ path: string[] }> }) {
   const path = (await context.params).path.join("/");
   const researchRoute = /^workspace\/research\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(?:\/(report|cancel))?$/i.exec(path);
   const companyRoute = /^workspace\/companies\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(path);
+  const discoveryDetail = /^workspace\/company-discovery\/[0-9]{1,10}$/.test(path);
+  const discoveryRoute = path === "workspace/company-discovery" || discoveryDetail;
   const methods = exactRoutes[path] ?? (
-    companyRoute ? ["GET"] : /^workspace\/watchlist\/[0-9a-f-]{36}$/i.test(path) ? ["POST", "DELETE"] : []
+    companyRoute || discoveryDetail ? ["GET"] : /^workspace\/watchlist\/[0-9a-f-]{36}$/i.test(path) ? ["POST", "DELETE"] : []
   );
   if (researchRoute) methods.push(researchRoute[1] === "cancel" ? "POST" : "GET");
   if (!methods.includes(request.method)) return jsonResponse({ detail: "not_found" }, { status: 404 });
@@ -76,6 +79,13 @@ async function proxy(request: Request, context: { params: Promise<{ path: string
       const query = new URL(request.url).searchParams.get("query");
       if (query !== null) target.searchParams.set("query", query);
     }
+    if (discoveryRoute) {
+      const params = new URL(request.url).searchParams;
+      for (const key of discoveryDetail ? ["symbol", "exchange"] : ["query", "limit", "offset"]) {
+        const value = params.get(key);
+        if (value !== null) target.searchParams.set(key, value);
+      }
+    }
     if (path === "workspace/portal" || companyRoute) {
       const params = new URL(request.url).searchParams;
       const keys = path === "workspace/portal" ? ["limit", "watchlist_offset", "research_offset"] : ["limit", "research_offset"];
@@ -89,6 +99,12 @@ async function proxy(request: Request, context: { params: Promise<{ path: string
       signal: AbortSignal.timeout(10000), redirect: "error",
     });
     if (upstream.status >= 500) {
+      if (discoveryRoute && upstream.status === 503) {
+        const detail = (await upstream.json().catch(() => null))?.detail;
+        if (detail === "directory_not_configured" || detail === "directory_unavailable") {
+          return jsonResponse({ detail }, { status: 503 });
+        }
+      }
       return jsonResponse({ detail: "backend_unavailable" }, { status: 503, headers: { "Cache-Control": "no-store" } });
     }
     const resultHeaders = new Headers({ "Cache-Control": "no-store" });

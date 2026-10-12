@@ -13,13 +13,15 @@ interface SearchResultRowProps {
   showInvestorType: boolean;
   onSelect: (event: MouseEvent<HTMLAnchorElement>) => void;
   id: string;
+  navigationHref?: string;
+  logoText?: string;
   listings?: readonly SearchListing[];
   expanded?: boolean;
   onToggleListings?: () => void;
   onListingSelect?: (listing: SearchListing, event: MouseEvent<HTMLAnchorElement>) => void;
 }
 
-export function SearchResultRow({ result, active, showInvestorType, onSelect, id, listings = [], expanded = false, onToggleListings, onListingSelect }: SearchResultRowProps) {
+export function SearchResultRow({ result, active, showInvestorType, onSelect, id, navigationHref, logoText, listings = [], expanded = false, onToggleListings, onListingSelect }: SearchResultRowProps) {
   const { t } = useLanguage();
   const investor = result.kind === "investor";
   const market = result.market?.replace("(Equity)", t("(Equity)"))
@@ -35,7 +37,7 @@ export function SearchResultRow({ result, active, showInvestorType, onSelect, id
       >
         <a
           id={id}
-          href={`https://fiscal.ai${result.href}`}
+          href={navigationHref ?? `https://fiscal.ai${result.href}`}
           className={styles.primaryLink}
           onClick={onSelect}
         >
@@ -65,6 +67,7 @@ export function SearchResultRow({ result, active, showInvestorType, onSelect, id
                           <div className={styles.logoOuter}>
                             <span className={styles.logoInner}>
                               {result.logo && <img className={styles.logoImage} src={result.logo} alt={`${result.name} Website`} width={28} height={28} />}
+                              {!result.logo && logoText && <span aria-hidden="true">{logoText}</span>}
                             </span>
                           </div>
                           <div className={styles.nameStack}>

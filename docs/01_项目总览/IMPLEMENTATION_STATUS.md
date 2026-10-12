@@ -2,6 +2,8 @@
 
 Last updated: 2026-10-12 (Asia/Shanghai)
 
+当前实际增量：SEC真实身份目录搜索（本地实测10,445条）、认证API/BFF、缓存/退避、精确证券匹配与自有目录详情已接线；`/app/company-search`与工作台入口可用，lab默认真实目录，源站样本改为独立对照模式。不写入instrument/SymbolHistory，没有数据库迁移，不授予研究资格。浏览器验证AAPL真实查询与点击自有详情。当前仍P10/R1，R2未启动；完整公司业务页与整个/app视觉重构待。见[契约与验收边界](../07_前端与部署/R1_COMPANY_DISCOVERY_20261012.md)和[手验](../07_前端与部署/R1_MANUAL_VALIDATION_20261012.md)。下方为较早检查点。
+
 ## 当前执行约束：方案2最终定义
 
 本轮实际代码增量为搜索modal深色薄滚动条纠偏：1280×720的四节点16几何值与来源0差异，其他三尺寸无几何回归，check及两属性定向复核通过。开发前端和Docker三服务已恢复，数据库仍0016，模型False、worker/beat关闭。记录见[短窗口验收](../../apps/web/docs/research/fiscal-ai-7ee12bc9/company--NASDAQ_HOOD-4314f457/SHORT_WINDOW_VALIDATION_20261012.md)；选定区块与整个/app仍未完成。

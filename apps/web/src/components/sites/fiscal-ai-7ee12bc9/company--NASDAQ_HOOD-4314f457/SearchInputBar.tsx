@@ -9,9 +9,11 @@ interface SearchInputBarProps {
   onQueryChange: (query: string) => void;
   onKeyDown: KeyboardEventHandler<HTMLInputElement>;
   inputRef: RefObject<HTMLInputElement | null>;
+  placeholder?: string;
+  maxLength?: number;
 }
 
-export function SearchInputBar({ query, onQueryChange, onKeyDown, inputRef }: SearchInputBarProps) {
+export function SearchInputBar({ query, onQueryChange, onKeyDown, inputRef, placeholder, maxLength = 512 }: SearchInputBarProps) {
   const { t } = useLanguage();
   const showHint = query.length === 0;
 
@@ -29,13 +31,13 @@ export function SearchInputBar({ query, onQueryChange, onKeyDown, inputRef }: Se
           id="main-search-bar-modal"
           className={`${styles.input} ${showHint ? styles.withHint : ""}`}
           type="search"
-          maxLength={512}
+          maxLength={maxLength}
           spellCheck={false}
           autoComplete="off"
           autoCapitalize="off"
           autoCorrect="off"
           enterKeyHint="go"
-          placeholder={t("Search 50,000+ companies")}
+          placeholder={placeholder ?? t("Search 50,000+ companies")}
           aria-label={t("Search")}
           aria-controls="fiscal-search-results"
           aria-describedby="fiscal-search-keyboard-help"

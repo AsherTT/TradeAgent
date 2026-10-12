@@ -26,6 +26,10 @@
   padding: 0 8px;
 }
 
+.card * {
+  border: 0 none currentColor;
+}
+
 .identity {
   display: flex;
   flex-direction: row;
@@ -58,6 +62,7 @@
 }
 
 .logoImage {
+  color: transparent;
   display: inline;
   width: 46px;
   height: 46px;

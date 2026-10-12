@@ -212,6 +212,9 @@ export function Workspace({
           )}
         </div>
         <div className="flex gap-3">
+          <Link href="/app/company-search" className="rounded-md border border-[#c9c4b7] px-4 py-2 text-xs">
+            {zh ? "搜索更多公司" : "Find more companies"}
+          </Link>
           <button
             className="cursor-pointer rounded-md border border-[#c9c4b7] px-4 py-2 text-xs"
             disabled={saving !== null}

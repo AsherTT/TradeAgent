@@ -108,6 +108,34 @@ test("company search forwards its query without unrelated browser parameters", a
   assert.equal(target.search, "?query=KLAC");
 });
 
+test("company discovery only exposes bounded GET routes and their own query parameters", async () => {
+  const targets = [];
+  const routes = handler(async (url) => { targets.push(url); return Response.json({}); });
+  const paths = ["workspace/company-discovery", "workspace/company-discovery/0000320193"];
+  for (const path of paths) {
+    const response = await routes.GET(new Request(`http://localhost:3107/api/backend/${path}?query=apple&limit=20&offset=0&symbol=AAPL&exchange=NASDAQ&url=https://private.example&user_id=private`), context(path));
+    assert.equal(response.status, 200);
+    const target = targets.at(-1);
+    assert.equal(target.searchParams.has("url"), false);
+    assert.equal(target.searchParams.has("user_id"), false);
+    assert.equal(target.searchParams.get("query"), path === paths[0] ? "apple" : null);
+    assert.equal(target.searchParams.get("symbol"), path === paths[1] ? "AAPL" : null);
+    assert.equal((await routes.POST(loginRequest(), context(path))).status, 404);
+  }
+  for (const path of ["workspace/company-discovery/not-cik", "workspace/company-discovery/12345678901", "workspace/company-discovery/0000320193/import"]) {
+    assert.equal((await routes.GET(new Request("http://localhost:3107/"), context(path))).status, 404);
+  }
+});
+
+test("directory safe unavailable codes survive proxying without revealing arbitrary upstream errors", async () => {
+  for (const detail of ["directory_not_configured", "directory_unavailable", "private infrastructure detail"]) {
+    const routes = handler(async () => Response.json({ detail }, { status: 503 }));
+    const response = await routes.GET(new Request("http://localhost:3107/"), context("workspace/company-discovery"));
+    assert.equal(response.status, 503);
+    assert.deepEqual(await response.json(), { detail: detail.startsWith("directory_") ? detail : "backend_unavailable" });
+  }
+});
+
 test("portal and company detail expose only GET with their bounded query parameter names", async () => {
   const targets = [];
   const routes = handler(async (url) => { targets.push(url); return Response.json({}); });

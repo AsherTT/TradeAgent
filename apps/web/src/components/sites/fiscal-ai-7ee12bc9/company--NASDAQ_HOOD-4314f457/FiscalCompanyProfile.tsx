@@ -55,7 +55,7 @@ export function FiscalCompanyProfile({ title, description, fields }: FiscalCompa
                   {t(expanded ? "Hide" : "Show more")}
                 </button>
               )}
-              <div id={contentId} className={styles.content} data-expanded={expanded ? "true" : undefined}>
+              <div id={contentId} role="region" aria-label={title} className={styles.content} data-expanded={expanded ? "true" : undefined}>
                 <div className={styles.paragraphWrapper}>
                   <p ref={paragraphRef} className={styles.description}>{description}</p>
                 </div>
@@ -92,8 +92,8 @@ export function FiscalCompanyProfile({ title, description, fields }: FiscalCompa
                           <p className={styles.fieldValue}>{field.value}</p>
                         )}
                       </div>
+                      <div className={styles.divider} />
                     </span>
-                    <div className={styles.divider} />
                   </div>
                 </li>
               ))}

@@ -1,5 +1,9 @@
 # 已观察行为与待采状态
 
+## 2026-10-12 公司身份/概览选定区块
+
+重新采集来源三尺寸默认态、概览描述展开态；真实指针移至控制：hover下划线；Tab到网站链接、Shift+Tab回展开控制：focus-visible描边1.6px rgb(94,94,116)/offset1.6px。描述默认60px、展开随内容宽度，源声明max-height200ms transition；其余选定身份logo/name/market静态，不滚动切换。公司其他报价/收藏/音频/整页章节不在此次选定范围。完整小spec、builder与有界QA见[本轮验收](COMPANY_IDENTITY_VALIDATION_20261012.md)，下表是早前更宽范围的采样缺口，未因此全部关闭。
+
 | 行为 | 证据 | 状态 |
 | --- | --- | --- |
 | 手机 burger 开 / close 关 | 页面操作后 DOM、矩形、样式和展开图 | 两端已采；动画、Escape、焦点回归未采 |

@@ -37,5 +37,9 @@
   "development_preview_route": "/labs/r1-fiscal-search",
   "development_preview_route_file": "src/app/labs/r1-fiscal-search/page.tsx",
   "development_preview_scope": "2026-10-12：来源搜索弹窗、输入、分类、30条默认参考结果、九公司331上市地点及21真实国旗，有界筛选/展开/键盘选择；全球数据、47页模式、自定义scrollbar全状态及整公司页待。命名结果region/原生链接/独立disclosure/读屏播报为可访问性适配。",
-  "corrective_increment": "用户认为孤立验证页廉价；依clone技能在apps/web采样、完整小spec、复用隔离builder、合并后真实三尺寸父布局对照；不扩大为整页1:1验收。"
+  "corrective_increment": "用户认为孤立验证页廉价；依clone技能在apps/web采样、完整小spec、复用隔离builder、合并后真实三尺寸父布局对照；不扩大为整页1:1验收。",
+  "product_discovery_increment": "2026-10-12：自有SEC身份目录与内部落点已接线；用户再次要求严格clone工作流，原自有功能详情须先采样/spec/隔离builder/三尺寸QA再接源身份/概览区块；禁止用未采原创卡片称1:1。",
+  "identity_comparison_route": "/labs/r1-fiscal-company-identity",
+  "identity_product_route": "/app/companies/discovery/[cik]",
+  "identity_scope": "只复刻来源身份logo/名称/代码子块与Company Overview选定区块，来源样本用于独立比较；产品替换真实SEC字段/状态。报价/音频/收藏/财务及完整应用壳按各自规格后续完成，不冒称完整商业公司页。"
 }

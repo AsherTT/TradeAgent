@@ -1,4 +1,5 @@
 .card {
+  /* Shared captured geometry for reference data and the product directory adapter. */
   display: flex;
   flex-direction: column;
   box-sizing: border-box;

@@ -1,0 +1,66 @@
+{
+  "scope": "Same-text selected identity nodes and Overview internal tree; excludes full-page placement and omitted actions/quote siblings. Font alias and internal intrinsic sizing implementation are documented separately.",
+  "css_properties": [
+    "fontSize",
+    "fontWeight",
+    "lineHeight",
+    "color",
+    "padding",
+    "margin",
+    "display",
+    "flexDirection",
+    "gap",
+    "borderRadius",
+    "border",
+    "overflow",
+    "position"
+  ],
+  "results": [
+    {
+      "size": "desktop",
+      "css_checks": 697,
+      "geometry_checks": 216,
+      "max_geometry_delta_px": 0.01250457763671875,
+      "tolerance_px": 0.05,
+      "css_differences": [],
+      "geometry_differences": [],
+      "overflow": false
+    },
+    {
+      "size": "tablet",
+      "css_checks": 697,
+      "geometry_checks": 216,
+      "max_geometry_delta_px": 0.01250457763671875,
+      "tolerance_px": 0.05,
+      "css_differences": [
+        {
+          "region": "identity",
+          "node": 3,
+          "property": "margin",
+          "source": "0px 302.075px 0px 0px",
+          "local": "0px 372.075px 0px 0px"
+        }
+      ],
+      "geometry_differences": [],
+      "overflow": false
+    },
+    {
+      "size": "mobile",
+      "css_checks": 697,
+      "geometry_checks": 216,
+      "max_geometry_delta_px": 0.01250457763671875,
+      "tolerance_px": 0.05,
+      "css_differences": [
+        {
+          "region": "identity",
+          "node": 3,
+          "property": "margin",
+          "source": "0px 28.775px 0px 0px",
+          "local": "0px 62.775px 0px 0px"
+        }
+      ],
+      "geometry_differences": [],
+      "overflow": false
+    }
+  ]
+}

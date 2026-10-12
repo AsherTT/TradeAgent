@@ -7,6 +7,7 @@ import styles from "./SearchCategoryBar.module.css";
 interface SearchCategoryBarProps {
   category: SearchCategory;
   onCategoryChange: (category: SearchCategory) => void;
+  options?: readonly { value: SearchCategory; label: string }[];
 }
 
 const categories = [
@@ -16,14 +17,14 @@ const categories = [
   { value: "investor", label: "Investors" },
 ] as const;
 
-export function SearchCategoryBar({ category, onCategoryChange }: SearchCategoryBarProps) {
+export function SearchCategoryBar({ category, onCategoryChange, options = categories }: SearchCategoryBarProps) {
   const { t } = useLanguage();
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.inner}>
         <div className={styles.tabList} role="tablist" aria-orientation="horizontal">
-          {categories.map((item) => (
+          {options.map((item) => (
             <button
               key={item.value}
               type="button"
