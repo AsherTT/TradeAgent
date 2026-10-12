@@ -9,6 +9,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
 from backend.app.api.accounts import router as accounts_router
+from backend.app.api.company_discovery import router as company_discovery_router
 from backend.app.api.evaluation import router as evaluation_router
 from backend.app.api.rag import router as rag_router
 from backend.app.api.research import router as research_router
@@ -28,6 +29,7 @@ app.include_router(rag_router)
 app.include_router(evaluation_router)
 app.include_router(accounts_router)
 app.include_router(workspace_router)
+app.include_router(company_discovery_router)
 app.include_router(workspace_portal_router)
 app.include_router(workspace_research_router)
 
